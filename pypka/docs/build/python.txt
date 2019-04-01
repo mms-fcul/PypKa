@@ -1,0 +1,30 @@
+Undocumented Python objects
+===========================
+log
+---
+Functions:
+ * checkDelPhiErrors
+ * inputVariableError
+ * redirectErr
+ * redirectOutput
+ * reportToLOG
+ * reportWarning
+ * requiredParameterError
+
+pypka
+-----
+Functions:
+ * getTitrableSites
+
+Classes:
+ * Titration -- missing methods:
+
+   - DelPhiLaunch
+   - correct_site_numb
+   - getAverageProt
+   - getProtState
+   - getTitration
+   - next
+   - preprocessing
+   - processDelPhiParams
+
