@@ -20,7 +20,7 @@ jobs:
             pipenv lock
 
       - save_cache:
-          path: ./
+          paths:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
