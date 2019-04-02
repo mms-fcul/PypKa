@@ -16,8 +16,8 @@ jobs:
           name: install dependencies
           command: |
             wget -O ./delphi4py.whl $delphi4py_whl
-	    pipenv install delphi4py.whl
-	    pipenv lock
+            pipenv install delphi4py.whl
+            pipenv lock
 
       - save_cache:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
@@ -26,5 +26,5 @@ jobs:
           name: run tests
           command: |
             pipenv shell
-	    cd pypka/tests/
+            cd pypka/tests/
             exit
