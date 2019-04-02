@@ -15,8 +15,9 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            wget -O ./delphi4py.whl $delphi4py_whl
-            pip install delphi4py.whl
+            wget -O ./delphi4py-1.0.1-py2-none-any.whl $delphi4py_whl
+            pipenv install ./delphi4py-1.0.1-py2-none-any.whl
+            pipenv lock
 
       - save_cache:
           paths:
@@ -29,4 +30,4 @@ jobs:
           name: run tests
           command: |
             cd pypka/tests/
-            python test.py
+            pipenv run python test.py
