@@ -21,11 +21,13 @@ jobs:
 
       - save_cache:
           path: ./
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       - run:
           name: run tests
           command: |
-            pipenv shell
             cd pypka/tests/
-            exit
+            pipenv run python test.py
