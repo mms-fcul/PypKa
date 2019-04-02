@@ -20,6 +20,7 @@ jobs:
             pipenv lock
 
       - save_cache:
+          path: ./
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       - run:
