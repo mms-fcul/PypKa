@@ -13,7 +13,7 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 # License
   pypka is distributed under a LGPL-3.0, however delphi4py
   depends on DelPhi which is proprietary. In order to get the full
-  DelPhi4py please contact Walter Rocchia
+  DelPhi4py please contact  [Walter Rocchia](https://www.iit.it/people/walter-rocchia)
 
 
 # Change Log

@@ -48,7 +48,7 @@
 <span class="kn">from</span> <span class="nn">formats</span> <span class="k">import</span> <span class="n">convertTermini</span>
 <span class="kn">import</span> <span class="nn">log</span> <span class="k">as</span> <span class="nn">log</span>
 
-<span class="kn">from</span> <span class="nn">delphi4py.delphi4py</span> <span class="k">import</span> <span class="n">delphi</span>
+<span class="kn">from</span> <span class="nn">delphi4py</span> <span class="k">import</span> <span class="n">Delphi</span>
 
 <span class="kn">from</span> <span class="nn">molecule</span> <span class="k">import</span> <span class="n">Molecule</span>
 <span class="kn">from</span> <span class="nn">concurrency</span> <span class="k">import</span> <span class="n">startPoolProcesses</span><span class="p">,</span> <span class="n">runDelPhiSims</span>
@@ -89,7 +89,7 @@
     <span class="k">return</span> <span class="n">sites_keys</span>
 
 
-<div class="viewcode-block" id="Titration"><a class="viewcode-back" href="../index.html#pypka.Titration">[docs]</a><span class="k">class</span> <span class="nc">Titration</span><span class="p">:</span>
+<div class="viewcode-block" id="Titration"><a class="viewcode-back" href="../index.html#pypka.Titration">[docs]</a><span class="k">class</span> <span class="nc">Titration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Main pypka class</span>
 
 <span class="sd">    Serves as a wrapper to all other classes</span>
@@ -182,7 +182,7 @@
         <span class="c1"># Storing DelPhi parameters and Creates DelPhi data structures</span>
 
         <span class="n">config</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;precision&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;single&#39;</span> <span class="c1"># TODO: add to input parameter file</span>
-        <span class="n">delphimol</span> <span class="o">=</span> <span class="n">delphi</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">f_crg</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">f_siz</span><span class="p">,</span> <span class="s1">&#39;delphi_in_stmod.pdb&#39;</span><span class="p">,</span>
+        <span class="n">delphimol</span> <span class="o">=</span> <span class="n">Delphi</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">f_crg</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">f_siz</span><span class="p">,</span> <span class="s1">&#39;delphi_in_stmod.pdb&#39;</span><span class="p">,</span>
                            <span class="n">config</span><span class="o">.</span><span class="n">tit_mole</span><span class="o">.</span><span class="n">getNAtoms</span><span class="p">(),</span>
                            <span class="n">config</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;gsizeM&#39;</span><span class="p">],</span>
                            <span class="n">config</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;scaleM&#39;</span><span class="p">],</span>
@@ -324,13 +324,12 @@
         <span class="k">return</span> <span class="n">output</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">CLI</span><span class="p">():</span>
     <span class="c1"># Assignment of global variables</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="n">checkParsedInput</span><span class="p">()</span>
-
     <span class="n">Titration</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
     <span class="nb">print</span> <span class="s1">&#39;CLI exited successfully&#39;</span>
+
 </pre></div>
 
           </div>
