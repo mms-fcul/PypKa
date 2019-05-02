@@ -209,6 +209,7 @@ class Tautomer:
             #    exit()
             pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z)
 
+        box = molecule.box
         with open('P_{1}-{0}.pdb'.format(self._name, self._site._res_number), 'w') as f_new:
             x, y, z = acent
             pdb_text += new_pdb_line(-1, 'P', 'CNT', -1, x, y, z)
@@ -408,7 +409,7 @@ class Tautomer:
                             outputfile=logfile)
         #print 'ended', self._name, self._site._res_number, 'modelcompound'
 
-        log.checkDelPhiErrors(logfile)
+        log.checkDelPhiErrors(logfile, 'runDelPhi')
 
         self._esolvation = delphimol.getSolvation()
         self._p_sitpot   = delphimol.getSitePotential()
@@ -461,21 +462,28 @@ class Tautomer:
                                 relfac_focus=0.0, relpar_focus=0.0,
                                 relpar=config.params['relpar'],
                                 relfac=config.params['relfac'],
-                                pbx=config.params['pbx'],
-                                pby=config.params['pby'], pbx_focus=False,
+                                pbx=True,
+                                pby=True, pbx_focus=False,
                                 pby_focus=False, debug=config.debug,
                                 filename=filename,
                                 outputfile=logfile)
         else:
-            delphimol.runDelPhi(scale=config.params['scaleP'],
-                                nonit=0, nlit=config.params['nlit'],
-                                relpar=0, relfac=0,
-                                acent=acent, pbx=False, pby=False,                                
-                                debug=config.debug,
+            delphimol.runDelPhi(scale_prefocus=config.params['scaleP'],
+                                scale=config.params['scaleM'],
+                                nlit_prefocus=config.params['nlit'],
+                                nonit=0,
+                                nlit=500, acent=acent, nonit_focus=0,
+                                relfac_focus=0.0, relpar_focus=0.0,
+                                relpar=0,
+                                relfac=0,
+                                pbx=False,
+                                pby=False, pbx_focus=False,
+                                pby_focus=False, debug=config.debug,
                                 filename=filename,
                                 outputfile=logfile)
+            
         #print 'ended', self._name, self._site._res_number, 'wholeprotein'
-        log.checkDelPhiErrors(logfile)
+        log.checkDelPhiErrors(logfile, 'runDelPhi')
         
         fname = 'P_{1}-{0}.out'.format(self._name, self._site._res_number)
 

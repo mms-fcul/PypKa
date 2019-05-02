@@ -4,4 +4,5 @@
 *xtc
 *.gz
 *.sh
+LOG*
 setup.py

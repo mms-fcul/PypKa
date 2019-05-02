@@ -48,7 +48,7 @@ params = {'perfil': 0.9,
           'epsin': 20.0,
           'slice': 0.05,
           'ncpus': 1,
-          'clean_pdb': False,
+          'clean_pdb': True,
           'couple_min': 2.0,
           'mcsteps': 200000,
           'eqsteps': 1000
@@ -57,17 +57,18 @@ params = {'perfil': 0.9,
 # Paths
 # TODO: include in dependencies
 # in dependencies there is a pdb2pqr that has a important dat folder
-pdb2pqr = "/user04/pedror/pdb2pqr/pdb2pqr.py" 
+pdb2pqr = "/home/pedror/Programs/pdb2pqr/pdb2pqr.py" 
 delphi4py = "./delphi4py.py"
-userff = "/user04/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.DAT"
-usernames = "/user04/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.names"
+userff = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.DAT"
+usernames = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.names"
 
 # Input Files
-f_pdb   = None
-f_out   = None
+f_in  = None
+f_in_extension = None
+f_out = None
 f_prot_out = None
-f_log   = "LOG"
-f_dat   = None
+f_log = "LOG"
+f_dat = None
 
 # Force Field Files
 f_crg   = None

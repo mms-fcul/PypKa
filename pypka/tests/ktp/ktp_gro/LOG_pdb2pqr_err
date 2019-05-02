@@ -1,0 +1,15 @@
+Error parsing line: 'CREATE'
+<CREATED within PyPka>
+Truncating remaining errors for record type:CREATE
+Error parsing line: '42'
+<42>
+Truncating remaining errors for record type:42
+Error parsing line: '1TYR'
+<1TYR      N    1   2.059   2.239   0.878>
+Truncating remaining errors for record type:1TYR
+Error parsing line: '2ARG'
+<2ARG      N   21   2.272   2.263   1.171>
+Truncating remaining errors for record type:2ARG
+Error parsing line: '3.0640'
+<3.06400   3.06400   3.06400>
+Truncating remaining errors for record type:3.0640

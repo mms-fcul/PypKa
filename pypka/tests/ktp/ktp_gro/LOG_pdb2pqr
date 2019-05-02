@@ -1,0 +1,24 @@
+
+--------------------------
+PDB2PQR - a Python-based structural conversion utility
+--------------------------
+Please cite your use of PDB2PQR as:
+  Dolinsky TJ, Nielsen JE, McCammon JA, Baker NA.
+  PDB2PQR: an automated pipeline for the setup, execution,
+  and analysis of Poisson-Boltzmann electrostatics calculations.
+  Nucleic Acids Research 32 W665-W667 (2004).
+
+Warning: TMP.gro is a non-standard PDB file.
+
+['CREATE', '42', '1TYR', '2ARG', '3.0640']
+Beginning PDB2PQR...
+
+Parsed Amino Acid definition file.
+Created protein object -
+	Number of residues in protein: 0
+	Number of atoms in protein   : 0
+Setting the termini... 
+Done.
+Checking for missing heavy atoms... 
+DEBUG INFO: PDBInputError src/routines.py: 620 
+Error encountered: No heavy atoms found. You may also see this message if PDB2PQR does not have parameters for any residue in your protein.

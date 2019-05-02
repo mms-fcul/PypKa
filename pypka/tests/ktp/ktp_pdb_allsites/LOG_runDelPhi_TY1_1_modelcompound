@@ -1,0 +1,87 @@
+ energy calculations done at   1.86521900    
+   
+ total cpu time was (sec)   0.154018044    
+   
+ DelPhi exited at 15:29:04
+   
+ loading variables time was (sec)    1.40129846E-45
+   
+ realsiz ==            4
+ igrid     ->            0                   81
+ scale     ->    10000.0000       4.0000000000000000     
+ repsin    ->    2.00000000       2.0000000000000000     
+ repsout   ->    80.0000000       80.000000000000000     
+ radprb(1) ->    1.39999998       1.3999999999999999     
+ conc(1)   ->    0.00000000      0.10000000000000001     
+ ibctyp    ->            2                    4
+ res2      ->    0.00000000       1.0000000000000000E-002
+ nlit      ->            0                  300
+ py_acent      -> (   0.00000000       0.00000000       0.00000000     ) (   23.070000000000000        27.184999999999999        9.5600000000000005      )
+ energy      -> sc
+ sites -> aqp
+ natom ->                    14
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ time to read in and/or assign rad/chrg=   1.86694002    
+ object number :              1 ,  is a molecule
+ cmin   19.3099995       22.7999992       6.64000034    
+ cmax   25.7200012       30.4099998       12.4799995    
+ Debye Lengths contained in the finite diff. box   1.15702438    
+   
+ grid size                  :          81
+ percent of box to be filled:   43.8500023    
+ scale,in grids/A :   4.00000000    
+ xmin,xmax     (A):   19.3099995       25.7200012    
+ ymin,ymax     (A):   22.7999992       30.4099998    
+ zmin,zmax     (A):   6.64000034       12.4799995    
+ x,y,z range   (A):    6.41000175       7.61000061       5.83999920    
+ system geometric center in (A):   22.5149994       26.6049995       9.55999947    
+  grid  box is centered in (A) :   23.0699997       27.1849995       9.56000042    
+ object centre offset (gu)  :   0.00000000       0.00000000       0.00000000    
+ outer dielectric           :   80.0000000    
+ dielectric in medium number           0  :   80.0000000    
+ dielectric in medium number           1  :   1.99999988    
+ first kind salt concentration (M)   :  0.100000001    
+ valences salt 1 are                   1  and           1
+ second kind salt concentration (M)  :   0.00000000    
+ valences salt 2 are                   0  and           0
+ ionic strength (M)         :  0.100000001    
+ debye length (A)           :   9.70593166    
+ absolute temperature (K)   :   297.334198    
+ ion exclusion radius (A)   :   2.00000000    
+ probe radius facing water(A:   1.39999998    
+ probe radius, internal (A) :   1.39999998    
+ boundary conditions        : coulombic   
+ x,y,z periodic bc. and volt. drop flags: F F F F F F
+ # of linear iterations     :         300
+ convergence by rms  change :   0.00000000      kt
+ convergence by max  change :   9.99999978E-03  kt
+ convergence by norm change :   0.00000000      kt
+ # of non-linear iterations :           0
+ non-linear energy calculat.: F
+ manual relaxation parameter : F
+ ionic direct energy contribution: F
+ concentration map output   : F
+ spherical charge distbn.   : F
+ INSIGHT format output      : F
+ site potential output      : T
+ modified atom file output  : F
+ map file label             :
+qdiffxas: qdiffxs4 with an improved surfacing routine       
+  convergence graph turned off
+  potential listings turned off
+  
+ number of charges coming from molecules           11
+ radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
+ start vw surface at    1.86819804    
+ radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
+ Starting creating Van der Waals  Epsilon Map 
+ radmax2 =   4.00000000       1.75999999       2.00000000    
+ radmax2 ->   4.00000000       15.0400000       2.00000000     T   0.00000000       2.00000000    
+ radmax2 ->   4.00000000       15.0400000       2.00000000     T
+ radmax2 ->   4.00000000       15.0400000       2.00000000     T
+ setout method 1 T T
+ Ending creating Van der Waals  Epsilon Map 
+ fill in re-entrant regions at    1.87216794    
+ here in vwtms	
+ boundary points facing continuum solvent=         1524
+ total number of boundary points before elab.=         1524

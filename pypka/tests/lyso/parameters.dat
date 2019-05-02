@@ -1,0 +1,29 @@
+### mandatory ###
+input_pdb       = 4lzt.pdb
+epsin           = 20
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 298
+grid_fill       = 0.8 # FUTURE VERSION
+ncpus           = 8
+pH              = 0-14
+sites_A         = 1N, 13, 18, 33, 96, 97, 116, 129C
+
+### optional ###
+clean_pdb = yes
+logfile   = LOGFILE
+#sites_B  = 3 # MULTIPLE CHAINS IN FUTURE VERSION
+
+
+relfac = 0.20
+relpar = 0.750
+debug  = False
+scaleM = 4.14730978
+scaleP = 1.38243747
+gsizeM = 151
+
+convergence = 0.00001
+nlit   = 50
+cutoff = -1
+
+output = pKas_old.out

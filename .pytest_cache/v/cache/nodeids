@@ -1,0 +1,12 @@
+[
+  "pypka/tests/test.py::TestCLI::test_cli_ktp_gro", 
+  "pypka/tests/test.py::TestCLI::test_cli_ktp_pdb_allsites", 
+  "pypka/tests/test.py::TestCLI::test_cli_ktp_pdb_allsites_noclean", 
+  "pypka/tests/test.py::TestCLI::test_cli_ktp_pdb_onlytermini", 
+  "pypka/tests/test.py::TestCLI::test_cli_ktp_pdb_onlytermini_noclean", 
+  "pypka/tests/test.py::TestAPI::test_api_ktp_gro", 
+  "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_allsites_clean", 
+  "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_allsites_noclean", 
+  "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_onlytermini", 
+  "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_onlytermini_noclean"
+]

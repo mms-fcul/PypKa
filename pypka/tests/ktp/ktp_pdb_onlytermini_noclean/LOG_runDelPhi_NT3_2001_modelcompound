@@ -1,0 +1,87 @@
+ All required energy terms but grid and self_react.:  -50.7285500     kt
+ energy calculations done at  0.160849005    
+   
+ total cpu time was (sec)    9.49349925E-02
+   
+ DelPhi exited at 16:11:14
+   
+ loading variables time was (sec)    5093992.00    
+   
+ realsiz ==            4
+ igrid     ->            0                   81
+ scale     ->    10000.0000       4.0000000000000000     
+ repsin    ->    2.00000000       2.0000000000000000     
+ repsout   ->    80.0000000       80.000000000000000     
+ radprb(1) ->    1.39999998       1.3999999999999999     
+ conc(1)   ->    0.00000000      0.10000000000000001     
+ ibctyp    ->            2                    4
+ res2      ->    0.00000000       1.0000000000000000E-002
+ nlit      ->            0                  300
+ py_acent      -> (   0.00000000       0.00000000       0.00000000     ) (   20.605000000000000        22.270000000000000        9.7249999999999996      )
+ energy      -> sc
+ sites -> aqp
+ natom ->                     7
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ time to read in and/or assign rad/chrg=  0.162889004    
+ object number :              1 ,  is a molecule
+ cmin   18.9689999       20.7689991       7.15899944    
+ cmax   23.4850006       25.0550003       12.9460001    
+ Debye Lengths contained in the finite diff. box   1.39687765    
+   
+ grid size                  :          81
+ percent of box to be filled:   32.2099991    
+ scale,in grids/A :   4.00000000    
+ xmin,xmax     (A):   18.9689999       23.4850006    
+ ymin,ymax     (A):   20.7689991       25.0550003    
+ zmin,zmax     (A):   7.15899944       12.9460001    
+ x,y,z range   (A):    4.51600075       4.28600121       5.78700066    
+ system geometric center in (A):   21.2270012       22.9119987       10.0524998    
+  grid  box is centered in (A) :   20.6049995       22.2700005       9.72500038    
+ object centre offset (gu)  :   0.00000000       0.00000000       0.00000000    
+ outer dielectric           :   80.0000000    
+ dielectric in medium number           0  :   80.0000000    
+ dielectric in medium number           1  :   1.99999988    
+ first kind salt concentration (M)   :  0.100000001    
+ valences salt 1 are                   1  and           1
+ second kind salt concentration (M)  :   0.00000000    
+ valences salt 2 are                   0  and           0
+ ionic strength (M)         :  0.100000001    
+ debye length (A)           :   9.70593166    
+ absolute temperature (K)   :   297.334198    
+ ion exclusion radius (A)   :   2.00000000    
+ probe radius facing water(A:   1.39999998    
+ probe radius, internal (A) :   1.39999998    
+ boundary conditions        : coulombic   
+ x,y,z periodic bc. and volt. drop flags: F F F F F F
+ # of linear iterations     :         300
+ convergence by rms  change :   0.00000000      kt
+ convergence by max  change :   9.99999978E-03  kt
+ convergence by norm change :   0.00000000      kt
+ # of non-linear iterations :           0
+ non-linear energy calculat.: F
+ manual relaxation parameter : F
+ ionic direct energy contribution: F
+ concentration map output   : F
+ spherical charge distbn.   : F
+ INSIGHT format output      : F
+ site potential output      : T
+ modified atom file output  : F
+ map file label             :
+qdiffxas: qdiffxs4 with an improved surfacing routine       
+  convergence graph turned off
+  potential listings turned off
+  
+ number of charges coming from molecules            7
+ radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
+ start vw surface at   0.162889004    
+ radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
+ Starting creating Van der Waals  Epsilon Map 
+ radmax2 =   4.00000000       1.94500005       2.00000000    
+ radmax2 ->   4.00000000       15.7800007       2.00000000     T   0.00000000       2.00000000    
+ radmax2 ->   4.00000000       15.7800007       2.00000000     T
+ radmax2 ->   4.00000000       15.7800007       2.00000000     T
+ setout method 1 T T
+ Ending creating Van der Waals  Epsilon Map 
+ fill in re-entrant regions at   0.162889004    
+ here in vwtms	
+ boundary points facing continuum solvent=          973

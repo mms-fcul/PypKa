@@ -1,3 +1,4 @@
+
 #! /usr/bin/python
 
 """
@@ -10,7 +11,7 @@ import os
 import config as config
 from cli import checkParsedInput, readSettings, inputParametersFilter
 from cleaning import inputPDBCheck, cleanPDB
-from formats import convertTermini
+from formats import convertTermini, pdb2gro
 import log as log
 
 from delphi4py import Delphi
@@ -27,7 +28,7 @@ __status__ = "Development"
 
 
 def getTitrableSites(pdb):
-    config.f_pdb = pdb
+    config.f_in = pdb
     config.params['ffID'] = 'G54A7'
     config.script_dir = os.path.dirname(__file__)
 
@@ -49,8 +50,6 @@ def getTitrableSites(pdb):
         else:
             sites_keys.append(str(sitenumber))
 
-        print sitenumber, sitename
-
     return sites_keys
 
 
@@ -62,81 +61,100 @@ class Titration(object):
     Attributes:
         _pKas: A dict with the calculated pKa values.
     """
-    def __init__(self, pdb, parameters, sites='all', debug=None, datfile=None):
+    def __init__(self, parameters, sites='all', debug=None, datfile=None):
         """
         self._pKas = {}
         """
         self._pKas = {}
-
-        if pdb: # None if from CLI
-            parameters['input_pdb'] = pdb
-            config.debug = debug
 
         if sites: # None if from CLI
+            parameters['sites_A'] = sites
             if sites != 'all':
-                parameters['sites_A'] = sites
                 config.sites = sites
             else:
-                parameters['sites_A'] = sites
+                config.sites = {}
 
         if datfile:
-            config.f_dat = args.settings
-            parameters = readSettings(args.settings)
+            config.f_dat = datfile
+            parameters = readSettings(datfile)
+
+        print parameters
+        print config.params
+        print config.sites
 
         # Check Input Variables Validity
         inputParametersFilter(parameters)
+        print config.params
+        print config.sites
 
         print 'Start Preprocessing'
         self.preprocessing()
 
         self.processDelPhiParams()
 
+        print config.params
+        print config.sites
+
         print 'Start PB Calculations'
         self.DelPhiLaunch()
-
+        
         print 'API exited successfully'
 
     def preprocessing(self):
         # Creating instance of TitratingMolecule
         config.tit_mole = Molecule()
 
-        # Reading .st files
-        # If the titrable residues are defined
-        # The input is a pdb or a gro
-        if len(config.sites) > 0:
-            chains_length, chains_res = inputPDBCheck(config.f_pdb, config.sites)
-            config.tit_mole.loadSites(chains_length, chains_res)
-        # If the titrable residues are not defined and
-        # the input pdb file is incomplete
-        elif config.params['clean_pdb']:
-            chains_res = config.tit_mole.makeSimpleSites()
-        # If the titrable residues are not defined and
-        # the input pdb is not missing any atoms
-        else:
-            config.tit_mole.makeSites()
+        print config.f_in_extension, config.params['clean_pdb'], len(config.sites)
+        if config.f_in_extension == 'gro':
+            groname = config.f_in
+            if len(config.sites) > 0:
+                chains_length, chains_res = inputPDBCheck(config.f_in, config.sites)
+                config.tit_mole.loadSites(chains_length, chains_res)
+            else:
+                log.inputVariableError('sites',
+                                       'defined.',
+                                       'When using a .gro file format input is used, '
+                                       'sites needs to be defined')
 
-        # TODO: optional parameter to force trjconv as PypKa should not require trjconv
-        # Creates a .pdb input for DelPhi, where residues are in their standard state
-        if config.params['clean_pdb']:
+        if config.f_in_extension == 'pdb':
+            # Reading .st files
+            # If the titrable residues are defined
+            if len(config.sites) > 0:
+                chains_length, chains_res = inputPDBCheck(config.f_in, config.sites)
+                config.tit_mole.loadSites(chains_length, chains_res)
+            # If the titrable residues are not defined and
+            # the input pdb file is incomplete
+            elif config.params['clean_pdb']:
+                chains_res, sites = config.tit_mole.makeSimpleSites()
+            # If the titrable residues are not defined and
+            # the input pdb is not missing any atoms
+            else:
+                chains_res, sites = config.tit_mole.makeSimpleSites()
+                config.tit_mole.deleteAllSites()
+                config.tit_mole.makeSites(sites=sites)
+
             termini = {config.tit_mole._NTR: config.tit_mole._NTR_atoms,
                        config.tit_mole._CTR: config.tit_mole._CTR_atoms}
+            # Creates a .pdb input for DelPhi, where residues are in their standard state
+            if config.params['clean_pdb']:
+                inputpqr = 'clean.pqr'
+                outputpqr = 'cleaned_tau.pqr'
+                sites = config.tit_mole.getSites()
+                site_numb_n_ref = {}
+                for site in sites:
+                    site_numb_n_ref[site] = sites[site].getRefTautomerName()
+                cleanPDB(config.f_in, config.pdb2pqr, chains_res,
+                         termini, config.userff, config.usernames,
+                         inputpqr, outputpqr, site_numb_n_ref)
+            
+                log.checkDelPhiErrors('LOG_addHtaut')
+                config.tit_mole.deleteAllSites()
+                config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
+            else:
+                pdb2gro(config.f_in, 'TMP.gro', config.tit_mole.box, config.sites, termini)
+            groname = 'TMP.gro'
 
-            inputpqr = 'clean.pqr'
-            outputpqr = 'cleaned_tau.pqr'
-            sites = config.tit_mole.getSites()
-            site_numb_n_ref = {}
-            for site in sites:
-                site_numb_n_ref[site] = sites[site].getRefTautomerName()
-            cleanPDB(config.f_pdb, config.pdb2pqr, chains_res,
-                     termini, config.userff, config.usernames,
-                     inputpqr, outputpqr, site_numb_n_ref)
-
-            log.checkDelPhiErrors('LOG_addHtaut')
-
-            config.tit_mole.deleteAllSites()
-            config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
-
-        config.tit_mole.readGROFile()
+        config.tit_mole.readGROFile(groname)
 
     def processDelPhiParams(self):
         # TODO: scale is only input in .pHmdp, not gsize
@@ -165,7 +183,7 @@ class Titration(object):
                            pby=config.params['pby'],
                            debug=config.debug, outputfile='LOG_readFiles')
 
-        log.checkDelPhiErrors('LOG_readFiles')
+        log.checkDelPhiErrors('LOG_readFiles', 'readFiles')
 
         # Loads delphi4py object as TitratingMolecule attributes
         config.tit_mole.loadDelPhiParams(delphimol)
@@ -257,20 +275,20 @@ class Titration(object):
             raise StopIteration
 
     def correct_site_numb(self, numb):
-        if key == 'NTR':
-            key = config.tit_mole._NTR + config.terminal_offset
-        elif key == 'CTR':
-            key = config.tit_mole._CTR + config.terminal_offset
-        if type(key) == str:
+        if numb == 'NTR':
+            numb = config.tit_mole._NTR + config.terminal_offset
+        elif numb == 'CTR':
+            numb = config.tit_mole._CTR + config.terminal_offset
+        if type(numb) == str:
             try:
-                key = int(key)
+                numb = int(numb)
             except:
                 raise Exception('Unknown site')
         return numb
 
-    def __getitem__(self, key):
-        key = self.correct_site_numb(key)
-        return self._pKas[key]
+    def __getitem__(self, numb):
+        numb = self.correct_site_numb(numb)
+        return self._pKas[numb]
 
     def __str__(self):
         output = '  Site   Name      pK'
@@ -292,6 +310,8 @@ class Titration(object):
 def CLI():
     # Assignment of global variables
     parameters = checkParsedInput()
-    Titration(None, parameters, sites=None)
+    Titration(parameters, sites=None)
     print 'CLI exited successfully'
 
+if __name__ == "__main__":
+    CLI()

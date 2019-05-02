@@ -15,6 +15,8 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
   depends on DelPhi which is proprietary. In order to get the full
   DelPhi4py please contact  [Walter Rocchia](https://www.iit.it/people/walter-rocchia)
 
+# Documentation
+  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/). (Under development)
 
 # Change Log
 

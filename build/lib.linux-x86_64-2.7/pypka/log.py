@@ -48,15 +48,26 @@ def redirectErr(mode, outputname):
         os.dup2(config.stderr, sys.stderr.fileno())
         config.stderr_file.close()
 
-def checkDelPhiErrors(filename, remove=False):
+def checkDelPhiErrors(filename, mode=None, remove=False):
+    exceptions = []
+    if mode == 'readFiles':
+        exceptions = ['part of system outside the box!',
+                      'has a net charge of']
+    elif mode == 'runDelPhi':
+        exceptions = ['part of system outside the box!']
+
     exit_trigger = False
     errors = ''
     with open(filename) as f:
         for line in f:
-            if ('WARNING' in line or 'Warning' in line) and \
-               'part of system outside the box!' not in line:
-                exit_trigger = True
-                errors += line
+            ignore_error = False
+            if 'WARNING' in line or 'Warning' in line:
+                for exception in exceptions:
+                    if exception in line:
+                        ignore_error = True
+                if not ignore_error:
+                    exit_trigger = True
+                    errors += line
     if exit_trigger:
         raise Exception('The following errors have been found on {0}: \n{1}'.format(filename, errors))
     if remove:

@@ -1,0 +1,26 @@
+### mandatory ###
+structure       = TMP.gro
+epsin           = 2
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 310
+grid_fill       = 0.8 # FUTURE VERSION
+ncpus           = 1
+pH              = -5,15
+sites_A         = 1N, 1, 2C
+
+### optional ###
+logfile   = LOGFILE
+
+scaleM = 4.0
+scaleP = 1.0
+gsizeP = 81
+
+convergence = 0.00001
+nlit   = 500
+cutoff = -1
+
+output = pKas.out
+titration_output = protonation.out
+
+pHstep = 0.2

@@ -1,0 +1,87 @@
+ finished qdiffx linear iterations
+ at                       : 15:28:48
+ total time elapsed so far:    1.82269704    
+ # loops                  :          110
+ mean,max change (kT/e)   :    1.04632338E-04   5.46264648E-03
+ self-reaction field energy :      -23450.0410      kt
+ total s.charge,no epsin carrying :   -0.0000
+ corrected reaction field energy:   -22.001940501561460       kt
+ total reaction field energy :     -23472.042956126563       kt
+ coulombic energy :                -103.44957286611081       kt
+ All required energy terms but grid and self_react.:  -125.451515     kt
+ energy calculations done at   1.82282805    
+   
+ total cpu time was (sec)    8.76139402E-02
+   
+ DelPhi exited at 15:28:48
+   
+ loading variables time was (sec)    1.40129846E-45
+   
+ realsiz ==            4
+ igrid     ->            0                   81
+ scale     ->    10000.0000       1.0000000000000000     
+ repsin    ->    2.00000000       2.0000000000000000     
+ repsout   ->    80.0000000       80.000000000000000     
+ radprb(1) ->    1.39999998       1.3999999999999999     
+ conc(1)   ->    0.00000000      0.10000000000000001     
+ ibctyp    ->            2                    4
+ res2      ->    0.00000000       1.0000000000000000E-002
+ nlit      ->            0                  500
+ py_acent      -> (   0.00000000       0.00000000       0.00000000     ) (   22.855000000000000        27.190000000000001        9.5600000000000005      )
+ energy      -> sc
+ sites -> aqp
+ natom ->                    43
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ time to read in and/or assign rad/chrg=   1.82662499    
+ object number :              1 ,  is a molecule
+ cmin   18.9689999       16.4569988       6.64000034    
+ cmax   27.5730000       30.4099998       16.2609997    
+ Debye Lengths contained in the finite diff. box   6.03074503    
+   
+ grid size                  :          81
+ percent of box to be filled:   26.8325043    
+ scale,in grids/A :   1.00000000    
+ xmin,xmax     (A):   18.9689999       27.5730000    
+ ymin,ymax     (A):   16.4569988       30.4099998    
+ zmin,zmax     (A):   6.64000034       16.2609997    
+ x,y,z range   (A):    8.60400009       13.9530010       9.62099934    
+ system geometric center in (A):   23.2709999       23.4334984       11.4505005    
+  grid  box is centered in (A) :   22.8549995       27.1900005       9.56000042    
+ object centre offset (gu)  :   0.00000000       0.00000000       0.00000000    
+ outer dielectric           :   80.0000000    
+ dielectric in medium number           0  :   80.0000000    
+ dielectric in medium number           1  :   1.99999988    
+ first kind salt concentration (M)   :  0.100000001    
+ valences salt 1 are                   1  and           1
+ second kind salt concentration (M)  :   0.00000000    
+ valences salt 2 are                   0  and           0
+ ionic strength (M)         :  0.100000001    
+ debye length (A)           :   9.70593166    
+ absolute temperature (K)   :   297.334198    
+ ion exclusion radius (A)   :   2.00000000    
+ probe radius facing water(A:   1.39999998    
+ probe radius, internal (A) :   1.39999998    
+ boundary conditions        : coulombic   
+ x,y,z periodic bc. and volt. drop flags: F F F F F F
+ # of linear iterations     :         500
+ convergence by rms  change :   0.00000000      kt
+ convergence by max  change :   9.99999978E-03  kt
+ convergence by norm change :   0.00000000      kt
+ # of non-linear iterations :           0
+ non-linear energy calculat.: F
+ manual relaxation parameter : F
+ ionic direct energy contribution: F
+ concentration map output   : F
+ spherical charge distbn.   : F
+ INSIGHT format output      : F
+ site potential output      : T
+ modified atom file output  : F
+ map file label             :
+qdiffxas: qdiffxs4 with an improved surfacing routine       
+  convergence graph turned off
+  potential listings turned off
+  
+ number of charges coming from molecules           11
+ radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
+ start vw surface at    1.82814896    
+ radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288

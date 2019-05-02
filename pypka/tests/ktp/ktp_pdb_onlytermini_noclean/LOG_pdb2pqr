@@ -1,0 +1,63 @@
+
+--------------------------
+PDB2PQR - a Python-based structural conversion utility
+--------------------------
+Please cite your use of PDB2PQR as:
+  Dolinsky TJ, Nielsen JE, McCammon JA, Baker NA.
+  PDB2PQR: an automated pipeline for the setup, execution,
+  and analysis of Poisson-Boltzmann electrostatics calculations.
+  Nucleic Acids Research 32 W665-W667 (2004).
+
+Beginning PDB2PQR...
+
+Parsed Amino Acid definition file.
+Created protein object -
+	Number of residues in protein: 2
+	Number of atoms in protein   : 43
+Setting the termini... 
+	PATCH INFO: TYR A 1 patched with NTERM
+	PATCH INFO: ARG A 2 patched with CTERM
+Done.
+Checking for missing heavy atoms... 
+	Extra atom HH1 in TYR A 1! - Deleted this atom.
+	Extra atom HH2 in TYR A 1! - Deleted this atom.
+	Missing OXT in ARG A 2
+	Missing O in ARG A 2
+	Extra atom O1 in ARG A 2! - Deleted this atom.
+	Extra atom 1HO1 in ARG A 2! - Deleted this atom.
+	Extra atom 2HO1 in ARG A 2! - Deleted this atom.
+	Extra atom O2 in ARG A 2! - Deleted this atom.
+	Extra atom 1HO2 in ARG A 2! - Deleted this atom.
+	Extra atom 2HO2 in ARG A 2! - Deleted this atom.
+Missing 2 out of 24 heavy atoms (8.33 percent) - Will attempt to repair.
+Rebuilding missing heavy atoms... 
+	Added OXT to ARG A 2 at coordinates 24.972 23.905 13.187
+	Added O to ARG A 2 at coordinates 23.612 24.251 14.628
+Done.
+Updating SS bridges...
+Done.
+Checking if we must debump any residues... 
+Done.
+Adding hydrogens to the protein...
+ Added 11 hydrogen atoms.
+Checking if we must debump any residues... 
+Done.
+Initializing full optimization...
+Done.
+Optimization progress:
+  Detecting potential hydrogen bonds:
+	0% |                    | 100%
+	    ********************
+  Optimizing hydrogen bonds:
+	0% |                    | 100%
+	    ********************
+Applying the forcefield to the protein...Done.
+Total time taken: 0.45 seconds
+
+{'pbc_dimensions': '0', 'epsin': '2', 'scaleP': '1.0', 'temp': '310', 'nlit': '300', 'ncpus': '1', 'clean_pdb': 'yes', 'titration_output': 'protonation.out', 'output': 'pKas.out', 'convergence': '0.01', 'sites_A': '1N, 2C', 'gsizeP': '81', 'ionicstr': '0.1', 'lipid_definition': {}, 'grid_fill': '0.8 # FUTURE VERSION', 'pH': '0, 15', 'logfile': 'LOGFILE', 'cutoff': '-1', 'scaleM': '4.0', 'structure': 'ktp.pdb'}
+{'couple_min': 2.0, 'cutoff': 2.5, 'epsin': 20.0, 'gsizeM': 81, 'pHstep': 0.25, 'ncpus': 1, 'pHmax': 10, 'eqsteps': 1000, 'precision': 'single', 'nonit': 0, 'seed': 1234567, 'bndcon': 4, 'maxc': 0.01, 'gsizeP': 81, 'pbc_dim': 0, 'ffID': 'G54A7', 'nlit': 500, 'slice': 0.05, 'scaleP': 1, 'temp': 310.0, 'epssol': 80.0, 'pby': False, 'pbx': False, 'relpar': 0.75, 'pHmin': 0, 'perfil': 0.9, 'ionicstr': 0.1, 'scaleM': 4, 'relfac': 0.75, 'mcsteps': 200000, 'clean_pdb': True}
+{'A': ['1N', '2C']}
+{'couple_min': 2.0, 'cutoff': -1.0, 'epsin': 2.0, 'gsizeM': 81, 'pHstep': 0.25, 'ncpus': 1, 'pHmax': 15.0, 'eqsteps': 1000, 'precision': 'single', 'nonit': 0, 'seed': 1234567, 'bndcon': 4, 'maxc': 0.01, 'gsizeP': 81, 'pbc_dim': 0, 'ffID': 'G54A7', 'nlit': 300.0, 'slice': 0.05, 'scaleP': 1.0, 'temp': 310.0, 'epssol': 80.0, 'pby': False, 'pbx': False, 'relpar': 0.75, 'pHmin': 0.0, 'perfil': 0.9, 'ionicstr': 0.1, 'scaleM': 4.0, 'relfac': 0.75, 'mcsteps': 200000, 'clean_pdb': True}
+{'A': ['1N', '2C']}
+Start Preprocessing
+pdb True 1

@@ -50,7 +50,7 @@ def read_gro_line(line):
 
 
 
-def pqr2gro(filename_in, filename_out, box, sites, termini):
+def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
     """
     Returns
       - aposition (int) of last atom id in filename_out
@@ -68,8 +68,18 @@ def pqr2gro(filename_in, filename_out, box, sites, termini):
     sites_pos = sites.keys()
     with open(filename_in) as f:
         for line in f:
-            (aname, anumb, resname, resnumb, x, y,
-             z, charge, radius) = read_pqr_line(line)
+            if 'CRYST1' in line[:6]:
+                parts = line.split()
+                pdb_box = [float(parts[1]), float(parts[2]), float(parts[3])]
+                continue
+            elif 'ATOM' != line[:4]:
+                continue            
+            elif pqr:
+                (aname, anumb, resname, resnumb, x, y,
+                 z, charge, radius) = read_pqr_line(line)
+            else:
+                (aname, anumb, resname, chain,
+                 resnumb, x, y, z) = read_pdb_line(line)
             aposition += 1
 
             if resnumb in sites_pos:
@@ -91,9 +101,14 @@ def pqr2gro(filename_in, filename_out, box, sites, termini):
                                          resnumb, x, y, z)
 
     header += '{0}\n'.format(aposition)
-    footer = '{0:10.5f}{1:10.5f}{2:10.5f}\n'.format(box[0] / 10.0,
-                                                    box[1] / 10.0,
-                                                    box[2] / 10.0)
+    if box  == []:
+        footer = '{0:10.5f}{1:10.5f}{2:10.5f}\n'.format(pdb_box[0] / 10.0,
+                                                        pdb_box[1] / 10.0,
+                                                        pdb_box[2] / 10.0)
+    else:
+        footer = '{0:10.5f}{1:10.5f}{2:10.5f}\n'.format(box[0] / 10.0,
+                                                        box[1] / 10.0,
+                                                        box[2] / 10.0)
 
     new_pdb = header + new_pdb_text + footer
     with open(filename_out, 'w') as f_new:

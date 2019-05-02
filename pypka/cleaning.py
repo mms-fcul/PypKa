@@ -1,7 +1,7 @@
 import os
 import log
 from formats import (read_pdb_line, read_pqr_line, read_gro_line,
-                     correct_names, new_pqr_line, new_gro_line, pqr2gro)
+                     correct_names, new_pqr_line, new_gro_line, pdb2gro)
 import config
 
 
@@ -162,7 +162,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                 tmp = line.split()[1:4]
                 box = (float(tmp[0]), float(tmp[1]), float(tmp[2]))
 
-    pqr2gro(outputpqr, "TMP.gro", box, sites, termini)
+    pdb2gro(outputpqr, "TMP.gro", box, sites, termini, pqr=True)
 
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)

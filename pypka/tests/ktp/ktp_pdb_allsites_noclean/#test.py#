@@ -1,0 +1,34 @@
+import os
+import sys
+sys.path.insert(1, '../')
+import pypka
+
+os.system('rm -f *out *gro *pdb')
+results = """
+1 NTR 7.89621829987
+1 TYR 9.88696575165
+2 CTR 3.12329292297
+"""
+
+results = results.split('\n')[1:-1]
+parameters = {
+    'structure'     : 'ktp/ktp_pdb_allsites_noclean/ktp_noclean.pdb',     # MANDATORY
+    'epsin'         : 2,
+    'ionicstr'      : 0.1,
+    'pbc_dimensions': 0,
+    'temp'          : 310,
+    'grid_fill'     : 0.8,         # FUTURE VERSION
+    'ncpus'         : 1,
+    'pH'            : '-5,15',
+    'pHstep'        : 0.2,
+    'logfile'       : 'LOGFILE',
+    'scaleM'        : 4,
+    'scaleP'        : 1,
+    'gsizeM'        : 81,
+    'convergence'   : 0.01,
+    'nlit'          : 500,
+    'cutoff'        : -1,            
+    'output'        : 'pKas.out'
+}
+sites = 'all'		
+pKa = Titration(parameters, sites=sites)

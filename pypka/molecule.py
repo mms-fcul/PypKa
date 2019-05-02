@@ -142,6 +142,7 @@ class Molecule:
                 i += 1
                 if i == t_index:
                     return tautomer
+        raise Exception('Something is wrong')
 
     def getTautomerInstance(self, tautname, site_resnum):
         """Return the tautomer instance named tautname 
@@ -235,11 +236,18 @@ class Molecule:
 
             return text + '\n'
 
+        def add2chain(chain, chain_res, resnumb, resname):
+            if chain in chain_res:
+                chain_res[chain][resnumb] = resname
+            else:
+                chain_res[chain] = {}
+                chain_res[chain][resnumb] = resname
+
         sites_file = ''
 
         sites = []
         chain_res = {}
-        with open(config.f_pdb) as f:
+        with open(config.f_in) as f:
             nline = 0
             maxnlines = 0
             resnumb = None
@@ -252,35 +260,23 @@ class Molecule:
                         chain = 'A'
 
                     if resnumb not in sites:
-                        if len(sites) == 0:
+                        if len(sites) == 0 and 'NTR' not in sites:
                             sites.append('NTR')
                             sites_file += SitesFileLine(resnumb, 'NTR')
                             self._NTR = resnumb
 
-                        if resname in config.TITRABLERESIDUES:
+                        if resname in config.TITRABLERESIDUES and \
+                           resname != 'NTR' and resname != 'CTR':
                             sites.append(resnumb)
                             sites_file += SitesFileLine(resnumb, resname)
-                            if chain in chain_res:
-                                chain_res[chain][resnumb] = resname
-                            else:
-                                chain_res[chain] = {}
-                                chain_res[chain][resnumb] = resname
+                            add2chain(chain, chain_res, resnumb, resname)
 
                     if 'CTR' not in sites and \
                        aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2'):
                         sites.append('CTR')
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb
-
-        sites.append('CTR')
-        sites_file += SitesFileLine(resnumb, 'CTR')
-        if chain in chain_res:
-            chain_res[chain][resnumb] = 'CTR'
-        else:
-            chain_res[chain] = {}
-            chain_res[chain][resnumb] = 'CTR'
-
-        self._CTR = resnumb
+                        add2chain(chain, chain_res, resnumb, 'CTR')
 
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
@@ -290,7 +286,7 @@ class Molecule:
         with open('tmp.sites', 'w') as f_new:
             f_new.write(sites_file)
 
-        return chain_res
+        return chain_res, sites
 
     def makeSites(self, useTMPgro=None, sites=None):
         """Identifies titrable residues and checks integrity of the residue blocks
@@ -349,8 +345,8 @@ class Molecule:
                                                                resname)
                 reportWarning(warn)
 
-        if config.f_pdb and not useTMPgro:
-            filename = config.f_pdb
+        if config.f_in and not useTMPgro:
+            filename = config.f_in
             filetype = 'pdb'
         else:
             filename = "TMP.gro"
@@ -376,7 +372,10 @@ class Molecule:
                         natoms = int(line.strip())
                         maxnlines = natoms + 3
 
-                if prev_resnumb != resnumb or nline == maxnlines:
+                if line == 'TER\n':
+                    resnumb += 1
+                if (prev_resnumb != resnumb or nline == maxnlines) and \
+                   prev_resnumb:
                     if nline == maxnlines:
                         prev_resnumb = copy(resnumb)
                         resnumb = 'None'
@@ -425,7 +424,6 @@ class Molecule:
                                                                                   cur_atoms,
                                                                                   cter=True,
                                                                                   site=res_tits)
-
                             if integrity_cter:
                                 cter_resnumb = prev_resnumb + config.terminal_offset
                                 makeSite(cter_resnumb, 'CTR')
@@ -466,13 +464,17 @@ class Molecule:
                         pass
 
                 # Dealing with the new residue
-                if prev_resnumb != resnumb:
+                if prev_resnumb != resnumb:                    
                     cur_atoms = [aname]
                     prev_resnumb = resnumb
                     prev_resname = resname
 
                 elif resnumb:
                     cur_atoms.append(aname)
+                    if prev_resname in ('NTR', 'CTR') and \
+                       prev_resname != resname:
+                        prev_resname = resname
+
 
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
@@ -500,7 +502,7 @@ class Molecule:
         def pop_atoms(anames1, anames2):
             trigger = False
             for aname in anames1:
-                if aname not in anames2:
+                if aname not in anames2:                    
                     trigger = True
                     if config.debug:                    
                         print aname, 'not in', resname
@@ -644,10 +646,9 @@ class Molecule:
         self._sites = {}
         self._sites_order = []
 
-    def readGROFile(self):
+    def readGROFile(self, groname):
         """ 
         """
-
         #TODO: For CpHMD read the index file:
         #self.readIndexFile()
 
@@ -665,7 +666,7 @@ MODEL        1
         new_pdb_content = ""
         site_positions = {}
         site_Hs = {}
-        with open("TMP.gro") as f:
+        with open(groname) as f:
             line_counter = 0
             natoms_left = 0
             natoms = 0
@@ -936,12 +937,6 @@ MODEL        1
 
                     gg = interaction / (config.kBoltz * T)
 
-                    if ((taut1._name == 'AS0' and taut2._name == 'CT0') or \
-                       (taut2._name == 'AS0' and taut1._name == 'CT0')) and \
-                       (site1._res_number == 18 and site2._res_number == 2129 or \
-                        site2._res_number == 18 and site1._res_number == 2129):
-                        print 'exit->', interaction, gg, inumber, site1._res_number, site2._res_number, site1._res_name, site2._res_name, taut1._name, taut2._name
-
                     nsite1 = self.getSitesOrdered().index(taut1._site)
                     nsite2 = self.getSitesOrdered().index(taut2._site)
 
@@ -1108,6 +1103,7 @@ MODEL        1
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
 
+        print nsites, pHsteps, pHmin, pHmax, dpH
         pKas, pmeans_raw = mc.MCrun(nsites, self._npossible_states,
                                     self._possible_states_g, self._possible_states_occ,
                                     self._interactions, self._interactions_look,

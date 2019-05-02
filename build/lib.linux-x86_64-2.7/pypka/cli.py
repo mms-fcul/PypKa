@@ -61,7 +61,7 @@ def inputParametersFilter(settings):
     config.script_dir = os.path.dirname(__file__)
     param_names = settings.keys()
     # MANDATORY #
-    mandatory_params = ('input_pdb', 'epsin', 'ionicstr',
+    mandatory_params = ('structure', 'epsin', 'ionicstr',
                         'pbc_dimensions', 'temp', 'grid_fill',
                         'ncpus', 'pH', 'sites_A')
     for param in mandatory_params:        
@@ -125,7 +125,6 @@ def inputParametersFilter(settings):
 
             setParameter(param, param_value)
 
-
     # Check particular parameter conditions
     if 'bndcon' in param_names and \
        settings['bndcon'] not in ('1', '2', '3', '4'):
@@ -160,7 +159,7 @@ def inputParametersFilter(settings):
         setParameter('pbc_dimensions', param_value)
 
     # Needs to accept both a single value and a range
-    pH_parts = settings['pH'].split('-')
+    pH_parts = settings['pH'].split(',')
     if len(pH_parts) > 1:
         try:
             setParameter('pHmin', float(pH_parts[0]))
@@ -179,13 +178,25 @@ def inputParametersFilter(settings):
 
     # Declare IO Files
     # Input .pdb File
-    config.f_pdb = settings['input_pdb']
+    config.f_in = settings['structure']
+    f_in_parts = settings['structure'].split('.')
+    if len(f_in_parts) <= 1:
+        log.inputVariableError('structure',
+                               'a string containing a file extension.',
+                               'Ex: structure.pdb or structure.gro')
+    extension = f_in_parts[1].lower()
+    if extension not in ('gro', 'pdb'):
+        log.inputVariableError('structure',
+                               'a string containing a valid file extension.',
+                               'Ex: structure.pdb or structure.gro')
+        
+    config.f_in_extension = extension
 
     # Output pKs File
     if 'output' in param_names:
         config.f_out = settings['output']
     else:
-        outputname = settings['input_pdb'].split('.')[0]
+        outputname = settings['structure'].split('.')[0]
         config.f_out = outputname
 
     # Output Titration File
@@ -201,12 +212,13 @@ def inputParametersFilter(settings):
        getParameter('relfac') != 0.2 and 'relfac' not in settings:
         setParameter('relfac', 0.2)
 
-    for i in settings['lipid_definition']:
-        resname = settings['lipid_definition'][i]
-        config.lipids[i] = resname
-        if resname in config.lipid_residues:
-            resname_i = config.lipid_residues.index(resname)
-            del config.lipid_residues[resname_i]
+    if 'lipid_definition' in settings:    
+	for i in settings['lipid_definition']:
+	    resname = settings['lipid_definition'][i]
+	    config.lipids[i] = resname
+	    if resname in config.lipid_residues:
+	        resname_i = config.lipid_residues.index(resname)
+	        del config.lipid_residues[resname_i]
     return
 
 
