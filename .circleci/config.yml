@@ -15,7 +15,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-	    pipenv install $delphi4py_whl
+            pipenv install $delphi4py_whl
             pipenv install pytest
             pipenv lock
 
