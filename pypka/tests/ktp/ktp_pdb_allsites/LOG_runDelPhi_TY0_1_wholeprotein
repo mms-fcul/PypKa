@@ -1,60 +1,3 @@
- assigned negative charge         :   -1.55999994    
- centred at (gu) :   43.9435921       44.4861565       40.0112839    
-    
- number of dielectric boundary points        1458
- no. dielectric boundary points in salt =            0
- no. charged boundary grid points =           0
- iepsmp to db, and charging done at  0.948839009    
- number of grid points assigned charge          80
-  
-   setting boundary conditions
-  
-  some initial phi values:           41          81
-  midg,midg,1; midg,midg,igrid 
- -0.253355116     -0.215779766    
-  midg,1,midg; midg,igrid,midg 
- -0.179368481     -0.351257920    
-  1,midg,midg; igrid,midg,midg 
- -0.199405760     -0.310894102    
-  
-gauss-seidel spectral radius is        0.9979771972
-  
- estimated iterations to convergence         177
-   
- setup time was (sec)   0.956341982    
-   
- isolvarch           0
- now iterating at: 15:41:44
-  
-  
-   rms-change     max change       #iterations
-   1.35609412       195.030090      at          10  iterations
-  0.542016983       35.0692444      at          20  iterations
-  0.215385199       11.6184807      at          30  iterations
-   8.10610950E-02   6.22952080      at          40  iterations
-   3.22671458E-02   1.85407579      at          50  iterations
-   1.29511235E-02  0.714649200      at          60  iterations
-   4.95899143E-03  0.260528564      at          70  iterations
-   2.06612190E-03  0.116531372      at          80  iterations
-   7.65781268E-04   3.88488770E-02  at          90  iterations
-   3.26057867E-04   1.53007507E-02  at         100  iterations
-   1.24387705E-04   6.35528564E-03  at         110  iterations
- finished qdiffx linear iterations
- at                       : 15:41:44
- total time elapsed so far:    1.00588799    
- # loops                  :          110
- mean,max change (kT/e)   :    1.24387705E-04   6.35528564E-03
- self-reaction field energy :      -89.6198654      kt
- total s.charge,no epsin carrying :    0.4875
- corrected reaction field energy:   -92.505318074597611       kt
- total reaction field energy :     -182.12518349207807       kt
- coulombic energy :                 27.297501431543743       kt
- All required energy terms but grid and self_react.:  -65.2078171     kt
- energy calculations done at   1.00597000    
-   
- total cpu time was (sec)    6.75969720E-02
-   
- DelPhi exited at 15:41:44
    
  loading variables time was (sec)    1.40129846E-45
    
@@ -73,7 +16,7 @@ gauss-seidel spectral radius is        0.9979771972
  sites -> aqp
  natom ->                    43
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   1.00784004    
+ time to read in and/or assign rad/chrg=   1.09445596    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.1009998    
@@ -124,7 +67,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules           11
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    1.00865602    
+ start vw surface at    1.09445596    
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
@@ -133,30 +76,30 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   1.00000000       3.94500017       2.00000000     T
  setout method 1 T F
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    1.00884295    
+ fill in re-entrant regions at    1.09445596    
  here in vwtms	
  boundary points facing continuum solvent=          260
  total number of boundary points before elab.=          260
  radpmax,radprb    1.39999998       1.39999998       1.39999998    
  # of vertices =          384  # of edges =          372
  # of atom-atom pairs =          320
- time to find all pairs =    5.40000001E-05
+ time to find all pairs =    0.00000000    
  # pairs analyzed (atom-atom and atom-object)=          320
  # exposed pairs (atom-atom and atom-object)=           86
  no. arc points  =         3025
  no. surface atoms  =           32  nbur =           11
- mkacc time =    6.92999980E-04
+ mkacc time =    0.00000000    
  grid for indexing accessible points =    1.39999998    
  bgp added m=          16  bgp removed  mr =          25
  bgp added m=           0  bgp removed  mr =           0
- time to grow re-entrant surface =    5.09999983E-04
+ time to grow re-entrant surface =    0.00000000    
  no. cavity mid-points inaccessible to solvent =            0
  after surface elaboration ibnum=          251
      and               ibnumsurf=          251
  scaling boundary grid points
- time taken =    5.95999998E-04
+ time taken =    3.95999989E-04
            0  points had to be assigned by global comparison
- time to turn everything in is   1.01095998    
+ time to turn everything in is   1.09486198    
    
  number of atom coordinates read  :           43
  total number of assigned charges    :           11
@@ -170,7 +113,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =          37
  ## out of them,           6  charged points are in solution ## Increased resolution is needed
- iepsmp to db, and charging done at   1.01360202    
+ iepsmp to db, and charging done at   1.09678805    
  number of grid points assigned charge          66
   
    setting boundary conditions
@@ -178,3 +121,42 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   some initial phi values:           41          81
   midg,midg,1; midg,midg,igrid 
   -8.51717778E-05   1.38858566E-04
+  midg,1,midg; midg,igrid,midg 
+   1.26482919E-05   4.84704506E-05
+  1,midg,midg; igrid,midg,midg 
+   7.16061331E-05  -1.12356851E-04
+  
+gauss-seidel spectral radius is        0.9949073792
+  
+ estimated iterations to convergence         113
+   
+ setup time was (sec)    1.10554004    
+   
+ isolvarch           0
+ now iterating at: 15:56:04
+  
+  
+   rms-change     max change       #iterations
+   9.85648930E-02   21.3791485      at          10  iterations
+   1.97034627E-02   5.43189335      at          20  iterations
+   3.45068425E-03  0.630912662      at          30  iterations
+   9.39953490E-04  0.204637527      at          40  iterations
+   1.79954019E-04   3.65753174E-02  at          50  iterations
+   2.99135572E-05   4.80453670E-03  at          60  iterations
+ finished qdiffx linear iterations
+ at                       : 15:56:04
+ total time elapsed so far:    1.13311899    
+ # loops                  :           60
+ mean,max change (kT/e)   :    2.99135572E-05   4.80453670E-03
+ self-reaction field energy :      -23450.0410      kt
+ total s.charge,no epsin carrying :    0.0237
+ corrected reaction field energy:   -18.741464623454721       kt
+ total reaction field energy :     -23468.782480248454       kt
+ coulombic energy :                -103.74914634410126       kt
+ All required energy terms but grid and self_react.:  -122.490608     kt
+ energy calculations done at   1.13325095    
+  -9.19069862E-05  -9.19069862E-05          46          46           1
+   
+ total cpu time was (sec)    3.99380922E-02
+   
+ DelPhi exited at 15:56:04
