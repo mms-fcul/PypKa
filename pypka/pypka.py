@@ -30,7 +30,6 @@ __status__ = "Development"
 def getTitrableSites(pdb):
     config.f_in = pdb
     config.params['ffID'] = 'G54A7'
-    config.script_dir = os.path.dirname(__file__)
 
     tit_mol = Molecule()
 

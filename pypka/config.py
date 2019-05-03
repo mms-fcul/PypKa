@@ -4,7 +4,6 @@ import os
 tit_mole = None
 sites    = {}
 pid      = None
-script_dir = None
 debug    = None
 
 input_conversion = {'grid_fill': 'perfil',
@@ -59,9 +58,11 @@ params = {'perfil': 0.9,
 # TODO: include in dependencies
 # in dependencies there is a pdb2pqr that has a important dat folder
 fileDir = os.path.dirname(os.path.abspath(__file__))
+script_dir = fileDir
 pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(fileDir)
 userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(fileDir)
 usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(fileDir)
+
 
 # Input Files
 f_in  = None
