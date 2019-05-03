@@ -22,6 +22,8 @@ jobs:
             sudo apt update
             sudo apt install libgfortran4
             pip install --user $delphi4py_whl
+	    touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/readFiles/__init__.py
+	    touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/rundelphi/__init__.py
             pipenv install pytest
             pipenv lock
 
