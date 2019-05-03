@@ -1,4 +1,5 @@
 from copy import copy
+import os
 
 tit_mole = None
 sites    = {}
@@ -57,10 +58,10 @@ params = {'perfil': 0.9,
 # Paths
 # TODO: include in dependencies
 # in dependencies there is a pdb2pqr that has a important dat folder
-pdb2pqr = "/home/pedror/Programs/pdb2pqr/pdb2pqr.py" 
-delphi4py = "./delphi4py.py"
-userff = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.DAT"
-usernames = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.names"
+fileDir = os.path.dirname(os.path.abspath(__file__))
+pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(fileDir)
+userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(fileDir)
+usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(fileDir)
 
 # Input Files
 f_in  = None

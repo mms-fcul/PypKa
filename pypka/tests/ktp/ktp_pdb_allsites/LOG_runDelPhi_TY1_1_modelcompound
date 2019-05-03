@@ -1,8 +1,8 @@
- energy calculations done at   1.86521900    
+ energy calculations done at   1.32223296    
    
- total cpu time was (sec)   0.154018044    
+ total cpu time was (sec)    7.83020258E-02
    
- DelPhi exited at 15:29:04
+ DelPhi exited at 15:41:44
    
  loading variables time was (sec)    1.40129846E-45
    
@@ -21,7 +21,7 @@
  sites -> aqp
  natom ->                    14
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   1.86694002    
+ time to read in and/or assign rad/chrg=   1.32223701    
  object number :              1 ,  is a molecule
  cmin   19.3099995       22.7999992       6.64000034    
  cmax   25.7200012       30.4099998       12.4799995    
@@ -72,7 +72,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules           11
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    1.86819804    
+ start vw surface at    1.32223701    
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   4.00000000       1.75999999       2.00000000    
@@ -81,7 +81,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   4.00000000       15.0400000       2.00000000     T
  setout method 1 T T
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    1.87216794    
+ fill in re-entrant regions at    1.32252705    
  here in vwtms	
  boundary points facing continuum solvent=         1524
  total number of boundary points before elab.=         1524

@@ -7,7 +7,7 @@
  number of dielectric boundary points        3979
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =           0
- iepsmp to db, and charging done at   2.12133002    
+ iepsmp to db, and charging done at   1.45606899    
  number of grid points assigned charge          24
   
    setting boundary conditions
@@ -32,10 +32,10 @@ gauss-seidel spectral radius is        0.9978560805
   
  estimated iterations to convergence         172
    
- setup time was (sec)    2.12706900    
+ setup time was (sec)    1.45898294    
    
  isolvarch           0
- now iterating at: 15:29:05
+ now iterating at: 15:41:44
   
   
    rms-change     max change       #iterations
@@ -50,8 +50,8 @@ gauss-seidel spectral radius is        0.9978560805
    7.09436426E-04   1.96495056E-02  at          90  iterations
    2.87567091E-04   8.53872299E-03  at         100  iterations
  finished qdiffx linear iterations
- at                       : 15:29:05
- total time elapsed so far:    2.21585608    
+ at                       : 15:41:44
+ total time elapsed so far:    1.50661099    
  # loops                  :          100
  mean,max change (kT/e)   :    2.87567091E-04   8.53872299E-03
  self-reaction field energy :      -83.7425613      kt
@@ -60,11 +60,11 @@ gauss-seidel spectral radius is        0.9978560805
  total reaction field energy :     -155.91252523052461       kt
  coulombic energy :                -21.345946768706579       kt
  All required energy terms but grid and self_react.:  -93.5159073     kt
- energy calculations done at   2.21611905    
+ energy calculations done at   1.50671506    
    
- total cpu time was (sec)   0.145656109    
+ total cpu time was (sec)    7.82339573E-02
    
- DelPhi exited at 15:29:05
+ DelPhi exited at 15:41:44
    
  loading variables time was (sec)    1.40129846E-45
    
@@ -83,7 +83,7 @@ gauss-seidel spectral radius is        0.9978560805
  sites -> aqp
  natom ->                     7
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   2.21763492    
+ time to read in and/or assign rad/chrg=   1.50786400    
  object number :              1 ,  is a molecule
  cmin   22.1389999       22.0249996       11.7189999    
  cmax   26.4410000       25.7210007       16.1009998    
@@ -134,7 +134,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            3
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    2.21891308    
+ start vw surface at    1.50868797    
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   4.00000000       1.52499998       2.00000000    
@@ -143,30 +143,30 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   4.00000000       14.1000004       2.00000000     T
  setout method 1 T T
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    2.22060204    
+ fill in re-entrant regions at    1.50992095    
  here in vwtms	
  boundary points facing continuum solvent=          660
  total number of boundary points before elab.=          660
  radpmax,radprb    1.39999998       1.39999998       1.39999998    
  # of vertices =          384  # of edges =          372
  # of atom-atom pairs =           14
- time to find all pairs =    4.89999984E-05
+ time to find all pairs =    2.70000000E-05
  # pairs analyzed (atom-atom and atom-object)=           14
  # exposed pairs (atom-atom and atom-object)=            3
  no. arc points  =          323
  no. surface atoms  =            5  nbur =            2
- mkacc time =    7.40000032E-05
+ mkacc time =    5.09999991E-05
  grid for indexing accessible points =    1.39999998    
  bgp added m=          25  bgp removed  mr =          30
  bgp added m=           0  bgp removed  mr =           0
- time to grow re-entrant surface =    1.26599998E-03
+ time to grow re-entrant surface =    8.75000027E-04
  no. cavity mid-points inaccessible to solvent =            0
  after surface elaboration ibnum=          655
      and               ibnumsurf=          655
  scaling boundary grid points
- time taken =    6.25999994E-04
+ time taken =    4.13000002E-04
            0  points had to be assigned by global comparison
- time to turn everything in is   2.22383690    
+ time to turn everything in is   1.51213503    
    
  number of atom coordinates read  :            7
  total number of assigned charges    :            3

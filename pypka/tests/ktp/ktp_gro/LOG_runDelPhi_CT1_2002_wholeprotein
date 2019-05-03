@@ -1,10 +1,10 @@
  coulombic energy :                -72.550932803050685       kt
  All required energy terms but grid and self_react.:  -90.5071487     kt
- energy calculations done at   2.55025792    
+ energy calculations done at   1.82092500    
    
- total cpu time was (sec)    8.46049786E-02
+ total cpu time was (sec)    6.62150383E-02
    
- DelPhi exited at 15:28:49
+ DelPhi exited at 15:41:38
    
  loading variables time was (sec)    1.40129846E-45
    
@@ -23,7 +23,7 @@
  sites -> aqp
  natom ->                    43
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   2.55371404    
+ time to read in and/or assign rad/chrg=   1.82092702    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.2609997    
@@ -74,7 +74,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            4
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    2.55498600    
+ start vw surface at    1.82092702    
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
@@ -83,4 +83,4 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   1.00000000       3.94500017       2.00000000     T
  setout method 1 T F
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    2.55524898    
+ fill in re-entrant regions at    1.82092702    

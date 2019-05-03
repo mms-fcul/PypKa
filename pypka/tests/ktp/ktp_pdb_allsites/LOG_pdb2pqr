@@ -52,7 +52,7 @@ Optimization progress:
 	0% |                    | 100%
 	    ********************
 Applying the forcefield to the protein...Done.
-Total time taken: 0.44 seconds
+Total time taken: 0.20 seconds
 
 {'pbc_dimensions': '0', 'epsin': '2', 'scaleP': '1.0', 'temp': '310', 'nlit': '300', 'ncpus': '1', 'clean_pdb': 'yes', 'titration_output': 'protonation.out', 'output': 'pKas.out', 'convergence': '0.01', 'sites_A': 'all', 'gsizeP': '81', 'ionicstr': '0.1', 'lipid_definition': {}, 'grid_fill': '0.8 # FUTURE VERSION', 'pH': '0, 15', 'logfile': 'LOGFILE', 'cutoff': '-1', 'scaleM': '4.0', 'structure': 'ktp.pdb'}
 {'couple_min': 2.0, 'cutoff': 2.5, 'epsin': 20.0, 'gsizeM': 81, 'pHstep': 0.25, 'ncpus': 1, 'pHmax': 10, 'eqsteps': 1000, 'precision': 'single', 'nonit': 0, 'seed': 1234567, 'bndcon': 4, 'maxc': 0.01, 'gsizeP': 81, 'pbc_dim': 0, 'ffID': 'G54A7', 'nlit': 500, 'slice': 0.05, 'scaleP': 1, 'temp': 310.0, 'epssol': 80.0, 'pby': False, 'pbx': False, 'relpar': 0.75, 'pHmin': 0, 'perfil': 0.9, 'ionicstr': 0.1, 'scaleM': 4, 'relfac': 0.75, 'mcsteps': 200000, 'clean_pdb': True}

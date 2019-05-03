@@ -1,5 +1,5 @@
- at                       : 15:29:16
- total time elapsed so far:    1.85310996    
+ at                       : 15:41:49
+ total time elapsed so far:    1.18142796    
  # loops                  :          110
  mean,max change (kT/e)   :    1.04573970E-04   5.39723039E-03
  self-reaction field energy :      -23450.0410      kt
@@ -8,11 +8,11 @@
  total reaction field energy :     -23472.665318062678       kt
  coulombic energy :                -103.69893856232888       kt
  All required energy terms but grid and self_react.:  -126.323242     kt
- energy calculations done at   1.85333097    
+ energy calculations done at   1.18152499    
    
- total cpu time was (sec)   0.125714898    
+ total cpu time was (sec)    6.87289238E-02
    
- DelPhi exited at 15:29:16
+ DelPhi exited at 15:41:49
    
  loading variables time was (sec)    1.40129846E-45
    
@@ -31,7 +31,7 @@
  sites -> aqp
  natom ->                    43
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   1.85656297    
+ time to read in and/or assign rad/chrg=   1.18347299    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.2609997    
@@ -82,5 +82,5 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules           11
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    1.85781801    
+ start vw surface at    1.18432903    
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288

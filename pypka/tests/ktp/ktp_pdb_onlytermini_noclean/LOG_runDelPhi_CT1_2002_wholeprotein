@@ -3,13 +3,13 @@
  total reaction field energy :     -23443.317546752682       kt
  coulombic energy :                -72.550932803050685       kt
  All required energy terms but grid and self_react.:  -90.5071487     kt
- energy calculations done at   1.60423803    
+ energy calculations done at   1.25102997    
    
- total cpu time was (sec)    9.03000832E-02
+ total cpu time was (sec)    6.65719509E-02
    
- DelPhi exited at 16:11:16
+ DelPhi exited at 15:41:56
    
- loading variables time was (sec)    5093992.00    
+ loading variables time was (sec)    1.40129846E-45
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -26,7 +26,7 @@
  sites -> aqp
  natom ->                    43
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   1.60875106    
+ time to read in and/or assign rad/chrg=   1.25103199    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.2609997    
@@ -77,7 +77,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            4
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    1.61100805    
+ start vw surface at    1.25103199    
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
