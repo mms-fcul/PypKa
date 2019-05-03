@@ -61,7 +61,7 @@ class TestCLI(object):
         checkOutput("ktp/ktp_pdb_allsites_noclean/pKas.out", results_lines)
 
     def test_cli_ktp_pdb_onlytermini(self):
-        erase_old('ktp_pdb_onlytermini')
+        erase_old('ktp/ktp_pdb_onlytermini')
         results = """
 1 NTR 7.904296875
 2 CTR 3.29493141174
