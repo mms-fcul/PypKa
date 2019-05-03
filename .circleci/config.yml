@@ -9,7 +9,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "Pipfile.lock" }}
+            - v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
             - v1-dependencies-
 
       - run:
@@ -21,7 +21,7 @@ jobs:
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
             sudo apt install libgfortran4
-            pipenv install $delphi4py_whl
+            pip install --user $delphi4py_whl
             pipenv install pytest
             pipenv lock
 
@@ -31,7 +31,7 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
             - "/home/circleci/.local/share/virtualenvs/"
-          key: v1-dependencies-{{ checksum "/home/circleci/projectPipfile.lock" }}
+          key: v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
 
       - run:
           name: run tests
