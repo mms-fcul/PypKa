@@ -30,7 +30,7 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
-	    - "/home/circleci/.local/share/virtualenvs/"
+            - "/home/circleci/.local/share/virtualenvs/"
           key: v1-dependencies-{{ checksum "/home/circleci/projectPipfile.lock" }}
 
       - run:
