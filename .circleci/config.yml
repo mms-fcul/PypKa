@@ -15,8 +15,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            wget -O ./delphi4py-1.0.1-py2-none-any.whl $delphi4py_whl
-            pipenv install ./delphi4py-1.0.1-py2-none-any.whl pytest
+	    pipenv install $delphi4py_whl
+            pipenv install pytest
             pipenv lock
 
       - save_cache:
