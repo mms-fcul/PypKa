@@ -1,7 +1,28 @@
-{'pbc_dimensions': '0', 'epsin': '2', 'scaleP': '1.0', 'temp': '310', 'nlit': '500', 'pHstep': '0.2', 'ncpus': '1', 'titration_output': 'protonation.out', 'output': 'pKas.out', 'convergence': '0.01', 'sites_A': '1N, 1, 2C', 'gsizeP': '81', 'ionicstr': '0.1', 'lipid_definition': {}, 'grid_fill': '0.8 # FUTURE VERSION', 'pH': '-5,15', 'logfile': 'LOGFILE', 'cutoff': '-1', 'scaleM': '4.0', 'structure': 'TMP.gro'}
-{'couple_min': 2.0, 'cutoff': 2.5, 'epsin': 20.0, 'gsizeM': 81, 'pHstep': 0.25, 'ncpus': 1, 'pHmax': 10, 'eqsteps': 1000, 'precision': 'single', 'nonit': 0, 'seed': 1234567, 'bndcon': 4, 'maxc': 0.01, 'gsizeP': 81, 'pbc_dim': 0, 'ffID': 'G54A7', 'nlit': 500, 'slice': 0.05, 'scaleP': 1, 'temp': 310.0, 'epssol': 80.0, 'pby': False, 'pbx': False, 'relpar': 0.75, 'pHmin': 0, 'perfil': 0.9, 'ionicstr': 0.1, 'scaleM': 4, 'relfac': 0.75, 'mcsteps': 200000, 'clean_pdb': True}
-{'A': ['1N', '1', '2C']}
-{'couple_min': 2.0, 'cutoff': -1.0, 'epsin': 2.0, 'gsizeM': 81, 'pHstep': 0.2, 'ncpus': 1, 'pHmax': 15.0, 'eqsteps': 1000, 'precision': 'single', 'nonit': 0, 'seed': 1234567, 'bndcon': 4, 'maxc': 0.01, 'gsizeP': 81, 'pbc_dim': 0, 'ffID': 'G54A7', 'nlit': 500.0, 'slice': 0.05, 'scaleP': 1.0, 'temp': 310.0, 'epssol': 80.0, 'pby': False, 'pbx': False, 'relpar': 0.75, 'pHmin': -5.0, 'perfil': 0.9, 'ionicstr': 0.1, 'scaleM': 4.0, 'relfac': 0.75, 'mcsteps': 200000, 'clean_pdb': True}
-{'A': ['1N', '1', '2C']}
-Start Preprocessing
-gro True 1
+ realsiz ==            4
+ atom radii read from file
+ /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+  
+ !siz file modified by VT 2013/03/15                         
+ !Hydrogen atoms have 0.001 radii because                    
+ ! DelPhi complains if H has charge and no                   
+ ! radii. It does not change final results                   
+ # of radius parameter records:        1091
+  
+ atomic charges read from file
+ /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+  
+ !crg file modified by VT 2014/03/25                         
+ !aminoacids from 54a7                                       
+ # of charge parameter records:        1126
+ assigning charges and radii...
+  
+ opening formatted file:delphi_in_stmod.pdb
+ Delphi Format Number =            0
+ You are not reading from an objectfile!
+ Assuming having only molecules, and one medium
+ You are not reading from an objectfile! assuming       having only molecules, and one dielectric medium
+ number of atoms read in =           43
+ in setrc, iatrad= F
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ cmin   18.9689999       16.4569988       6.64000034    
+ cmax   27.5730000       30.4099998       16.2609997    

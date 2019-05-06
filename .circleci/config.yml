@@ -39,4 +39,4 @@ jobs:
           command: |
             set -e
             cd pypka/tests/
-            python /home/circleci/.local/lib/python2.7/site-packages/pytest.py test.py
+            python /home/circleci/.local/lib/python2.7/site-packages/pytest.py -s test.py
