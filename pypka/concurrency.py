@@ -69,7 +69,7 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
         results.append(result)
         # Easier debug of the loop but fails afterwards
         #targetFunction(job)
-
+        
     pool.close()
     pool.join()
     #print 'exit'

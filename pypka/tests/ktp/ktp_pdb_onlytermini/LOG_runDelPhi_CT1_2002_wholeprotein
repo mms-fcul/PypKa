@@ -1,5 +1,5 @@
    
- loading variables time was (sec)    1.40129846E-45
+ loading variables time was (sec)    58832.5625    
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -11,12 +11,19 @@
  ibctyp    ->            2                    4
  res2      ->    0.00000000       1.0000000000000000E-002
  nlit      ->            0                  300
- py_acent      -> (   0.00000000       0.00000000       0.00000000     ) (   24.030000000000001        24.125000000000000        13.695000000000000      )
+ nnit      ->            0                    0
+ py_relfac ->   0.997500002       0.0000000000000000     
+ py_relpar ->    1.00000000      0.75000000000000000     
+ py_pbx    ->  F F
+ py_pby    ->  F F
+ py_acent  > (   0.00000000       0.00000000       0.00000000     ) (   24.030000000000001        24.125000000000000        13.695000000000000      )
  energy      -> sc
  sites -> aqp
  natom ->                    42
+ nmedia ->                     1
+ nobject ->                     1
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   1.65073895    
+ time to read in and/or assign rad/chrg=   0.00000000    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.1009998    
@@ -53,7 +60,7 @@
  convergence by norm change :   0.00000000      kt
  # of non-linear iterations :           0
  non-linear energy calculat.: F
- manual relaxation parameter : F
+ manual relaxation parameter : T
  ionic direct energy contribution: F
  concentration map output   : F
  spherical charge distbn.   : F
@@ -66,9 +73,9 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   potential listings turned off
   
  number of charges coming from molecules            4
- radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    1.65193605    
- radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
+ radmax2 ->   1.00000000       4.58350715E-41              NaN  1210523716
+ start vw surface at    0.00000000    
+ radmax2 ->   1.00000000       4.58350715E-41              NaN  1210523716
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
  radmax2 ->   1.00000000       3.94500017       2.00000000     T   0.00000000       2.00000000    
@@ -76,30 +83,30 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   1.00000000       3.94500017       2.00000000     T
  setout method 1 T F
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    1.65211105    
+ fill in re-entrant regions at    0.00000000    
  here in vwtms	
  boundary points facing continuum solvent=          247
  total number of boundary points before elab.=          247
  radpmax,radprb    1.39999998       1.39999998       1.39999998    
  # of vertices =          384  # of edges =          372
  # of atom-atom pairs =          314
- time to find all pairs =    6.60000005E-05
+ time to find all pairs =    0.00000000    
  # pairs analyzed (atom-atom and atom-object)=          314
  # exposed pairs (atom-atom and atom-object)=           86
  no. arc points  =         3025
  no. surface atoms  =           32  nbur =           10
- mkacc time =    6.17999991E-04
+ mkacc time =    0.00000000    
  grid for indexing accessible points =    1.39999998    
  bgp added m=          16  bgp removed  mr =          23
  bgp added m=           0  bgp removed  mr =           1
- time to grow re-entrant surface =    4.53999994E-04
+ time to grow re-entrant surface =    0.00000000    
  no. cavity mid-points inaccessible to solvent =            0
  after surface elaboration ibnum=          239
      and               ibnumsurf=          239
  scaling boundary grid points
- time taken =    5.01999981E-04
+ time taken =    1.01300003E-03
            0  points had to be assigned by global comparison
- time to turn everything in is   1.65395105    
+ time to turn everything in is   1.03699998E-03
    
  number of atom coordinates read  :           42
  total number of assigned charges    :            4
@@ -113,7 +120,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =          10
  ## out of them,           2  charged points are in solution ## Increased resolution is needed
- iepsmp to db, and charging done at   1.65661895    
+ iepsmp to db, and charging done at   8.55400041E-03
  number of grid points assigned charge          25
   
    setting boundary conditions
@@ -130,10 +137,10 @@ gauss-seidel spectral radius is        0.9949071407
   
  estimated iterations to convergence         113
    
- setup time was (sec)    1.66230404    
+ setup time was (sec)    1.38429999E-02
    
  isolvarch           0
- now iterating at: 09:45:15
+ now iterating at: 16:50:58
   
   
    rms-change     max change       #iterations
@@ -144,8 +151,8 @@ gauss-seidel spectral radius is        0.9949071407
    1.60660682E-04   3.61618400E-02  at          50  iterations
    3.79756711E-05   8.09911638E-03  at          60  iterations
  finished qdiffx linear iterations
- at                       : 09:45:15
- total time elapsed so far:    1.69907999    
+ at                       : 16:50:58
+ total time elapsed so far:    9.70819965E-02
  # loops                  :           60
  mean,max change (kT/e)   :    3.79756711E-05   8.09911638E-03
  self-reaction field energy :      -23425.3613      kt
@@ -154,9 +161,9 @@ gauss-seidel spectral radius is        0.9949071407
  total reaction field energy :     -23438.666071327782       kt
  coulombic energy :                -75.558535819132217       kt
  All required energy terms but grid and self_react.:  -88.8632812     kt
- energy calculations done at   1.69927800    
+ energy calculations done at   9.74289998E-02
    9.52504342E-05   9.52504342E-05          46          46           1
    
- total cpu time was (sec)    5.01189232E-02
+ total cpu time was (sec)    9.91299972E-02
    
- DelPhi exited at 09:45:15
+ DelPhi exited at 16:50:58

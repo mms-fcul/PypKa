@@ -8,6 +8,10 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
 # Dependencies 
   delphi4py #1.0.0
+  libgfortran4
+  gawk
+  pytest
+  numpy
 
 
 # License

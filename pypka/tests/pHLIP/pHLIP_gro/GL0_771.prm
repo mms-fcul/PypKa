@@ -1,0 +1,1682 @@
+
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 17225
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 20567
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 23994
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.001
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 23994
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.001
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.001
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14328
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.001
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [22.025, 22.025, 62.215]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [22.025, 22.025, 62.215]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08626560726
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.05, 44.05, 107.465]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 14221
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0.2
+        relpar = 0.75
+        nonit  = 5.0
+        fcrg   = False
+        pbx    = True
+        pby    = True
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
+        DelPhi Parameters
+
+        igrid       = 91
+        scale       = 4.08954281183
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [44.0147, 44.0147, 107.376]
+        natoms = 9
+        in_crg = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 53
+        in_siz_len = 53
+        in_pdb_len = 19
+
+        relfac = 0
+        relpar = 0
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        

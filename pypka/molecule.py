@@ -379,11 +379,10 @@ class Molecule:
                     if nline == maxnlines:
                         prev_resnumb = copy(resnumb)
                         resnumb = 'None'
-
+                    
                     if prev_resname in config.TITRABLERESIDUES or \
                        (prev_resnumb == self._NTR or resnumb == self._NTR) or \
                        (prev_resnumb == self._CTR or resnumb == self._CTR):
-
                         if prev_resnumb == self._NTR and resnumb != self._NTR:
                             prev_resname = correctResName(prev_resname)
 
@@ -437,7 +436,6 @@ class Molecule:
                                 else:
                                     warning(prev_resnumb, prev_resname, cur_atoms)
 
-
                         # Dealing with the previous residue
                         elif prev_resnumb:
                             if sites and prev_resnumb in sites:
@@ -445,7 +443,7 @@ class Molecule:
                                 res_atoms = copy(cur_atoms)
                                 integrity_site = self.check_integrity(prev_resname,
                                                                       cur_atoms)
-
+                                
                                 if integrity_site:
                                     makeSite(prev_resnumb, prev_resname)
                                 else:
@@ -539,6 +537,7 @@ class Molecule:
                     res_atoms.remove(aname)
                 elif not nter and not cter:
                     integrity = False
+
             if config.debug: 
                 print 'i', integrity
 
@@ -679,7 +678,7 @@ MODEL        1
             self.box = [float(i) for i in last_line.split()[:3]]
 
             if config.params['pbc_dim'] == 2:
-                scaleP = (config.params['gsizeP'] - 1) / (self.box[0] * 10)
+                scaleP = (config.params['gsize'] - 1) / (self.box[0] * 10)
                 scaleM = int(4 / scaleP + 0.5) * scaleP
 
                 config.params['scaleP'] = scaleP
@@ -698,7 +697,6 @@ MODEL        1
                     x, y, z = x*10, y*10, z *10
 
                     #print resnumb, resname, aname, anumb, aposition, x, y, z
-                    #print NTR_atoms, CTR_atoms, aname
 
                     if resnumb == self._NTR and aname in self._NTR_atoms:
                         resname = 'NTR'
@@ -729,11 +727,10 @@ MODEL        1
 
                         # add atom to corresponding site
                         self._sites[resnumb].addAtom(aname, anumb)
-                        #print resnumb, aname, anumb
                         if resnumb in site_positions:
-                            site_positions[resnumb].append((x, y, z))                            
+                            site_positions[resnumb].append((x, y, z))
                             if aname[0] == 'H':
-                                site_Hs[resnumb].append((x, y, z))                            
+                                site_Hs[resnumb].append((x, y, z))
                         else:
                             site_positions[resnumb] = [(x, y, z)]
                             if aname[0] == 'H':
@@ -786,6 +783,11 @@ MODEL        1
                     self._sites[site].addCenter(focus_center)
                 hx, hy, hz = 0, 0, 0
                 nHs = len(site_Hs[site])
+                if nHs == 0:
+                    sitename = self._sites[site].getName()
+                    raise Exception('Site {1}{0} appears '
+                                    'to have no Hydrogen atoms'.format(site,
+                                                                       sitename))
                 for h in site_Hs[site]:
                     hx += h[0]
                     hy += h[1]
@@ -808,6 +810,12 @@ MODEL        1
                 for site in site_positions:
                     if site in self._sites.keys():
                         text += '{0} {1}'.format(site, self._sites[site]._centerH) + '\n'
+                f_new.write(text)
+            with open('cent_original', 'w') as f_new:
+                text = ''
+                for site in site_positions:
+                    if site in self._sites.keys():
+                        text += '{0} {1}'.format(site, self._sites[site]._center_original) + '\n'
                 f_new.write(text)
 
     def readCenters(self, f_cent, boxsize=False):
@@ -1102,8 +1110,6 @@ MODEL        1
 
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
-
-        print nsites, pHsteps, pHmin, pHmax, dpH
         pKas, pmeans_raw = mc.MCrun(nsites, self._npossible_states,
                                     self._possible_states_g, self._possible_states_occ,
                                     self._interactions, self._interactions_look,
@@ -1153,7 +1159,10 @@ MODEL        1
                 sitenumb = site.getResNumber()
                 pmean = pmeans_raw[pHstep][c]
                 pmeans[pH][sitenumb] = pmean
-                text_prots += '\t{0:7.4f}'.format(pmean)
+                if pmean != 100.0:
+                    text_prots += '\t{0:7.4f}'.format(pmean)
+                else:
+                    text_prots += '\t-'
 
         if config.f_prot_out:            
             with open(config.f_prot_out, 'w') as f:

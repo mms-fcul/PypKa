@@ -1,3 +1,4 @@
+
 from copy import copy
 import os
 
@@ -21,8 +22,7 @@ total_jobs = None # to be redeclared in concurrency
 
 # DelPhi related
 params = {'perfil': 0.9,
-          'gsizeP': 81,
-          'gsizeM': 81,
+          'gsize': 81,
           'scaleP': 1,
           'scaleM': 4,
           'precision': 'single',

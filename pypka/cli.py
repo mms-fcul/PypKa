@@ -73,7 +73,7 @@ def inputParametersFilter(settings):
             log.requiredParameterError(param)
 
     # Check parameter conditions: parameter is integer
-    integer_params = ('gsizeP', 'gsizeM', 'seed', 'ncpus')
+    integer_params = ('gsize', 'seed', 'ncpus')
     for param in integer_params:
         if param in param_names:
             try:
@@ -98,8 +98,8 @@ def inputParametersFilter(settings):
 
     # Check parameter conditions: parameter > 0
     # These parameters have already been checked for type int or float
-    great_params = ('scaleP', 'scaleM', 'convergence', 'pHstep', 'gsizeP',
-                    'gsizeM', 'ncpus', 'temp', 'grid_fill', 'pH_step')
+    great_params = ('scaleP', 'scaleM', 'convergence', 'pHstep', 'gsize',
+                    'ncpus', 'temp', 'grid_fill', 'pH_step')
     for param in great_params:
         if param in param_names:
             try:

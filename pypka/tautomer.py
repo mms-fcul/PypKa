@@ -3,6 +3,7 @@ import time
 from copy import copy
 from formats import new_pdb_line
 import log
+import decimal
 
 class Tautomer:
     """Tautomers share the same site and atoms
@@ -130,6 +131,9 @@ class Tautomer:
             offset_y = half_box_xy - site_center[1]
             offset_z = box[2] * 10 # irrelevant, only for debug
 
+            box_x = box[0] * 10
+            box_y = box[1] * 10
+
         pdb_text = ''
         crg = '!crg file created by gen_files.awk\n'\
               'atom__resnumbc_charge_\n'
@@ -144,19 +148,32 @@ class Tautomer:
             z = float(p_atpos[atom_position][2])
             pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z)
 
-            #TODO: quick fix, should be being done only once per site
-            if config.params['pbc_dim'] == 2:
+            #TODO: quick fix, should be done only once per site
+            if config.params['pbc_dim'] == 2:                
                 p_atpos[atom_position][0] += offset_x
                 p_atpos[atom_position][1] += offset_y
                 p_atpos[atom_position][2] += offset_z
+                
                 if p_atpos[atom_position][0] < 0:
-                    p_atpos[atom_position][0] += box[0] * 10
+                    p_atpos[atom_position][0] += box_x
+                elif p_atpos[atom_position][0] >= box_x:
+                    p_atpos[atom_position][0] -= box_x
+                
                 if p_atpos[atom_position][1] < 0:
-                    p_atpos[atom_position][1] += box[1] * 10
+                    p_atpos[atom_position][1] += box_y
+                elif p_atpos[atom_position][1] >= box_y:
+                    p_atpos[atom_position][1] -= box_y
 
-                p_atpos[atom_position][0] = round(p_atpos[atom_position][0], 2)
-                p_atpos[atom_position][1] = round(p_atpos[atom_position][1], 2)
-                p_atpos[atom_position][2] = round(p_atpos[atom_position][2], 2)
+                # Comment 15 May 2019
+                # No rounding is better, however, pypka calculations
+                # are no longer comparable to delphiT ones due to this #noregrets
+                #rounding_precision = decimal.Decimal('0.01')
+                #x_dec = decimal.Decimal(p_atpos[atom_position][0])
+                #y_dec = decimal.Decimal(p_atpos[atom_position][1])
+                #z_dec = decimal.Decimal(p_atpos[atom_position][2])
+                #p_atpos[atom_position][0] = float(x_dec.quantize(rounding_precision))
+                #p_atpos[atom_position][1] = float(y_dec.quantize(rounding_precision))
+                #p_atpos[atom_position][2] = float(z_dec.quantize(rounding_precision))
 
                 pbc_atoms = self.add_pbc(p_atpos[atom_position][0],
                                          p_atpos[atom_position][1],
@@ -164,6 +181,7 @@ class Tautomer:
                                          p_rad3[atom_position],
                                          p_chrgv4[atom_position],
                                          atinf[atom_position].value)
+                #pbc_atoms = []
                 new_atoms += pbc_atoms
 
             if atom_id in self._site.getAtomNumbersList():
@@ -219,7 +237,7 @@ class Tautomer:
             pdb_text += new_pdb_line(-2, 'P', 'PDB', -2, 0, box[1] * 10, z)
             pdb_text += new_pdb_line(-2, 'P', 'PDB', -2, box[0] * 10, box[1] * 10, z)
 
-            cutoff = box[0] * 10 * 0.1
+            cutoff = box[0] * 10 * config.params['slice']
             pdb_text += new_pdb_line(-3, 'P', 'PDB', -3, cutoff, cutoff , z)
             pdb_text += new_pdb_line(-3, 'P', 'PDB', -3, box[0] * 10 - cutoff, cutoff, z)
             pdb_text += new_pdb_line(-3, 'P', 'PDB', -3, cutoff, box[1] * 10 - cutoff, z)
@@ -258,12 +276,16 @@ class Tautomer:
             offset_y = half_box_xy - site_center[1]
             offset_z = box[2] * 10
 
+            box_x = box[0] * 10
+            box_y = box[1] * 10
+
         pdb_text = ''
         site_atom_position = -1
         for atom_name, atom_id, atom_position in molecule.iterAtoms():
             if atom_id in self._site.getAtomNumbersList():
                 site_atom_position += 1
-                #print site_atom_position, atom_id, atom_position, atom_name, molecule.p_atpos[atom_position][:]
+                #print (site_atom_position, atom_id, atom_position,
+                #       atom_name, molecule.p_atpos[atom_position][:])
                 p_atpos[site_atom_position]  = molecule.p_atpos[atom_position]
                 p_rad3[site_atom_position]   = molecule.p_rad3[atom_position]
                 p_chrgv4[site_atom_position] = self.getCharge(atom_name)
@@ -274,20 +296,16 @@ class Tautomer:
                     p_atpos[site_atom_position][0] += offset_x
                     p_atpos[site_atom_position][1] += offset_y
                     p_atpos[site_atom_position][2] += offset_z
-                    if p_atpos[site_atom_position][0] < 0:
-                        p_atpos[site_atom_position][0] = box[0] * 10 + p_atpos[site_atom_position][0]
-                    if p_atpos[site_atom_position][1] < 0:
-                        p_atpos[site_atom_position][1] = box[1] * 10 + p_atpos[site_atom_position][1]
 
-                    p_atpos[site_atom_position][0] = round(p_atpos[site_atom_position][0], 2)
-                    p_atpos[site_atom_position][1] = round(p_atpos[site_atom_position][1], 2)
-                    p_atpos[site_atom_position][2] = round(p_atpos[site_atom_position][2], 2)
-
-                    #if self._site._res_number == 2769:
-                    #    print half_box_xy, site_center
-                    #    print p_atpos[site_atom_position][0], p_atpos[site_atom_position][1], p_atpos[site_atom_position][2]
-                    #    exit()
-
+                    if p_atpos[atom_position][0] < 0:
+                        p_atpos[atom_position][0] += box_x
+                    elif p_atpos[atom_position][0] >= box_x:
+                        p_atpos[atom_position][0] -= box_x
+                
+                    if p_atpos[atom_position][1] < 0:
+                        p_atpos[atom_position][1] += box_y
+                    elif p_atpos[atom_position][1] >= box_y:
+                        p_atpos[atom_position][1] -= box_y
 
                 p_chrgv4[site_atom_position] = round(p_chrgv4[site_atom_position], 3)
                 p_rad3[site_atom_position] = round(p_rad3[site_atom_position], 3)
@@ -319,37 +337,39 @@ class Tautomer:
 
         return acent
 
-    def add_pbc(self, x, y, z, box, radius, charge, inf, cutoff=5.0):
+    def add_pbc(self, x, y, z, box, radius, charge, inf):
         box = box * 10    
         x_new = x
         y_new = y
         z_new = z
         inf = '-' + inf[1:]
         charge = 0.0
+        cutoff_x = config.params['slice'] * box
+        cutoff_y = config.params['slice'] * box
         new_atoms = []
-        if (x < cutoff):
+        if (x < cutoff_x):
             x_new = box + x
             new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-            if (y < cutoff):
+            if (y < cutoff_y):
                 y_new = box + y
                 new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-            elif (y > box - cutoff):
+            elif (y > box - cutoff_y):
                 y_new = y - box
                 new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-        elif (x > box - cutoff):
+        elif (x > box - cutoff_y):
             x_new = x - box
             new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-            if (y < cutoff):
+            if (y < cutoff_y):
                 y_new = box + y
                 new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-            elif (y > box - cutoff):
+            elif (y > box - cutoff_y):
                 y_new = y - box
                 new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
         x_new = x
-        if (y < cutoff):
+        if (y < cutoff_y):
             y_new = box + y
             new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
-        elif (y > box - cutoff):
+        elif (y > box - cutoff_y):
             y_new = y - box
             new_atoms.append((x_new, y_new, z_new, radius, charge, inf))
 
@@ -403,7 +423,7 @@ class Tautomer:
                                                                self._site._res_number)
         #print 'started', self._name, self._site._res_number, 'modelcompound'
         delphimol.runDelPhi(scale=config.params['scaleM'],
-                            nonit=0, nlit=config.params['nlit'], relpar=0, relfac=0,
+                            nonit=0, nlit=500, relpar=0, relfac=0,
                             acent=acent, pbx=False, pby=False, debug=config.debug,
                             filename=filename,
                             outputfile=logfile)
@@ -474,8 +494,8 @@ class Tautomer:
                                 nonit=0,
                                 nlit=500, acent=acent, nonit_focus=0,
                                 relfac_focus=0.0, relpar_focus=0.0,
-                                relpar=0,
-                                relfac=0,
+                                relpar=config.params['relpar'],
+                                relfac=config.params['relfac'],
                                 pbx=False,
                                 pby=False, pbx_focus=False,
                                 pby_focus=False, debug=config.debug,
@@ -494,7 +514,14 @@ class Tautomer:
             with open('{0}_{1}.frc'.format(self._name, self._site._res_number), 'w') as f:
                 text = ''
                 for atom_name, atom_id, atom_position in molecule.iterAtoms():
-                    text += '{0} {1} {2} {3} {4} {5} {6}\n'.format(atinf[atom_position].value, round(p_chrgv4[atom_position], 3), round(p_rad3[atom_position], 4), round(p_atpos[atom_position][0], 3), round(p_atpos[atom_position][1], 3), round(p_atpos[atom_position][2], 3), self._p_sitpot[atom_position])
+                    text += '{0} {1} {2} '\
+                            '{3} {4} {5} {6}\n'.format(atinf[atom_position].value,
+                                                       round(p_chrgv4[atom_position], 3),
+                                                       round(p_rad3[atom_position], 4),
+                                                       round(p_atpos[atom_position][0], 3),
+                                                       round(p_atpos[atom_position][1], 3),
+                                                       round(p_atpos[atom_position][2], 3),
+                                                       self._p_sitpot[atom_position])
                 f.write(text)
 
 
@@ -527,7 +554,15 @@ class Tautomer:
                     self._e_back += point_energy
                     if config.debug:
                         point_energy = round(molecule.p_chrgv4[atom_position], 3) * round(self._sitpotM[atom_position], 4)
-                        text += '{} {} {} {} {} {} {} {}\n'.format(atom_name, atom_id, point_energy, molecule.p_chrgv4[atom_position], self._sitpotM[atom_position], molecule.p_atpos[atom_position][:], distance, cutoff2)
+                        text += '{} {} {} '\
+                                '{} {} {} {} {}\n'.format(atom_name,
+                                                          atom_id,
+                                                          point_energy,
+                                                          molecule.p_chrgv4[atom_position],
+                                                          self._sitpotM[atom_position],
+                                                          molecule.p_atpos[atom_position][:],
+                                                          distance,
+                                                          cutoff2)
 
         if config.debug:
             with open('{0}_{1}_eback.xvg'.format(self._name, self._site._res_number), 'w') as f_new:
@@ -589,14 +624,6 @@ class Tautomer:
                 potential = round(potential_ref, 4) - round(potential_tau2, 4)
 
                 interaction += charge * potential
-
-                if ((self._name == 'AS0' and tautomer2._name == 'CT0') or \
-                    (tautomer2._name == 'AS0' and self._name == 'CT0')) and \
-                    (self._site._res_number == 18 and tautomer2._site._res_number == 2129 or \
-                     tautomer2._site._res_number == 18 and self._site._res_number == 2129):
-                    print 'exit->->', charge_ref, charge_tau, potential_ref, potential_tau2, atom_id
-
-
 
         site1_chrgtyp = self._site.getRefProtState()
         site2_chrgtyp = tautomer2._site.getRefProtState()

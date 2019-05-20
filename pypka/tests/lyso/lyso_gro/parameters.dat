@@ -1,0 +1,27 @@
+### mandatory ###
+structure       = lyso.gro
+epsin           = 20
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 310
+grid_fill       = 0.8 # FUTURE VERSION
+ncpus           = 16
+pH              = -5,15
+sites_A         = 1N, 18, 35, 48, 66, 129C
+
+### optional ###
+logfile   = LOGFILE
+
+scaleM = 4.14731
+scaleP = 1.3824375138
+gsize = 111
+
+convergence = 0.01
+nlit   = 50
+cutoff = -1
+
+output = pKas.out
+titration_output = protonation.out
+
+pHstep = 0.2
+relfac = 0.2

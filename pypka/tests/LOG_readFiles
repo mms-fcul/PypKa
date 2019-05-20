@@ -6,7 +6,7 @@
  !Hydrogen atoms have 0.001 radii because                    
  ! DelPhi complains if H has charge and no                   
  ! radii. It does not change final results                   
- # of radius parameter records:        1091
+ # of radius parameter records:        1090
   
  atomic charges read from file
  ../G54A7/DataBaseT.crg

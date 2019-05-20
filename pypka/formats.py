@@ -14,6 +14,12 @@ def new_gro_line(aID, aname, resname, resnumb, x, y, z):
     return gro_format.format(resnumb, resname, aname, aID, x, y, z)
 
 
+def correct_longHs(aname):
+    if aname[1] == 'H' and aname[0] in '12' \
+       and aname[3] in '12':
+        return aname[1:3] + aname[3] + aname[0]
+    return aname
+
 def read_pqr_line(line):
     aname   = line[12:16].strip()
     anumb   = int(line[7:11].strip())
@@ -24,6 +30,8 @@ def read_pqr_line(line):
     z       = float(line[46:54])
     charge  = float(line[54:62])
     radius  = float(line[62:70])
+    if len(aname) == 4:
+        aname = correct_longHs(aname)
     return (aname, anumb, resname, resnumb, x, y, z,
             charge, radius)
 
@@ -36,6 +44,8 @@ def read_pdb_line(line):
     x       = float(line[30:38])
     y       = float(line[38:46])
     z       = float(line[46:54])
+    if len(aname) == 4:
+        aname = correct_longHs(aname)
     return (aname, anumb, resname, chain, resnumb, x, y, z)
 
 def read_gro_line(line):

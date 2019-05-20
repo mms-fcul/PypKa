@@ -4,7 +4,7 @@ import subprocess as sb
 import sys
 sys.path.insert(1, '../')
 
-ncpus = 8
+ncpus = 16
 
 def erase_old(directory):
     os.system("rm -f {0}/*out".format(directory))
@@ -35,7 +35,9 @@ class TestCLI(object):
 2 CTR 3.12329292297
         """
         results_lines = results.split('\n')[1:-1]
-        sb.Popen('cd ktp/ktp_gro/; bash run.sh', shell=True).wait()
+        sb.Popen("cd ktp/ktp_gro/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
         checkOutput('ktp/ktp_gro/pKas.out', results_lines)
 
     def test_cli_ktp_pdb_allsites(self):
@@ -46,7 +48,9 @@ class TestCLI(object):
 2 CTR 3.30362272263
         """
         results_lines = results.split('\n')[1:-1]
-        sb.Popen('cd ktp/ktp_pdb_allsites/; bash run.sh', shell=True).wait()
+        sb.Popen("cd ktp/ktp_pdb_allsites/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
         checkOutput("ktp/ktp_pdb_allsites/pKas.out", results_lines)
 
     def test_cli_ktp_pdb_allsites_noclean(self):
@@ -57,7 +61,9 @@ class TestCLI(object):
 2 CTR 3.12329292297
         """
         results_lines = results.split('\n')[1:-1]
-        sb.Popen('cd ktp/ktp_pdb_allsites_noclean/; bash run_noclean.sh', shell=True).wait()
+        sb.Popen("cd ktp/ktp_pdb_allsites_noclean/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run_noclean.sh".format(ncpus), shell=True).wait()
         checkOutput("ktp/ktp_pdb_allsites_noclean/pKas.out", results_lines)
 
     def test_cli_ktp_pdb_onlytermini(self):
@@ -67,7 +73,9 @@ class TestCLI(object):
 2 CTR 3.29493141174
         """
         results_lines = results.split('\n')[1:-1]
-        sb.Popen('cd ktp/ktp_pdb_onlytermini; bash run.sh', shell=True).wait()
+        sb.Popen("cd ktp/ktp_pdb_onlytermini; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
         checkOutput("ktp/ktp_pdb_onlytermini/pKas.out", results_lines)
 
     def test_cli_ktp_pdb_onlytermini_noclean(self):
@@ -77,8 +85,154 @@ class TestCLI(object):
 2 CTR 3.38864183426
         """
         results_lines = results.split('\n')[1:-1]
-        sb.Popen('cd ktp/ktp_pdb_onlytermini_noclean; bash run.sh', shell=True).wait()
+        sb.Popen("cd ktp/ktp_pdb_onlytermini_noclean; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
         checkOutput("ktp/ktp_pdb_onlytermini_noclean/pKas.out", results_lines)
+
+    def test_cli_lyso_gro(self):
+        erase_old("lyso/lyso_gro")
+        results = """
+1 NTR 7.6307053566
+18 ASP 3.14011859894
+35 GLU 4.66893100739
+48 ASP 2.96323084831
+66 ASP 3.25400161743
+129 CTR 2.35687446594
+        """
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd lyso/lyso_gro/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
+        checkOutput('lyso/lyso_gro/pKas.out', results_lines)    
+
+    def test_cli_lyso_pdb_sites(self):
+        erase_old("lyso/lyso_pdb_sites")
+        results = """
+1 NTR 7.50067424774
+18 ASP 3.16751217842
+35 GLU 4.61393737793
+48 ASP 2.26052093506
+66 ASP 1.87332427502
+129 CTR 2.30435156822
+        """
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd lyso/lyso_pdb_sites/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
+        checkOutput('lyso/lyso_pdb_sites/pKas.out', results_lines)    
+
+    def test_cli_lyso_pdb_sites_noclean(self):
+        erase_old("lyso/lyso_pdb_sites_noclean")
+        results = """
+1 NTR 7.39441871643
+18 ASP 2.78099513054
+35 GLU 4.27633476257
+48 ASP 2.65356683731
+66 ASP 3.01925420761
+129 CTR 1.94424641132
+        """
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd lyso/lyso_pdb_sites_noclean/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
+        checkOutput('lyso/lyso_pdb_sites_noclean/pKas.out', results_lines)    
+
+    def test_cli_lyso_pdb_all(self):
+        erase_old("lyso/lyso_pdb_all")
+        results = """
+1 NTR 7.38167333603
+1 LYS 10.3858060837
+7 GLU 2.88164067268
+13 LYS 100.0
+15 HIS 5.86278533936
+18 ASP 2.70004034042
+20 TYR 9.90778064728
+23 TYR 9.38883113861
+24 SER 100.0
+33 LYS 10.5100774765
+35 GLU 4.17639970779
+36 SER 100.0
+40 THR 100.0
+43 THR 100.0
+47 THR 100.0
+48 ASP 1.86326384544
+50 SER 100.0
+51 THR 100.0
+52 ASP 2.14920306206
+53 TYR 10.7430047989
+60 SER 100.0
+66 ASP 2.35083866119
+69 THR 100.0
+72 SER 100.0
+81 SER 100.0
+85 SER 100.0
+86 SER 100.0
+87 ASP 2.05758094788
+89 THR 100.0
+91 SER 100.0
+96 LYS 100.0
+97 LYS 100.0
+100 SER 100.0
+101 ASP 3.31721663475
+116 LYS 10.2513456345
+118 THR 100.0
+119 ASP 2.3969771862
+129 CTR 1.69827020168
+        """
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd lyso/lyso_pdb_all/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
+        checkOutput('lyso/lyso_pdb_all/pKas.out', results_lines)    
+
+    def test_cli_lyso_pdb_all_noclean(self):
+        erase_old("lyso/lyso_pdb_all_noclean")
+        results = """
+1 NTR 7.38167333603
+1 LYS 10.3858060837
+7 GLU 2.88164067268
+13 LYS 100.0
+15 HIS 5.86278533936
+18 ASP 2.70004034042
+20 TYR 9.90778064728
+23 TYR 9.38883113861
+24 SER 100.0
+33 LYS 10.5100774765
+35 GLU 4.17639970779
+36 SER 100.0
+40 THR 100.0
+43 THR 100.0
+47 THR 100.0
+48 ASP 1.86326384544
+50 SER 100.0
+51 THR 100.0
+52 ASP 2.14920306206
+53 TYR 10.7430047989
+60 SER 100.0
+66 ASP 2.35083866119
+69 THR 100.0
+72 SER 100.0
+81 SER 100.0
+85 SER 100.0
+86 SER 100.0
+87 ASP 2.05758094788
+89 THR 100.0
+91 SER 100.0
+96 LYS 100.0
+97 LYS 100.0
+100 SER 100.0
+101 ASP 3.31721663475
+116 LYS 10.2513456345
+118 THR 100.0
+119 ASP 2.3969771862
+129 CTR 1.69827020168
+        """
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd lyso/lyso_pdb_all_noclean/; "
+                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
+                 "bash run.sh".format(ncpus), shell=True).wait()
+        checkOutput('lyso/lyso_pdb_all_noclean/pKas.out', results_lines)    
 
 class TestAPI(object):
     def test_api_ktp_gro(self):
@@ -97,16 +251,17 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
 	    'pbc_dimensions': 0,
 	    'temp'          : 310,
 	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : 1,
+	    'ncpus'         : ncpus,
 	    'pH'            : '-5,15',
             'pHstep'        : 0.2,
 	    'logfile'       : 'LOGFILE',
 	    'scaleM'        : 4,
 	    'scaleP'        : 1,
-	    'gsizeM'        : 81,
+	    'gsize'         : 81,
 	    'convergence'   : 0.01,
 	    'nlit'          : 500,
-	    'cutoff'        : -1,            
+	    'cutoff'        : -1,
+            'relfac'        : 0.0,            
 	    'output'        : 'pKas.out'
 	}
 	sites = {'A': ('1N', '1', '2C')}
@@ -130,16 +285,17 @@ CTR 3.3024392128 ('deprotonated', 0.00020060977015866723)
 	    'pbc_dimensions': 0,
 	    'temp'          : 310,
 	    'grid_fill'     : 0.8,
-	    'ncpus'         : 1,
+	    'ncpus'         : ncpus,
 	    'pH'            : '0,15',
             'pHstep'        : 0.2,
 	    'logfile'       : 'LOGFILE',
 	    'scaleM'        : 4,
 	    'scaleP'        : 1,
-	    'gsizeM'        : 81,
+	    'gsize'        : 81,
 	    'convergence'   : 0.01,
 	    'nlit'          : 300,
-	    'cutoff'        : -1,            
+	    'cutoff'        : -1,
+            'relfac'        : 0.0,
 	    'output'        : 'pKas.out'
 	}
 	sites = 'all'		
@@ -163,16 +319,17 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
 	    'pbc_dimensions': 0,
 	    'temp'          : 310,
 	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : 1,
+	    'ncpus'         : ncpus,
 	    'pH'            : '-5,15',
             'pHstep'        : 0.2,
 	    'logfile'       : 'LOGFILE',
 	    'scaleM'        : 4,
 	    'scaleP'        : 1,
-	    'gsizeM'        : 81,
+	    'gsize'         : 81,
 	    'convergence'   : 0.01,
 	    'nlit'          : 500,
-	    'cutoff'        : -1,            
+	    'cutoff'        : -1,
+            'relfac'        : 0.0,            
 	    'output'        : 'pKas.out'
 	}
 	sites = 'all'		
@@ -195,16 +352,17 @@ CTR 3.29493141174 ('deprotonated', 0.0001971722409805938)
 	    'pbc_dimensions': 0,
 	    'temp'          : 310,
 	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : 1,
+	    'ncpus'         : ncpus,
 	    'pH'            : '0,15',
             'pHstep'        : 0.25,
 	    'logfile'       : 'LOGFILE',
 	    'scaleM'        : 4,
 	    'scaleP'        : 1,
-	    'gsizeM'        : 81,
+	    'gsize'         : 81,
 	    'convergence'   : 0.01,
 	    'nlit'          : 300,
-	    'cutoff'        : -1,            
+	    'cutoff'        : -1,
+            'relfac'        : 0.0,            
 	    'output'        : 'pKas.out'
 	}
 	sites = {'A': ('1N', '2C')}
@@ -227,16 +385,17 @@ CTR 3.38864183426 ('deprotonated', 0.00024464456585429595)
 	    'pbc_dimensions': 0,
 	    'temp'          : 310,
 	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : 1,
+	    'ncpus'         : ncpus,
 	    'pH'            : '0,15',
             'pHstep'        : 0.25,
 	    'logfile'       : 'LOGFILE',
 	    'scaleM'        : 4,
 	    'scaleP'        : 1,
-	    'gsizeM'        : 81,
+	    'gsize'         : 81,
 	    'convergence'   : 0.01,
 	    'nlit'          : 300,
-	    'cutoff'        : -1,            
+	    'cutoff'        : -1,
+            'relfac'        : 0.0,
 	    'output'        : 'pKas.out'
 	}
 	sites = {'A': ('1N', '2C')}

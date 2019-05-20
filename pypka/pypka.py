@@ -1,4 +1,3 @@
-
 #! /usr/bin/python
 
 """
@@ -77,22 +76,13 @@ class Titration(object):
             config.f_dat = datfile
             parameters = readSettings(datfile)
 
-        print parameters
-        print config.params
-        print config.sites
-
         # Check Input Variables Validity
         inputParametersFilter(parameters)
-        print config.params
-        print config.sites
 
         print 'Start Preprocessing'
         self.preprocessing()
 
         self.processDelPhiParams()
-
-        print config.params
-        print config.sites
 
         print 'Start PB Calculations'
         self.DelPhiLaunch()
@@ -103,7 +93,6 @@ class Titration(object):
         # Creating instance of TitratingMolecule
         config.tit_mole = Molecule()
 
-        print config.f_in_extension, config.params['clean_pdb'], len(config.sites)
         if config.f_in_extension == 'gro':
             groname = config.f_in
             if len(config.sites) > 0:
@@ -156,17 +145,11 @@ class Titration(object):
         config.tit_mole.readGROFile(groname)
 
     def processDelPhiParams(self):
-        # TODO: scale is only input in .pHmdp, not gsize
-        #if pbc_dim == 2:
-        #    params['scaleP'] = (float(params['gsizeP']) - 1) / (config.tit_mole.box[0] * 10)
-        #    params['scaleM'] = int(4 / params['scaleP'] + 0.5) * params['scaleP']
-
         # Storing DelPhi parameters and Creates DelPhi data structures
 
-        config.params['precision'] = 'single' # TODO: add to input parameter file
         delphimol = Delphi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
                            config.tit_mole.getNAtoms(),
-                           config.params['gsizeM'],
+                           config.params['gsize'],
                            config.params['scaleM'],
                            config.params['precision'],
                            epsin=config.params['epsin'],
@@ -176,8 +159,8 @@ class Titration(object):
                            res2=config.params['maxc'],
                            nlit=config.params['nlit'],
                            nonit=config.params['nonit'],
-                           relfac=config.params['relfac'],
-                           relpar=config.params['relpar'],
+                           relfac=0.0,
+                           relpar=0.0,
                            pbx=config.params['pbx'],
                            pby=config.params['pby'],
                            debug=config.debug, outputfile='LOG_readFiles')
