@@ -136,7 +136,7 @@ class TestCLI(object):
         sb.Popen("cd lyso/lyso_pdb_sites_noclean/; "
                  "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
                  "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_pdb_sites_noclean/pKas.out', results_lines)    
+        checkOutput('lyso/lyso_pdb_sites_noclean/pKas.out', results_lines)
 
     def test_cli_lyso_pdb_all(self):
         erase_old("lyso/lyso_pdb_all")
