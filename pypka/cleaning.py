@@ -102,6 +102,8 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     """
     """
 
+    inputpdbfile = removeMembrane(pdb_filename)
+
     log.redirectOutput("start", 'LOG_pdb2pqr')
     log.redirectErr("start", 'LOG_pdb2pqr_err')
 
@@ -109,7 +111,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     # CTR O1/O2 will be deleted and a O/OXT will be added
     os.system('python {0} {1} {2} --userff {3} '
               '--usernames={4} --drop-water -v'.format(pdb2pqr_path,
-                                                       pdb_filename, inputpqr,
+                                                       inputpdbfile, inputpqr,
                                                        userff, usernames))
     log.redirectOutput("stop", 'LOG_pdb2pqr')
     log.redirectErr("stop", 'LOG_pdb2pqr_err')
@@ -168,6 +170,23 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         addMembrane("TMP.gro", pdb_filename)
 
 
+def removeMembrane(pdbfile):
+    nomembrane_text = ''
+    with open(pdbfile) as f:
+        for line in f:
+            if 'ATOM ' == line[0:5]:
+                (aname, anumb, resname,
+                 chain, resnumb, x, y, z) = read_pdb_line(line)
+                if resname not in config.lipid_residues:
+                    nomembrane_text += line
+            else:
+                nomembrane_text += line
+    with open('tmp.tmp', 'w') as f_new:
+        f_new.write(nomembrane_text)
+    os.rename('tmp.tmp', 'input_clean.pdb')
+    return 'input_clean.pdb'
+
+
 def addMembrane(grofile, pdbfile):
     atom_number = 0
     new_file_header = ''
@@ -212,12 +231,10 @@ def addMembrane(grofile, pdbfile):
                         new_file_body += new_gro_line(atom_number, aname, resname,
                                                       resnumb, x, y, z)
 
-
     with open('tmp.tmp', 'w') as f_new:
         new_file_header += str(atom_number) + '\n'
         f_new.write(new_file_header + new_file_body + new_file_footer)
     os.rename('tmp.tmp', 'TMP.gro')
-
 
 
 def convert_FF_atomnames(aname, resname):

@@ -6,8 +6,13 @@ sys.path.insert(1, '../')
 
 ncpus = 8
 
-def erase_old(directory):
-    os.system("rm -f {0}/*out".format(directory))
+def runTest(path, ncpus, results):
+    os.system("rm -f {0}/*out".format(path))
+    results_lines = results.split('\n')[1:-1]
+    sb.Popen("cd {0}; "
+             "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
+             "bash run.sh".format(path, ncpus), shell=True).wait()
+    checkOutput('{0}/pKas.out'.format(path), results_lines)    
 
 def checkOutput(filename, results_lines):
     with open(filename) as f:
@@ -28,70 +33,50 @@ def checkAPIResult(pKa, results):
 
 class TestCLI(object):
     def test_cli_ktp_gro(self):
-        erase_old("ktp/ktp_gro")
+        path = "ktp/ktp_gro"
         results = """
 1 NTR 7.89621829987
 1 TYR 9.88696575165
 2 CTR 3.12329292297
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd ktp/ktp_gro/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('ktp/ktp_gro/pKas.out', results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_allsites(self):
-        erase_old("ktp/ktp_pdb_allsites")
+        path = "ktp/ktp_pdb_allsites"
         results = """
 1 NTR 7.900203228
 1 TYR 9.77924633026
 2 CTR 3.30362272263
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd ktp/ktp_pdb_allsites/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput("ktp/ktp_pdb_allsites/pKas.out", results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_allsites_noclean(self):
-        erase_old("ktp/ktp_pdb_allsites_noclean")
+        path = "ktp/ktp_pdb_allsites_noclean"
         results = """
 1 NTR 7.89621829987
 1 TYR 9.88696575165
 2 CTR 3.12329292297
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd ktp/ktp_pdb_allsites_noclean/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run_noclean.sh".format(ncpus), shell=True).wait()
-        checkOutput("ktp/ktp_pdb_allsites_noclean/pKas.out", results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_onlytermini(self):
-        erase_old('ktp/ktp_pdb_onlytermini')
+        path = 'ktp/ktp_pdb_onlytermini'
         results = """
 1 NTR 7.904296875
 2 CTR 3.29493141174
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd ktp/ktp_pdb_onlytermini; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput("ktp/ktp_pdb_onlytermini/pKas.out", results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_onlytermini_noclean(self):
-        erase_old('ktp_pdb_onlytermini_noclean')
+        path = 'ktp_pdb_onlytermini_noclean'
         results = """
 1 NTR 8.17041015625
 2 CTR 3.38864183426
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd ktp/ktp_pdb_onlytermini_noclean; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput("ktp/ktp_pdb_onlytermini_noclean/pKas.out", results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_lyso_gro(self):
-        erase_old("lyso/lyso_gro")
+        path = "lyso/lyso_gro"
         results = """
 1 NTR 7.63068819046
 18 ASP 3.14008665085
@@ -100,14 +85,10 @@ class TestCLI(object):
 66 ASP 3.25400090218
 129 CTR 2.35684490204
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd lyso/lyso_gro/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_gro/pKas.out', results_lines)    
+        runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_sites(self):
-        erase_old("lyso/lyso_pdb_sites")
+        path = "lyso/lyso_pdb_sites"
         results = """
 1 NTR 7.50067424774
 18 ASP 3.16751217842
@@ -116,14 +97,10 @@ class TestCLI(object):
 66 ASP 1.87332427502
 129 CTR 2.30435156822
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd lyso/lyso_pdb_sites/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_pdb_sites/pKas.out', results_lines)    
+        runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_sites_noclean(self):
-        erase_old("lyso/lyso_pdb_sites_noclean")
+        path = "lyso/lyso_pdb_sites_noclean"
         results = """
 1 NTR 7.39441871643
 18 ASP 2.78099513054
@@ -132,14 +109,10 @@ class TestCLI(object):
 66 ASP 3.01925420761
 129 CTR 1.94424641132
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd lyso/lyso_pdb_sites_noclean/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_pdb_sites_noclean/pKas.out', results_lines)
+        runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_all(self):
-        erase_old("lyso/lyso_pdb_all")
+        path = "lyso/lyso_pdb_all"
         results = """
 1 NTR 7.38174772263
 1 LYS 10.3868246078
@@ -180,14 +153,10 @@ class TestCLI(object):
 119 ASP 2.39909434319
 129 CTR 1.69917798042
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd lyso/lyso_pdb_all/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_pdb_all/pKas.out', results_lines)    
+        runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_all_noclean(self):
-        erase_old("lyso/lyso_pdb_all_noclean")
+        path = "lyso/lyso_pdb_all_noclean"
         results = """
 1 NTR 7.38174772263
 1 LYS 10.3868246078
@@ -228,16 +197,10 @@ class TestCLI(object):
 119 ASP 2.39909434319
 129 CTR 1.69917798042
         """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd lyso/lyso_pdb_all_noclean/; "
-                 "sed -i 's/ncpus .*/ncpus           = {0}/' parameters.dat; "
-                 "bash run.sh".format(ncpus), shell=True).wait()
-        checkOutput('lyso/lyso_pdb_all_noclean/pKas.out', results_lines)    
-
+        runTest(path, ncpus, results)
 
     def test_cli_pHLIP_gro(self):
         path = "pHLIP/pHLIP_gro"
-        erase_old(path)
         results = """
 769 NTR 11.0565090179
 770 CYS 100.0
@@ -249,11 +212,27 @@ class TestCLI(object):
 802 GLU 3.98396849632
 804 CTR 3.63486742973
 """
-        results_lines = results.split('\n')[1:-1]
-        sb.Popen("cd {0}; "
-                 "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
-                 "bash run.sh".format(path, ncpus), shell=True).wait()
-        checkOutput('{0}/pKas.out'.format(path), results_lines)    
+        runTest(path, ncpus, results)
+
+    def test_cli_pHLIP_pdb_all(self):
+        path = "pHLIP/pHLIP_pdb_all"
+        results = """
+769 NTR 11.2083435059
+770 CYS 24.2029476166
+771 GLU 4.00404262543
+776 TYR 18.7731571198
+780 TYR 24.3460330963
+782 ASP 100.0
+786 THR 100.0
+787 THR 100.0
+793 ASP 22.6629772186
+799 ASP 0.369246691465
+801 ASP 1.48556101322
+802 GLU 3.96952009201
+804 CTR 4.29328298569
+"""
+        runTest(path, ncpus, results)
+
 
 class TestAPI(object):
     def test_api_ktp_gro(self):
@@ -288,7 +267,7 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
 	sites = {'A': ('1N', '1', '2C')}
 	pKa = Titration(parameters, sites=sites)
         checkAPIResult(pKa, results)
-        
+
     def test_api_ktp_pdb_allsites_clean(self):
         from pypka import Titration
         os.system('rm -f *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint')

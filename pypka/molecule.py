@@ -264,7 +264,6 @@ class Molecule:
                             sites.append('NTR')
                             sites_file += SitesFileLine(resnumb, 'NTR')
                             self._NTR = resnumb
-
                         if resname in config.TITRABLERESIDUES and \
                            resname != 'NTR' and resname != 'CTR':
                             sites.append(resnumb)
@@ -1035,7 +1034,7 @@ MODEL        1
                 print (tautomer._name, tautomer._esolvationS,
                        len(tautomer._sitpotS), tautomer._esolvationM,
                        len(tautomer._sitpotM))
-                
+
             tautomer.calcBackEnergy()
             if not tautomer.isRefTautomer():
                 tautomer.calcpKint()

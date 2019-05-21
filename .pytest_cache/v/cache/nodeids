@@ -10,6 +10,7 @@
   "pypka/tests/test.py::TestCLI::test_cli_lyso_pdb_all", 
   "pypka/tests/test.py::TestCLI::test_cli_lyso_pdb_all_noclean", 
   "pypka/tests/test.py::TestCLI::test_cli_pHLIP_gro", 
+  "pypka/tests/test.py::TestCLI::test_cli_pHLIP_pdb_all", 
   "pypka/tests/test.py::TestAPI::test_api_ktp_gro", 
   "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_allsites_clean", 
   "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_allsites_noclean", 
