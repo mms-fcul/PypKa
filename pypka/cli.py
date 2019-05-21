@@ -2,7 +2,6 @@ import argparse
 import os
 import config
 import log
-from formats import read_pdb_line
 
 
 def drange(dmin, dmax, step):
@@ -64,7 +63,7 @@ def inputParametersFilter(settings):
     mandatory_params = ('structure', 'epsin', 'ionicstr',
                         'pbc_dimensions', 'temp', 'grid_fill',
                         'ncpus', 'pH', 'sites_A')
-    for param in mandatory_params:        
+    for param in mandatory_params:
         if param not in param_names:
             log.requiredParameterError(param)
         if type(settings[param]) in (float, int):
@@ -77,8 +76,8 @@ def inputParametersFilter(settings):
     for param in integer_params:
         if param in param_names:
             try:
-                param_value = int(settings[param])                
-            except:
+                param_value = int(settings[param])
+            except ValueError:
                 log.inputVariableError(param,
                                        'an integer.', '')
             setParameter(param, param_value)
@@ -90,8 +89,8 @@ def inputParametersFilter(settings):
     for param in float_params:
         if param in param_names:
             try:
-                param_value = float(settings[param])            
-            except:
+                param_value = float(settings[param])
+            except ValueError:
                 log.inputVariableError(param,
                                        'a float.', '')
             setParameter(param, param_value)
@@ -102,10 +101,8 @@ def inputParametersFilter(settings):
                     'ncpus', 'temp', 'grid_fill', 'pH_step')
     for param in great_params:
         if param in param_names:
-            try:
-                param_value = getParameter(param)
-                assert param_value > 0
-            except:
+            param_value = getParameter(param)
+            if not param_value > 0:                    
                 log.inputVariableError(param,
                                        'greater than zero.', '')
             setParameter(param, param_value)
@@ -164,23 +161,24 @@ def inputParametersFilter(settings):
         try:
             pHmin = float(pH_parts[0])
             pHmax = float(pH_parts[1])
-            setParameter('pHmin', float(pH_parts[0]))
-            setParameter('pHmax', float(pH_parts[1]))
-        except:
+            setParameter('pHmin', pHmin)
+            setParameter('pHmax', pHmax)
+        except ValueError:
             log.inputVariableError('pH',
-                                   'a float.', '')            
+                                   'a float.', '')
     else:
         try:
-            setParameter('pHmin', float(pH_parts[0]))
-            setParameter('pHmax', float(pH_parts[0]))
-        except:
+            pHmin = float(pH_parts[0])
+            pHmax = float(pH_parts[0])
+            setParameter('pHmin', pHmin)
+            setParameter('pHmax', pHmax)
+        except ValueError:
             log.inputVariableError('pH',
                                    'a float.', '')
         setParameter('pH', [param_value])
     if pHmin >= pHmax:
         log.inputVariableError('pHmax',
-                               'a float greater than pHmin.', '')     
-
+                               'a float greater than pHmin.', '')
 
     # Declare IO Files
     # Input .pdb File
@@ -195,7 +193,7 @@ def inputParametersFilter(settings):
         log.inputVariableError('structure',
                                'a string containing a valid file extension.',
                                'Ex: structure.pdb or structure.gro')
-        
+
     config.f_in_extension = extension
 
     # Output pKs File
@@ -218,13 +216,13 @@ def inputParametersFilter(settings):
        getParameter('relfac') != 0.2 and 'relfac' not in settings:
         setParameter('relfac', 0.2)
 
-    if 'lipid_definition' in settings:    
-	for i in settings['lipid_definition']:
-	    resname = settings['lipid_definition'][i]
-	    config.lipids[i] = resname
-	    if resname in config.lipid_residues:
-	        resname_i = config.lipid_residues.index(resname)
-	        del config.lipid_residues[resname_i]
+    if 'lipid_definition' in settings:
+        for i in settings['lipid_definition']:
+            resname = settings['lipid_definition'][i]
+            config.lipids[i] = resname
+            if resname in config.lipid_residues:
+                resname_i = config.lipid_residues.index(resname)
+                del config.lipid_residues[resname_i]
     return
 
 
@@ -255,9 +253,9 @@ def readSettings(filename):
                     old_name = parts[0]
                     new_name = parts[1]
                     parameters['lipid_definition'][old_name] = new_name
-                elif len(parts) != 2 or \
-                   not len(param_name) > 0 or \
-                   not len(param_value) > 0:
+                elif (len(parts) != 2 or
+                      not len(param_name) > 0 or
+                      not len(param_value) > 0):
                     raise IOError('Incorrect format in line {0} of file {1}: '
                                   '\n{1}#{0}: {2}'.format(nline, filename, line))
                 else:

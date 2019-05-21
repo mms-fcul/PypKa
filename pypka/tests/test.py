@@ -6,6 +6,8 @@ sys.path.insert(1, '../')
 
 ncpus = 8
 
+# run coverage.sh to generate coverage
+
 def runTest(path, ncpus, results):
     os.system("rm -f {0}/*out".format(path))
     results_lines = results.split('\n')[1:-1]
@@ -406,7 +408,3 @@ CTR 3.38864183426 ('deprotonated', 0.00024464456585429595)
         pKa = Titration(parameters, sites=sites)
 
         checkAPIResult(pKa, results)
-
-class Coverage:
-    def test_gen_coverage(self):
-        os.system('bash coverage.sh')

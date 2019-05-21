@@ -47,8 +47,10 @@ def inputPDBCheck(filename, sites):
                      chain, resnumb, x, y, z) = read_pdb_line(line)
                     atom_number += 1
                     if not config.params['clean_pdb']:
-                        if len(aname) > 2 and aname[1] == 'H' and aname[0] in ('1', '2'):
-                            aname = aname[1:] + aname[0]                            
+                        if len(aname) > 2 and \
+                           aname[1] == 'H' and \
+                           aname[0] in ('1', '2'):
+                            aname = aname[1:] + aname[0]
                         new_gro_body += new_gro_line(anumb, aname,
                                                      resname, resnumb,
                                                      x / 10.0, y / 10, z / 10)
@@ -133,7 +135,8 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                 aposition += 1
 
                 aname, resname = correct_names(sites_numbs, resnumb,
-                                               resname, aname, termini, sites_numbs)
+                                               resname, aname, termini,
+                                               sites_numbs)
 
                 new_pdb_text += new_pqr_line(aposition, aname, resname,
                                              resnumb, x, y, z, charge, radius)
@@ -202,7 +205,7 @@ def addMembrane(grofile, pdbfile):
                 atom_number += 1
                 (aname, anumb, resname, resnumb, x, y, z) = read_gro_line(line)
                 new_file_body += new_gro_line(atom_number, aname, resname,
-                                                  resnumb, x, y, z)
+                                              resnumb, x, y, z)
             elif nline == 2:
                 natoms = int(line.strip())
                 maxnlines = natoms + 3

@@ -43,15 +43,13 @@ params = {'perfil': 0.9,
           'seed': 1234567,
           'cutoff': 2.5,
           'pbc_dim': 0,
-          'ionicstr': 0.1,
           'epsin': 20.0,
           'slice': 0.05,
           'ncpus': 1,
           'clean_pdb': True,
           'couple_min': 2.0,
           'mcsteps': 200000,
-          'eqsteps': 1000
-}
+          'eqsteps': 1000}
 
 # Paths
 # TODO: include in dependencies
@@ -64,7 +62,7 @@ usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(fileDir)
 
 
 # Input Files
-f_in  = None
+f_in = None
 f_in_extension = None
 f_out = None
 f_prot_out = None
@@ -72,11 +70,11 @@ f_log = "LOG"
 f_dat = None
 
 # Force Field Files
-f_crg   = None
-f_siz   = None
+f_crg = None
+f_siz = None
 
 lipids = {'cholesterol': 'CHO',  # to edit
-          'POPC': 'POP'} 
+          'POPC': 'POP'}
 lipid_residues = ['POX', 'PJ2', 'CHL']  # allowed residue names
 
 # Constants
@@ -105,4 +103,3 @@ for res in REGULARTITRATINGRES:
     ntautomers = TITRABLETAUTOMERS[res]
     for i in range(ntautomers):
         TITRABLERESIDUES.append(res[0:2] + str(i + 1))
-

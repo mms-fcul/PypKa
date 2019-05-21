@@ -22,6 +22,7 @@ def reportWarning(info):
     warning = 'warning: {0}'.format(info)
     reportToLOG(warning)
 
+
 def redirectOutput(mode, outputname):
     if mode == 'start':
         config.stdout = os.dup(sys.stdout.fileno())
@@ -34,7 +35,8 @@ def redirectOutput(mode, outputname):
         sys.stdout.flush()
         os.dup2(config.stdout, sys.stdout.fileno())
         config.stdout_file.close()
-    
+
+
 def redirectErr(mode, outputname):
     if mode == 'start':
         config.stderr = os.dup(sys.stderr.fileno())
@@ -47,6 +49,7 @@ def redirectErr(mode, outputname):
         sys.stderr.flush()
         os.dup2(config.stderr, sys.stderr.fileno())
         config.stderr_file.close()
+
 
 def checkDelPhiErrors(filename, mode=None, remove=False):
     exceptions = []

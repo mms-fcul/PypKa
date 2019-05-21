@@ -1,15 +1,14 @@
 from multiprocessing import Pool, Manager, Value
 import config
-import os
 from time import time
 from datetime import timedelta, datetime
 from sys import stdout
 
+
 def configRefresh(config, pb_time, njobs):
-    import config
     config.pb_time = pb_time
     config.njobs = njobs
-    
+
 
 def startPoolProcesses(targetFunction, iterable_job_arguments_list,
                        ncpus, assign='distributed', merged_results=False):
@@ -18,7 +17,7 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
 
     Args:
       targetFunction (function): function to be execute in each process
-      iterable_job_arguments_list (iterable): object enumerating 
+      iterable_job_arguments_list (iterable): object enumerating
         the arguments to be passed to the targetFunction.
         when using assing='ordered', it can not be a generator
       ncpus  (int): number of processes to launch
@@ -26,10 +25,10 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
         Example: iterable_job_arguments_list = [0, 1, 2, 3, 4], ncpus = 2
         'distributed' p0 = [0, 2, 4] p1 = [1, 3]
         'ordered' p0 = [0, 1, 2] p1 = [3, 4]
-    
+
     Ensures:
-      unpacked_results (list): list of lists containing the returned 
-        results from the executed jobs. the order is dependent 
+      unpacked_results (list): list of lists containing the returned
+        results from the executed jobs. the order is dependent
         only on $assign and $ncpus but not on the execution time.
     """
     jobs = [[] for i in range(ncpus)]
@@ -60,23 +59,23 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
             jobs[core].append(i)
             core_jobs += 1
 
-    config.total_jobs = config.njobs             
+    config.total_jobs = config.njobs
     pb_time = Manager().list()
-    njobs = Value('i', config.njobs) 
-    pool = Pool(processes=ncpus, initializer=configRefresh, initargs=(config, pb_time, njobs))
+    njobs = Value('i', config.njobs)
+    pool = Pool(processes=ncpus, initializer=configRefresh,
+                initargs=(config, pb_time, njobs))
     for job in jobs:
         result = pool.apply_async(targetFunction, args=(job, ))
         results.append(result)
         # Easier debug of the loop but fails afterwards
         #targetFunction(job)
-        
+
     pool.close()
     pool.join()
     #print 'exit'
     #exit()
     stdout.write('\rPB Runs Ended{0:>70}'.format(''))
     stdout.flush()
-
 
     unpacked_results = []
     for results_percore in results:
@@ -93,8 +92,8 @@ def runDelPhiSims(job_list):
 
     Args:
       job_list (list): list of tautomer numbers to be analysed.
-        The use of numbers is needed since class objects 
-        can not be pickled and therefore can not be parsed 
+        The use of numbers is needed since class objects
+        can not be pickled and therefore can not be parsed
         in multiprocessing.
 
     Ensures:
@@ -108,7 +107,7 @@ def runDelPhiSims(job_list):
         sitpotS (list):  the site potential in the Site
           the index corresponds to the atoms in the site
     """
-    if config.debug:        
+    if config.debug:
         # each process will run in its own directory
         #os.system('mkdir -p core_{0}'.format('_'.join([str(i) for i in job_list])))
         #os.chdir('core_{0}'.format('_'.join([str(i) for i in job_list])))
@@ -134,7 +133,7 @@ def runDelPhiSims(job_list):
             left_time = '~{0}m'.format(int(left / 60.0))
         else:
             left_time = '{0}s'.format(int(left))
-        
+
         end = datetime.now() + timedelta(seconds=left)
         end_time = end.strftime('%H:%M:%S %d/%m/%Y')
         stdout.write('\rPB Runs: {0:3} {1:<10} '
@@ -143,21 +142,20 @@ def runDelPhiSims(job_list):
                                                  config.total_jobs - njobs,
                                                  config.total_jobs,
                                                  left_time,
-                                                 end_time,
-                                                 len(config.pb_time)))
+                                                 end_time))
         stdout.flush()
 
     return results
 
 
 def calcPotential(taut):
-    """Run two DelPhi simulations: one for the tautomer and 
+    """Run two DelPhi simulations: one for the tautomer and
     other for the same tautomer when all other sites are neutral.
 
     Args:
       taut (int): number of the tautomer
 
-    Ensures:     
+    Ensures:
       tauname (str):   the tautomer name
       sitenum (int):   site id number
       esolvM  (float): the Molecule solvation energy
@@ -188,19 +186,19 @@ def calcPotential(taut):
 
 
 def runInteractionCalcs(job_list):
-    """Run interaction calculations between 
+    """Run interaction calculations between
     sites in job_list
 
     Args:
       job_list (list)
         interaction_number (int): interaction number to be analysed.
-          The use of numbers is needed since class objects 
-          can not be pickled and therefore can not be parsed 
+          The use of numbers is needed since class objects
+          can not be pickled and therefore can not be parsed
           in multiprocessing.
 
     Ensures:
       results (list)
-        interaction_energies (str): .dat formatted energy 
+        interaction_energies (str): .dat formatted energy
           interactions between all tautomers of two sites
     """
     results = []
