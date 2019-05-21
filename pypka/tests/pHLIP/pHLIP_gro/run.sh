@@ -1,4 +1,4 @@
 #! /bin/bash -e
 
-python ../../../pypka.py parameters.dat --debug
+python ../../../pypka.py parameters.dat
 

@@ -5,7 +5,7 @@ ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
 grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 4
+ncpus           = 16
 pH              = -5,15
 sites_A         = 769N, 770, 771, 782, 793, 799, 801, 802, 804C
 
@@ -14,7 +14,7 @@ logfile   = LOGFILE
 
 scaleM = 4.00
 scaleP = 1.00
-gsize = 91
+gsize = 131
 
 convergence = 0.01
 nlit   = 50
@@ -31,4 +31,3 @@ pbx    = yes
 pby    = yes
 
 precision = single
-debug = yes

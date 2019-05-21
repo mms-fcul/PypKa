@@ -81,12 +81,11 @@ class Titration(object):
 
         print 'Start Preprocessing'
         self.preprocessing()
-
         self.processDelPhiParams()
 
         print 'Start PB Calculations'
+
         self.DelPhiLaunch()
-        
         print 'API exited successfully'
 
     def preprocessing(self):

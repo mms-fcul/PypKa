@@ -4,7 +4,7 @@ import subprocess as sb
 import sys
 sys.path.insert(1, '../')
 
-ncpus = 16
+ncpus = 8
 
 def erase_old(directory):
     os.system("rm -f {0}/*out".format(directory))
@@ -17,7 +17,7 @@ def checkOutput(filename, results_lines):
             line = line.strip()
             assert line == results_lines[c]
     assert c + 1 == len(results_lines)
-    
+
 def checkAPIResult(pKa, results):
     i = -1
     for site in pKa:
@@ -25,7 +25,7 @@ def checkAPIResult(pKa, results):
         i += 1
 	assert result == results[i]
     assert i + 1 == len(results)
-    
+
 class TestCLI(object):
     def test_cli_ktp_gro(self):
         erase_old("ktp/ktp_gro")
@@ -234,6 +234,27 @@ class TestCLI(object):
                  "bash run.sh".format(ncpus), shell=True).wait()
         checkOutput('lyso/lyso_pdb_all_noclean/pKas.out', results_lines)    
 
+
+    def test_cli_pHLIP_gro(self):
+        path = "pHLIP/pHLIP_gro"
+        erase_old(path)
+        results = """
+769 NTR 11.0565090179
+770 CYS 100.0
+771 GLU 4.03883981705
+782 ASP 100.0
+793 ASP 100.0
+799 ASP 1.80626475811
+801 ASP 0.836304783821
+802 GLU 3.98396849632
+804 CTR 3.63486742973
+"""
+        results_lines = results.split('\n')[1:-1]
+        sb.Popen("cd {0}; "
+                 "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
+                 "bash run.sh".format(path, ncpus), shell=True).wait()
+        checkOutput('{0}/pKas.out'.format(path), results_lines)    
+
 class TestAPI(object):
     def test_api_ktp_gro(self):
         from pypka import Titration
@@ -402,6 +423,3 @@ CTR 3.38864183426 ('deprotonated', 0.00024464456585429595)
 	pKa = Titration(parameters, sites=sites)
 
         checkAPIResult(pKa, results)
-                    
-
-
