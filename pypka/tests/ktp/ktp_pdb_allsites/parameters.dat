@@ -5,7 +5,7 @@ ionicstr        = 0.1
 pbc_dimensions  = 0
 temp            = 310
 grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 16
+ncpus           = 8
 pH              = 0, 15
 sites_A         = all
 

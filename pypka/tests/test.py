@@ -11,7 +11,8 @@ def runTest(path, ncpus, results):
     results_lines = results.split('\n')[1:-1]
     sb.Popen("cd {0}; "
              "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
-             "bash run.sh".format(path, ncpus), shell=True).wait()
+             "coverage erase; "
+             "coverage run ../../../pypka.py parameters.dat".format(path, ncpus), shell=True).wait()
     checkOutput('{0}/pKas.out'.format(path), results_lines)    
 
 def checkOutput(filename, results_lines):
@@ -26,9 +27,9 @@ def checkOutput(filename, results_lines):
 def checkAPIResult(pKa, results):
     i = -1
     for site in pKa:
-	result = '{0} {1} {2}'.format(site, pKa[site], pKa.getProtState(site, 7))
+        result = '{0} {1} {2}'.format(site, pKa[site], pKa.getProtState(site, 7))
         i += 1
-	assert result == results[i]
+        assert result == results[i]
     assert i + 1 == len(results)
 
 class TestCLI(object):
@@ -68,7 +69,7 @@ class TestCLI(object):
         runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_onlytermini_noclean(self):
-        path = 'ktp_pdb_onlytermini_noclean'
+        path = 'ktp/ktp_pdb_onlytermini_noclean'
         results = """
 1 NTR 8.17041015625
 2 CTR 3.38864183426
@@ -244,28 +245,28 @@ NTR 7.89621829987 ('undefined', 0.8873165161846842)
 CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
         """
         results = results.split('\n')[1:-1]
-	parameters = {
-	    'structure'     : 'ktp/ktp_gro/TMP.gro',     # MANDATORY
-	    'epsin'         : 2,
-	    'ionicstr'      : 0.1,
-	    'pbc_dimensions': 0,
-	    'temp'          : 310,
-	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : ncpus,
-	    'pH'            : '-5,15',
+        parameters = {
+            'structure'     : 'ktp/ktp_gro/TMP.gro',     # MANDATORY
+            'epsin'         : 2,
+            'ionicstr'      : 0.1,
+            'pbc_dimensions': 0,
+            'temp'          : 310,
+            'grid_fill'     : 0.8,         # FUTURE VERSION
+            'ncpus'         : ncpus,
+            'pH'            : '-5,15',
             'pHstep'        : 0.2,
-	    'logfile'       : 'LOGFILE',
-	    'scaleM'        : 4,
-	    'scaleP'        : 1,
-	    'gsize'         : 81,
-	    'convergence'   : 0.01,
-	    'nlit'          : 500,
-	    'cutoff'        : -1,
+            'logfile'       : 'LOGFILE',
+            'scaleM'        : 4,
+            'scaleP'        : 1,
+            'gsize'         : 81,
+            'convergence'   : 0.01,
+            'nlit'          : 500,
+            'cutoff'        : -1,
             'relfac'        : 0.0,            
-	    'output'        : 'pKas.out'
-	}
-	sites = {'A': ('1N', '1', '2C')}
-	pKa = Titration(parameters, sites=sites)
+            'output'        : 'pKas.out'
+        }
+        sites = {'A': ('1N', '1', '2C')}
+        pKa = Titration(parameters, sites=sites)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_allsites_clean(self):
@@ -277,128 +278,135 @@ NTR 7.90208864212 ('undefined', 0.888660962962448)
 CTR 3.3024392128 ('deprotonated', 0.00020060977015866723)
         """
         results = results.split('\n')[1:-1]
-	parameters = {
-	    'structure'     : 'ktp/ktp_pdb_allsites/ktp.pdb',
+        parameters = {
+            'structure'     : 'ktp/ktp_pdb_allsites/ktp.pdb',
             'clean_pdb'     : 'yes',
-	    'epsin'         : 2,
-	    'ionicstr'      : 0.1,
-	    'pbc_dimensions': 0,
-	    'temp'          : 310,
-	    'grid_fill'     : 0.8,
-	    'ncpus'         : ncpus,
-	    'pH'            : '0,15',
+            'epsin'         : 2,
+            'ionicstr'      : 0.1,
+            'pbc_dimensions': 0,
+            'temp'          : 310,
+            'grid_fill'     : 0.8,
+            'ncpus'         : ncpus,
+            'pH'            : '0,15',
             'pHstep'        : 0.2,
-	    'logfile'       : 'LOGFILE',
-	    'scaleM'        : 4,
-	    'scaleP'        : 1,
-	    'gsize'        : 81,
-	    'convergence'   : 0.01,
-	    'nlit'          : 300,
-	    'cutoff'        : -1,
+            'logfile'       : 'LOGFILE',
+            'scaleM'        : 4,
+            'scaleP'        : 1,
+            'gsize'        : 81,
+            'convergence'   : 0.01,
+            'nlit'          : 300,
+            'cutoff'        : -1,
             'relfac'        : 0.0,
-	    'output'        : 'pKas.out'
-	}
-	sites = 'all'		
-	pKa = Titration(parameters, sites=sites)
+            'output'        : 'pKas.out'
+        }
+        sites = 'all'           
+        pKa = Titration(parameters, sites=sites)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_allsites_noclean(self):
         from pypka import Titration
-        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint LOG* __pycache__ *pyc')
+        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites '
+                  'cent contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
 NTR 7.89621829987 ('undefined', 0.8873165161846842)
 1 9.88696575165 ('protonated', 0.9987043991888108)
 CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
         """
         results = results.split('\n')[1:-1]
-	parameters = {
-	    'structure'     : 'ktp/ktp_pdb_allsites_noclean/ktp_noclean.pdb',     # MANDATORY
+        parameters = {
+            'structure'     : 'ktp/ktp_pdb_allsites_noclean/ktp_noclean.pdb',     # MANDATORY
             'clean_pdb'     : 'no',
             'epsin'         : 2,
-	    'ionicstr'      : 0.1,
-	    'pbc_dimensions': 0,
-	    'temp'          : 310,
-	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : ncpus,
-	    'pH'            : '-5,15',
+            'ionicstr'      : 0.1,
+            'pbc_dimensions': 0,
+            'temp'          : 310,
+            'grid_fill'     : 0.8,         # FUTURE VERSION
+            'ncpus'         : ncpus,
+            'pH'            : '-5,15',
             'pHstep'        : 0.2,
-	    'logfile'       : 'LOGFILE',
-	    'scaleM'        : 4,
-	    'scaleP'        : 1,
-	    'gsize'         : 81,
-	    'convergence'   : 0.01,
-	    'nlit'          : 500,
-	    'cutoff'        : -1,
+            'logfile'       : 'LOGFILE',
+            'scaleM'        : 4,
+            'scaleP'        : 1,
+            'gsize'         : 81,
+            'convergence'   : 0.01,
+            'nlit'          : 500,
+            'cutoff'        : -1,
             'relfac'        : 0.0,            
-	    'output'        : 'pKas.out'
-	}
-	sites = 'all'		
-	pKa = Titration(parameters, sites=sites)
+            'output'        : 'pKas.out'
+        }
+        sites = 'all'           
+        pKa = Titration(parameters, sites=sites)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_onlytermini(self):
         from pypka import Titration
-        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint LOG* __pycache__ *pyc')
+        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent '
+                  'contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
 NTR 7.904296875 ('undefined', 0.8891630578319204)
 CTR 3.29493141174 ('deprotonated', 0.0001971722409805938)
         """
         results = results.split('\n')[1:-1]
-	parameters = {
-	    'structure'     : 'ktp/ktp_pdb_onlytermini/ktp.pdb',     # MANDATORY            
+        parameters = {
+            'structure'     : 'ktp/ktp_pdb_onlytermini/ktp.pdb',     # MANDATORY            
             'clean_pdb'     : 'yes',
-	    'epsin'         : 2,
-	    'ionicstr'      : 0.1,
-	    'pbc_dimensions': 0,
-	    'temp'          : 310,
-	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : ncpus,
-	    'pH'            : '0,15',
+            'epsin'         : 2,
+            'ionicstr'      : 0.1,
+            'pbc_dimensions': 0,
+            'temp'          : 310,
+            'grid_fill'     : 0.8,         # FUTURE VERSION
+            'ncpus'         : ncpus,
+            'pH'            : '0,15',
             'pHstep'        : 0.25,
-	    'logfile'       : 'LOGFILE',
-	    'scaleM'        : 4,
-	    'scaleP'        : 1,
-	    'gsize'         : 81,
-	    'convergence'   : 0.01,
-	    'nlit'          : 300,
-	    'cutoff'        : -1,
+            'logfile'       : 'LOGFILE',
+            'scaleM'        : 4,
+            'scaleP'        : 1,
+            'gsize'         : 81,
+            'convergence'   : 0.01,
+            'nlit'          : 300,
+            'cutoff'        : -1,
             'relfac'        : 0.0,            
-	    'output'        : 'pKas.out'
-	}
-	sites = {'A': ('1N', '2C')}
-	pKa = Titration(parameters, sites=sites)
+            'output'        : 'pKas.out'
+        }
+        sites = {'A': ('1N', '2C')}
+        pKa = Titration(parameters, sites=sites)
         checkAPIResult(pKa, results)
-                    
+
     def test_api_ktp_pdb_onlytermini_noclean(self):
         from pypka import Titration
-        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint LOG* __pycache__ *pyc')
+        os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent '
+                  'contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
 NTR 8.17041015625 ('protonated', 0.9367291213385088)
 CTR 3.38864183426 ('deprotonated', 0.00024464456585429595)
         """
         results = results.split('\n')[1:-1]
-	parameters = {
-	    'structure'     : 'ktp/ktp_pdb_onlytermini_noclean/ktp_noclean.pdb',     # MANDATORY            
+        parameters = {
+            'structure'     : 'ktp/ktp_pdb_onlytermini_noclean/ktp_noclean.pdb',     # MANDATORY            
             'clean_pdb'     : 'no',
-	    'epsin'         : 2,
-	    'ionicstr'      : 0.1,
-	    'pbc_dimensions': 0,
-	    'temp'          : 310,
-	    'grid_fill'     : 0.8,         # FUTURE VERSION
-	    'ncpus'         : ncpus,
-	    'pH'            : '0,15',
+            'epsin'         : 2,
+            'ionicstr'      : 0.1,
+            'pbc_dimensions': 0,
+            'temp'          : 310,
+            'grid_fill'     : 0.8,         # FUTURE VERSION
+            'ncpus'         : ncpus,
+            'pH'            : '0,15',
             'pHstep'        : 0.25,
-	    'logfile'       : 'LOGFILE',
-	    'scaleM'        : 4,
-	    'scaleP'        : 1,
-	    'gsize'         : 81,
-	    'convergence'   : 0.01,
-	    'nlit'          : 300,
-	    'cutoff'        : -1,
+            'logfile'       : 'LOGFILE',
+            'scaleM'        : 4,
+            'scaleP'        : 1,
+            'gsize'         : 81,
+            'convergence'   : 0.01,
+            'nlit'          : 300,
+            'cutoff'        : -1,
             'relfac'        : 0.0,
-	    'output'        : 'pKas.out'
-	}
-	sites = {'A': ('1N', '2C')}
-	pKa = Titration(parameters, sites=sites)
+            'output'        : 'pKas.out'
+        }
+        sites = {'A': ('1N', '2C')}
+        pKa = Titration(parameters, sites=sites)
 
         checkAPIResult(pKa, results)
+
+class Coverage:
+    def test_gen_coverage(self):
+        os.system('bash coverage.sh')
