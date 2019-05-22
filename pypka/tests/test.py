@@ -13,8 +13,8 @@ def runTest(path, ncpus, results):
     results_lines = results.split('\n')[1:-1]
     sb.Popen("cd {0}; "
              "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
-             "coverage erase; "
-             "coverage run ../../../pypka.py parameters.dat".format(path, ncpus), shell=True).wait()
+             "python -m coverage erase; "
+             "python -m coverage run ../../../pypka.py parameters.dat".format(path, ncpus), shell=True).wait()
     checkOutput('{0}/pKas.out'.format(path), results_lines)    
 
 def checkOutput(filename, results_lines):
