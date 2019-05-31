@@ -1,6 +1,6 @@
  realsiz ==            4
  atom radii read from file
- /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.siz
+ /home/pedror/PypKa/pypka/G54A7/DataBaseT.siz
   
  !siz file modified by VT 2013/03/15                         
  !Hydrogen atoms have 0.001 radii because                    
@@ -9,7 +9,7 @@
  # of radius parameter records:        1090
   
  atomic charges read from file
- /home/pedror/MMS@FCUL/pypka/pypka/G54A7/DataBaseT.crg
+ /home/pedror/PypKa/pypka/G54A7/DataBaseT.crg
   
  !crg file modified by VT 2014/03/25                         
  !aminoacids from 54a7                                       

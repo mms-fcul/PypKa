@@ -21,7 +21,6 @@ pypka.egg-info/dependency_links.txt
 pypka.egg-info/entry_points.txt
 pypka.egg-info/requires.txt
 pypka.egg-info/top_level.txt
-pypka/G54A7/#DataBaseT.crg#
 pypka/G54A7/DataBaseT.crg
 pypka/G54A7/DataBaseT.crg~
 pypka/G54A7/DataBaseT.siz
