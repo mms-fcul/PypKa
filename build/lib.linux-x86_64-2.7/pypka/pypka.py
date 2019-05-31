@@ -1,12 +1,9 @@
-
 #! /usr/bin/python
 
 """
 A python API and CLI to perform pKa calculations on peptides,
 proteins or lipid bilayers.
 """
-
-import os
 
 import config as config
 from cli import checkParsedInput, readSettings, inputParametersFilter
@@ -30,7 +27,6 @@ __status__ = "Development"
 def getTitrableSites(pdb):
     config.f_in = pdb
     config.params['ffID'] = 'G54A7'
-    config.script_dir = os.path.dirname(__file__)
 
     tit_mol = Molecule()
 
@@ -50,8 +46,6 @@ def getTitrableSites(pdb):
         else:
             sites_keys.append(str(sitenumber))
 
-        print sitenumber, sitename
-
     return sites_keys
 
 
@@ -69,10 +63,12 @@ class Titration(object):
         """
         self._pKas = {}
 
-        if sites: # None if from CLI
+        if sites:  # None if from CLI
             parameters['sites_A'] = sites
             if sites != 'all':
                 config.sites = sites
+            else:
+                config.sites = {}
 
         if datfile:
             config.f_dat = datfile
@@ -83,16 +79,11 @@ class Titration(object):
 
         print 'Start Preprocessing'
         self.preprocessing()
-
-        print config.tit_mole._NTR, config.tit_mole._CTR
-        print config.tit_mole.getSites()
-        exit()
-
         self.processDelPhiParams()
 
         print 'Start PB Calculations'
-        self.DelPhiLaunch()
 
+        self.DelPhiLaunch()
         print 'API exited successfully'
 
     def preprocessing(self):
@@ -114,13 +105,13 @@ class Titration(object):
             # Reading .st files
             # If the titrable residues are defined
             if len(config.sites) > 0:
-                chains_length, chains_res = inputPDBCheck(config.f_in, config.sites)
+                chains_length, chains_res = inputPDBCheck(config.f_in,
+                                                          config.sites)
                 config.tit_mole.loadSites(chains_length, chains_res)
             # If the titrable residues are not defined and
             # the input pdb file is incomplete
             elif config.params['clean_pdb']:
                 chains_res, sites = config.tit_mole.makeSimpleSites()
-                print 'after simpleSites->', config.sites, config.tit_mole.getSites().keys()
             # If the titrable residues are not defined and
             # the input pdb is not missing any atoms
             else:
@@ -130,7 +121,8 @@ class Titration(object):
 
             termini = {config.tit_mole._NTR: config.tit_mole._NTR_atoms,
                        config.tit_mole._CTR: config.tit_mole._CTR_atoms}
-            # Creates a .pdb input for DelPhi, where residues are in their standard state
+            # Creates a .pdb input for DelPhi
+            # where residues are in their standard state
             if config.params['clean_pdb']:
                 inputpqr = 'clean.pqr'
                 outputpqr = 'cleaned_tau.pqr'
@@ -141,29 +133,22 @@ class Titration(object):
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
                          termini, config.userff, config.usernames,
                          inputpqr, outputpqr, site_numb_n_ref)
-            
-                log.checkDelPhiErrors('LOG_addHtaut')
-                print 'before makeSites->', config.sites, config.tit_mole.getSites().keys()
+                log.checkDelPhiErrors('LOG_addHtaut', 'addHtaut')
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
             else:
-                pdb2gro(config.f_in, 'TMP.gro', config.tit_mole.box, config.sites, termini)
+                pdb2gro(config.f_in, 'TMP.gro', config.tit_mole.box,
+                        config.sites, termini)
             groname = 'TMP.gro'
 
         config.tit_mole.readGROFile(groname)
 
     def processDelPhiParams(self):
-        # TODO: scale is only input in .pHmdp, not gsize
-        #if pbc_dim == 2:
-        #    params['scaleP'] = (float(params['gsizeP']) - 1) / (config.tit_mole.box[0] * 10)
-        #    params['scaleM'] = int(4 / params['scaleP'] + 0.5) * params['scaleP']
-
         # Storing DelPhi parameters and Creates DelPhi data structures
 
-        config.params['precision'] = 'single' # TODO: add to input parameter file
         delphimol = Delphi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
                            config.tit_mole.getNAtoms(),
-                           config.params['gsizeM'],
+                           config.params['gsize'],
                            config.params['scaleM'],
                            config.params['precision'],
                            epsin=config.params['epsin'],
@@ -173,8 +158,8 @@ class Titration(object):
                            res2=config.params['maxc'],
                            nlit=config.params['nlit'],
                            nonit=config.params['nonit'],
-                           relfac=config.params['relfac'],
-                           relpar=config.params['relpar'],
+                           relfac=0.0,
+                           relpar=0.0,
                            pbx=config.params['pbx'],
                            pby=config.params['pby'],
                            debug=config.debug, outputfile='LOG_readFiles')
@@ -222,7 +207,7 @@ class Titration(object):
 
     def getAverageProt(self, site, pH):
         pKa = self[site]
-        if type(pKa) == str:
+        if isinstance(pKa, str):
             return 'pk Not In Range'
         average_prot = 10 ** (pKa - pH) / (1 + 10 ** (pKa - pH))
         return average_prot
@@ -231,7 +216,7 @@ class Titration(object):
         state = 'undefined'
         average_prot = self.getAverageProt(site, pH)
 
-        if type(average_prot) == str:
+        if isinstance(average_prot, str):
             return state, average_prot
 
         if average_prot > 0.9:
@@ -240,12 +225,6 @@ class Titration(object):
             state = 'deprotonated'
 
         return state, average_prot
-
-    def getTitration(self, site, pH='all'):
-        site = self.correct_site_numb(site)
-        pmeans = []
-        for pH in self._pmeans.keys():
-            self._pmeans[pH][site]
 
     def __iter__(self):
         self._iterpKas = []
@@ -275,10 +254,10 @@ class Titration(object):
             numb = config.tit_mole._NTR + config.terminal_offset
         elif numb == 'CTR':
             numb = config.tit_mole._CTR + config.terminal_offset
-        if type(numb) == str:
+        if isinstance(numb, str):
             try:
                 numb = int(numb)
-            except:
+            except ValueError:
                 raise Exception('Unknown site')
         return numb
 
@@ -308,6 +287,7 @@ def CLI():
     parameters = checkParsedInput()
     Titration(parameters, sites=None)
     print 'CLI exited successfully'
+
 
 if __name__ == "__main__":
     CLI()

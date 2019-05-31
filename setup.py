@@ -17,7 +17,12 @@ setuptools.setup(
     package_data={'pypka': ['mc.so',
                             'addHtaut',
                             'G54A7/*',
-                            'G54A7/sts/*']},
+                            'G54A7/sts/*',
+                            'pdb2pqr/*',
+                            'pdb2pqr/dat/*',
+                            'pdb2pqr/extensions/*',
+                            'pdb2pqr/src/*',
+                            'pdb2pqr/ZSI/*']},
     install_requires=['numpy==1.15.4'],
     classifiers=[
         "Programming Language :: Python :: 2.7",

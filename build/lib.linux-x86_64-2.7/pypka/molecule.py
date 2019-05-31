@@ -1,15 +1,14 @@
 import config
-from formats import *
-import os
+from formats import read_pdb_line, read_gro_line, new_pdb_line
 from copy import copy
 from log import reportWarning
-
 from titsite import Titsite as Site
 from tautomer import Tautomer
 from concurrency import startPoolProcesses, runInteractionCalcs
 import mc
 
-class Molecule:
+
+class Molecule(object):
     """Molecule with more than one titrable sites
     """
     def __init__(self):
@@ -18,7 +17,7 @@ class Molecule:
         self._delphi_refparams (list): input DelPhi parameters
 
         # Sites
-        self._sites (dict): key is residue number 
+        self._sites (dict): key is residue number
                             value is site object instance
 
         self._sites_order (list): values are site object instances
@@ -37,11 +36,11 @@ class Molecule:
         # Offset of the first site
         This is only used because the membrane part is not finished
         and uses a pqr input of the first site
-        self._InputPQRoffSet (list): 
+        self._InputPQRoffSet (list):
             x, y, z coordinates of the offset in the input pqr
 
         # Site Interactions
-        self._site_interactions (list): 
+        self._site_interactions (list):
             contains tuples with pairs of site objects
         """
         self._delphi_refparams = ''
@@ -82,7 +81,6 @@ class Molecule:
         self._NTR_atoms = NTR_atoms
         self._CTR_atoms = CTR_atoms
 
-
     # Set Methods
     def addAtom(self, aname, anumb, position):
         self._atoms[anumb] = aname
@@ -92,7 +90,7 @@ class Molecule:
         self._delphi_refparams = params
 
     def loadDelPhiParams(self, delphimol):
-        if delphimol != 'reload':            
+        if delphimol != 'reload':
             self._delphimol = delphimol
         else:
             delphimol = self._delphimol
@@ -118,7 +116,7 @@ class Molecule:
         return self._atoms_array_position[atom_id]
 
     def getAtomsList(self):
-        """Returns a list of atoms details 
+        """Returns a list of atoms details
         (id, instance, atom index in DelPhi data structures)
         sorted by atom id number"""
         atom_list = []
@@ -137,7 +135,7 @@ class Molecule:
         for site in self._sites_order:
             i += 1
             if i == t_index:
-                return site._ref_tautomer           
+                return site._ref_tautomer
             for tautomer in sorted(site._tautomers.values()):
                 i += 1
                 if i == t_index:
@@ -145,7 +143,7 @@ class Molecule:
         raise Exception('Something is wrong')
 
     def getTautomerInstance(self, tautname, site_resnum):
-        """Return the tautomer instance named tautname 
+        """Return the tautomer instance named tautname
         existent in the site of the residue number site_resnum"""
         site = self._sites[site_resnum]
         if tautname in site._tautomers.keys():
@@ -183,7 +181,7 @@ class Molecule:
         to be yielded is the reference tautomer and then the rest of
         the tautomers by order"""
         for site in self._sites_order:
-            yield site._ref_tautomer                
+            yield site._ref_tautomer
             for tautomer in sorted(site._tautomers.values()):
                 yield tautomer
 
@@ -193,6 +191,7 @@ class Molecule:
         for site in self._sites_order:
             for tautomer in sorted(site._tautomers.values()):
                 yield tautomer
+
     def iterAllSites(self):
         for site in self._sites_order:
             yield site
@@ -236,51 +235,54 @@ class Molecule:
 
             return text + '\n'
 
+        def add2chain(chain, chain_res, resnumb, resname):
+            if chain in chain_res:
+                chain_res[chain][resnumb] = resname
+            else:
+                chain_res[chain] = {}
+                chain_res[chain][resnumb] = resname
+
         sites_file = ''
 
         sites = []
         chain_res = {}
         with open(config.f_in) as f:
             nline = 0
-            maxnlines = 0
             resnumb = None
             resname = None
             for line in f:
                 nline += 1
                 if 'ATOM ' == line[0:5]:
-                    (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+                    (aname, anumb, resname, chain,
+                     resnumb, x, y, z) = read_pdb_line(line)
                     if chain == ' ':
                         chain = 'A'
-
                     if resnumb not in sites:
                         if len(sites) == 0 and 'NTR' not in sites:
                             sites.append('NTR')
                             sites_file += SitesFileLine(resnumb, 'NTR')
                             self._NTR = resnumb
-
                         if resname in config.TITRABLERESIDUES and \
                            resname != 'NTR' and resname != 'CTR':
                             sites.append(resnumb)
                             sites_file += SitesFileLine(resnumb, resname)
-                            if chain in chain_res:
-                                chain_res[chain][resnumb] = resname
-                            else:
-                                chain_res[chain] = {}
-                                chain_res[chain][resnumb] = resname
+                            add2chain(chain, chain_res, resnumb, resname)
 
                     if 'CTR' not in sites and \
-                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2'):
+                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT'):
                         sites.append('CTR')
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb
+                        add2chain(chain, chain_res, resnumb, 'CTR')
 
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
         # Assigning a charge set to each tautomer
         self.addTautomersChargeSets()
 
-        with open('tmp.sites', 'w') as f_new:
-            f_new.write(sites_file)
+        if config.debug:
+            with open('tmp.sites', 'w') as f_new:
+                f_new.write(sites_file)
 
         return chain_res, sites
 
@@ -301,16 +303,14 @@ class Molecule:
                 for res in config.REGULARTITRATINGRES:
                     if res[0:2] == resname[0:2]:
                         ntautomers = config.TITRABLETAUTOMERS[res]
-
-
             sID = self.addSite(resnumb)
             self.addTautomers(sID, ntautomers, resname)
 
         def warning(resnumb, resname, res_atoms, mode=None):
             if mode == 'CYS' or resname == 'CYS':
                 CYS_atoms = ['N', 'CA', 'CB', 'SG', 'C', 'O', 'H']
-                if (set(res_atoms).issubset(CYS_atoms) and
-                    set(CYS_atoms).issubset(res_atoms)):
+                if set(res_atoms).issubset(CYS_atoms) and \
+                   set(CYS_atoms).issubset(res_atoms):
                     # no need to correct residue name
                     warn = '{0} {1} is assumed to be participating '\
                            'in a SS-bond'.format(resnumb, resname)
@@ -318,14 +318,14 @@ class Molecule:
                     return
 
                 CY0_atoms = ['N', 'CA', 'CB', 'SG', 'C', 'O', 'H', 'HG1']
-                if (set(res_atoms).issubset(CY0_atoms) and
-                    set(CY0_atoms).issubset(res_atoms)):
+                if set(res_atoms).issubset(CY0_atoms) and \
+                   set(CY0_atoms).issubset(res_atoms):
                     self._correct_names[resnumb] = 'CY0'
                     return
 
                 CY0_atoms = ['N', 'CA', 'CB', 'SG', 'C', 'O', 'H', 'HG']
-                if (set(res_atoms).issubset(CY0_atoms) and
-                    set(CY0_atoms).issubset(res_atoms)):
+                if set(res_atoms).issubset(CY0_atoms) and \
+                   set(CY0_atoms).issubset(res_atoms):
                     self._correct_names[resnumb] = 'CY0'
                     self._correct_atoms[resnumb] = {'HG': 'HG1'}
                     return
@@ -335,7 +335,7 @@ class Molecule:
                     reportWarning(warn)
 
             elif resname not in config.TITRABLERESIDUES:
-                return 
+                return
             else:
                 warn = '{0} {1} failed integrity check'.format(resnumb,
                                                                resname)
@@ -352,7 +352,6 @@ class Molecule:
         cur_atoms = []
         prev_resnumb = None
         prev_resname = None
-        first_res = None
         with open(filename) as f:
             nline = 0
             maxnlines = 0
@@ -360,10 +359,12 @@ class Molecule:
                 resname = None
                 nline += 1
                 if 'ATOM ' == line[0:5]:
-                    (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+                    (aname, anumb, resname, chain,
+                     resnumb, x, y, z) = read_pdb_line(line)
                 elif filetype == 'gro':
                     if nline > 2 and nline < maxnlines:
-                        (aname, anumb, resname, resnumb, x, y, z) = read_gro_line(line)
+                        (aname, anumb, resname,
+                         resnumb, x, y, z) = read_gro_line(line)
                     elif nline == 2:
                         natoms = int(line.strip())
                         maxnlines = natoms + 3
@@ -379,7 +380,6 @@ class Molecule:
                     if prev_resname in config.TITRABLERESIDUES or \
                        (prev_resnumb == self._NTR or resnumb == self._NTR) or \
                        (prev_resnumb == self._CTR or resnumb == self._CTR):
-
                         if prev_resnumb == self._NTR and resnumb != self._NTR:
                             prev_resname = correctResName(prev_resname)
 
@@ -388,10 +388,11 @@ class Molecule:
                             else:
                                 res_tits = False
 
-                            integrity_nter, integrity_site = self.check_integrity(prev_resname,
-                                                                                  cur_atoms,
-                                                                                  nter=True,
-                                                                                  site=res_tits)
+                            (integrity_nter,
+                             integrity_site) = self.check_integrity(prev_resname,
+                                                                    cur_atoms,
+                                                                    nter=True,
+                                                                    site=res_tits)
                             if integrity_nter:
                                 nter_resnumb = prev_resnumb + config.terminal_offset
                                 makeSite(nter_resnumb, 'NTR')
@@ -403,7 +404,8 @@ class Molecule:
                                 if integrity_site:
                                     makeSite(prev_resnumb, prev_resname)
                                 else:
-                                    warning(prev_resnumb, prev_resname, cur_atoms)
+                                    warning(prev_resnumb,
+                                            prev_resname, cur_atoms)
 
                             prev_resnumb = None
 
@@ -432,7 +434,6 @@ class Molecule:
                                     makeSite(prev_resnumb, prev_resname)
                                 else:
                                     warning(prev_resnumb, prev_resname, cur_atoms)
-
 
                         # Dealing with the previous residue
                         elif prev_resnumb:
@@ -471,21 +472,21 @@ class Molecule:
                        prev_resname != resname:
                         prev_resname = resname
 
-
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
         # Assigning a charge set to each tautomer
         self.addTautomersChargeSets()
 
-        #TODO: report blocks that failed the check (in .log file with
-        #numbering reference to stepwise scheme)
+        # TODO: report blocks that failed the check (in .log file with
+        # numbering reference to stepwise scheme)
 
-        #TODO: add lipid residues
+        # TODO: add lipid residues
 
         if config.debug:
             print 'exiting makeSites'
 
-    def check_integrity(self, resname, res_atoms, nter=False, cter=False, site=True):
+    def check_integrity(self, resname, res_atoms,
+                        nter=False, cter=False, site=True):
         def read_anames(filename):
             res_atoms_st = []
             with open(filename) as f:
@@ -498,9 +499,9 @@ class Molecule:
         def pop_atoms(anames1, anames2):
             trigger = False
             for aname in anames1:
-                if aname not in anames2:                    
+                if aname not in anames2:
                     trigger = True
-                    if config.debug:                    
+                    if config.debug:
                         print aname, 'not in', resname
                 else:
                     anames2.remove(aname)
@@ -515,12 +516,14 @@ class Molecule:
         integrity = None
 
         if nter:
-            res_atoms_st = read_anames('{0}/{1}/sts/NTRtau1.st'.format(config.script_dir,
-                                                                       config.params['ffID']))
+            st = '{0}/{1}/sts/NTRtau1.st'.format(config.script_dir,
+                                                 config.params['ffID'])
+            res_atoms_st = read_anames(st)
             res_atoms, integrity_nter = pop_atoms(res_atoms_st, res_atoms)
         elif cter:
-            res_atoms_st = read_anames('{0}/{1}/sts/CTRtau1.st'.format(config.script_dir,
-                                                                       config.params['ffID']))
+            st = '{0}/{1}/sts/CTRtau1.st'.format(config.script_dir,
+                                                 config.params['ffID'])
+            res_atoms_st = read_anames(st)
             res_atoms, integrity_cter = pop_atoms(res_atoms_st, res_atoms)
 
         if site:
@@ -535,15 +538,17 @@ class Molecule:
                     res_atoms.remove(aname)
                 elif not nter and not cter:
                     integrity = False
-            if config.debug: 
+
+            if config.debug:
                 print 'i', integrity
 
-            if integrity != False:
+            if integrity is not False:
                 filename = '{0}/{1}/sts/{2}tau1.st'.format(config.script_dir,
-                                                           config.params['ffID'], resname)
-                res_atoms_st = read_anames(filename)        
+                                                           config.params['ffID'],
+                                                           resname)
+                res_atoms_st = read_anames(filename)
                 res_atoms, integrity = pop_atoms(res_atoms_st, res_atoms)
-                if config.debug: 
+                if config.debug:
                     print res_atoms_st, res_atoms
                     print 'i', integrity
 
@@ -556,7 +561,6 @@ class Molecule:
             return integrity_cter, integrity
         else:
             return integrity
-
 
     def addSite(self, resnum):
         sID = Site(resnum, self)
@@ -613,7 +617,6 @@ class Molecule:
         self.addReferenceTautomers()
         self.addTautomersChargeSets()
 
-
     def addReferenceTautomers(self):
         for site in self._sites.values():
             site.addReferenceTautomer()
@@ -623,7 +626,7 @@ class Molecule:
             # reads .st files
             site.addChargeSets()
 
-    def readIndexFile(self):
+    def readIndexFile(self, f_ndx):
         protein_trigger = False
         protein_atoms = []
         with open(f_ndx) as f:
@@ -643,13 +646,11 @@ class Molecule:
         self._sites_order = []
 
     def readGROFile(self, groname):
-        """ 
-        """
-        #TODO: For CpHMD read the index file:
-        #self.readIndexFile()
+        # TODO: For CpHMD read the index file:
+        # self.readIndexFile()
 
         # Getting the "protein" with trjconv PBC mol
-        #os.system('echo "Protein" | {GroDIR}/trjconv '
+        # os.system('echo "Protein" | {GroDIR}/trjconv '
         #          '-f TMP_{config.sysname}.gro -s TMP_CpHMD.tpr '
         #          '-n TMP_CpHMD.ndx -o TMP_auxD1.gro '
         #          '-pbc mol -quiet'.format(GroDIR=paths['GroDIR'], sysname=config.sysname))
@@ -669,13 +670,13 @@ MODEL        1
 
             lines = f.read().splitlines()
             penul_line = lines[-2]
-            last_line =  lines[-1]
-            final_res_numb = int(penul_line[:5].strip())
-            final_atom_numb = int(penul_line[15:20].strip())
+            last_line  = lines[-1]
+            #final_res_numb = int(penul_line[:5].strip())
+            #final_atom_numb = int(penul_line[15:20].strip())
             self.box = [float(i) for i in last_line.split()[:3]]
 
             if config.params['pbc_dim'] == 2:
-                scaleP = (config.params['gsizeP'] - 1) / (self.box[0] * 10)
+                scaleP = (config.params['gsize'] - 1) / (self.box[0] * 10)
                 scaleM = int(4 / scaleP + 0.5) * scaleP
 
                 config.params['scaleP'] = scaleP
@@ -689,12 +690,11 @@ MODEL        1
                     natoms += 1
                     aposition = natoms - 1
 
-                    (aname, anumb, resname, \
+                    (aname, anumb, resname,
                      resnumb, x, y, z) = read_gro_line(line)
-                    x, y, z = x*10, y*10, z *10
+                    x, y, z = x * 10, y * 10, z * 10
 
                     #print resnumb, resname, aname, anumb, aposition, x, y, z
-                    #print NTR_atoms, CTR_atoms, aname
 
                     if resnumb == self._NTR and aname in self._NTR_atoms:
                         resname = 'NTR'
@@ -721,15 +721,14 @@ MODEL        1
                         #( aname not in ('N', 'H', 'C', 'O', 'CA') or 
                         #(aname in ('N', 'H', 'C', 'O', 'CA') and resname == 'NTR')):
                         # change res name to reference tautomer
-	                ref_tau_name = self._sites[resnumb].getRefTautomerName()
+                        ref_tau_name = self._sites[resnumb].getRefTautomerName()
 
                         # add atom to corresponding site
                         self._sites[resnumb].addAtom(aname, anumb)
-                        #print resnumb, aname, anumb
                         if resnumb in site_positions:
-                            site_positions[resnumb].append((x, y, z))                            
+                            site_positions[resnumb].append((x, y, z))
                             if aname[0] == 'H':
-                                site_Hs[resnumb].append((x, y, z))                            
+                                site_Hs[resnumb].append((x, y, z))
                         else:
                             site_positions[resnumb] = [(x, y, z)]
                             if aname[0] == 'H':
@@ -737,12 +736,9 @@ MODEL        1
                             else:
                                 site_Hs[resnumb] = []
 
-                    #if len(aname) == 4:
-                    #    aname = aname[-1] + aname[0:3]                        
-                    new_pdb_content += new_pdb_line(aposition, aname, ref_tau_name, resnumb, x, y, z)
-
-                    #more_pdb_content, final_res_numb, final_atom_numb = add_pbc(aposition, aname, ref_tau_name, x, y, z, self.box[0], final_res_numb, final_atom_numb)
-                    #new_pdb_content += more_pdb_content
+                    new_pdb_content += new_pdb_line(aposition, aname,
+                                                    ref_tau_name, resnumb,
+                                                    x, y, z)
 
                 elif line_counter == 2:
                     natoms_left = int(line.strip())
@@ -752,14 +748,13 @@ MODEL        1
         with open('delphi_in_stmod.pdb', 'w') as f_new:
             f_new.write(new_pdb_content)
 
-        #TODO: check Terminal_offset has to be bigger than the total number of residues
-        #TODO: delete terminal_offset and use another approach to distinguish between N- and C-ter
-        #TODO: check size xy > config.cutoff * 2
+        # TODO: check Terminal_offset has to be bigger than the total number of residues
+        # TODO: delete terminal_offset and use another approach to distinguish between N- and C-ter
+        # TODO: check size xy > config.cutoff * 2
         # if so, raise Exception, and ask to change cutoff value
 
-        #TODO: check if pbc_dim -> set gsizes from pdb size xy and ignore perfil
+        # TODO: check if pbc_dim -> set gsizes from pdb size xy and ignore perfil
 
-        site_centers = {}
         for site in site_positions:
             if site in self._sites.keys():
                 pos_max = [-9999990, -999999, -999999]
@@ -771,17 +766,22 @@ MODEL        1
                             pos_max[i] = atom[i]
                         if pos_min[i] > atom[i]:
                             pos_min[i] = atom[i]
-                focus_center[0] = (pos_max[0] + pos_min[0] ) / 2
-                focus_center[1] = (pos_max[1] + pos_min[1] ) / 2
-                focus_center[2] = (pos_max[2] + pos_min[2] ) / 2
+                focus_center[0] = (pos_max[0] + pos_min[0]) / 2
+                focus_center[1] = (pos_max[1] + pos_min[1]) / 2
+                focus_center[2] = (pos_max[2] + pos_min[2]) / 2
                 if config.params['pbc_dim'] == 2:
                     self._sites[site].addCenter(focus_center,
                                                 boxsize=self.box[0],
-                                                box_z=self.box[2])                    
+                                                box_z=self.box[2])
                 else:
                     self._sites[site].addCenter(focus_center)
                 hx, hy, hz = 0, 0, 0
                 nHs = len(site_Hs[site])
+                if nHs == 0:
+                    sitename = self._sites[site].getName()
+                    raise Exception('Site {1}{0} appears '
+                                    'to have no Hydrogen atoms'.format(site,
+                                                                       sitename))
                 for h in site_Hs[site]:
                     hx += h[0]
                     hy += h[1]
@@ -792,56 +792,39 @@ MODEL        1
                 Hcenter = (round(hx, 2), round(hy, 2), round(hz, 2))
                 self._sites[site].addCenterH(Hcenter)
 
-        with open('cent', 'w') as f_new:
-            text = ''
-            for site in site_positions:
-                if site in self._sites.keys():
-                    text += str(self._sites[site]._center) + '\n'
-            f_new.write(text)
-        if config.params['pbc_dim'] == 2:
-            with open('centHs', 'w') as f_new:
+        if config.debug:
+            with open('cent', 'w') as f_new:
                 text = ''
                 for site in site_positions:
                     if site in self._sites.keys():
-                        text += '{0} {1}'.format(site, self._sites[site]._centerH) + '\n'
+                        text += str(self._sites[site]._center) + '\n'
                 f_new.write(text)
-
-    def readCenters(self, f_cent, boxsize=False):
-	"""Opens cent file 
-        Stores centers of sites
-	"""        
-	with open(f_cent) as f:
-            nsites = 0
-	    for line in f:
-                nsites += 1
-	        cols = line.split()
-                res_number = cols[0]
-                x = float(cols[1]) * 10
-                y = float(cols[2]) * 10
-                z = float(cols[3]) * 10
-                if nsites == 1:
-                    x = truncate(x, 3)
-                    y = truncate(y, 3)
-                    z = truncate(z, 3)
-                    self._InputPQRoffSet = [x, y, z]
-                if res_number in self._sites:
-                    if boxsize:
-                        self._sites[res_number].addCenter([x, y, z], boxsize=boxsize)
-                    else:
-                        self._sites[res_number].addCenter([x, y, z])
-                else:
-                    raise Exception('Something is wrong... Site in Centers '
-                                    'not defined in cent file')
+            if config.params['pbc_dim'] == 2:
+                with open('centHs', 'w') as f_new:
+                    text = ''
+                    for site in site_positions:
+                        if site in self._sites.keys():
+                            text += '{0} {1}\n'.format(site,
+                                                       self._sites[site]._centerH)
+                    f_new.write(text)
+                with open('cent_original', 'w') as f_new:
+                    text = ''
+                    for site in site_positions:
+                        if site in self._sites.keys():
+                            text += '{0} {1}\n'.format(site,
+                                                       self._sites[site]._center_original)
+                    f_new.write(text)
 
     def calcSiteInteractionsParallel(self, ncpus):
-        """Calculates the pairwise interaction energies 
+        """Calculates the pairwise interaction energies
         and writes them in a formatted .dat file
         Interactions are calculated using a pool of processes
 
         Args:
           ncpus (int): number of cpus to be used
-        """        
-        self.writeDatHeader()
+        """
+        if config.debug:
+            self.writeDatHeader()
         counter = 0
         for site1 in self.getSitesOrdered()[:-1]:
             counter += 1
@@ -857,7 +840,7 @@ MODEL        1
             for nstate2 in range(sum(self._npossible_states)):
                 self._interactions[nstate1].append(-999999)
 
-        self._interactions_look = []        
+        self._interactions_look = []
         aux = -1
         site = -1
         for nstates in self._npossible_states:
@@ -885,18 +868,18 @@ MODEL        1
                 self._interactions[site1i][site2i] /= 2
                 self._interactions[site2i][site1i] /= 2
 
-                to_write += interaction[3][6:18] + interaction[3][:6] + ' {0:13.6e}\n'.format(self._interactions[site1i][site2i] * (config.kBoltz * T))
+                if config.debug:
+                    col1 = interaction[3][6:18]
+                    col2 = interaction[3][:6]
+                    col3 = self._interactions[site1i][site2i] * (config.kBoltz * T)
+                    to_write += '{0}{1} {2:13.6e}\n'.format(col1, col2, col3)
             else:
                 self._interactions[site1i][site2i] = interaction[2]
                 self._interactions[site2i][site1i] = interaction[2]
 
-            #if site1i == 0 or site2i == 0:
-            #    print site1i, site2i, interaction[2] * (config.kBoltz * T)
-            #    print interaction[3]
-
-
-        with open('interactions.dat', 'a') as f_new:
-            f_new.write(to_write)
+        if config.debug:
+            with open('interactions.dat', 'a') as f_new:
+                f_new.write(to_write)
 
     def calcInteractionNumber(self, inumber):
         """Calculates the pairwise interaction energies
@@ -905,15 +888,14 @@ MODEL        1
         Args:
           inumber (int): site interaction pair code
 
-        Ensures: 
+        Ensures:
           to_write (str): site interaction energies formatted
         to be written in .dat file
         """
-        to_write = ''
         sites = self._site_interactions[inumber]
         site1 = sites[0]
         site2 = sites[1]
-        pairs = ((site1, site2), (site2, site1))        
+        pairs = ((site1, site2), (site2, site1))
 
         iterAtomsList = self.getAtomsList()
 
@@ -940,18 +922,19 @@ MODEL        1
                     state2 = int(taut2._name[-1])
 
                     if config.debug:
-                        print nsite1, nsite2, state1, state2, taut1._name, taut2._name, gg
+                        print (nsite1, nsite2, state1, state2,
+                               taut1._name, taut2._name, gg)
                     site1i = self._interactions_look[nsite1][state1]
                     site2i = self._interactions_look[nsite2][state2]
 
-                    interactions.append((site1i, site2i, gg,
-                                         self.convertIntoDatFormat(taut1, taut2, interaction)))
+                    datf = self.convertIntoDatFormat(taut1, taut2, interaction)
+                    interactions.append((site1i, site2i, gg, datf))
 
         return interactions
 
     def convertIntoDatFormat(self, tau1, tau2, interaction):
         """Returns a .dat format interaction line
-        
+
         Args:
           tau1 (Tautomer): first tautomer of the pair
           tau2 (Tautomer): second tautomer of the pair
@@ -972,7 +955,7 @@ MODEL        1
     def writeDatHeader(self):
         """Writes pKint energies in .dat file header"""
         to_write = '{0}\n'.format(len(self._sites))
-        for site in self._sites_order:        
+        for site in self._sites_order:
             to_write += '{0:3s}-{1:<7}{2:>2}  P  *\n'.format(site._res_name,
                                                              site._res_number,
                                                              len(site._tautomers) + 1)
@@ -984,17 +967,18 @@ MODEL        1
                 ref_prot_state = 0
 
             for tautomer in site.iterOrderedTautomersWithoutRef():
-                to_write += '{0:1d} {1:13.6e}\n'.format(tau_prot_state, tautomer._dg)
+                to_write += '{0:1d} {1:13.6e}\n'.format(tau_prot_state,
+                                                        tautomer._dg)
             to_write += '{0:1d}  0.000000e+00\n'.format(ref_prot_state)
-        with open('interactions.dat', 'w') as f_new:
-            f_new.write(to_write)
-
+        if config.debug:
+            with open('interactions.dat', 'w') as f_new:
+                f_new.write(to_write)
 
     def calcpKint(self, unpacked_results):
         """Calculation the pKint of all tautomers
         """
         i = -1
-        if config.debug:        
+        if config.debug:
             print '############ results ############'
         pkints = ''
         contributions = ''
@@ -1012,7 +996,8 @@ MODEL        1
             esolvationS = result[4]
             sitpotS     = result[5]
 
-            tautomer = config.tit_mole.getTautomerInstance(tautname, tautresnumb)
+            tautomer = config.tit_mole.getTautomerInstance(tautname,
+                                                           tautresnumb)
 
             tautomer.saveDelPhiResults(esolvationS, sitpotS, esolvationM,
                                        sitpotM)
@@ -1023,32 +1008,33 @@ MODEL        1
                 print (tautomer._name, tautomer._esolvationS,
                        len(tautomer._sitpotS), tautomer._esolvationM,
                        len(tautomer._sitpotM))
-                
+
             tautomer.calcBackEnergy()
             if not tautomer.isRefTautomer():
                 tautomer.calcpKint()
                 if config.debug:
                     print ('pkint', tautomer._name, tautomer._dg,
                            id(tautomer))
-                pkints += '{} {} {}\n'.format(tautomer._name,
-                                              tautomer._dg, tautomer.pKint)
-                contributions += '{}{} {} {} {} {}\n'.format(tautomer._site._res_number,
-                                                             tautomer._name,
-                                                             tautomer.dG_solvationM,
-                                                             tautomer.dG_solvationS,
-                                                             tautomer.dG_solvationM - tautomer.dG_solvationS,
-                                                             tautomer.dG_back)
-        with open('pkint', 'w') as f_new:
-            f_new.write(pkints)
-        with open('contributions', 'w') as f_new:
-            f_new.write(contributions)
+                    pkints += '{} {} {}\n'.format(tautomer._name,
+                                                  tautomer._dg, tautomer.pKint)
+                    contributions += '{}{} {} {} {} {}\n'.format(tautomer._site._res_number,
+                                                                 tautomer._name,
+                                                                 tautomer.dG_solvationM,
+                                                                 tautomer.dG_solvationS,
+                                                                 tautomer.dG_solvationM - tautomer.dG_solvationS,
+                                                                 tautomer.dG_back)
+        if config.debug:
+            with open('pkint', 'w') as f_new1, \
+                 open('contributions', 'w') as f_new2:
+                f_new1.write(pkints)
+                f_new2.write(contributions)
 
     def runMC(self):
         def resize_list_of_lists(listn, maxsize, filler=None):
-            for i in range(len(listn)):
-                diff = maxsize - len(listn[i])
+            for i in listn:
+                diff = maxsize - len(i)
                 for ii in range(diff):
-                    listn[i].append(filler)
+                    i.append(filler)
 
         print '\nStart MC'
 
@@ -1082,7 +1068,6 @@ MODEL        1
             self._possible_states_occ[isite].append(prot_state)
             self._possible_states_g[isite].append(0.0)
 
-
         maxstates = max(self._npossible_states)
         resize_list_of_lists(self._possible_states, maxstates)
         resize_list_of_lists(self._possible_states_g, maxstates)
@@ -1098,12 +1083,13 @@ MODEL        1
 
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
-
         pKas, pmeans_raw = mc.MCrun(nsites, self._npossible_states,
-                                    self._possible_states_g, self._possible_states_occ,
-                                    self._interactions, self._interactions_look,
-                                    pHsteps, mcsteps, eqsteps, seed, pHmin, dpH,
-                                    couple_min)
+                                    self._possible_states_g,
+                                    self._possible_states_occ,
+                                    self._interactions,
+                                    self._interactions_look,
+                                    pHsteps, mcsteps, eqsteps, seed,
+                                    pHmin, dpH, couple_min)
 
         print '\n\nResults'
         text_pks = ''
@@ -1119,17 +1105,17 @@ MODEL        1
             else:
                 resnumb = site.getResNumber()
                 text_prots += '{0:5d}{1:3s}'.format(resnumb, sitename)
-            text_pks += '{0} {1} {2}\n'.format(resnumb, sitename, i[0])            
+            text_pks += '{0} {1} {2}\n'.format(resnumb, sitename, i[0])
             if i[0] != 100.0:
                 print '{0} {1} {2}'.format(resnumb, sitename, round(i[0], 2))
             else:
                 print '{0} {1} Not in range'.format(resnumb, sitename)
         print ''
 
-        if config.f_out:            
+        if config.f_out:
             with open(config.f_out, 'w') as f:
                 f.write(text_pks)
-                
+
         pmeans = {}
         for pHstep in range(pHsteps):
             pH = pHmin + pHstep * dpH
@@ -1142,19 +1128,19 @@ MODEL        1
             pmeans[pH]['total'] = pmean
             text_prots += '\t{0:7.4f}'.format(pmean)
 
-            for site in self.getSitesOrdered():                
+            for site in self.getSitesOrdered():
                 c += 1
                 sitename = site.getName()
                 sitenumb = site.getResNumber()
                 pmean = pmeans_raw[pHstep][c]
                 pmeans[pH][sitenumb] = pmean
-                text_prots += '\t{0:7.4f}'.format(pmean)
+                if pmean != 100.0:
+                    text_prots += '\t{0:7.4f}'.format(pmean)
+                else:
+                    text_prots += '\t-'
 
-        if config.f_prot_out:            
+        if config.f_prot_out:
             with open(config.f_prot_out, 'w') as f:
                 f.write(text_prots)
 
-
         return pKas, pmeans
-
-

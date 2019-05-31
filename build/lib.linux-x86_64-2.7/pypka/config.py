@@ -1,9 +1,9 @@
 from copy import copy
+import os
 
 tit_mole = None
 sites    = {}
 pid      = None
-script_dir = None
 debug    = None
 
 input_conversion = {'grid_fill': 'perfil',
@@ -21,8 +21,7 @@ total_jobs = None # to be redeclared in concurrency
 
 # DelPhi related
 params = {'perfil': 0.9,
-          'gsizeP': 81,
-          'gsizeM': 81,
+          'gsize': 81,
           'scaleP': 1,
           'scaleM': 4,
           'precision': 'single',
@@ -44,26 +43,26 @@ params = {'perfil': 0.9,
           'seed': 1234567,
           'cutoff': 2.5,
           'pbc_dim': 0,
-          'ionicstr': 0.1,
           'epsin': 20.0,
           'slice': 0.05,
           'ncpus': 1,
           'clean_pdb': True,
           'couple_min': 2.0,
           'mcsteps': 200000,
-          'eqsteps': 1000
-}
+          'eqsteps': 1000}
 
 # Paths
 # TODO: include in dependencies
 # in dependencies there is a pdb2pqr that has a important dat folder
-pdb2pqr = "/home/pedror/Programs/pdb2pqr/pdb2pqr.py" 
-delphi4py = "./delphi4py.py"
-userff = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.DAT"
-usernames = "/home/pedror/delphit/delphiT/dependencies/pdb2pqr/dat/GROMOS.names"
+fileDir = os.path.dirname(os.path.abspath(__file__))
+script_dir = fileDir
+pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(fileDir)
+userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(fileDir)
+usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(fileDir)
+
 
 # Input Files
-f_in  = None
+f_in = None
 f_in_extension = None
 f_out = None
 f_prot_out = None
@@ -71,11 +70,11 @@ f_log = "LOG"
 f_dat = None
 
 # Force Field Files
-f_crg   = None
-f_siz   = None
+f_crg = None
+f_siz = None
 
 lipids = {'cholesterol': 'CHO',  # to edit
-          'POPC': 'POP'} 
+          'POPC': 'POP'}
 lipid_residues = ['POX', 'PJ2', 'CHL']  # allowed residue names
 
 # Constants
@@ -104,4 +103,3 @@ for res in REGULARTITRATINGRES:
     ntautomers = TITRABLETAUTOMERS[res]
     for i in range(ntautomers):
         TITRABLERESIDUES.append(res[0:2] + str(i + 1))
-

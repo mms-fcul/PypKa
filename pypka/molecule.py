@@ -269,7 +269,7 @@ class Molecule(object):
                             add2chain(chain, chain_res, resnumb, resname)
 
                     if 'CTR' not in sites and \
-                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2'):
+                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT'):
                         sites.append('CTR')
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb

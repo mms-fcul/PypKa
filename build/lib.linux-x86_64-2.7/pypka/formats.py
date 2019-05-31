@@ -14,6 +14,13 @@ def new_gro_line(aID, aname, resname, resnumb, x, y, z):
     return gro_format.format(resnumb, resname, aname, aID, x, y, z)
 
 
+def correct_longHs(aname):
+    if aname[1] == 'H' and aname[0] in '12' \
+       and aname[3] in '12':
+        return aname[1:3] + aname[3] + aname[0]
+    return aname
+
+
 def read_pqr_line(line):
     aname   = line[12:16].strip()
     anumb   = int(line[7:11].strip())
@@ -24,6 +31,8 @@ def read_pqr_line(line):
     z       = float(line[46:54])
     charge  = float(line[54:62])
     radius  = float(line[62:70])
+    if len(aname) == 4:
+        aname = correct_longHs(aname)
     return (aname, anumb, resname, resnumb, x, y, z,
             charge, radius)
 
@@ -36,6 +45,8 @@ def read_pdb_line(line):
     x       = float(line[30:38])
     y       = float(line[38:46])
     z       = float(line[46:54])
+    if len(aname) == 4:
+        aname = correct_longHs(aname)
     return (aname, anumb, resname, chain, resnumb, x, y, z)
 
 def read_gro_line(line):
@@ -49,7 +60,6 @@ def read_gro_line(line):
     return (aname, anumb, resname, resnumb, x, y, z)
 
 
-
 def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
     """
     Returns
@@ -59,7 +69,6 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
     NTR_atoms = termini[NTR_numb]
     CTR_numb = termini.keys()[0]
     CTR_atoms = termini[CTR_numb]
-
 
     header = 'CREATED within PyPka\n'
     new_pdb_text = ''
@@ -73,7 +82,7 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
                 pdb_box = [float(parts[1]), float(parts[2]), float(parts[3])]
                 continue
             elif 'ATOM' != line[:4]:
-                continue            
+                continue
             elif pqr:
                 (aname, anumb, resname, resnumb, x, y,
                  z, charge, radius) = read_pqr_line(line)
@@ -101,7 +110,7 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
                                          resnumb, x, y, z)
 
     header += '{0}\n'.format(aposition)
-    if box  == []:
+    if box == []:
         footer = '{0:10.5f}{1:10.5f}{2:10.5f}\n'.format(pdb_box[0] / 10.0,
                                                         pdb_box[1] / 10.0,
                                                         pdb_box[2] / 10.0)
@@ -117,7 +126,8 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
     return aposition
 
 
-def correct_names(sites_numbs, resnumb, resname, aname, termini, titrating_sites):
+def correct_names(sites_numbs, resnumb, resname, aname,
+                  termini, titrating_sites):
     def change_aname(aname, restype, mode='regular'):
         if mode == 'titrating':
             not_correct_names = correct_atoms_sites_table[restype].keys()

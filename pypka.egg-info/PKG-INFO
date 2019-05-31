@@ -6,7 +6,7 @@ Home-page: https://github.com/mms-fcul/PypKa
 Author: Pedro Reis
 Author-email: pdreis@fc.ul.pt
 License: UNKNOWN
-Description: [![GitHub version](https://badge.fury.io/gh/mms-fcul%2Fpypka.svg)](https://badge.fury.io/gh/mms-fcul%2Fpypka) [![CircleCI](https://circleci.com/gh/mms-fcul/PypKa.svg?style=svg)](https://circleci.com/gh/mms-fcul/PypKa) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/77db3bc226c94625acd3cea0e14c23ad)](https://www.codacy.com/app/pedrishi/PypKa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mms-fcul/PypKa&amp;utm_campaign=Badge_Grade) [![Documentation Status](https://readthedocs.org/projects/pypka/badge/?version=latest)](https://pypka.readthedocs.io/en/latest/?badge=latest)
+Description: [![GitHub version](https://badge.fury.io/gh/mms-fcul%2Fpypka.svg)](https://badge.fury.io/gh/mms-fcul%2Fpypka) [![CircleCI](https://circleci.com/gh/mms-fcul/PypKa.svg?style=svg)](https://circleci.com/gh/mms-fcul/PypKa) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/77db3bc226c94625acd3cea0e14c23ad)](https://www.codacy.com/app/pedrishi/PypKa?utm_source=github.com&utm_medium=referral&utm_content=mms-fcul/PypKa&utm_campaign=Badge_Coverage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/77db3bc226c94625acd3cea0e14c23ad)](https://www.codacy.com/app/pedrishi/PypKa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mms-fcul/PypKa&amp;utm_campaign=Badge_Grade) [![Documentation Status](https://readthedocs.org/projects/pypka/badge/?version=latest)](https://pypka.readthedocs.io/en/latest/?badge=latest)
         
         
         # PypKa
@@ -15,7 +15,12 @@ Description: [![GitHub version](https://badge.fury.io/gh/mms-fcul%2Fpypka.svg)](
         
         
         # Dependencies 
-          delphi4py #1.0.0
+        
+          - delphi4py #1.0.0
+          - libgfortran4
+          - gawk
+          - pytest
+          - numpy
         
         
         # License

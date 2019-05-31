@@ -5,8 +5,8 @@ class Titsite:
     """Titrable Site with more than one Tautomer"""
     def __init__(self, res_number, molecule):
         """
-        Args: 
-          res_number (int): number of the site in the .pdb 
+        Args:
+          res_number (int): number of the site in the .pdb
                             and .sites file
           molecule (TitratingMolecule): molecule to
                                         which the Site belongs
@@ -20,7 +20,7 @@ class Titsite:
             if dimension is 0, then center is defined in cent file
             elif dimension is 2, then center (z) is defined in cent file
                                  and center (x, y) are defined in boxsize variable
-        self._center_original (list): Site geometric center on 
+        self._center_original (list): Site geometric center on
                                       cent file when dimension is 2
 
         # Site Tautomers
@@ -37,7 +37,7 @@ class Titsite:
         self._molecule = molecule
         self._res_number = res_number
         self._res_name = ''
-        self._atoms  = {}
+        self._atoms = {}
         self._tautomers = {}
         self._ref_tautomer = ''
         self._center = []
@@ -49,7 +49,7 @@ class Titsite:
 
         Args:
             res_tauts (list): tautomers from sites file
-        """        
+        """
         for tautomer in res_tauts:
             self._res_name = tautomer[:3]
             correct_number = str(int(tautomer[-1]) - 1)
@@ -81,9 +81,8 @@ class Titsite:
         tID = Tautomer(ref_tautomer, self, self._molecule)
         self._ref_tautomer = tID
 
-
     def addChargeSets(self):
-        """Stores the charge set of each existing tautomer 
+        """Stores the charge set of each existing tautomer
         for the present Site"""
         for tautomer in self._tautomers.values():
             tautomer.loadChargeSet(self._res_name,
@@ -104,11 +103,11 @@ class Titsite:
         if boxsize:
             if config.params['pbc_dim'] != 2:
                 raise Exception('ERROR: The original center is only '
-                                'needed for 2-dimensional calculation')            
-            self._center_original = [x, y, z]            
+                                'needed for 2-dimensional calculation')
+            self._center_original = [x, y, z]
             x = boxsize * 10 / 2
             y = boxsize * 10 / 2
-            z += box_z  * 10
+            z += box_z * 10
         self._center = [x, y, z]
 
     def addCenterH(self, center):
@@ -122,7 +121,7 @@ class Titsite:
         return self._res_name
 
     def getTautomers(self):
-        """Returns list of all tautomers instances 
+        """Returns list of all tautomers instances
         except the tautomers of reference"""
         return self._tautomers.values()
 
@@ -186,14 +185,12 @@ class Titsite:
     def __str__(self):
         tautomers = ' '.join(sorted(self._tautomers.keys()))
         natoms = len(self._atoms)
-        center = [ round(i, 2) for i in self._center ]
+        center = [round(i, 2) for i in self._center]
         out = 'Site Number -> {0:5}   '\
               'Tautomers -> {1:30}  '\
               'Reference -> {2:5} '\
               'NAtoms -> {3:6} '\
-              'Center -> {4}'.format(self._res_number,tautomers,
+              'Center -> {4}'.format(self._res_number, tautomers,
                                      self._ref_tautomer.getName(),
                                      natoms, center)
         return out
-
-

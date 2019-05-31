@@ -133,8 +133,7 @@ class Titration(object):
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
                          termini, config.userff, config.usernames,
                          inputpqr, outputpqr, site_numb_n_ref)
-
-                log.checkDelPhiErrors('LOG_addHtaut')
+                log.checkDelPhiErrors('LOG_addHtaut', 'addHtaut')
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
             else:
