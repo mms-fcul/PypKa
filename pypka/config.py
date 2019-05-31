@@ -4,7 +4,7 @@ import os
 tit_mole = None
 sites    = {}
 pid      = None
-debug    = None
+debug    = False
 
 input_conversion = {'grid_fill': 'perfil',
                     'pbc_dimensions': 'pbc_dim',

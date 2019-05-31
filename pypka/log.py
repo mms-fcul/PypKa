@@ -51,7 +51,7 @@ def redirectErr(mode, outputname):
         config.stderr_file.close()
 
 
-def checkDelPhiErrors(filename, mode=None, remove=False):
+def checkDelPhiErrors(filename, mode=None):
     exceptions = []
     if mode == 'readFiles':
         exceptions = ['part of system outside the box!',
@@ -73,5 +73,5 @@ def checkDelPhiErrors(filename, mode=None, remove=False):
                     errors += line
     if exit_trigger:
         raise Exception('The following errors have been found on {0}: \n{1}'.format(filename, errors))
-    if remove:
+    if not config.debug and os.path.isfile(filename):
         os.remove(filename)

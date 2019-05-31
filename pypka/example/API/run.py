@@ -7,8 +7,8 @@
 #os.rename('pdb1lse.ent', '1lse.pdb')
 #os.rename('pdb4lzt.ent', '4lzt.pdb')
 
-#import sys
-#sys.path.insert(1, '../../')
+import sys
+sys.path.insert(1, '../../')
 from pypka import Titration
 
 parameters = {'structure'     : '4lzt.pdb',      

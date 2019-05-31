@@ -106,8 +106,14 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     inputpdbfile = removeMembrane(pdb_filename)
 
-    log.redirectOutput("start", 'LOG_pdb2pqr')
-    log.redirectErr("start", 'LOG_pdb2pqr_err')
+    if config.debug:
+        logfile = 'LOG_pdb2pqr'
+        errfile = 'LOG_pdb2pqr_err'
+    else:
+        logfile = '/dev/null'
+        errfile = '/dev/null'
+    log.redirectOutput("start", logfile)
+    log.redirectErr("start", errfile)
 
     sites_numbs = sites.keys()
     # CTR O1/O2 will be deleted and a O/OXT will be added
@@ -115,15 +121,17 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
               '--usernames={4} --drop-water -v'.format(pdb2pqr_path,
                                                        inputpdbfile, inputpqr,
                                                        userff, usernames))
-    log.redirectOutput("stop", 'LOG_pdb2pqr')
-    log.redirectErr("stop", 'LOG_pdb2pqr_err')
+
+    log.redirectOutput("stop", logfile)
+    log.redirectErr("stop", errfile)
 
     CYS_bridges = []
-    with open('LOG_pdb2pqr') as f:
-        for line in f:
-            if 'CYX' in line:
-                parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
-                CYS_bridges.append(int(parts[-1]))
+    if config.debug:
+        with open('LOG_pdb2pqr') as f:
+            for line in f:
+                if 'CYX' in line:
+                    parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
+                    CYS_bridges.append(int(parts[-1]))
 
     new_pdb_text = ''
     aposition = 0
@@ -154,13 +162,18 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ',':
         sites_addHtaut = sites_addHtaut[:-1]
 
-    log.redirectErr("start", 'LOG_addHtaut')
+    if config.debug:
+        logfile = 'LOG_addHtaut'
+    else:
+        logfile = config.f_log
+    log.redirectErr("start", logfile)
 
     os.system('{0}/addHtaut cleaned.pqr {1} > '
               'cleaned_tau.pqr'.format(config.script_dir, sites_addHtaut))
 
-    log.redirectErr("stop", 'LOG_addHtaut')
-
+    log.redirectErr("stop", logfile)
+    log.checkDelPhiErrors(logfile, 'addHtaut')
+                
     with open(pdb_filename) as f:
         for line in f:
             if 'CRYST1' in line:
@@ -171,6 +184,11 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)
+
+    tmpfiles = ('clean.pqr', 'cleaned.pqr', 'cleaned_tau.pqr', 'input_clean.pdb', config.f_log)
+    for filename in tmpfiles:
+        if not config.debug and os.path.isfile(filename):
+            os.remove(filename)
 
 
 def removeMembrane(pdbfile):
