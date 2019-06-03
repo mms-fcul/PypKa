@@ -1,5 +1,47 @@
+
+        DelPhi Parameters
+
+        igrid       = 81
+        scale       = 4.0
+        perfil      = 0
+
+        repsin  = 2.0
+        repsout = 80.0
+        conc    = 0.1
+        ibctyp  = 4
+        res2    = 0.01
+        nlit    = 500
+
+        acent  = [20.605, 22.27, 9.725]
+        natoms = 43
+        in_crg = /home/pedror/PypKa/pypka/G54A7/DataBaseT.crg
+        in_siz = /home/pedror/PypKa/pypka/G54A7/DataBaseT.siz
+        in_pdb = delphi_in_stmod.pdb
+
+        radprb  = 1.4
+        energy  = ['s', 'c']
+        site    = ['a', 'q', 'p']
+        in_crg_len = 44
+        in_siz_len = 44
+        in_pdb_len = 19
+
+        relfac = 0.0
+        relpar = 0.75
+        nonit  = 0
+        fcrg   = False
+        pbx    = False
+        pby    = False
+        pbz    = False
+
+        precision  = single
+        float_type = <class 'ctypes.c_float'>
+        isurftype  = -1
+        parallel   = False
+        debug      = True
+
+        
    
- loading variables time was (sec)    12712848.0    
+ loading variables time was (sec)    1.96570903E-02
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -139,7 +181,7 @@ gauss-seidel spectral radius is        0.9949071407
  setup time was (sec)    1.56250000E-02
    
  isolvarch           0
- now iterating at: 14:40:24
+ now iterating at: 12:30:06
   
   
    rms-change     max change       #iterations
@@ -151,8 +193,8 @@ gauss-seidel spectral radius is        0.9949071407
    6.65667758E-05   1.59854889E-02  at          60  iterations
    1.41306273E-05   2.52151489E-03  at          70  iterations
  finished qdiffx linear iterations
- at                       : 14:40:24
- total time elapsed so far:   0.140625000    
+ at                       : 12:30:06
+ total time elapsed so far:    7.81250000E-02
  # loops                  :           70
  mean,max change (kT/e)   :    1.41306273E-05   2.52151489E-03
  self-reaction field energy :      -54482.6602      kt
@@ -161,9 +203,9 @@ gauss-seidel spectral radius is        0.9949071407
  total reaction field energy :     -54499.529050977340       kt
  coulombic energy :                -184.31287289098438       kt
  All required energy terms but grid and self_react.:  -201.181763     kt
- energy calculations done at  0.140625000    
+ energy calculations done at   7.81250000E-02
    2.65191658E-04   2.65191658E-04          46          46           1
    
- total cpu time was (sec)   0.140625000    
+ total cpu time was (sec)    7.81250000E-02
    
- DelPhi exited at 14:40:24
+ DelPhi exited at 12:30:06

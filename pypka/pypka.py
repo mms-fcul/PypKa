@@ -140,7 +140,7 @@ class Titration(object):
             groname = 'TMP.gro'
 
         config.tit_mole.readGROFile(groname)
-        if not config.debug:
+        if not config.debug and config.f_in_extension == 'pdb' and os.path.isfile('TMP.gro'):
             os.remove('TMP.gro')
 
     def processDelPhiParams(self):

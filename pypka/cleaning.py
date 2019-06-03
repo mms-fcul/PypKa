@@ -106,12 +106,9 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     inputpdbfile = removeMembrane(pdb_filename)
 
-    if config.debug:
-        logfile = 'LOG_pdb2pqr'
-        errfile = 'LOG_pdb2pqr_err'
-    else:
-        logfile = '/dev/null'
-        errfile = '/dev/null'
+    logfile = 'LOG_pdb2pqr'
+    errfile = 'LOG_pdb2pqr_err'
+
     log.redirectOutput("start", logfile)
     log.redirectErr("start", errfile)
 
@@ -126,12 +123,11 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     log.redirectErr("stop", errfile)
 
     CYS_bridges = []
-    if config.debug:
-        with open('LOG_pdb2pqr') as f:
-            for line in f:
-                if 'CYX' in line:
-                    parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
-                    CYS_bridges.append(int(parts[-1]))
+    with open('LOG_pdb2pqr') as f:
+        for line in f:
+            if 'CYX' in line:
+                parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
+                CYS_bridges.append(int(parts[-1]))
 
     new_pdb_text = ''
     aposition = 0
@@ -185,7 +181,8 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)
 
-    tmpfiles = ('clean.pqr', 'cleaned.pqr', 'cleaned_tau.pqr', 'input_clean.pdb', config.f_log)
+    tmpfiles = ('LOG_pdb2pqr', 'LOG_pdb2pqr_err', 'clean.pqr', 'cleaned.pqr',
+                'cleaned_tau.pqr', 'input_clean.pdb', config.f_log)
     for filename in tmpfiles:
         if not config.debug and os.path.isfile(filename):
             os.remove(filename)

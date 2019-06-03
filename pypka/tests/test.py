@@ -4,7 +4,7 @@ import subprocess as sb
 import sys
 sys.path.insert(1, '../')
 
-ncpus = 8
+ncpus = 2
 
 # run coverage.sh to generate coverage
 
@@ -248,7 +248,7 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
         """
         results = results.split('\n')[1:-1]
         parameters = {
-            'structure'     : 'ktp/ktp_gro/TMP.gro',     # MANDATORY
+            'structure'     : 'ktp/ktp_gro/ktp.gro',     # MANDATORY
             'epsin'         : 2,
             'ionicstr'      : 0.1,
             'pbc_dimensions': 0,
