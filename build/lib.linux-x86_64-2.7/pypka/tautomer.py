@@ -418,8 +418,7 @@ class Tautomer(object):
                             outputfile=logfile)
         if config.debug:
             print 'ended', self._name, self._site._res_number, 'modelcompound'
-
-        log.checkDelPhiErrors(logfile, 'runDelPhi')
+            log.checkDelPhiErrors(logfile, 'runDelPhi')
 
         self._esolvation = delphimol.getSolvation()
         self._p_sitpot   = delphimol.getSitePotential()
@@ -494,7 +493,7 @@ class Tautomer(object):
                                 outputfile=logfile)
         if config.debug:
             print 'ended', self._name, self._site._res_number, 'wholeprotein'
-        log.checkDelPhiErrors(logfile, 'runDelPhi')
+            log.checkDelPhiErrors(logfile, 'runDelPhi')
 
         self._esolvation = delphimol.getSolvation()
         self._p_sitpot   = delphimol.getSitePotential()

@@ -1067,7 +1067,7 @@ MODEL        1
                 prot_state = 0
             self._possible_states_occ[isite].append(prot_state)
             self._possible_states_g[isite].append(0.0)
-
+        
         maxstates = max(self._npossible_states)
         resize_list_of_lists(self._possible_states, maxstates)
         resize_list_of_lists(self._possible_states_g, maxstates)

@@ -4,7 +4,6 @@
 A python API and CLI to perform pKa calculations on peptides,
 proteins or lipid bilayers.
 """
-
 import config as config
 from cli import checkParsedInput, readSettings, inputParametersFilter
 from cleaning import inputPDBCheck, cleanPDB
@@ -15,7 +14,7 @@ from delphi4py import Delphi
 
 from molecule import Molecule
 from concurrency import startPoolProcesses, runDelPhiSims
-
+import os
 
 __author__ = "Pedro Reis"
 __version__ = "0.4"
@@ -72,7 +71,7 @@ class Titration(object):
 
         if datfile:
             config.f_dat = datfile
-            parameters = readSettings(datfile)
+            parameters = readSettings(datfile) 
 
         # Check Input Variables Validity
         inputParametersFilter(parameters)
@@ -133,7 +132,6 @@ class Titration(object):
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
                          termini, config.userff, config.usernames,
                          inputpqr, outputpqr, site_numb_n_ref)
-                log.checkDelPhiErrors('LOG_addHtaut', 'addHtaut')
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
             else:
@@ -142,9 +140,15 @@ class Titration(object):
             groname = 'TMP.gro'
 
         config.tit_mole.readGROFile(groname)
+        if not config.debug and config.f_in_extension == 'pdb' and os.path.isfile('TMP.gro'):
+            os.remove('TMP.gro')
 
     def processDelPhiParams(self):
         # Storing DelPhi parameters and Creates DelPhi data structures
+        if config.debug:
+            logfile = 'LOG_readFiles'
+        else:
+            logfile = config.f_log
 
         delphimol = Delphi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
                            config.tit_mole.getNAtoms(),
@@ -162,10 +166,12 @@ class Titration(object):
                            relpar=0.0,
                            pbx=config.params['pbx'],
                            pby=config.params['pby'],
-                           debug=config.debug, outputfile='LOG_readFiles')
+                           debug=config.debug, outputfile=logfile)
+        if not config.debug:
+            os.remove('delphi_in_stmod.pdb')
 
-        log.checkDelPhiErrors('LOG_readFiles', 'readFiles')
-
+        log.checkDelPhiErrors(logfile, 'readFiles')
+        
         # Loads delphi4py object as TitratingMolecule attributes
         config.tit_mole.loadDelPhiParams(delphimol)
 

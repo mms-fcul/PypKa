@@ -23,7 +23,7 @@ setuptools.setup(
                             'pdb2pqr/extensions/*',
                             'pdb2pqr/src/*',
                             'pdb2pqr/ZSI/*']},
-    install_requires=['numpy==1.15.4', 'pytest', 'coverage'],
+    install_requires=['numpy', 'pytest', 'coverage'],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Cython",

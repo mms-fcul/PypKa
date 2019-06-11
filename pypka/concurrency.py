@@ -207,3 +207,15 @@ def runInteractionCalcs(job_list):
         results += interaction_energies
 
     return results
+
+
+def runMCCalcs(job_list):
+    """
+    """
+    results = []
+        
+    for pH_index in job_list:
+        mc_output = config.tit_mole.parallelMCrun(pH_index)
+        results.append(mc_output) 
+
+    return results

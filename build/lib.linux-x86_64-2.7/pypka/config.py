@@ -4,7 +4,7 @@ import os
 tit_mole = None
 sites    = {}
 pid      = None
-debug    = None
+debug    = False
 
 input_conversion = {'grid_fill': 'perfil',
                     'pbc_dimensions': 'pbc_dim',
@@ -39,7 +39,7 @@ params = {'perfil': 0.9,
           'pHmax': 10,
           'pHstep': 0.25,
           'epssol': 80.0,
-          'temp': 310.0,
+          'temp': 298.0,
           'seed': 1234567,
           'cutoff': 2.5,
           'pbc_dim': 0,

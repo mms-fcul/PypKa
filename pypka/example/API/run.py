@@ -15,12 +15,13 @@ parameters = {'structure'     : '4lzt.pdb',
               'epsin'         : 10,
               'ionicstr'      : 0.1,
               'pbc_dimensions': 0,
-              'temp'          : 310,
+              'temp'          : 100,
               'grid_fill'     : 0.8,         # FUTURE VERSION
               'ncpus'         : 4,
               'pH'            : '0, 15',
               'maxc'          : 0.01,
-              'pHstep'        : 0.5}
+              'pHstep'        : 0.5,
+              'output': '310'}
 
 sites = {'A': ('1N', '18', '35', '48', '66', '129C')}
 pKa = Titration(parameters, sites=sites)

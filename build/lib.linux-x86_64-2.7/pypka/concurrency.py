@@ -133,7 +133,7 @@ def runDelPhiSims(job_list):
             left_time = '~{0}m'.format(int(left / 60.0))
         else:
             left_time = '{0}s'.format(int(left))
-
+        
         end = datetime.now() + timedelta(seconds=left)
         end_time = end.strftime('%H:%M:%S %d/%m/%Y')
         stdout.write('\rPB Runs: {0:3} {1:<10} '
