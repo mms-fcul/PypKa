@@ -212,9 +212,11 @@ def inputParametersFilter(settings):
         config.f_log = settings['logfile']  # default: "LOG"
 
     # Check coherence between variables
-    if getParameter('pbc_dim') == 2 and \
-       getParameter('relfac') != 0.2 and 'relfac' not in settings:
-        setParameter('relfac', 0.2)
+    if getParameter('pbc_dim') == 2:
+        if getParameter('relfac') != 0.2 and 'relfac' not in settings:
+            setParameter('relfac', 0.2)
+        if getParameter('nonit') != 5 and 'nonit' not in settings:
+            setParameter('nonit', 5)
 
     if 'lipid_definition' in settings:
         for i in settings['lipid_definition']:

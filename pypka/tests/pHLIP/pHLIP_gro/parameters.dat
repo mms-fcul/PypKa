@@ -5,18 +5,19 @@ ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
 grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 8
-pH              = -5,15
-sites_A         = 769N, 770, 771, 782, 793, 799, 801, 802, 804C
+ncpus           = 4
+pH              = 0,10
+sites_A         = 769N, 770, 804C
+#769N, 770, 771, 782, 793, 799, 801, 802, 804C
 
 ### optional ###
 logfile   = LOGFILE
 
 scaleM = 4.00
 scaleP = 1.00
-gsize = 131
+gsize = 81
 
-convergence = 0.01
+convergence = 0.1
 nlit   = 50
 nonit  = 5
 cutoff = 2.5
@@ -24,7 +25,7 @@ cutoff = 2.5
 output = pKas.out
 titration_output = protonation.out
 
-pHstep = 0.2
+pHstep = 0.5
 relfac = 0.2
 relpar = 0.75
 pbx    = yes
