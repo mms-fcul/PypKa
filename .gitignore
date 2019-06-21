@@ -2,7 +2,6 @@
 #*
 *xtc
 *.gz
-*.pyc
 LOG*
 *frc
 *.profl

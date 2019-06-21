@@ -411,11 +411,13 @@ class Tautomer(object):
                                                                self._site._res_number)
         if config.debug:
             print 'started', self._name, self._site._res_number, 'modelcompound'
+
         delphimol.runDelPhi(scale=config.params['scaleM'],
                             nonit=0, nlit=500, relpar=0, relfac=0,
                             acent=acent, pbx=False, pby=False, debug=config.debug,
                             filename=filename,
                             outputfile=logfile)
+
         if config.debug:
             print 'ended', self._name, self._site._res_number, 'modelcompound'
             log.checkDelPhiErrors(logfile, 'runDelPhi')

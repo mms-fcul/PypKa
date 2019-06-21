@@ -1,3 +1,3 @@
 #! /bin/bash -e
 
-python ../../../pypka.py parameters_noclean.dat
+python ../../../pypka.py parameters.dat
