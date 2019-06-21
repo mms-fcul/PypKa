@@ -71,7 +71,7 @@ class Titration(object):
 
         if datfile:
             config.f_dat = datfile
-            parameters = readSettings(datfile)
+            parameters = readSettings(datfile) 
 
         # Check Input Variables Validity
         inputParametersFilter(parameters)

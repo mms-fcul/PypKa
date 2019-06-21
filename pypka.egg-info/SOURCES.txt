@@ -22,9 +22,7 @@ pypka.egg-info/entry_points.txt
 pypka.egg-info/requires.txt
 pypka.egg-info/top_level.txt
 pypka/G54A7/DataBaseT.crg
-pypka/G54A7/DataBaseT.crg~
 pypka/G54A7/DataBaseT.siz
-pypka/G54A7/DataBaseT.siz~
 pypka/G54A7/sts/ACAall.st
 pypka/G54A7/sts/ACAtau1.st
 pypka/G54A7/sts/ACAtau2.st

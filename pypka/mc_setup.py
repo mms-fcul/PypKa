@@ -9,9 +9,9 @@ setup(
   ext_modules =
   [
     Extension("mc",
-              ["mc.pyx"]
-              #extra_compile_args = ["-fopenmp"],
-              #extra_link_args=['-fopenmp']
+              ["mc.pyx"],
+              extra_compile_args = ["-fopenmp"],
+              extra_link_args=['-fopenmp']
               )
   ]
 )

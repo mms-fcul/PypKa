@@ -5,10 +5,16 @@ ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
 grid_fill       = 0.8 # FUTURE VERSION
+<<<<<<< HEAD
 ncpus           = 4
 pH              = 0,10
 sites_A         = 769N, 770, 804C
 #769N, 770, 771, 782, 793, 799, 801, 802, 804C
+=======
+ncpus           = 1
+pH              = -5,15
+sites_A         = 769N, 770, 771, 782, 793, 799, 801, 802, 804C
+>>>>>>> mc_parallelization
 
 ### optional ###
 logfile   = LOGFILE

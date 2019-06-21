@@ -6,9 +6,11 @@ from libc.stdio cimport printf, fflush, stdout
 cdef int pHsteps, mcsteps, eqsteps, MAXNPKHALFS, MAXDELTA, seed
 cdef float LN10, pHmin, dpH, couple_min
 
+
 LN10        = 2.302585092994
 MAXDELTA    = 50
 MAXNPKHALFS = 5
+
 
 cdef extern from "stdlib.h":
     double drand48()
@@ -27,12 +29,12 @@ cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
     for site in range(nsites):
         state  = cur_states[site]
         newstate = int(drand48() * npossible_states[site])
-
+    
         site1i    = interactions_lookup[site][state]
         site1newi = interactions_lookup[site][newstate]
-
+    
         dU = possible_states_u[site][newstate] - possible_states_u[site][state]
-
+    
         for site2 in range(nsites):
             if site != site2:
                 state2 = cur_states[site2]
@@ -116,8 +118,8 @@ cdef void initialize_u(float pH, int nsites, float [:, :]
         avgs[site] = 0
 
 
-cdef float write_EpH_point(float pH, int nsites, int [:] avgs,
-                           float[:] pmean, float [:, ::1] pKs, int [:, ::1] count):
+cpdef write_EpH_point(double pH, int nsites, int [:] avgs,
+                      double[:] pmean, double [:, ::1] pKs, int [:, ::1] count, double mcsteps, double pHmin, double dpH):
     cdef int site, i
     cdef float mean, p, pKhalf, totalP
 
@@ -145,7 +147,7 @@ cdef float write_EpH_point(float pH, int nsites, int [:] avgs,
                 printf("\n%f %d %f %f ", pH, site, mean, p)
 
         pmean[site] = mean
-    return totalP
+    return totalP, np.asarray(pKs), np.asarray(pmean)
 
 cdef void write_E_line(int nsites, float [:, ::1] pKs):
     cdef int site, i, aux
@@ -218,7 +220,7 @@ cpdef MCrun(int nsites, npossible_states_aux,
             possible_states_g_aux, possible_states_occ_aux,
 	    interactions_aux, interactions_lookup_aux,
             int pHsteps, int mcsteps_aux, int eqsteps, int seed,
-	    float pHmin_aux, float dpH_aux, float couple_min):
+	    float pHmin_aux, float dpH_aux, float couple_min, float pH):
 
     global mcsteps
     mcsteps = mcsteps_aux
@@ -242,7 +244,6 @@ cpdef MCrun(int nsites, npossible_states_aux,
     cdef int [:] pair2 = pair2_arr
 
     cdef int i, t, pHstep
-    cdef float pH
 
     maxstates = max(npossible_states_aux)
     
@@ -283,31 +284,36 @@ cpdef MCrun(int nsites, npossible_states_aux,
 
     pmeans_arr = np.array([np.zeros(nsites + 1) for i in range(pHsteps)], 'single')
     cdef float [:, ::1] pmeans = pmeans_arr
-    
-    for pHstep in range(pHsteps):
-        pH = pHmin + pHstep * dpH
-        initialize_u(pH, nsites, possible_states_u, npossible_states,
-                     possible_states_occ, possible_states_g, avgs)
-    
-        for i in range(eqsteps):
-            mc_step(nsites, cur_states, npossible_states,
-                    interactions, interactions_lookup,
-                    possible_states_u, npairs, pair1, pair2)
-        for t in range(mcsteps):
-            mc_step(nsites, cur_states, npossible_states,
-                    interactions, interactions_lookup,
-                    possible_states_u, npairs, pair1, pair2)
-            compute_statistics(t, nsites, cur_states, avgs,
-                               possible_states_occ, count)
-        totalP = write_EpH_point(pH, nsites, avgs, pmean, pKs, count)
 
-        pmeans[pHstep][:-1] = pmean
-        pmeans[pHstep][nsites] = totalP
+
+    initialize_u(pH, nsites, possible_states_u, npossible_states,
+                 possible_states_occ, possible_states_g, avgs)
+
+    for i in range(eqsteps):
+        mc_step(nsites, cur_states, npossible_states,
+                interactions, interactions_lookup,
+                possible_states_u, npairs, pair1, pair2)
+    for t in range(mcsteps):
+        mc_step(nsites, cur_states, npossible_states,
+                interactions, interactions_lookup,
+                possible_states_u, npairs, pair1, pair2)
+        compute_statistics(t, nsites, cur_states, avgs,
+                           possible_states_occ, count)
+
+    #totalP = write_EpH_point(pH, nsites, avgs, pmean, pKs, count)
+    #
+    #pmeans[pHstep][:-1] = pmean
+    #pmeans[pHstep][nsites] = totalP
 	
-        printf("\rMC Runs: pH %.2f \t\t Run %d of %d", pH, pHstep, pHsteps - 1)
-        fflush(stdout)
-    printf("\rMC Runs Ended%70s", "")
-    fflush(stdout)
+    #    printf("\rMC Runs: pH %.2f \t\t Run %d of %d", pH, pHstep, pHsteps - 1)
+    #    fflush(stdout)
+    #printf("\rMC Runs Ended%70s", "")
+    #fflush(stdout)
+
     #write_E_line(nsites, pKs)
 
-    return np.asarray(pKs), np.asarray(pmeans)
+    #return np.asarray(pKs), np.asarray(pmeans)
+
+    #print '\n', pH, np.asarray(avgs)
+
+    return np.asarray(avgs), np.asarray(pmean), np.asarray(count)

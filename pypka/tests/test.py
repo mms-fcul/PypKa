@@ -4,7 +4,7 @@ import subprocess as sb
 import sys
 sys.path.insert(1, '../')
 
-ncpus = 2
+ncpus = 1
 
 # run coverage.sh to generate coverage
 
@@ -38,202 +38,202 @@ class TestCLI(object):
     def test_cli_ktp_gro(self):
         path = "ktp/ktp_gro"
         results = """
-1 NTR 7.89621829987
-1 TYR 9.88696575165
-2 CTR 3.12329292297
+1 NTR 7.90064610613
+1 TYR 9.88522556058
+2 CTR 3.12385071566
         """
         runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_allsites(self):
         path = "ktp/ktp_pdb_allsites"
         results = """
-1 NTR 7.900203228
-1 TYR 9.77924633026
-2 CTR 3.30362272263
+1 NTR 7.90372759857
+1 TYR 9.78309726325
+2 CTR 3.30400367504
         """
         runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_allsites_noclean(self):
         path = "ktp/ktp_pdb_allsites_noclean"
         results = """
-1 NTR 7.89621829987
-1 TYR 9.88696575165
-2 CTR 3.12329292297
+1 NTR 7.90064610613
+1 TYR 9.88522556058
+2 CTR 3.12385071566
         """
         runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_onlytermini(self):
         path = 'ktp/ktp_pdb_onlytermini'
         results = """
-1 NTR 7.904296875
-2 CTR 3.29493141174
+1 NTR 7.9001039321
+2 CTR 3.29902344445
         """
         runTest(path, ncpus, results)
 
     def test_cli_ktp_pdb_onlytermini_noclean(self):
         path = 'ktp/ktp_pdb_onlytermini_noclean'
         results = """
-1 NTR 8.17041015625
-2 CTR 3.38864183426
+1 NTR 8.16771888442
+2 CTR 3.39051924704
         """
         runTest(path, ncpus, results)
 
     def test_cli_lyso_gro(self):
         path = "lyso/lyso_gro"
         results = """
-1 NTR 7.63068819046
-18 ASP 3.14008665085
-35 GLU 4.66894435883
-48 ASP 2.96325278282
-66 ASP 3.25400090218
-129 CTR 2.35684490204
+1 NTR 7.63661126099
+18 ASP 3.14160192118
+35 GLU 4.6630113441
+48 ASP 2.96396032156
+66 ASP 3.25547061858
+129 CTR 2.35320936885
         """
         runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_sites(self):
         path = "lyso/lyso_pdb_sites"
         results = """
-1 NTR 7.50067424774
-18 ASP 3.16751217842
-35 GLU 4.61393737793
-48 ASP 2.26052093506
-66 ASP 1.87332427502
-129 CTR 2.30435156822
+1 NTR 7.50547769612
+18 ASP 3.1651915545
+35 GLU 4.61083675072
+48 ASP 2.25844185515
+66 ASP 1.8713352369
+129 CTR 2.3040367136
         """
         runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_sites_noclean(self):
         path = "lyso/lyso_pdb_sites_noclean"
         results = """
-1 NTR 7.39441871643
-18 ASP 2.78099513054
-35 GLU 4.27633476257
-48 ASP 2.65356683731
-66 ASP 3.01925420761
-129 CTR 1.94424641132
+1 NTR 7.39335708374
+18 ASP 2.78161060181
+35 GLU 4.27122389465
+48 ASP 2.65449650965
+66 ASP 3.01128613358
+129 CTR 1.94092450986
         """
         runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_all(self):
         path = "lyso/lyso_pdb_all"
         results = """
-1 NTR 7.38174772263
-1 LYS 10.3868246078
-7 GLU 2.88459134102
+1 NTR 7.38414401309
+1 LYS 10.3915151993
+7 GLU 2.88092122222
 13 LYS 100.0
-15 HIS 5.86267566681
-18 ASP 2.69885849953
-20 TYR 9.90721607208
-23 TYR 9.38904476166
+15 HIS 5.86135647549
+18 ASP 2.69457281787
+20 TYR 9.91066416179
+23 TYR 9.39233213737
 24 SER 100.0
-33 LYS 10.5100259781
-35 GLU 4.17546081543
+33 LYS 10.5103931957
+35 GLU 4.17990458015
 36 SER 100.0
 40 THR 100.0
 43 THR 100.0
 47 THR 100.0
-48 ASP 1.86072945595
+48 ASP 1.8672505767
 50 SER 100.0
 51 THR 100.0
-52 ASP 2.15181279182
-53 TYR 10.7421417236
+52 ASP 2.14723044164
+53 TYR 10.743180477
 60 SER 100.0
-66 ASP 2.34874129295
+66 ASP 2.34644743313
 69 THR 100.0
 72 SER 100.0
 81 SER 100.0
 85 SER 100.0
 86 SER 100.0
-87 ASP 2.05946564674
+87 ASP 2.04766398766
 89 THR 100.0
 91 SER 100.0
 96 LYS 100.0
 97 LYS 100.0
 100 SER 100.0
-101 ASP 3.31438612938
-116 LYS 10.2509069443
+101 ASP 3.31081873558
+116 LYS 10.2551624733
 118 THR 100.0
-119 ASP 2.39909434319
-129 CTR 1.69917798042
+119 ASP 2.39551120758
+129 CTR 1.70353465559
         """
         runTest(path, ncpus, results)
 
     def test_cli_lyso_pdb_all_noclean(self):
         path = "lyso/lyso_pdb_all_noclean"
         results = """
-1 NTR 7.38174772263
-1 LYS 10.3868246078
-7 GLU 2.88459134102
+1 NTR 7.38414401309
+1 LYS 10.3915151993
+7 GLU 2.88092122222
 13 LYS 100.0
-15 HIS 5.86267566681
-18 ASP 2.69885849953
-20 TYR 9.90721607208
-23 TYR 9.38904476166
+15 HIS 5.86135647549
+18 ASP 2.69457281787
+20 TYR 9.91066416179
+23 TYR 9.39233213737
 24 SER 100.0
-33 LYS 10.5100259781
-35 GLU 4.17546081543
+33 LYS 10.5103931957
+35 GLU 4.17990458015
 36 SER 100.0
 40 THR 100.0
 43 THR 100.0
 47 THR 100.0
-48 ASP 1.86072945595
+48 ASP 1.8672505767
 50 SER 100.0
 51 THR 100.0
-52 ASP 2.15181279182
-53 TYR 10.7421417236
+52 ASP 2.14723044164
+53 TYR 10.743180477
 60 SER 100.0
-66 ASP 2.34874129295
+66 ASP 2.34644743313
 69 THR 100.0
 72 SER 100.0
 81 SER 100.0
 85 SER 100.0
 86 SER 100.0
-87 ASP 2.05946564674
+87 ASP 2.04766398766
 89 THR 100.0
 91 SER 100.0
 96 LYS 100.0
 97 LYS 100.0
 100 SER 100.0
-101 ASP 3.31438612938
-116 LYS 10.2509069443
+101 ASP 3.31081873558
+116 LYS 10.2551624733
 118 THR 100.0
-119 ASP 2.39909434319
-129 CTR 1.69917798042
+119 ASP 2.39551120758
+129 CTR 1.70353465559
         """
         runTest(path, ncpus, results)
 
     def test_cli_pHLIP_gro(self):
         path = "pHLIP/pHLIP_gro"
         results = """
-769 NTR 11.0565090179
+769 NTR 11.053222325
 770 CYS 100.0
-771 GLU 4.03883981705
+771 GLU 4.03656234476
 782 ASP 100.0
 793 ASP 100.0
-799 ASP 1.80626475811
-801 ASP 0.836304783821
-802 GLU 3.98396849632
-804 CTR 3.63486742973
-"""
+799 ASP 1.79589493326
+801 ASP 0.836347358997
+802 GLU 3.98477807152
+804 CTR 3.63234628355
+        """
         runTest(path, ncpus, results)
 
     def test_cli_pHLIP_pdb_all(self):
         path = "pHLIP/pHLIP_pdb_all"
         results = """
-769 NTR 11.2083435059
-770 CYS 24.2029476166
-771 GLU 4.00404262543
-776 TYR 18.7731571198
-780 TYR 24.3460330963
+769 NTR 11.2025715977
+770 CYS 24.2123881662
+771 GLU 4.01078608539
+776 TYR 18.7756943694
+780 TYR 24.3484203892
 782 ASP 100.0
 786 THR 100.0
 787 THR 100.0
-793 ASP 22.6629772186
-799 ASP 0.369246691465
-801 ASP 1.48556101322
-802 GLU 3.96952009201
-804 CTR 4.29328298569
-"""
+793 ASP 22.6585921706
+799 ASP 0.370645770177
+801 ASP 1.48567974319
+802 GLU 3.96561345595
+804 CTR 4.2896319041
+        """
         runTest(path, ncpus, results)
 
 
@@ -242,9 +242,9 @@ class TestAPI(object):
         from pypka import Titration
         os.system('rm -f LOG* *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint')
         results = """
-NTR 7.89621829987 ('undefined', 0.8873165161846842)
-1 9.88696575165 ('protonated', 0.9987043991888108)
-CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
+NTR 7.90064610613 ('undefined', 0.8883318942980771)
+1 9.88522556058 ('protonated', 0.9986992041484555)
+CTR 3.12385071566 ('deprotonated', 0.00013298203005695505)
         """
         results = results.split('\n')[1:-1]
         parameters = {
@@ -275,9 +275,9 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
         from pypka import Titration
         os.system('rm -f *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint')
         results = """
-NTR 7.90208864212 ('undefined', 0.888660962962448)
-1 9.78845977783 ('protonated', 0.9983750726401587)
-CTR 3.3024392128 ('deprotonated', 0.00020060977015866723)
+NTR 7.90409283642 ('undefined', 0.8891167479866279)
+1 9.78071352879 ('protonated', 0.9983458781425558)
+CTR 3.30331361976 ('deprotonated', 0.00020101400276712804)
         """
         results = results.split('\n')[1:-1]
         parameters = {
@@ -310,9 +310,9 @@ CTR 3.3024392128 ('deprotonated', 0.00020060977015866723)
         os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites '
                   'cent contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
-NTR 7.89621829987 ('undefined', 0.8873165161846842)
-1 9.88696575165 ('protonated', 0.9987043991888108)
-CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
+NTR 7.90064610613 ('undefined', 0.8883318942980771)
+1 9.88522556058 ('protonated', 0.9986992041484555)
+CTR 3.12385071566 ('deprotonated', 0.00013298203005695505)
         """
         results = results.split('\n')[1:-1]
         parameters = {
@@ -345,8 +345,8 @@ CTR 3.12329292297 ('deprotonated', 0.00013281136488231348)
         os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent '
                   'contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
-NTR 7.904296875 ('undefined', 0.8891630578319204)
-CTR 3.29493141174 ('deprotonated', 0.0001971722409805938)
+NTR 7.9001039321 ('undefined', 0.8882079948571108)
+CTR 3.29902344445 ('deprotonated', 0.0001990384562145051)
         """
         results = results.split('\n')[1:-1]
         parameters = {
@@ -379,8 +379,8 @@ CTR 3.29493141174 ('deprotonated', 0.0001971722409805938)
         os.system('rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent '
                   'contributions interactions.dat pkint LOG* __pycache__ *pyc')
         results = """
-NTR 8.17041015625 ('protonated', 0.9367291213385088)
-CTR 3.38864183426 ('deprotonated', 0.00024464456585429595)
+NTR 8.16771888442 ('protonated', 0.9363608510357995)
+CTR 3.39051924704 ('deprotonated', 0.0002457041692844058)
         """
         results = results.split('\n')[1:-1]
         parameters = {

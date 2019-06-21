@@ -1,6 +1,14 @@
 *~
-*#
+#*
 *xtc
 *.gz
 LOG*
-setup.py
+*frc
+*.profl
+*eback.xvg
+*.prm
+P_*.pdb
+
+build/
+pypka/build/
+
