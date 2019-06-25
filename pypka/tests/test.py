@@ -205,10 +205,10 @@ class TestCLI(object):
     def test_cli_pHLIP_gro(self):
         path = "pHLIP/pHLIP_gro"
         results = """
-769 NTR 10.767904983                                                                                                                                                                   
-770 CYS 100.0                                                                                                                                                                  
-771 GLU 3.99752739909                                                                                                                                                          
-782 ASP 100.0                                                                                                                                                                  
+769 NTR 10.767904983
+770 CYS 100.0
+771 GLU 3.99752739909
+782 ASP 100.0
 793 ASP 100.0
 799 ASP 1.94131774795
 801 ASP 0.990298982188
