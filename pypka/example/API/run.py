@@ -21,7 +21,7 @@ parameters = {'structure'     : '4lzt.pdb',
               'pH'            : '0, 15',
               'maxc'          : 0.01,
               'pHstep'        : 0.5,
-              'output': '310'}
+              'output': 'pkas.out'}
 
 sites = {'A': ('1N', '18', '35', '48', '66', '129C')}
 pKa = Titration(parameters, sites=sites)
