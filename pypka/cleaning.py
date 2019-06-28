@@ -115,18 +115,10 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     sites_numbs = sites.keys()
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
-    if config.params['ffinput'] == 'GROMOS':
-        userff = config.userff
-        usernames = config.usernames
-        os.system('python {0} {1} {2} --userff {3} '
-                  '--usernames={4}  --ffout GROMOS --drop-water -v'.format(pdb2pqr_path,
-                                                                           inputpdbfile, inputpqr,
-                                                                           userff, usernames))
-    else:
-        os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
-                  '--drop-water -v'.format(pdb2pqr_path,
-                                           inputpdbfile, inputpqr,
-                                           config.params['ffinput']))
+    os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
+              '--drop-water -v'.format(pdb2pqr_path,
+                                       inputpdbfile, inputpqr,
+                                       config.params['ffinput']))
 
     log.redirectOutput("stop", logfile)
     log.redirectErr("stop", errfile)

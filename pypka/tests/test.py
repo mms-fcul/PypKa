@@ -9,7 +9,7 @@ ncpus = 1
 # run coverage.sh to generate coverage
 
 def runTest(path, ncpus, results):
-    os.system("rm -f {0}/*out".format(path))
+    os.system("rm -f {0}/*out {0}/clean*pqr {0}/TMP.gro {0}/delphi_in_*pdb".format(path))
     results_lines = results.split('\n')[1:-1]
     sb.Popen("cd {0}; "
              "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
