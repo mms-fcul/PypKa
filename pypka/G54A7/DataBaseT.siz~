@@ -1,5 +1,4 @@
-!siz file modified by VT 2013/03/15
-!Hydrogen atoms have 0.001 radii because
+! Hydrogen atoms have 0.001 radii because
 ! DelPhi complains if H has charge and no
 ! radii. It does not change final results
 atom__res_radius_
@@ -490,6 +489,21 @@ NE2   HI2   1.466
 HE2   HI2   0.001
 C     HI2   1.525
 O     HI2   1.326
+N     HIS   1.483
+H     HIS   0.000
+CA    HIS   1.945
+CB    HIS   1.760
+CG    HIS   1.525
+ND1   HIS   1.466
+HD1   HIS   0.001
+CD2   HIS   1.525
+HD2   HIS   0.910
+CE1   HIS   1.525
+HE1   HIS   0.910
+NE2   HIS   1.466
+HE2   HIS   0.001
+C     HIS   1.525
+O     HIS   1.326
 N     ILE   1.483
 H     ILE   0.000
 CA    ILE   1.945
@@ -1047,3 +1061,34 @@ HG3   TH3   0.001
 CG2   TH3   1.702
 C     TH3   1.525
 O     TH3   1.326
+H3    CHO   1.187   
+C3    CHO   1.791   
+C2    CHO   2.035   
+C1    CHO   2.035   
+C10   CHO   1.791   
+C19   CHO   1.874   
+C9    CHO   2.510   
+C11   CHO   2.035   
+C12   CHO   2.035   
+C13   CHO   1.791   
+C18   CHO   1.874   
+C17   CHO   2.510   
+C20   CHO   2.510   
+C22   CHO   2.035   
+C23   CHO   2.035   
+C24   CHO   2.035   
+C25   CHO   2.510   
+C27   CHO   1.874   
+C26   CHO   1.874   
+C21   CHO   1.874   
+C16   CHO   2.035   
+C15   CHO   2.035   
+C14   CHO   2.510   
+C8    CHO   2.510   
+C7    CHO   2.035   
+C6    CHO   1.791   
+H6    CHO   1.187   
+C5    CHO   1.791   
+C4    CHO   2.035   
+O3    CHO   1.483   
+H3'   CHO   0.000   

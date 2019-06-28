@@ -144,6 +144,7 @@ def correct_names(sites_numbs, resnumb, resname, aname,
     NTR_numb = termini.keys()[0]
     CTR_numb = termini.keys()[1]
 
+    # no longer used as it is done by pdb2pqr
     correct_atoms_table = {'CTR': {'O': 'O1',
                                    'OXT': 'O2'},
                            'NTR': {'H': 'H1'},

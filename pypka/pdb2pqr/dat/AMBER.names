@@ -58,6 +58,16 @@
        </atom>
    </residue>
 
+   <residue>
+     <name>HID</name>
+     <useresname>HIP</useresname>
+   </residue>
+
+   <residue>
+     <name>HIE</name>
+     <useresname>HIP</useresname>
+   </residue>
+
 <!-- Nucleic Acid Subtitutions -->
 
    <residue>

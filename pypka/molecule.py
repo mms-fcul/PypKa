@@ -706,8 +706,8 @@ MODEL        1
                         resnumb += config.terminal_offset
                         if aname == 'C':
                             aname = 'CT'
-                        elif aname in ('O1', 'O2'):
-                            aname = aname[0] + 'T' + aname[1]
+                        #elif aname in ('O1', 'O2'):
+                        #    aname = aname[0] + 'T' + aname[1]
 
                     if resnumb in self._correct_names.keys():
                         resname = self._correct_names[resnumb]

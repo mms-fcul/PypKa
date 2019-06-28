@@ -1637,7 +1637,7 @@ def redirector(logTime):
         <script type="text/javascript">
             {trackingevents}
         </script>
-        <link rel="stylesheet" href="http://qit04/pdb2pqr/pdb2pqr.css" type="text/css">
+        <link rel="stylesheet" href="http://DESKTOP-NGTO9J9/pdb2pqr/pdb2pqr.css" type="text/css">
         <meta http-equiv="refresh" content="{wait};url={redirectURL}"/>
     </head>
     <body>
@@ -1698,7 +1698,7 @@ def mainInput() :
         pdb2pqrLocation = '../pdb2pqr/html/server.html'
         print '<html>'
         print '<head>'
-        print '<link rel="stylesheet" href="http://qit04/pdb2pqr/pdb2pqr.css" type="text/css">'
+        print '<link rel="stylesheet" href="http://DESKTOP-NGTO9J9/pdb2pqr/pdb2pqr.css" type="text/css">'
         print '<meta http-equiv=\"refresh\" content=\"0;url=%s\"/>' % pdb2pqrLocation
         print '</head>'
         print '<body>'

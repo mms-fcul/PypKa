@@ -9,7 +9,7 @@ def inputPDBCheck(filename, sites):
     """
     chains_length, chains_res
     """
-    if filename[-3:] == 'pdb':
+    if filename[-3:] in ('pdb', 'pqr'):
         filetype = 'pdb'
     elif filename[-3:] == 'gro':
         filetype = 'gro'
@@ -100,7 +100,7 @@ def inputPDBCheck(filename, sites):
 
 
 def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
-             termini, userff, usernames, inputpqr, outputpqr, sites):
+             termini, inputpqr, outputpqr, sites):
     """
     """
 
@@ -113,11 +113,20 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     log.redirectErr("start", errfile)
 
     sites_numbs = sites.keys()
+
     # CTR O1/O2 will be deleted and a O/OXT will be added
-    os.system('python {0} {1} {2} --userff {3} '
-              '--usernames={4} --drop-water -v'.format(pdb2pqr_path,
-                                                       inputpdbfile, inputpqr,
-                                                       userff, usernames))
+    if config.params['ffinput'] == 'GROMOS':
+        userff = config.userff
+        usernames = config.usernames
+        os.system('python {0} {1} {2} --userff {3} '
+                  '--usernames={4}  --ffout GROMOS --drop-water -v'.format(pdb2pqr_path,
+                                                                           inputpdbfile, inputpqr,
+                                                                           userff, usernames))
+    else:
+        os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
+                  '--drop-water -v'.format(pdb2pqr_path,
+                                           inputpdbfile, inputpqr,
+                                           config.params['ffinput']))
 
     log.redirectOutput("stop", logfile)
     log.redirectErr("stop", errfile)
@@ -125,7 +134,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     CYS_bridges = []
     with open('LOG_pdb2pqr') as f:
         for line in f:
-            if 'CYX' in line:
+            if 'patched with CYX' in line:
                 parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
                 CYS_bridges.append(int(parts[-1]))
 

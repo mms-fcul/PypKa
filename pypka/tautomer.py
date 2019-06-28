@@ -67,8 +67,8 @@ class Tautomer(object):
                     atom_name = cols[1]
                     if atom_name == 'C' and res_name == 'CTR':
                         atom_name = 'CT'
-                    elif atom_name in ('O1', 'O2') and res_name == 'CTR':
-                        atom_name = atom_name[0] + 'T' + atom_name[1]
+                    #elif atom_name in ('O1', 'O2') and res_name == 'CTR':
+                    #    atom_name = atom_name[0] + 'T' + atom_name[1]
                     charge_set1[atom_name] = float(cols[-2])
                     charge_set2[atom_name] = float(cols[-1])
                 else:

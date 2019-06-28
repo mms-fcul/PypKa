@@ -73,6 +73,8 @@ class Titration(object):
             config.f_dat = datfile
             parameters = readSettings(datfile) 
 
+        config.debug = debug
+
         # Check Input Variables Validity
         inputParametersFilter(parameters)
 
@@ -130,8 +132,7 @@ class Titration(object):
                 for site in sites:
                     site_numb_n_ref[site] = sites[site].getRefTautomerName()
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
-                         termini, config.userff, config.usernames,
-                         inputpqr, outputpqr, site_numb_n_ref)
+                         termini, inputpqr, outputpqr, site_numb_n_ref)
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
             else:
@@ -267,6 +268,9 @@ class Titration(object):
                 raise Exception('Unknown site')
         return numb
 
+    def getParameters(self):
+        return config.tit_mole.getDelPhi()
+    
     def __getitem__(self, numb):
         numb = self.correct_site_numb(numb)
         return self._pKas[numb]
@@ -290,8 +294,8 @@ class Titration(object):
 
 def CLI():
     # Assignment of global variables
-    parameters = checkParsedInput()
-    Titration(parameters, sites=None)
+    parameters, debug = checkParsedInput()
+    Titration(parameters, sites=None, debug=debug)
     print 'CLI exited successfully'
 
 

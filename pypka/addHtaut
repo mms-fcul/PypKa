@@ -289,7 +289,7 @@ function define_sites()
   h1["GLU"] = "HE11" ; h2["GLU"] = "HE21" ;
   h3["GLU"] = "HE12" ; h4["GLU"] = "HE22" ;
   # C-terminus:
-  o1["CTR"] = "O1" ;  o2["CTR"] = "O2"    ; c["CTR"] = "C" ;
+  o1["CTR"] = "O1" ;   o2["CTR"] = "O2"   ; c["CTR"] = "C" ;
   h1["CTR"] = "HO11" ; h2["CTR"] = "HO21" ;
   h3["CTR"] = "HO12" ; h4["CTR"] = "HO22" ;
   # Propionate A:

@@ -1,0 +1,17 @@
+atoms_trigger = False
+text = ''
+with open('database.crgsiz', 'r') as f:
+    for line in f:
+        
+        cols = line.split()
+        atom = cols[0]
+        atom2 = cols[3]
+        if atom != atom2:
+            print(line)
+            print('WARNING')
+            exit()
+        res  = cols[1]
+        crg  = float(cols[2])
+        siz  = float(cols[5])
+
+        print(f'{res:7} {atom:8} {crg:8>f}       {siz:>.4f}  {atom}')

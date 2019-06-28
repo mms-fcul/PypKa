@@ -61,8 +61,8 @@ def inputParametersFilter(settings):
     param_names = settings.keys()
     # MANDATORY #
     mandatory_params = ('structure', 'epsin', 'ionicstr',
-                        'pbc_dimensions', 'temp', 'grid_fill',
-                        'ncpus', 'pH', 'sites_A')
+                        'pbc_dimensions', 'temp',
+                        'ncpus', 'sites_A')
     for param in mandatory_params:
         if param not in param_names:
             log.requiredParameterError(param)
@@ -138,12 +138,18 @@ def inputParametersFilter(settings):
                                'either "single" or "double".', '')
         setParameter('precision', settings['precision'])
 
-    if 'ffID' in param_names and \
-       settings['ffID'] not in ('G54A7'):  # for now only GROMOS FF
-        log.inputVariableError('ffID',
-                               'equal to "G54A7".', '')
+    if 'ffID' in param_names:
         setParameter('ffID', settings['ffID'])
-
+        if settings['ffID'] not in ('G54A7'):  # for now only GROMOS FF
+            log.inputVariableError('ffID',
+                                   'equal to "G54A7".', '')
+    
+    if 'ffinput' in param_names:
+        setParameter('ffinput', settings['ffinput'])
+        if settings['ffinput'] not in ('GROMOS', 'AMBER', 'CHARMM'):
+            log.inputVariableError('ffinput',
+                                   'either "GROMOS", "AMBER" or "CHARMM".', '')
+    
     file_path = os.path.join(config.script_dir, config.params['ffID'])
     config.f_crg = '{0}/DataBaseT.crg'.format(file_path)
     config.f_siz = '{0}/DataBaseT.siz'.format(file_path)
@@ -156,29 +162,30 @@ def inputParametersFilter(settings):
         setParameter('pbc_dimensions', param_value)
 
     # Needs to accept both a single value and a range
-    pH_parts = settings['pH'].split(',')
-    if len(pH_parts) > 1:
-        try:
-            pHmin = float(pH_parts[0])
-            pHmax = float(pH_parts[1])
-            setParameter('pHmin', pHmin)
-            setParameter('pHmax', pHmax)
-        except ValueError:
-            log.inputVariableError('pH',
-                                   'a float.', '')
-    else:
-        try:
-            pHmin = float(pH_parts[0])
-            pHmax = float(pH_parts[0])
-            setParameter('pHmin', pHmin)
-            setParameter('pHmax', pHmax)
-        except ValueError:
-            log.inputVariableError('pH',
-                                   'a float.', '')
-        setParameter('pH', [param_value])
-    if pHmin >= pHmax:
-        log.inputVariableError('pHmax',
-                               'a float greater than pHmin.', '')
+    if 'pH' in param_names:
+        pH_parts = settings['pH'].split(',')
+        if len(pH_parts) > 1:
+            try:
+                pHmin = float(pH_parts[0])
+                pHmax = float(pH_parts[1])
+                setParameter('pHmin', pHmin)
+                setParameter('pHmax', pHmax)
+            except ValueError:
+                log.inputVariableError('pH',
+                                       'a float.', '')
+        else:
+            try:
+                pHmin = float(pH_parts[0])
+                pHmax = float(pH_parts[0])
+                setParameter('pHmin', pHmin)
+                setParameter('pHmax', pHmax)
+            except ValueError:
+                log.inputVariableError('pH',
+                                       'a float.', '')
+            setParameter('pH', [param_value])
+        if pHmin >= pHmax:
+            log.inputVariableError('pHmax',
+                                   'a float greater than pHmin.', '')
 
     # Declare IO Files
     # Input .pdb File
@@ -188,11 +195,12 @@ def inputParametersFilter(settings):
         log.inputVariableError('structure',
                                'a string containing a file extension.',
                                'Ex: structure.pdb or structure.gro')
-    extension = f_in_parts[1].lower()
+
+    extension = f_in_parts[1].lower().replace('pqr', 'pdb')
     if extension not in ('gro', 'pdb'):
         log.inputVariableError('structure',
                                'a string containing a valid file extension.',
-                               'Ex: structure.pdb or structure.gro')
+                               'Ex: structure.pdb or structure.gro or structure.pqr')
 
     config.f_in_extension = extension
 
@@ -317,7 +325,6 @@ python pypka.py test.pdb test.dat -o pKas.out --debug
 
     # Read Settings File
     config.f_dat = args.settings
-    config.debug = args.debug
     parameters = readSettings(args.settings)
 
-    return parameters
+    return parameters, args.debug

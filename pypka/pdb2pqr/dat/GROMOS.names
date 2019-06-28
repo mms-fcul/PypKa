@@ -16,14 +16,19 @@
     </atom>
   </residue>
   <residue>
+    <name>C(...)$</name>
+    <useresname>$group</useresname>
+  </residue>
+  <residue>
     <name>C...$</name>
+    <useresname>CT4</useresname>
     <atom>
-        <name>OXT</name>
-        <useatomname>O2</useatomname>
+      <name>OXT</name>
+      <useatomname>O2</useatomname>
     </atom>
     <atom>
-        <name>O</name>
-        <useatomname>O1</useatomname>
+      <name>O</name>
+      <useatomname>O1</useatomname>
     </atom>
     <atom>
         <name>OT2</name>
@@ -36,33 +41,38 @@
   </residue>
   <residue>
     <name>N(...)$</name>
+    <useresname>$group</useresname>
+  </residue>
+  <residue>
+    <name>N...$</name>
+    <useresname>NT3</useresname>
     <atom>
-        <name>H</name>
-        <useatomname>H1</useatomname>
+      <name>H</name>
+      <useatomname>H1</useatomname>
     </atom>
     <atom>
-        <name>1H</name>
-        <useatomname>H1</useatomname>
+      <name>1H</name>
+      <useatomname>H1</useatomname>
     </atom>
     <atom>
-        <name>2H</name>
-        <useatomname>H2</useatomname>
+      <name>2H</name>
+      <useatomname>H2</useatomname>
     </atom>
     <atom>
-        <name>3H</name>
-        <useatomname>H3</useatomname>
+      <name>3H</name>
+      <useatomname>H3</useatomname>
     </atom>
     <atom>
-        <name>HT1</name>
-        <useatomname>H1</useatomname>
+      <name>HT1</name>
+      <useatomname>H1</useatomname>
     </atom>
     <atom>
-        <name>HT2</name>
-        <useatomname>H2</useatomname>
+      <name>HT2</name>
+      <useatomname>H2</useatomname>
     </atom>
     <atom>
-        <name>HT3</name>
-        <useatomname>H3</useatomname>
+      <name>HT3</name>
+      <useatomname>H3</useatomname>
     </atom>
   </residue>
   <residue>
@@ -73,51 +83,42 @@
     </atom>
   </residue>
   <residue>
-    <name>LYS</name>
-    <useresname>LYSH</useresname>
-  </residue>
-  <residue>
     <name>CYS</name>
-    <useresname>CYSH</useresname>
+    <atom>
+        <name>HG</name>
+        <useatomname>HG1</useatomname>
+    </atom>
   </residue>
   <residue>
     <name>CYX</name>
     <useresname>CYS</useresname>
   </residue>
   <residue>
-    <name>HI([PDE])$</name>
-    <useresname>HISH</useresname>
+    <name>HIS</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>HS([PDE])$</name>
-    <useresname>HISH</useresname>
-  </residue>  
-  <residue>
-    <name>NLYS</name>
-    <useresname>NLYSH</useresname>
+    <name>HID</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>NCYS</name>
-    <useresname>NCYSH</useresname>
+    <name>HIE</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>NHI([PDE])$</name>
-    <useresname>NHISH</useresname>
+    <name>HIP</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>NHS([PDE])$</name>
-    <useresname>NHISH</useresname>
+    <name>HSD</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>CLYS</name>
-    <useresname>CLYSH</useresname>
+    <name>HSE</name>
+    <useresname>HIS</useresname>
   </residue>
   <residue>
-    <name>CCYS</name>
-    <useresname>CCYSH</useresname>
-  </residue>
-  <residue>
-    <name>CHI([PDE])$</name>
-    <useresname>CHISH</useresname>
+    <name>HSP</name>
+    <useresname>HIS</useresname>
   </residue>
 </patches>
