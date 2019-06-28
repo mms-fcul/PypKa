@@ -24,7 +24,7 @@ parameters = {'structure'     : '4lzt.pdb',
               'output': 'pkas.out'}
 
 sites = {'A': ('1N', '18', '35', '48', '66', '129C')}
-pKa = Titration(parameters, sites=sites)
+pKa = Titration(parameters, sites=sites, debug=True)
 
 for site in pKa:
     print site, pKa[site], pKa.getProtState(site, 7)
