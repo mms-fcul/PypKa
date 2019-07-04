@@ -23,7 +23,8 @@ setuptools.setup(
                             'pdb2pqr/extensions/*',
                             'pdb2pqr/src/*',
                             'pdb2pqr/ZSI/*']},
-    install_requires=['numpy', 'pytest', 'coverage'],
+    install_requires=['numpy', 'pytest', 'coverage',
+                      'delphi4py @ git+ssh://git@github.com/pedrishi/delphi4py@master'],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Cython",
