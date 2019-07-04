@@ -50,10 +50,6 @@ def inputParametersFilter(settings):
     Mandatory Parameters:
       - Dielectric Constant
       - Ionic Strength
-      - Temperature
-      - Percentege of grid filling
-      - pH range
-      - sites_A
 
     """
     config.pid = os.getpid()
@@ -61,8 +57,7 @@ def inputParametersFilter(settings):
     param_names = settings.keys()
     # MANDATORY #
     mandatory_params = ('structure', 'epsin', 'ionicstr',
-                        'pbc_dimensions', 'temp',
-                        'ncpus', 'sites_A')
+                        'pbc_dimensions', 'ncpus', 'sites_A')
     for param in mandatory_params:
         if param not in param_names:
             log.requiredParameterError(param)

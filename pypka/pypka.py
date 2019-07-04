@@ -24,6 +24,18 @@ __status__ = "Development"
 
 
 def getTitrableSites(pdb):
+    """Gets the all titrable sites from the pdb
+
+    Returns an input structure to the Titration class containing all
+    titrable sites found in the pdb file. 
+
+    Args:
+        pdb (str): The filename a PDB file
+    
+    Returns: 
+        A dict mapping all titrable sites found in the pdb file
+
+    """
     config.f_in = pdb
     config.params['ffID'] = 'G54A7'
 
@@ -53,8 +65,15 @@ class Titration(object):
 
     Serves as a wrapper to all other classes
 
+    Args:
+        parameters
+        sites
+        debug
+        datfile
+
     Attributes:
         _pKas: A dict with the calculated pKa values.
+
     """
     def __init__(self, parameters, sites='all', debug=None, datfile=None):
         """
@@ -213,6 +232,18 @@ class Titration(object):
         self._pmeans = pmeans
 
     def getAverageProt(self, site, pH):
+        """Calculates the average protonation of a site at a given pH value
+
+        Args:
+            site (str): Residue number of the site with the suffix 'N'
+            or 'C' to indicate a N-ter or C-ter, respectively.
+
+            pH (float): pH value 
+        
+        Returns:  
+            A float of the average protonation of the site at the
+            selected pH value
+        """
         pKa = self[site]
         if isinstance(pKa, str):
             return 'pk Not In Range'
@@ -220,6 +251,27 @@ class Titration(object):
         return average_prot
 
     def getProtState(self, site, pH):
+        """Indicates the most probable protonation state of a site at a given
+        pH value
+
+        Args:
+            site (str): Residue number of the site with the suffix 'N'
+            or 'C' to indicate a N-ter or C-ter, respectively.
+
+            pH (float): pH value 
+
+        Returns: 
+
+            A tuple with two elements. Example: ('protonated', 0.9)
+
+            The first element is a string indicating the most probable
+            state of the site. It can be either 'protonated',
+            'deprotonated' or 'undefined'. The 'undefined' state is
+            prompted if the average protonation state is between 0.1 and 0.9.
+          
+            The second element is a float of the average protonation of the site
+
+        """
         state = 'undefined'
         average_prot = self.getAverageProt(site, pH)
 
@@ -269,6 +321,8 @@ class Titration(object):
         return numb
 
     def getParameters(self):
+        """Get the parameters used in the calculations
+        """
         return config.tit_mole.getDelPhi()
     
     def __getitem__(self, numb):
