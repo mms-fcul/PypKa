@@ -1,0 +1,160 @@
+ realsiz ==            8
+ atom radii read from file
+ DataBaseT.siz
+  
+ !siz file modified by VT 2013/03/15                         
+ !Hydrogen atoms have 0.001 radii because                    
+ ! DelPhi complains if H has charge and no                   
+ ! radii. It does not change final results                   
+ # of radius parameter records:         960
+  
+ atomic charges read from file
+ P.crg
+  
+ !crg file created by gen_files.awk                          
+ # of charge parameter records:        1058
+ assigning charges and radii...
+  
+ opening formatted file:P.pdb
+ Delphi Format Number =            0
+ You are not reading from an objectfile!
+ Assuming having only molecules, and one medium
+ You are not reading from an objectfile! assuming       having only molecules, and one dielectric medium
+ number of atoms read in =        17250
+ in setrc, iatrad= F
+ Direct mapping of epsilon: (0/1)(n/y)           1
+   
+ loading variables time was (sec)    6.9241069478754192E-310
+   
+ realsiz ==            8
+ igrid     ->            0                    0
+ scale     ->    10000.000000000000        1.0223857030000001     
+ repsin    ->    2.0000000000000000        2.0000000000000000     
+ repsout   ->    80.000000000000000        80.000000000000000     
+ radprb(1) ->    1.3999999999999999        1.3999999999999999     
+ conc(1)   ->    0.0000000000000000       0.10000000000000001     
+ ibctyp    ->            2                    4
+ res2      ->    0.0000000000000000        1.0000000000000000E-002
+ nlit      ->            0                   50
+ py_acent      -> (   0.0000000000000000        0.0000000000000000        0.0000000000000000      ) (   44.014699999999998        44.014699999999998        114.78100000000001      )
+ energy      -> sc
+ sites -> aqp
+ natom ->                 17250
+ fort.13                                                                                    7
+ fort.12                                                                                    7
+ fort.11                                                                                    7
+ At least 30 nonlinear iterations
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ time to read in and/or assign rad/chrg=  0.22248299419879913     
+ object number :              1 ,  is a molecule
+ cmin  -6.2140000000000004       -6.1589999999999998        102.61799999999999     
+ cmax   94.363999999999990        94.189000000000007        168.61199999999999     
+ Debye Lengths contained in the finite diff. box   2.7730982098765069     
+   
+ grid size                  :         137
+ percent of box to be filled:   80.000000000000000     
+ scale,in grids/A :   1.0223857030000001     
+ xmin,xmax     (A):  -6.2140000000000004        94.363999999999990     
+ ymin,ymax     (A):  -6.1589999999999998        94.189000000000007     
+ zmin,zmax     (A):   102.61799999999999        168.61199999999999     
+ x,y,z range   (A):    100.57799999999999        100.34800000000001        65.994000000000000     
+ system geometric center in (A):   44.074999999999996        44.015000000000001        135.61500000000001     
+  grid  box is centered in (A) :   44.014699999999998        44.014699999999998        114.78100000000001     
+ object centre offset (gu)  :   0.0000000000000000        0.0000000000000000        0.0000000000000000     
+ outer dielectric           :   80.000000000000000     
+ dielectric in medium number           0  :   80.000000000000000     
+ dielectric in medium number           1  :   2.0000000000000000     
+ first kind salt concentration (M)   :  0.10000000000000001     
+ valences salt 1 are                   1  and           1
+ second kind salt concentration (M)  :   0.0000000000000000     
+ valences salt 2 are                   0  and           0
+ ionic strength (M)         :  0.10000000000000001     
+ debye length (A)           :   9.7059310428095547     
+ absolute temperature (K)   :   297.33421190000001     
+ ion exclusion radius (A)   :   2.0000000000000000     
+ probe radius facing water(A:   1.3999999999999999     
+ probe radius, internal (A) :   1.3999999999999999     
+ boundary conditions        : coulombic   
+ x,y,z periodic bc. and volt. drop flags: T T F F F F
+ # of linear iterations     :          50
+ convergence by rms  change :   0.0000000000000000       kt
+ convergence by max  change :   1.0000000000000000E-002  kt
+ convergence by norm change :   0.0000000000000000       kt
+ # of non-linear iterations :          30
+ non-linear energy calculat.: T
+ manual relaxation parameter : T
+ ionic direct energy contribution: F
+ concentration map output   : F
+ spherical charge distbn.   : F
+ INSIGHT format output      : F
+ site potential output      : T
+ modified atom file output  : F
+ map file label             :
+qdiffxas: qdiffxs4 with an improved surfacing routine       
+  convergence graph turned off
+  potential listings turned off
+  
+ number of charges coming from molecules            6
+ radmax2 ->   1.0223857030000001        9.8813129168249309E-324   4.5102812497543823E-314           6
+ start vw surface at   0.22390800714492798     
+ radmax2 ->   1.0223857030000001        9.8813129168249309E-324   4.5102812497543823E-314           6
+ Starting creating Van der Waals  Epsilon Map 
+ radmax2 ->   1.0223857030000001        1.9450000000000001        2.0000000000000000      F
+ radmax2 ->   1.0223857030000001        4.0333115983350005        2.0000000000000000      F
+ radmax2 ->   1.0223857030000001        4.0333115983350005        2.0000000000000000      F
+ Ending creating Van der Waals  Epsilon Map 
+ fill in re-entrant regions at   0.28951799869537354     
+ here in vwtms	
+ boundary points facing continuum solvent=       208931
+ total number of boundary points before elab.=       208931
+ radpmax,radprb    1.3999999999999999        1.3999999999999999        1.3999999999999999     
+ # of vertices =          384  # of edges =          372
+ # of atom-atom pairs =       291993
+ time to find all pairs =    3.01500000E-02
+ # pairs analyzed (atom-atom and atom-object)=       291993
+ # exposed pairs (atom-atom and atom-object)=        40086
+ no. arc points  =       943295
+ no. surface atoms  =        12068  nbur =         5182
+ mkacc time =   0.406473011    
+ initial cube size too small, 
+ in assigning accessible points to a grid
+ therefore rescaling...
+ grid for indexing accessible points =    2.1839999999999997     
+ bgp added m=       66540  bgp removed  mr =      132395
+ bgp added m=        2379  bgp removed  mr =       37036
+ bgp added m=          12  bgp removed  mr =          35
+ bgp added m=           0  bgp removed  mr =           0
+ time to grow re-entrant surface =    1.00880802    
+ no. cavity mid-points inaccessible to solvent =            0
+ after surface elaboration ibnum=       108396
+     and               ibnumsurf=       108396
+ scaling boundary grid points
+ time taken =   0.455110997    
+           0  points had to be assigned by global comparison
+ time to turn everything in is   2.2245099544525146     
+   
+ number of atom coordinates read  :        17250
+ total number of assigned charges    :            6
+ net assigned charge              :   -5.5511151231257827E-017
+ assigned positive charge         :    1.3300000000000001     
+ centred at (gu) :   69.235570734059124        68.720764940601171        68.972149598481423     
+ assigned negative charge         :   -1.3300000000000001     
+ centred at (gu) :   69.185066417753049        68.883116715393342        68.907424127659922     
+    
+ number of dielectric boundary points      108396
+ no. dielectric boundary points in salt =            0
+ no. charged boundary grid points =           0
+ iepsmp to db, and charging done at   2.2589709758758545     
+ number of grid points assigned charge          30
+  
+   setting boundary conditions
+  
+  some initial phi values:           69         137
+  midg,midg,1; midg,midg,igrid 
+  -1.3605525342336516E-006   9.1557139576478336E-007
+  midg,1,midg; midg,igrid,midg 
+   3.3178084806651217E-006  -2.2921852605198133E-006
+  1,midg,midg; igrid,midg,midg 
+  -9.7684849556155739E-007   7.4066584487757583E-007
+ using entered value for relaxation of:   0.20000000000000001     
+ estimated iterations to convergence          12

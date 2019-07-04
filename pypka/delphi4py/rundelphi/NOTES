@@ -1,0 +1,26 @@
+stat6(1)="GSIZE"   igrid
+stat6(2)="SCALE"   scale
+stat6(4)="INDI"    repsin
+stat6(5)="EXDI"    repsout
+stat6(6)="PRBRAD"  radprb(1)
+stat6(8)="SALT"    conc(1)
+stat6(9)="BNDCON"  ibctyp
+stat6(38)="MAXC"   res2
+stat6(10)="LINIT"  nlit
+
+if(type(1:ieq1).eq."ACENT")  itype=2  acent format(3f12.7)
+if(type(1:ieq1).eq."ENERGY") itype=5  logc=.true.  logs=.true.
+                             (check also if        logas=.true.)
+if(type(1:ieq1).eq."SITE")   itype=6  isita=.true. isitq=.true.
+                                                   isitp=.true.
+
+if(type(1:ieq1).eq."IN")     itype=3
+siz                          siznam  sizlen  sizfrm
+crg                          crgfrm  crglen  crgfrm
+pdb                          pdbnam  pdblen  pdbfrm
+frc                          iself   frcinam frcifrm
+phi                          phiinam phiilen phiifrm
+
+if(type(1:ieq1).eq."OUT")    itype=4
+frc            isite  frcfrm frcnam frclen irea
+phi            phinam philen phifrm ibios phiwrt
