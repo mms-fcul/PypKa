@@ -1,10 +1,21 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
+
+import sys
+from mock import Mock as MagicMock
+
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+MOCK_MODULES = ['delphi4py']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- Path setup --------------------------------------------------------------
 

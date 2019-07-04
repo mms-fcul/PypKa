@@ -1,4 +1,3 @@
 numpy
 pytest
 coverage
-delphi4py@ git+https://git@github.com/pedrishi/delphi4py@master
