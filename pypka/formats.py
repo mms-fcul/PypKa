@@ -25,6 +25,7 @@ def read_pqr_line(line):
     aname   = line[12:16].strip()
     anumb   = int(line[7:11].strip())
     resname = line[17:21].strip()
+    chain   = line[21]
     resnumb = int(line[23:26])
     x       = float(line[30:38])
     y       = float(line[38:46])
@@ -33,8 +34,8 @@ def read_pqr_line(line):
     radius  = float(line[62:70])
     if len(aname) == 4:
         aname = correct_longHs(aname)
-    return (aname, anumb, resname, resnumb, x, y, z,
-            charge, radius)
+    return (aname, anumb, resname, chain, resnumb, x, y, z, charge,
+            radius)
 
 def read_pdb_line(line):
     aname   = line[12:16].strip()
@@ -60,15 +61,15 @@ def read_gro_line(line):
     return (aname, anumb, resname, resnumb, x, y, z)
 
 
-def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
+def pdb2gro(filename_in, filename_out, box, sites, pqr=False):
     """
     Returns
       - aposition (int) of last atom id in filename_out
     """
-    NTR_numb = termini.keys()[0]
-    NTR_atoms = termini[NTR_numb]
-    CTR_numb = termini.keys()[0]
-    CTR_atoms = termini[CTR_numb]
+    NTR_numb = config.tit_mole._NTR
+    NTR_atoms = config.tit_mole._NTR_atoms
+    CTR_numb = config.tit_mole._CTR
+    CTR_atoms = config.tit_mole._CTR_atoms
 
     header = 'CREATED within PyPka\n'
     new_pdb_text = ''
@@ -84,7 +85,7 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
             elif 'ATOM' != line[:4]:
                 continue
             elif pqr:
-                (aname, anumb, resname, resnumb, x, y,
+                (aname, anumb, resname, chain, resnumb, x, y,
                  z, charge, radius) = read_pqr_line(line)
             else:
                 (aname, anumb, resname, chain,
@@ -127,7 +128,7 @@ def pdb2gro(filename_in, filename_out, box, sites, termini, pqr=False):
 
 
 def correct_names(sites_numbs, resnumb, resname, aname,
-                  termini, titrating_sites):
+                  titrating_sites):
     def change_aname(aname, restype, mode='regular'):
         if mode == 'titrating':
             not_correct_names = correct_atoms_sites_table[restype].keys()
@@ -141,8 +142,8 @@ def correct_names(sites_numbs, resnumb, resname, aname,
                     aname = correct_atoms_table[restype][not_corrected]
 
         return aname
-    NTR_numb = termini.keys()[0]
-    CTR_numb = termini.keys()[1]
+    NTR_numb = config.tit_mole._NTR
+    CTR_numb = config.tit_mole._CTR
 
     # no longer used as it is done by pdb2pqr
     correct_atoms_table = {'CTR': {'O': 'O1',

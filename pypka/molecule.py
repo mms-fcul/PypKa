@@ -260,7 +260,7 @@ class Molecule(object):
                     if chain == ' ':
                         chain = 'A'
                     if resnumb not in sites:
-                        if len(sites) == 0 and 'NTR' not in sites:
+                        if len(sites) == 0 and 'NTR' not in sites and chain == 'A':
                             sites.append('NTR')
                             sites_file += SitesFileLine(resnumb, 'NTR')
                             self._NTR = resnumb
@@ -271,12 +271,12 @@ class Molecule(object):
                             add2chain(chain, chain_res, resnumb, resname)
 
                     if 'CTR' not in sites and \
-                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT'):
+                       aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT') and chain == 'A':
                         sites.append('CTR')
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb
                         add2chain(chain, chain_res, resnumb, 'CTR')
-
+                        
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
         # Assigning a charge set to each tautomer
@@ -425,6 +425,8 @@ class Molecule(object):
                                                                                   cter=True,
                                                                                   site=res_tits)
                             if integrity_cter:
+                                print 'exit'
+
                                 cter_resnumb = prev_resnumb + config.terminal_offset
                                 makeSite(cter_resnumb, 'CTR')
                                 self._CTR = prev_resnumb
@@ -444,7 +446,7 @@ class Molecule(object):
                                 res_atoms = copy(cur_atoms)
                                 integrity_site = self.check_integrity(prev_resname,
                                                                       cur_atoms)
-
+                                
                                 if integrity_site:
                                     makeSite(prev_resnumb, prev_resname)
                                 else:
@@ -473,6 +475,8 @@ class Molecule(object):
                     if prev_resname in ('NTR', 'CTR') and \
                        prev_resname != resname:
                         prev_resname = resname
+
+        print 'exit'
 
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
@@ -533,14 +537,14 @@ class Molecule(object):
             if nter:
                 main_chain = ()
             if cter:
-                main_chain = ('N', 'H')
+                main_chain = ('N', 'H', 'CA')
 
             for aname in main_chain:
                 if aname in res_atoms:
                     res_atoms.remove(aname)
                 elif not nter and not cter:
                     integrity = False
-
+            
             if config.debug:
                 print 'i', integrity
 

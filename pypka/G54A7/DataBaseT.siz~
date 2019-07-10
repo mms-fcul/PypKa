@@ -742,47 +742,40 @@ CG2   VAL   1.702
 C     VAL   1.525
 O     VAL   1.326
 CT    CT0   1.525
-OT1   CT0   1.471
-OT2   CT0   1.471
+O1    CT0   1.471
+O2    CT0   1.471
 HO11  CT0   0.001
 HO21  CT0   0.001
 HO12  CT0   0.001
 HO22  CT0   0.001
 CT    CT1   1.525
-OT1   CT1   1.471
-OT2   CT1   1.471
+O1    CT1   1.471
+O2    CT1   1.471
 HO11  CT1   0.001
 HO21  CT1   0.001
 HO12  CT1   0.001
 HO22  CT1   0.001
 CT    CT2   1.525
-OT1   CT2   1.471
-OT2   CT2   1.471
+O1    CT2   1.471
+O2    CT2   1.471
 HO11  CT2   0.001
 HO21  CT2   0.001
 HO12  CT2   0.001
 HO22  CT2   0.001
 CT    CT3   1.525
-OT1   CT3   1.471
-OT2   CT3   1.471
+O1    CT3   1.471
+O2    CT3   1.471
 HO11  CT3   0.001
 HO21  CT3   0.001
 HO12  CT3   0.001
 HO22  CT3   0.001
 CT    CT4   1.525
-OT1   CT4   1.471
-OT2   CT4   1.471
+O1    CT4   1.471
+O2    CT4   1.471
 HO11  CT4   0.001
 HO21  CT4   0.001
 HO12  CT4   0.001
 HO22  CT4   0.001
-CT          1.525
-OT1         1.471
-OT2         1.471
-HO11        0.001
-HO21        0.001
-HO12        0.001
-HO22        0.001
 N     NH2   1.527
 H1    NH2   0.000
 H2    NH2   0.000
@@ -1091,4 +1084,4 @@ H6    CHO   1.187
 C5    CHO   1.791   
 C4    CHO   2.035   
 O3    CHO   1.483   
-H3'   CHO   0.000   
+H3'   CHO   0.000

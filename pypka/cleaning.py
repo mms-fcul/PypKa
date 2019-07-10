@@ -3,7 +3,7 @@ import log
 from formats import (read_pdb_line, read_pqr_line, read_gro_line,
                      correct_names, new_pqr_line, new_gro_line, pdb2gro)
 import config
-
+from copy import copy
 
 def inputPDBCheck(filename, sites):
     """
@@ -100,7 +100,7 @@ def inputPDBCheck(filename, sites):
 
 
 def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
-             termini, inputpqr, outputpqr, sites):
+             inputpqr, outputpqr, sites):
     """
     """
 
@@ -116,9 +116,9 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
     os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
-              '--drop-water -v'.format(pdb2pqr_path,
-                                       inputpdbfile, inputpqr,
-                                       config.params['ffinput']))
+              '--drop-water -v --chain'.format(pdb2pqr_path,
+                                               inputpdbfile, inputpqr,
+                                               config.params['ffinput']))
 
     log.redirectOutput("stop", logfile)
     log.redirectErr("stop", errfile)
@@ -132,22 +132,36 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     new_pdb_text = ''
     aposition = 0
+    #ntr_trigger = True
     with open(inputpqr) as f:
         for line in f:
             if "ATOM" in line[:4]:
-                (aname, anumb, resname, resnumb, x, y,
+                (aname, anumb, resname, chain, resnumb, x, y,
                  z, charge, radius) = read_pqr_line(line)
                 aposition += 1
 
                 aname, resname = correct_names(sites_numbs, resnumb,
-                                               resname, aname, termini,
-                                               sites_numbs)
+                                               resname, aname, sites_numbs)
 
                 new_pdb_text += new_pqr_line(aposition, aname, resname,
                                              resnumb, x, y, z, charge, radius)
 
+    #            if ntr_trigger and :
+    #                config.tit_mole._NTR = resnumb
+    
+    chains = copy(chains_res['A'])
+    for res in chains:
+        if res > config.terminal_offset:
+            print res, chains_res['A'][res]
+    #        del chains_res['A'][res]
+
+    #chains_res['A'][config.tit_mole._NTR] = 'NTR'
+    #chains_res['A'][config.tit_mole._CTR] = 'CTR'
+
     with open('cleaned.pqr', 'w') as f_new:
         f_new.write(new_pdb_text)
+
+
 
     # TODO: .sites files should not exist
     # adapt addHtaut to work without these
@@ -161,6 +175,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     if config.debug:
         logfile = 'LOG_addHtaut'
+        print sites_addHtaut
     else:
         logfile = config.f_log
     log.redirectErr("start", logfile)
@@ -170,14 +185,14 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
-                
+
     with open(pdb_filename) as f:
         for line in f:
             if 'CRYST1' in line:
                 tmp = line.split()[1:4]
                 box = (float(tmp[0]), float(tmp[1]), float(tmp[2]))
 
-    pdb2gro(outputpqr, "TMP.gro", box, sites, termini, pqr=True)
+    pdb2gro(outputpqr, "TMP.gro", box, sites, pqr=True)
 
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)

@@ -1085,3 +1085,97 @@ C5    CHO   1.791
 C4    CHO   2.035   
 O3    CHO   1.483   
 H3'   CHO   0.000
+  P   ADE   1.638
+O1P   ADE   1.471
+O2P   ADE   1.471
+O5'   ADE   1.350
+C5'   ADE   1.760
+C4'   ADE   1.945
+O4'   ADE   1.350
+C1'   ADE   1.945
+ N9   ADE   1.466
+ C8   ADE   1.525
+ N7   ADE   1.466
+ C5   ADE   1.525
+ C6   ADE   1.525
+ N6   ADE   1.527
+ N1   ADE   1.466
+ C2   ADE   1.525
+ N3   ADE   1.466
+ C4   ADE   1.525
+H61   ADE   0.001
+H62   ADE   0.001
+C2'   ADE   1.730
+C3'   ADE   1.945
+O3'   ADE   1.350
+  P   THY   1.638
+O1P   THY   1.471
+O2P   THY   1.471
+O5'   THY   1.350
+C5'   THY   1.760
+C4'   THY   1.945
+O4'   THY   1.350
+C1'   THY   1.945
+ N1   THY   1.466
+ C6   THY   1.525
+ H6   THY   0.910
+ C2   THY   1.525
+ O2   THY   1.326
+ N3   THY   1.466
+ H3   THY   0.001
+ C4   THY   1.525
+ O4   THY   1.326
+ C5   THY   1.525
+C5M   THY   1.702
+C2'   THY   1.730
+C3'   THY   1.945
+O3'   THY   1.350
+  P   CYT   1.638
+O1P   CYT   1.471
+O2P   CYT   1.471
+O5'   CYT   1.350
+C5'   CYT   1.760
+C4'   CYT   1.945
+O4'   CYT   1.350
+C1'   CYT   1.945
+ N1   CYT   1.466
+ C6   CYT   1.525
+ H6   CYT   0.910 
+ C2   CYT   1.525 
+ O2   CYT   1.326 
+ N3   CYT   1.466 
+ C4   CYT   1.525
+ N4   CYT   1.527 
+H41   CYT   0.001 
+H42   CYT   0.001 
+ C5   CYT   1.525
+ H5   CYT   0.910 
+C2'   CYT   1.730 
+C3'   CYT   1.945
+O3'   CYT   1.350
+  P   GUA   1.638
+O1P   GUA   1.471
+O2P   GUA   1.471
+O5'   GUA   1.350
+C5'   GUA   1.760
+C4'   GUA   1.945
+O4'   GUA   1.350
+C1'   GUA   1.945
+ N9   GUA   1.466
+ C4   GUA   1.525
+ N3   GUA   1.466
+ C2   GUA   1.525
+ N2   GUA   1.527
+H21   GUA   0.001
+H22   GUA   0.001
+ N1   GUA   1.466
+ H1   GUA   0.001
+ C6   GUA   1.525
+ O6   GUA   1.326
+ C5   GUA   1.525
+ N7   GUA   1.466
+ C8   GUA   1.525
+ H8   GUA   0.910
+C2'   GUA   1.730
+C3'   GUA   1.945
+O3'   GUA   1.350

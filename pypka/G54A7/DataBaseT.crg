@@ -1083,3 +1083,97 @@ C15   CHO       0.000
 C14   CHO       0.000
 C8    CHO       0.000
 C7    CHO       0.000
+  P   ADE      0.9900
+O1P   ADE     -0.6350
+O2P   ADE     -0.6350
+O5'   ADE     -0.3600
+C5'   ADE      0.0000
+C4'   ADE      0.1600
+O4'   ADE     -0.3600
+C3'   ADE        0.00
+O3'   ADE       -0.36
+C2'   ADE      0.0000
+C1'   ADE      0.2000
+ N9   ADE     -0.2000
+ C8   ADE      0.4400
+ N7   ADE     -0.5400
+ C5   ADE      0.0000
+ C6   ADE      0.5400
+ N6   ADE     -0.8300
+ N1   ADE     -0.5400
+ C2   ADE      0.4400
+ N3   ADE     -0.5400
+ C4   ADE      0.2000
+H61   ADE      0.4150
+H62   ADE      0.4150
+  P   THY      0.9900
+O1P   THY     -0.6350
+O2P   THY     -0.6350
+O5'   THY     -0.3600
+C5'   THY      0.0000
+C4'   THY      0.1600
+O4'   THY     -0.3600
+C1'   THY      0.2000
+ N1   THY     -0.2000
+ C6   THY      0.1000
+ H6   THY      0.1000
+ C2   THY      0.4500
+ O2   THY     -0.4500
+ N3   THY     -0.3100
+ H3   THY      0.3100
+ C4   THY      0.4500
+ O4   THY     -0.4500
+ C5   THY      0.0000
+C5M   THY      0.0000
+C2'   THY      0.0000
+C3'   THY        0.00
+O3'   THY       -0.36
+  P   CYT      0.9900
+O1P   CYT     -0.6350
+O2P   CYT     -0.6350
+O5'   CYT     -0.3600
+C5'   CYT      0.0000
+C4'   CYT      0.1600
+O4'   CYT     -0.3600
+C1'   CYT      0.2000
+ N1   CYT     -0.2000
+ C6   CYT      0.1000
+ H6   CYT      0.1000
+ C2   CYT      0.4500
+ O2   CYT     -0.4500
+ N3   CYT     -0.5400
+ C4   CYT      0.5400
+ N4   CYT     -0.8300
+H41   CYT      0.4150
+H42   CYT      0.4150
+ C5   CYT     -0.1000
+ H5   CYT      0.1000
+C2'   CYT      0.0000
+C3'   CYT        0.00
+O3'   CYT       -0.36
+  P   GUA      0.9900
+O1P   GUA     -0.6350
+O2P   GUA     -0.6350
+O5'   GUA     -0.3600
+C5'   GUA      0.0000
+C4'   GUA      0.1600
+O4'   GUA     -0.3600
+C1'   GUA      0.2000
+ N9   GUA     -0.2000
+ C4   GUA      0.2000
+ N3   GUA     -0.5400
+ C2   GUA      0.5400
+ N2   GUA     -0.8300
+H21   GUA      0.4150
+H22   GUA      0.4150
+ N1   GUA     -0.3100
+ H1   GUA      0.3100
+ C6   GUA      0.4500
+ O6   GUA     -0.4500
+ C5   GUA      0.0000
+ N7   GUA     -0.5400
+ C8   GUA      0.4400
+ H8   GUA      0.1000
+C2'   GUA      0.0000
+C3'   GUA        0.00
+O3'   GUA       -0.36

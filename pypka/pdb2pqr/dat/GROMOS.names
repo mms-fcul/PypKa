@@ -121,4 +121,76 @@
     <name>HSP</name>
     <useresname>HIS</useresname>
   </residue>
+
+  
+  <residue>
+    <name>[RD]A[35]?$</name>
+    <useresname>ADE</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>[RD]C[35]?$</name>
+    <useresname>CYT</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>[RD]G[35]?$</name>
+    <useresname>GUA</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>       
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>DT[35]?$</name>
+    <useresname>THY</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom> 
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>DT[35]?$</name>
+    <atom>
+      <name>C7</name>
+      <useatomname>C5M</useatomname>
+    </atom>
+    <atom>
+      <name>H71</name>
+      <useatomname>H51</useatomname>
+    </atom>
+    <atom>
+      <name>H72</name>
+      <useatomname>H52</useatomname>
+    </atom>
+    <atom>
+      <name>H73</name>
+      <useatomname>H53</useatomname>
+    </atom>
+  </residue>
+  
 </patches>
+
+

@@ -120,7 +120,6 @@ class Titration(object):
                                        'defined.',
                                        'When using a .gro file format input is used, '
                                        'sites needs to be defined')
-
         if config.f_in_extension == 'pdb':
             # Reading .st files
             # If the titrable residues are defined
@@ -139,8 +138,6 @@ class Titration(object):
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(sites=sites)
 
-            termini = {config.tit_mole._NTR: config.tit_mole._NTR_atoms,
-                       config.tit_mole._CTR: config.tit_mole._CTR_atoms}
             # Creates a .pdb input for DelPhi
             # where residues are in their standard state
             if config.params['clean_pdb']:
@@ -150,13 +147,14 @@ class Titration(object):
                 site_numb_n_ref = {}
                 for site in sites:
                     site_numb_n_ref[site] = sites[site].getRefTautomerName()
+                
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
-                         termini, inputpqr, outputpqr, site_numb_n_ref)
+                         inputpqr, outputpqr, site_numb_n_ref)
                 config.tit_mole.deleteAllSites()
                 config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
             else:
                 pdb2gro(config.f_in, 'TMP.gro', config.tit_mole.box,
-                        config.sites, termini)
+                        config.sites)
             groname = 'TMP.gro'
 
         config.tit_mole.readGROFile(groname)

@@ -67,41 +67,6 @@ C2N   DMX       0.000
 C     COX       0.180
 O     COX      -0.710
 H     COX       0.530
-CD    DMG       0.210
-CE    DMG       0.420
-OE    DMG      -0.750
-C1A   DMG       0.850
-O1A   DMG      -0.730
-C1B   DMG       0.000
-C1C   DMG       0.000
-C1D   DMG       0.000
-C1E   DMG       0.000
-C1F   DMG       0.000
-C1G   DMG       0.000
-C1H   DMG       0.000
-C1I   DMG       0.000
-C1J   DMG       0.000
-C1K   DMG       0.000
-C1L   DMG       0.000
-C1M   DMG       0.000
-C1N   DMG       0.000
-CZ    DMG       0.410
-OZ    DMG      -0.560
-C2A   DMG       0.830
-O2A   DMG      -0.680
-C2B   DMG       0.000
-C2C   DMG       0.000
-C2D   DMG       0.000
-C2E   DMG       0.000
-C2F   DMG       0.000
-C2G   DMG       0.000
-C2H   DMG       0.000
-C2I   DMG       0.000
-C2J   DMG       0.000
-C2K   DMG       0.000
-C2L   DMG       0.000
-C2M   DMG       0.000
-C2N   DMG       0.000
 CA    ACE       0.000
 C     ACE       0.450
 O     ACE      -0.450
@@ -775,47 +740,40 @@ CG2   VAL       0.000
 C     VAL       0.450
 O     VAL      -0.450
 CT    CT0       0.330
-OT1   CT0      -0.288
-OT2   CT0      -0.450
+O1    CT0      -0.288
+O2    CT0      -0.450
 HO11  CT0       0.408
 HO21  CT0       0.000
 HO12  CT0       0.000
 HO22  CT0       0.000
 CT    CT1       0.330
-OT1   CT1      -0.450
-OT2   CT1      -0.288
+O1    CT1      -0.450
+O2    CT1      -0.288
 HO11  CT1       0.000
 HO21  CT1       0.408
 HO12  CT1       0.000
 HO22  CT1       0.000
 CT    CT2       0.330
-OT1   CT2      -0.288
-OT2   CT2      -0.450
+O1    CT2      -0.288
+O2    CT2      -0.450
 HO11  CT2       0.000
 HO21  CT2       0.000
 HO12  CT2       0.408
 HO22  CT2       0.000
 CT    CT3       0.330
-OT1   CT3      -0.450
-OT2   CT3      -0.288
+O1    CT3      -0.450
+O2    CT3      -0.288
 HO11  CT3       0.000
 HO21  CT3       0.000
 HO12  CT3       0.000
 HO22  CT3       0.408
 CT    CT4       0.270
-OT1   CT4      -0.635
-OT2   CT4      -0.635
+O1    CT4      -0.635
+O2    CT4      -0.635
 HO11  CT4       0.000
 HO21  CT4       0.000
 HO12  CT4       0.000
 HO22  CT4       0.000
-CT              0.270
-OT1            -0.635
-OT2            -0.635
-HO11            0.000
-HO21            0.000
-HO12            0.000
-HO22            0.000
 N     NH2      -0.830
 H1    NH2       0.415
 H2    NH2       0.415
@@ -1094,7 +1052,6 @@ HG3   TH3       0.000
 CG2   TH3       0.000
 C     TH3       0.450
 O     TH3      -0.450
-
 H3'   CHO       0.450
 O3    CHO      -0.710
 C3    CHO       0.230
@@ -1126,3 +1083,97 @@ C15   CHO       0.000
 C14   CHO       0.000
 C8    CHO       0.000
 C7    CHO       0.000
+  P   ADE      0.9900
+O1P   ADE     -0.6350
+O2P   ADE     -0.6350
+O5'   ADE     -0.3600
+C5'   ADE      0.0000
+C4'   ADE      0.1600
+O4'   ADE     -0.3600
+C3'   ADE        0.00
+O3'   ADE       -0.36
+C2'   ADE      0.0000
+C1'   ADE      0.2000
+ N9   ADE     -0.2000
+ C8   ADE      0.4400
+ N7   ADE     -0.5400
+ C5   ADE      0.0000
+ C6   ADE      0.5400
+ N6   ADE     -0.8300
+ N1   ADE     -0.5400
+ C2   ADE      0.4400
+ N3   ADE     -0.5400
+ C4   ADE      0.2000
+H61   ADE      0.4150
+H62   ADE      0.4150
+  P   GUA      0.9900
+O1P   GUA     -0.6350
+O2P   GUA     -0.6350
+O5'   GUA     -0.3600
+C5'   GUA      0.0000
+C4'   GUA      0.1600
+O4'   GUA     -0.3600
+C1'   GUA      0.2000
+ N9   GUA     -0.2000
+ C4   GUA      0.2000
+ N3   GUA     -0.5400
+ C2   GUA      0.5400
+ N2   GUA     -0.8300
+H21   GUA      0.4150
+H22   GUA      0.4150
+ N1   GUA     -0.3100
+ H1   GUA      0.3100
+ C6   GUA      0.4500
+ O6   GUA     -0.4500
+ C5   GUA      0.0000
+ N7   GUA     -0.5400
+ C8   GUA      0.4400
+ H8   GUA      0.1000
+C2'   GUA      0.0000
+C3'   GUA        0.00
+O3'   GUA       -0.36
+  P   CYT      0.9900
+O1P   CYT     -0.6350
+O2P   CYT     -0.6350
+O5'   CYT     -0.3600
+C5'   CYT      0.0000
+C4'   CYT      0.1600
+O4'   CYT     -0.3600
+C1'   CYT      0.2000
+ N1   CYT     -0.2000
+ C6   CYT      0.1000
+ H6   CYT      0.1000
+ C2   CYT      0.4500
+ O2   CYT     -0.4500
+ N3   CYT     -0.5400
+ C4   CYT      0.5400
+ N4   CYT     -0.8300
+H41   CYT      0.4150
+H42   CYT      0.4150
+ C5   CYT     -0.1000
+ H5   CYT      0.1000
+C2'   CYT      0.0000
+C3'   CYT        0.00
+O3'   CYT       -0.36
+  P   THY      0.9900
+O1P   THY     -0.6350
+O2P   THY     -0.6350
+O5'   THY     -0.3600
+C5'   THY      0.0000
+C4'   THY      0.1600
+O4'   THY     -0.3600
+C1'   THY      0.2000
+ N1   THY     -0.2000
+ C6   THY      0.1000
+ H6   THY      0.1000
+ C2   THY      0.4500
+ O2   THY     -0.4500
+ N3   THY     -0.3100
+ H3   THY      0.3100
+ C4   THY      0.4500
+ O4   THY     -0.4500
+ C5   THY      0.0000
+C5M   THY      0.0000
+C2'   THY      0.0000
+C3'   THY        0.00
+O3'   THY       -0.36
