@@ -10,18 +10,26 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
   - delphi4py #1.0.0
   - libgfortran4
-  - gawk
+  - gawk 
   - pytest
   - numpy
 
 
 # License
-  pypka is distributed under a LGPL-3.0, however delphi4py
-  depends on DelPhi which is proprietary. In order to get the full
-  DelPhi4py please contact  [Walter Rocchia](https://www.iit.it/people/walter-rocchia)
+
+  pypka is distributed under a LGPL-3.0, however delphi4py depends on
+  DelPhi which is proprietary. To use DelPhi the user is required to
+  download the DelPhi license
+  [here](https://honiglab.c2b2.columbia.edu/software/cgi-bin/software.pl?input=DelPhi)
 
 # Documentation
+
   Documentation can be found [here](https://pypka.readthedocs.io/en/latest/). (Under development)
+
+# Installation
+
+  pip install pypka
+  apt install gawk gcc gfortran libgfortran4
 
 # Change Log
 
