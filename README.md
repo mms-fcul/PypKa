@@ -29,6 +29,7 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 # Installation
 
   pip install pypka
+
   apt install gawk gcc gfortran libgfortran4
 
 # Change Log

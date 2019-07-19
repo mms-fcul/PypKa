@@ -1,0 +1,42 @@
+sshversion: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2.7
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu cosmic partner">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ cosmic main restricted">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ cosmic-backports main restricted universe multiverse">> /etc/apt/sources.list'
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+            sudo apt update
+            sudo apt install libgfortran4 gawk
+            pip install --user $delphi4py_whl 
+            touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/readFiles/__init__.py
+            touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/rundelphi/__init__.py
+            pip install --user pytest numpy coverage
+
+      - save_cache:
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
+            - "/home/circleci/.local/share/virtualenvs/"
+          key: v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
+
+      - run:
+          name: run tests
+          command: |
+            set -e
+            cd pypka/tests/
+            python -m pytest -s test.py
