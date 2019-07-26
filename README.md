@@ -32,6 +32,12 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
   apt install gawk gcc gfortran libgfortran4
 
+# Contacts
+
+  Please submit a github issue to report bugs and to request new features.
+  Alternatively you may find the developer [here](mailto:pdreis@fc.ul.pt). Please visit ou [website](http://mms.rd.ciencias.ulisboa.pt/) for more information.
+
+
 # Change Log
 
 ## v0.4

@@ -51,48 +51,4 @@ Source code is freely available at `GitHub <https://github.com/mms-fcul/PypKa>`_
 under the LGPL-3.0 license. The package can be installed from `PyPi
 <https://pypi.org/project/pypka/>`_.
 
-
-Subsection 1
-------------
-
-.. py:function:: enumerate(sequence[, start=0])
-
-   Return an iterator that yields tuples of an index and an item of the
-   *sequence*. (And so on.)
-
-
-coco
-
-
-This is a paragraph that contains `a link`_.
-
-.. _a link: https://domain.invalid/
-
-=================
-This is a heading
-=================
-
-
-
-
-This is a normal text paragraph. The next paragraph is a code sample::
-
-   It is not processed in any way, except
-   that the indentation is removed.
-
-   It can span multiple lines.
-
-This is a normal text paragraph again.
-
->>> 1 + 1
-2
-
-
-.. todo:: test1
-
-.. module:: pypka	  
-
-.. module:: log
-
-.. autoclass:: pypka.Titration
 	       

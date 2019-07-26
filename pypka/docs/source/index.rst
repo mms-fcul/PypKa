@@ -51,4 +51,11 @@ Source code is freely available at `GitHub <https://github.com/mms-fcul/PypKa>`_
 under the LGPL-3.0 license. The package can be installed from `PyPi
 <https://pypi.org/project/pypka/>`_.
 
-	       
+=================
+Contacts
+=================
+
+Please `submit a github issue  <https://github.com/mms-fcul/PypKa/issues/new>`_ to report bugs and to request new features. 
+
+Alternatively you may find the developer `here <mailto:pdreis@fc.ul.pt>`_ . Please visit our `website <http://mms.rd.ciencias.ulisboa.pt/>`_ for more information.
+
