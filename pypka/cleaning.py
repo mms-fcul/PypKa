@@ -161,7 +161,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     with open('cleaned.pqr', 'w') as f_new:
         f_new.write(new_pdb_text)
 
-
+    
 
     # TODO: .sites files should not exist
     # adapt addHtaut to work without these
@@ -211,7 +211,7 @@ def removeMembrane(pdbfile):
             if 'ATOM ' == line[0:5]:
                 (aname, anumb, resname,
                  chain, resnumb, x, y, z) = read_pdb_line(line)
-                if resname not in config.lipid_residues:
+                if resname not in config.lipid_residues and chain in (' ', 'A'):
                     nomembrane_text += line
             else:
                 nomembrane_text += line

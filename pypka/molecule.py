@@ -425,8 +425,6 @@ class Molecule(object):
                                                                                   cter=True,
                                                                                   site=res_tits)
                             if integrity_cter:
-                                print 'exit'
-
                                 cter_resnumb = prev_resnumb + config.terminal_offset
                                 makeSite(cter_resnumb, 'CTR')
                                 self._CTR = prev_resnumb
@@ -475,8 +473,6 @@ class Molecule(object):
                     if prev_resname in ('NTR', 'CTR') and \
                        prev_resname != resname:
                         prev_resname = resname
-
-        print 'exit'
 
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()

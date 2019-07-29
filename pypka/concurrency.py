@@ -74,9 +74,7 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
     pool.join()
     #print 'exit'
     #exit()
-    stdout.write('\rPB Runs Ended{0:>70}'.format(''))
-    stdout.flush()
-
+    
     unpacked_results = []
     for results_percore in results:
         result = results_percore.get()
@@ -144,6 +142,9 @@ def runDelPhiSims(job_list):
                                                  left_time,
                                                  end_time))
         stdout.flush()
+
+    stdout.write('\rPB Runs Ended{0:>70}'.format(''))
+    stdout.flush()
 
     return results
 
@@ -218,4 +219,6 @@ def runMCCalcs(job_list):
         mc_output = config.tit_mole.parallelMCrun(pH_index)
         results.append(mc_output) 
 
+    stdout.write('\rPB MC Ended{0:>70}'.format(''))
+    stdout.flush()
     return results
