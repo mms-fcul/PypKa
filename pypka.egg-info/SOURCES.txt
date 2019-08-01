@@ -121,7 +121,9 @@ pypka/G54A7/sts/TYRall.st
 pypka/G54A7/sts/TYRtau1.st
 pypka/G54A7/sts/TYRtau2.st
 pypka/delphi4py/__init__.py
+pypka/delphi4py/__init__.pyc
 pypka/delphi4py/delphi4py.py
+pypka/delphi4py/delphi4py.pyc
 pypka/delphi4py/readFiles/__init__.py
 pypka/delphi4py/readFiles/memalloc.so
 pypka/delphi4py/readFiles/readFiles.so

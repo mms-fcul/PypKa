@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pypka
-Version: 0.0.2
+Version: 0.0.3
 Summary: A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
 Home-page: https://github.com/mms-fcul/PypKa
 Author: Pedro Reis
@@ -39,6 +39,12 @@ Description: [![GitHub version](https://badge.fury.io/gh/mms-fcul%2Fpypka.svg)](
           pip install pypka
         
           apt install gawk gcc gfortran libgfortran4
+        
+        # Contacts
+        
+          Please submit a github issue to report bugs and to request new features.
+          Alternatively you may find the developer [here](mailto:pdreis@fc.ul.pt). Please visit ou [website](http://mms.rd.ciencias.ulisboa.pt/) for more information.
+        
         
         # Change Log
         
