@@ -1,8 +1,9 @@
 import config
 import time
+import log
+import subprocess as sb
 from copy import copy
 from formats import new_pdb_line
-import log
 
 
 class Tautomer(object):
@@ -43,6 +44,9 @@ class Tautomer(object):
         self._e_back = 0.0
         self._dg = 0.0
 
+    def __lt__(self, other):
+        return self._name < other._name
+
     # Set Methods
     def loadChargeSet(self, res_name, ref_tautomer):
         """Reads .st file related to Tautomer with residue name res_name
@@ -77,23 +81,23 @@ class Tautomer(object):
         if sum(charge_set1.values()) < 0.001 and \
            sum(charge_set2.values()) > -1.001:
             if config.debug:
-                print fname, 'anionic'
+                print((fname, 'anionic'))
             self._charge_set = charge_set1
             ref_tautomer._charge_set = charge_set2
             self._site.setType('a')
         elif (sum(charge_set1.values()) > 0.99 and
               sum(charge_set2.values()) < 0.001):
             if config.debug:
-                print fname, 'cationic'
+                print((fname, 'cationic'))
             self._charge_set = charge_set2
             ref_tautomer._charge_set = charge_set1
             self._site.setType('c')
         self._natoms = len(self._charge_set)
         ref_tautomer._natoms = len(self._charge_set)
         if config.debug:
-            print self._charge_set
-            print ref_tautomer._charge_set
-            print 'finished reading', fname
+            print((self._charge_set))
+            print((ref_tautomer._charge_set))
+            print(('finished reading', fname))
 
     def saveDelPhiResults(self, esolvationS, sitpotS, esolvationM, sitpotM):
         self._esolvationS  =  esolvationS
@@ -167,8 +171,8 @@ class Tautomer(object):
         new_atoms = []
         for atom_name, atom_id, atom_position in molecule.iterAtoms():
             aID = atom_position + 1
-            aname = atinf[atom_position].value.split()[0]
-            resname = atinf[atom_position].value.split()[1]
+            aname = str(atinf[atom_position].value.split()[0])
+            resname = str(atinf[atom_position].value.split()[1])
             resnumb = int(atinf[atom_position].value.split()[2])
             x = float(p_atpos[atom_position][0])
             y = float(p_atpos[atom_position][1])
@@ -228,8 +232,8 @@ class Tautomer(object):
         pdb_text = ''
         for i in range(natoms):
             aID = i + 1
-            aname   = molecule._delphimol.atinf[i].value.split()[0]
-            resname = molecule._delphimol.atinf[i].value.split()[1]
+            aname   = str(molecule._delphimol.atinf[i].value.split()[0])
+            resname = str(molecule._delphimol.atinf[i].value.split()[1])
             resnumb = int(molecule._delphimol.atinf[i].value.split()[2])
             if '-' in aname[0]:
                 aname = aname[1:]
@@ -308,9 +312,9 @@ class Tautomer(object):
                 p_chrgv4[site_atom_position] = round(p_chrgv4[site_atom_position], 3)
                 p_rad3[site_atom_position] = round(p_rad3[site_atom_position], 3)
 
-                aID = site_atom_position
-                aname   = atinf[site_atom_position].value.split()[0]
-                resname = atinf[site_atom_position].value.split()[1]
+                aID = int(site_atom_position)
+                aname   = str(atinf[site_atom_position].value.split()[0])
+                resname = str(atinf[site_atom_position].value.split()[1])
                 resnumb = int(atinf[site_atom_position].value.split()[2])
                 x = round(p_atpos[site_atom_position][0], 3)
                 y = round(p_atpos[site_atom_position][1], 3)
@@ -345,7 +349,7 @@ class Tautomer(object):
         x_new = x
         y_new = y
         z_new = z
-        inf = '-' + inf[1:]
+        inf = '-' + inf[1:].decode("utf-8") 
         charge = 0.0
         cutoff_x = config.params['slice'] * box
         cutoff_y = config.params['slice'] * box
@@ -379,7 +383,7 @@ class Tautomer(object):
     # Print Methods
     def __str__(self):
         out = self._name + '\n'
-        for i in self._charge_set.keys():
+        for i in list(self._charge_set.keys()):
             out += '{0:>7.3f} {1}\n'.format(self._charge_set[i], i)
         return out
 
@@ -400,8 +404,8 @@ class Tautomer(object):
         """
         if config.debug:
             t0 = time.clock()
-            print self._name
-            print self._charge_set
+            print((self._name))
+            print((self._charge_set))
         molecule = self._molecule
         delphimol = molecule.getDelPhi()
         acent = self.setDetailsFromTautomer()
@@ -410,18 +414,18 @@ class Tautomer(object):
         logfile = 'LOG_runDelPhi_{0}_{1}_modelcompound'.format(self._name,
                                                                self._site._res_number)
         if config.debug:
-            print 'started', self._name, self._site._res_number, 'modelcompound'
+            print(('started', self._name, self._site._res_number, 'modelcompound'))
 
         delphimol.runDelPhi(scale=config.params['scaleM'],
                             nonit=0, nlit=500, relpar=0, relfac=0,
                             acent=acent, pbx=False, pby=False, debug=config.debug,
                             filename=filename,
                             outputfile=logfile)
-
         if config.debug:
-            print 'ended', self._name, self._site._res_number, 'modelcompound'
-            log.checkDelPhiErrors(logfile, 'runDelPhi')
-
+            print(('ended', self._name, self._site._res_number, 'modelcompound'))
+        
+        log.checkDelPhiErrors(logfile, 'runDelPhi')
+        
         self._esolvation = delphimol.getSolvation()
         self._p_sitpot   = delphimol.getSitePotential()
         if config.debug:
@@ -429,7 +433,9 @@ class Tautomer(object):
             filename = '{0}_{1}.profl'.format(self._name, self.getSiteResNumber())
             with open(filename, 'a') as f_new:
                 f_new.write('time -> {0:10} {1:10}\n'.format(t0, t1))
-
+        else:
+            sb.run(f'rm -f {logfile}*', shell=True, stdout=sb.PIPE)
+            
         return self._esolvation, self._p_sitpot[:]
 
     def CalcPotentialTitratingMolecule(self):
@@ -440,6 +446,7 @@ class Tautomer(object):
             self._esolvation (float): tautomer solvation energy
             self._p_sitpot (list): potential on site atoms
         """
+        
         if config.debug:
             start = time.clock()
         molecule = self._molecule
@@ -450,7 +457,7 @@ class Tautomer(object):
         if config.debug:
             t0 = time.clock() - start
 
-            print self._name, 'starting'
+            print((self._name, 'starting'))
             p_atpos  = delphimol.get_atpos()
             p_rad3   = delphimol.get_rad3()
             p_chrgv4 = delphimol.get_chrgv4()
@@ -464,7 +471,7 @@ class Tautomer(object):
                                                               self._site._res_number)
 
         if config.debug:
-            print 'started', self._name, self._site._res_number, 'wholeprotein'
+            print(('started', self._name, self._site._res_number, 'wholeprotein'))
         if config.params['pbc_dim'] == 2:
             delphimol.runDelPhi(scale_prefocus=config.params['scaleP'],
                                 scale=config.params['scaleM'],
@@ -494,8 +501,9 @@ class Tautomer(object):
                                 filename=filename,
                                 outputfile=logfile)
         if config.debug:
-            print 'ended', self._name, self._site._res_number, 'wholeprotein'
-            log.checkDelPhiErrors(logfile, 'runDelPhi')
+            print(('ended', self._name, self._site._res_number, 'wholeprotein'))
+
+        log.checkDelPhiErrors(logfile, 'runDelPhi')
 
         self._esolvation = delphimol.getSolvation()
         self._p_sitpot   = delphimol.getSitePotential()
@@ -522,14 +530,16 @@ class Tautomer(object):
             with open(filename, 'a') as f_new:
                 f_new.write('time -> {0:10}     {1:10}\n'.format(t0, t1))
 
-            print self._esolvation, self._name
+            print((self._esolvation, self._name))
 
+        else:
+            sb.run(f'rm -f {logfile}*', shell=True, stdout=sb.PIPE)
         return self._esolvation, self._p_sitpot[:]
 
     def calcBackEnergy(self):
         """Calculates background energy contribution"""
         if config.debug:
-            print self._name, 'background energy start'
+            print((self._name, 'background energy start'))
         molecule = self._molecule
         text = ''
         distance = -999999
@@ -562,7 +572,7 @@ class Tautomer(object):
                 text += str(self._e_back / config.log10)
                 f_new.write(text)
 
-            print 'e_back finished'
+            print('e_back finished')
 
     def calcpKint(self):
         """Calculates the pKint of the tautomer"""
@@ -587,7 +597,7 @@ class Tautomer(object):
 
         dg = pKint * config.log10 * config.kBoltz * float(config.params['temp']) * chargediff
         if config.debug:
-            print 'pKint ->', self._name, pKint, dg
+            print(('pKint ->', self._name, pKint, dg))
         self.pKint = pKint
         self.dG_solvationM = dG_solvationM
         self.dG_solvationS = dG_solvationS

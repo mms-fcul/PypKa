@@ -1,8 +1,9 @@
 from pypka import Titration
+from cli import checkParsedInput
 
 # Assignment of global variables
 parameters = checkParsedInput()
 
-Titration(None, parameters, sites=None)
+Titration(parameters, sites=None)
 
-print 'CLI exited successfully'
+print('CLI exited successfully')

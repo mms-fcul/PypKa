@@ -1,5 +1,44 @@
+   1.73639376E-02  -2.95243561E-02
+  
+gauss-seidel spectral radius is        0.9978560805
+  
+ estimated iterations to convergence         172
    
- loading variables time was (sec)    9.18660398E-29
+ setup time was (sec)    1.14062500    
+   
+ isolvarch           0
+ now iterating at: 10:24:26
+  
+  
+   rms-change     max change       #iterations
+   1.13762212       114.513428      at          10  iterations
+  0.427692205       23.4253616      at          20  iterations
+  0.163587213       8.88939953      at          30  iterations
+   6.40867129E-02   2.38036060      at          40  iterations
+   2.39979029E-02  0.981967986      at          50  iterations
+   9.30386875E-03  0.304542542      at          60  iterations
+   3.58916912E-03  0.137114704      at          70  iterations
+   1.33778586E-03   3.96928787E-02  at          80  iterations
+   5.13423758E-04   1.63574219E-02  at          90  iterations
+   1.94322740E-04   6.11039996E-03  at         100  iterations
+ finished qdiffx linear iterations
+ at                       : 10:24:26
+ total time elapsed so far:    1.20312500    
+ # loops                  :          100
+ mean,max change (kT/e)   :    1.94322740E-04   6.11039996E-03
+ self-reaction field energy :      -23425.3613      kt
+ total s.charge,no epsin carrying :    0.0000
+ corrected reaction field energy:   -15.315293468628132       kt
+ total reaction field energy :     -23440.676621593630       kt
+ coulombic energy :                -75.590147175947280       kt
+ All required energy terms but grid and self_react.:  -90.9054413     kt
+ energy calculations done at   1.20312500    
+   
+ total cpu time was (sec)    9.37500000E-02
+   
+ DelPhi exited at 10:24:26
+   
+ loading variables time was (sec)    0.00000000    
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -23,7 +62,7 @@
  nmedia ->                     1
  nobject ->                     1
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=  0.359375000    
+ time to read in and/or assign rad/chrg=   1.20312500    
  object number :              1 ,  is a molecule
  cmin   22.1389999       22.0249996       11.7189999    
  cmax   26.4410000       25.7210007       16.1009998    
@@ -74,7 +113,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            4
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at   0.359375000    
+ start vw surface at    1.20312500    
  radmax2 ->   4.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   4.00000000       1.52499998       2.00000000    
@@ -83,7 +122,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   4.00000000       14.1000004       2.00000000     T
  setout method 1 T T
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at   0.359375000    
+ fill in re-entrant regions at    1.20312500    
  here in vwtms	
  boundary points facing continuum solvent=          660
  total number of boundary points before elab.=          660
@@ -106,7 +145,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  scaling boundary grid points
  time taken =    0.00000000    
            0  points had to be assigned by global comparison
- time to turn everything in is  0.359375000    
+ time to turn everything in is   1.21875000    
    
  number of atom coordinates read  :            7
  total number of assigned charges    :            4
@@ -119,7 +158,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  number of dielectric boundary points         655
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =           0
- iepsmp to db, and charging done at  0.359375000    
+ iepsmp to db, and charging done at   1.21875000    
  number of grid points assigned charge          32
   
    setting boundary conditions
@@ -136,38 +175,12 @@ gauss-seidel spectral radius is        0.9980792999
   
  estimated iterations to convergence         181
    
- setup time was (sec)   0.359375000    
+ setup time was (sec)    1.21875000    
    
  isolvarch           0
- now iterating at: 14:40:47
+ now iterating at: 10:24:26
   
   
    rms-change     max change       #iterations
    1.17392743       134.639893      at          10  iterations
   0.440855920       43.8495560      at          20  iterations
-  0.193759859       17.1983185      at          30  iterations
-   7.37531483E-02   5.60674572      at          40  iterations
-   2.81730723E-02   2.00655746      at          50  iterations
-   1.16578219E-02   1.11865234      at          60  iterations
-   4.67115734E-03  0.365009308      at          70  iterations
-   1.80487044E-03  0.147181988      at          80  iterations
-   7.19207397E-04   9.06066895E-02  at          90  iterations
-   2.69360287E-04   2.26917267E-02  at         100  iterations
-   1.19356766E-04   1.13449097E-02  at         110  iterations
-   4.20246797E-05   3.35693359E-03  at         120  iterations
- finished qdiffx linear iterations
- at                       : 14:40:47
- total time elapsed so far:   0.609375000    
- # loops                  :          120
- mean,max change (kT/e)   :    4.20246797E-05   3.35693359E-03
- self-reaction field energy :      -23425.3613      kt
- total s.charge,no epsin carrying :    0.0000
- corrected reaction field energy:   -15.785209981697442       kt
- total reaction field energy :     -23441.146538106699       kt
- coulombic energy :                -75.590147175947280       kt
- All required energy terms but grid and self_react.:  -91.3753586     kt
- energy calculations done at  0.609375000    
-   
- total cpu time was (sec)   0.250000000    
-   
- DelPhi exited at 14:40:47

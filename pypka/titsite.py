@@ -44,20 +44,6 @@ class Titsite:
         self._type = ''
 
     # Set Methods
-    def setTautomers_old(self, res_tauts):
-        """Adds Tautomers from res_tauts to self._tautomers
-
-        Args:
-            res_tauts (list): tautomers from sites file
-        """
-        for tautomer in res_tauts:
-            self._res_name = tautomer[:3]
-            correct_number = str(int(tautomer[-1]) - 1)
-            tautomer = tautomer[:2] + correct_number
-
-            tID = Tautomer(tautomer, self, self._molecule)
-            self._tautomers[tautomer] = tID
-
     def setTautomers(self, ntauts, resname):
         """Adds Tautomers from res_tauts to self._tautomers
 
@@ -71,7 +57,7 @@ class Titsite:
 
             tID = Tautomer(tautomer, self, self._molecule)
             self._tautomers[tautomer] = tID
-
+            
     def addReferenceTautomer(self):
         """Gets last tautomer from .sites file adds one and saves it as the
         reference tautomer"""
@@ -84,7 +70,7 @@ class Titsite:
     def addChargeSets(self):
         """Stores the charge set of each existing tautomer
         for the present Site"""
-        for tautomer in self._tautomers.values():
+        for tautomer in list(self._tautomers.values()):
             tautomer.loadChargeSet(self._res_name,
                                    self._ref_tautomer)
 
@@ -123,13 +109,13 @@ class Titsite:
     def getTautomers(self):
         """Returns list of all tautomers instances
         except the tautomers of reference"""
-        return self._tautomers.values()
+        return list(self._tautomers.values())
 
     def getAtomNumbersList(self):
-        return self._atoms.values()
+        return list(self._atoms.values())
 
     def getAtomNamesList(self):
-        return self._atoms.keys()
+        return list(self._atoms.keys())
 
     def getRefTautomerName(self):
         return self._ref_tautomer.getName()
@@ -167,7 +153,7 @@ class Titsite:
 
     # Iter Methods
     def iterTautomers(self):
-        for i in self._tautomers.values():
+        for i in list(self._tautomers.values()):
             yield i
 
     def iterOrderedTautomersWithoutRef(self):

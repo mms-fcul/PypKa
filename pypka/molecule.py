@@ -1,12 +1,12 @@
 import config
+import numpy as np
 from formats import read_pdb_line, read_gro_line, new_pdb_line
 from copy import copy
 from log import reportWarning
 from titsite import Titsite as Site
 from tautomer import Tautomer
 from concurrency import startPoolProcesses, runInteractionCalcs, runMCCalcs
-import mc
-import numpy as np
+from mc import MCrun
 
 MAXNPKHALFS = 5
 
@@ -148,7 +148,7 @@ class Molecule(object):
         """Return the tautomer instance named tautname
         existent in the site of the residue number site_resnum"""
         site = self._sites[site_resnum]
-        if tautname in site._tautomers.keys():
+        if tautname in list(site._tautomers.keys()):
             return site._tautomers[tautname]
         elif tautname == site._ref_tautomer._name:
             return site._ref_tautomer
@@ -161,7 +161,7 @@ class Molecule(object):
     def getTautNAtoms(self, taut_name):
         """Return number of atoms of the tautomer named taut_name
         Disclamer: it was used for testing"""
-        for site in self._sites.values():
+        for site in list(self._sites.values()):
             for tautomer in site.getTautomers():
                 if tautomer._name == taut_name:
                     return tautomer._natoms
@@ -202,15 +202,15 @@ class Molecule(object):
     def printAllSites(self):
         """Prints all Site names"""
         for site in self._sites_order:
-            print site.getName()
+            print((site.getName()))
 
     def printAllTautomers(self):
         """Prints all Tautomer details"""
         for site in self._sites_order:
-            print site.getName()
+            print((site.getName()))
             for tautomer in site.iterTautomers():
-                print tautomer
-            print site._ref_tautomer
+                print(tautomer)
+            print((site._ref_tautomer))
 
     # Input Files Manipulation Methods
     def makeSimpleSites(self):
@@ -485,7 +485,7 @@ class Molecule(object):
         # TODO: add lipid residues
 
         if config.debug:
-            print 'exiting makeSites'
+            print('exiting makeSites')
 
     def check_integrity(self, resname, res_atoms,
                         nter=False, cter=False, site=True):
@@ -504,7 +504,7 @@ class Molecule(object):
                 if aname not in anames2:
                     trigger = True
                     if config.debug:
-                        print aname, 'not in', resname
+                        print((aname, 'not in', resname))
                 else:
                     anames2.remove(aname)
             if trigger:
@@ -513,8 +513,8 @@ class Molecule(object):
                 return anames2, True
 
         if config.debug:
-            print '###### INTEGRITY CHECK ######'
-            print res_atoms
+            print('###### INTEGRITY CHECK ######')
+            print(res_atoms)
         integrity = None
 
         if nter:
@@ -542,7 +542,7 @@ class Molecule(object):
                     integrity = False
             
             if config.debug:
-                print 'i', integrity
+                print(('i', integrity))
 
             if integrity is not False:
                 filename = '{0}/{1}/sts/{2}tau1.st'.format(config.script_dir,
@@ -551,8 +551,8 @@ class Molecule(object):
                 res_atoms_st = read_anames(filename)
                 res_atoms, integrity = pop_atoms(res_atoms_st, res_atoms)
                 if config.debug:
-                    print res_atoms_st, res_atoms
-                    print 'i', integrity
+                    print((res_atoms_st, res_atoms))
+                    print(('i', integrity))
 
         if len(res_atoms) != 0 and integrity:
             raise Exception('Something is wrong')
@@ -592,6 +592,10 @@ class Molecule(object):
                         if res[:-1] == resname[:-1]:
                             ntauts = config.TITRABLETAUTOMERS[res]
                             return ntauts, res
+            print(chains_length, chains_res, chain, resnum)
+            print(type(resnum))
+            print(resnum in chains_res[chain])
+            print(resname in config.TITRABLETAUTOMERS)
             raise Exception('Something is wrong.')
 
         for chain in config.sites:
@@ -619,12 +623,13 @@ class Molecule(object):
         self.addReferenceTautomers()
         self.addTautomersChargeSets()
 
+
     def addReferenceTautomers(self):
-        for site in self._sites.values():
+        for site in list(self._sites.values()):
             site.addReferenceTautomer()
 
     def addTautomersChargeSets(self):
-        for site in self._sites.values():
+        for site in list(self._sites.values()):
             # reads .st files
             site.addChargeSets()
 
@@ -641,7 +646,7 @@ class Molecule(object):
         return protein_atoms
 
     def deleteAllSites(self):
-        for site in self._sites.values():
+        for site in list(self._sites.values()):
             site._tautomers = {}
             site._ref_tautomer = ''
         self._sites = {}
@@ -709,17 +714,17 @@ MODEL        1
                         #elif aname in ('O1', 'O2'):
                         #    aname = aname[0] + 'T' + aname[1]
 
-                    if resnumb in self._correct_names.keys():
+                    if resnumb in list(self._correct_names.keys()):
                         resname = self._correct_names[resnumb]
-                    if resnumb in self._correct_atoms.keys() and \
+                    if resnumb in list(self._correct_atoms.keys()) and \
                        aname in self._correct_atoms[resnumb]:
                         aname = self._correct_atoms[resnumb][aname]
 
                     self.addAtom(aname, anumb, aposition)
                     ref_tau_name = resname
 
-                    if resnumb in self._sites.keys() and \
-                       aname in self._sites[resnumb]._ref_tautomer._charge_set.keys():
+                    if resnumb in list(self._sites.keys()) and \
+                       aname in list(self._sites[resnumb]._ref_tautomer._charge_set.keys()):
                         #( aname not in ('N', 'H', 'C', 'O', 'CA') or 
                         #(aname in ('N', 'H', 'C', 'O', 'CA') and resname == 'NTR')):
                         # change res name to reference tautomer
@@ -758,7 +763,7 @@ MODEL        1
         # TODO: check if pbc_dim -> set gsizes from pdb size xy and ignore perfil
 
         for site in site_positions:
-            if site in self._sites.keys():
+            if site in list(self._sites.keys()):
                 pos_max = [-9999990, -999999, -999999]
                 pos_min = [999999, 999999, 999999]
                 focus_center = [0, 0, 0]
@@ -798,21 +803,21 @@ MODEL        1
             with open('cent', 'w') as f_new:
                 text = ''
                 for site in site_positions:
-                    if site in self._sites.keys():
+                    if site in list(self._sites.keys()):
                         text += str(self._sites[site]._center) + '\n'
                 f_new.write(text)
             if config.params['pbc_dim'] == 2:
                 with open('centHs', 'w') as f_new:
                     text = ''
                     for site in site_positions:
-                        if site in self._sites.keys():
+                        if site in list(self._sites.keys()):
                             text += '{0} {1}\n'.format(site,
                                                        self._sites[site]._centerH)
                     f_new.write(text)
                 with open('cent_original', 'w') as f_new:
                     text = ''
                     for site in site_positions:
-                        if site in self._sites.keys():
+                        if site in list(self._sites.keys()):
                             text += '{0} {1}\n'.format(site,
                                                        self._sites[site]._center_original)
                     f_new.write(text)
@@ -924,8 +929,8 @@ MODEL        1
                     state2 = int(taut2._name[-1])
 
                     if config.debug:
-                        print (nsite1, nsite2, state1, state2,
-                               taut1._name, taut2._name, gg)
+                        print((nsite1, nsite2, state1, state2,
+                               taut1._name, taut2._name, gg))
                     site1i = self._interactions_look[nsite1][state1]
                     site2i = self._interactions_look[nsite2][state2]
 
@@ -981,13 +986,13 @@ MODEL        1
         """
         i = -1
         if config.debug:
-            print '############ results ############'
+            print('############ results ############')
         pkints = ''
         contributions = ''
         for tautomer in config.tit_mole.iterAllSitesTautomers():
             i += 1
             core_index = i % config.params['ncpus']
-            job_index = i / config.params['ncpus']
+            job_index = int(i / config.params['ncpus'])
             result = unpacked_results[core_index][job_index]
 
             tautname    = result[0]
@@ -1004,19 +1009,19 @@ MODEL        1
             tautomer.saveDelPhiResults(esolvationS, sitpotS, esolvationM,
                                        sitpotM)
             if config.debug:
-                print '### new tautomer ###'
-                print (i, core_index, job_index, tautname,
-                       tautomer._name, esolvationM, esolvationS)
-                print (tautomer._name, tautomer._esolvationS,
+                print('### new tautomer ###')
+                print((i, core_index, job_index, tautname,
+                       tautomer._name, esolvationM, esolvationS))
+                print((tautomer._name, tautomer._esolvationS,
                        len(tautomer._sitpotS), tautomer._esolvationM,
-                       len(tautomer._sitpotM))
+                       len(tautomer._sitpotM)))
 
             tautomer.calcBackEnergy()
             if not tautomer.isRefTautomer():
                 tautomer.calcpKint()
                 if config.debug:
-                    print ('pkint', tautomer._name, tautomer._dg,
-                           id(tautomer))
+                    print(('pkint', tautomer._name, tautomer._dg,
+                           id(tautomer)))
                     pkints += '{} {} {}\n'.format(tautomer._name,
                                                   tautomer._dg, tautomer.pKint)
                     contributions += '{}{} {} {} {} {}\n'.format(tautomer._site._res_number,
@@ -1071,13 +1076,13 @@ MODEL        1
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
         pH = pHmin + pHstep * dpH
-    	avgs, pmean, count = mc.MCrun(nsites, self._npossible_states,
-    	                              self._possible_states_g,
-    	                              self._possible_states_occ,
-    	                              self._interactions,
-    	                              self._interactions_look,
-    	                              pHsteps, mcsteps, eqsteps, seed,
-    	                              pHmin, dpH, couple_min, pH)
+        avgs, pmean, count = MCrun(nsites, self._npossible_states,
+                                   self._possible_states_g,
+                                   self._possible_states_occ,
+                                   self._interactions,
+                                   self._interactions_look,
+                                   pHsteps, mcsteps, eqsteps, seed,
+                                   pHmin, dpH, couple_min, pH)
 
         return (avgs, count)
 
@@ -1089,7 +1094,7 @@ MODEL        1
                 for ii in range(diff):
                     i.append(filler)
 
-        print '\nStart MC'
+        print('\nStart MC')
 
         sites = self.getSitesOrdered()
         nsites = len(sites)
@@ -1142,7 +1147,7 @@ MODEL        1
 
         ncpus = min(config.params['ncpus'], nsites)
         results = startPoolProcesses(runMCCalcs,
-                                     range(pHsteps), ncpus,
+                                     list(range(pHsteps)), ncpus,
                                      assign='ordered', merged_results=True)
         counter = 0
         for i in results:
@@ -1167,7 +1172,7 @@ MODEL        1
         #                            pHsteps, mcsteps, eqsteps, seed,
         #                            pHmin, dpH, couple_min)
 
-        print '\n\nResults'
+        print('\n\nResults')
         text_pks = ''
         text_prots = '# pH      total'
         c = -1
@@ -1183,10 +1188,10 @@ MODEL        1
                 text_prots += '{0:5d}{1:3s}'.format(resnumb, sitename)
             text_pks += '{0} {1} {2}\n'.format(resnumb, sitename, i[0])
             if i[0] != 100.0:
-                print '{0} {1} {2}'.format(resnumb, sitename, round(i[0], 2))
+                print(('{0} {1} {2}'.format(resnumb, sitename, round(i[0], 2))))
             else:
-                print '{0} {1} Not in range'.format(resnumb, sitename)
-        print ''
+                print(('{0} {1} Not in range'.format(resnumb, sitename)))
+        print('')
 
         if config.f_out:
             with open(config.f_out, 'w') as f:

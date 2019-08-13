@@ -32,13 +32,13 @@ def drange(dmin, dmax, step):
 
 
 def setParameter(param, value):
-    if param in config.input_conversion.keys():
+    if param in list(config.input_conversion.keys()):
         param = config.input_conversion[param]
     config.params[param] = value
 
 
 def getParameter(param):
-    if param in config.input_conversion.keys():
+    if param in list(config.input_conversion.keys()):
         param = config.input_conversion[param]
     return config.params[param]
 
@@ -54,7 +54,7 @@ def inputParametersFilter(settings):
     """
     config.pid = os.getpid()
     config.script_dir = os.path.dirname(__file__)
-    param_names = settings.keys()
+    param_names = list(settings.keys())
     # MANDATORY #
     mandatory_params = ('structure', 'epsin', 'ionicstr',
                         'pbc_dimensions', 'ncpus', 'sites_A')

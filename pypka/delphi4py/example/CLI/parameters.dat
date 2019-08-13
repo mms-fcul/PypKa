@@ -1,0 +1,17 @@
+### mandatory ###
+structure       = 4lzt.pdb
+epsin           = 10
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 310
+grid_fill       = 0.8 # FUTURE VERSION
+ncpus           = 4
+pH              = 0, 15
+sites_A         = all
+#1N, 18, 35, 48, 66, 129C
+
+### optional ###
+pHstep = 0.5
+convergence = 0.01
+output = pKas.out
+titration_output = protonation.out

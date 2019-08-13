@@ -4,13 +4,14 @@
 A python API and CLI to perform pKa calculations on peptides,
 proteins or lipid bilayers.
 """
-import config as config
+
+import config
 from cli import checkParsedInput, readSettings, inputParametersFilter
 from cleaning import inputPDBCheck, cleanPDB
 from formats import convertTermini, pdb2gro
-import log as log
+import log
 
-from delphi4py import Delphi
+from delphi4py.delphi4py import DelPhi
 
 from molecule import Molecule
 from concurrency import startPoolProcesses, runDelPhiSims
@@ -97,14 +98,14 @@ class Titration(object):
         # Check Input Variables Validity
         inputParametersFilter(parameters)
 
-        print 'Start Preprocessing'
+        print('Start Preprocessing')
         self.preprocessing()
         self.processDelPhiParams()
 
-        print 'Start PB Calculations'
+        print('Start PB Calculations')
 
         self.DelPhiLaunch()
-        print 'API exited successfully'
+        print('API exited successfully')
 
     def preprocessing(self):
         # Creating instance of TitratingMolecule
@@ -151,7 +152,7 @@ class Titration(object):
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
                          inputpqr, outputpqr, site_numb_n_ref)
                 config.tit_mole.deleteAllSites()
-                config.tit_mole.makeSites(useTMPgro=True, sites=sites.keys())
+                config.tit_mole.makeSites(useTMPgro=True, sites=list(sites.keys()))
             else:
                 pdb2gro(config.f_in, 'TMP.gro', config.tit_mole.box,
                         config.sites)
@@ -168,7 +169,7 @@ class Titration(object):
         else:
             logfile = config.f_log
 
-        delphimol = Delphi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
+        delphimol = DelPhi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
                            config.tit_mole.getNAtoms(),
                            config.params['gsize'],
                            config.params['scaleM'],
@@ -196,7 +197,7 @@ class Titration(object):
         if config.debug:
             config.tit_mole.printAllSites()
             config.tit_mole.printAllTautomers()
-            print delphimol
+            print(delphimol)
 
     def DelPhiLaunch(self):
         if len(config.tit_mole.getSites()) < 1:
@@ -291,7 +292,7 @@ class Titration(object):
         self._itermax = len(self._iterpKas)
         return self
 
-    def next(self):
+    def __next__(self):
         self._iternumb += 1
         if self._iternumb < self._itermax:
             site = self._iterpKas[self._iternumb]
@@ -348,7 +349,7 @@ def CLI():
     # Assignment of global variables
     parameters, debug = checkParsedInput()
     Titration(parameters, sites=None, debug=debug)
-    print 'CLI exited successfully'
+    print('CLI exited successfully')
 
 
 if __name__ == "__main__":

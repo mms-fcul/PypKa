@@ -75,7 +75,7 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False):
     new_pdb_text = ''
     aposition = 0
 
-    sites_pos = sites.keys()
+    sites_pos = list(sites.keys())
     with open(filename_in) as f:
         for line in f:
             if 'CRYST1' in line[:6]:
@@ -131,9 +131,9 @@ def correct_names(sites_numbs, resnumb, resname, aname,
                   titrating_sites):
     def change_aname(aname, restype, mode='regular'):
         if mode == 'titrating':
-            not_correct_names = correct_atoms_sites_table[restype].keys()
+            not_correct_names = list(correct_atoms_sites_table[restype].keys())
         else:
-            not_correct_names = correct_atoms_table[restype].keys()
+            not_correct_names = list(correct_atoms_table[restype].keys())
         for not_corrected in not_correct_names:            
             if aname == not_corrected:
                 if mode == 'titrating':
@@ -180,14 +180,14 @@ def correct_names(sites_numbs, resnumb, resname, aname,
         restype = 'NTR'
         aname = change_aname(aname, restype)
 
-    if resname in correct_atoms_table.keys():
+    if resname in list(correct_atoms_table.keys()):
         aname = change_aname(aname, resname)
 
-    if resname in correct_residues_table.keys():
+    if resname in list(correct_residues_table.keys()):
         resname = correct_residues_table[resname]
 
     if resnumb in titrating_sites and \
-       resname in correct_atoms_sites_table.keys():
+       resname in list(correct_atoms_sites_table.keys()):
         aname = change_aname(aname, resname, mode='titrating')
 
 

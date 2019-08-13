@@ -1,17 +1,19 @@
+from .readFiles import readFiles
+from .rundelphi import rundelphi
+
+#import readFiles.readFiles as readF
+#import rundelphi.rundelphi as DelPhi
 from ctypes import (c_int, c_double, c_float,
                     c_char, addressof, memmove, sizeof)
 import os
 import sys
-
-from readFiles import readFiles
-from rundelphi import rundelphi
 
 # if using parallel version don't forget to set system-wide variables
 # export OMP_NUM_THREADS=8
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/pedror/delphit/dependencies/NanoShaper0.7/build_lib:/home/pedror/delphit/dependencies/cppDelphi77/lib/
 
 
-class Delphi(object):
+class DelPhi(object):
     """
     """
     def __init__(self, in_crg, in_siz, in_pdb, natoms, igrid, scale,
@@ -92,7 +94,7 @@ class Delphi(object):
         #######################################################
 
         self.resetDelPhiData()
-        self.readFiles(outputfile=outputfile)
+        self.readInput(outputfile=outputfile)
 
         if self.perfil != 0:
             self.igrid = int(self.scale * 100 / self.perfil * self.rmaxdim)
@@ -178,7 +180,7 @@ class Delphi(object):
             self.p_atpos[atom_index][2]  = atom[2]
             self.p_rad3[atom_index]      = atom[3]
             self.p_chrgv4[atom_index]    = atom[4]
-            self.atinf[atom_index].value = atom[5]
+            self.atinf[atom_index].value = atom[5].encode('utf-8')
             self.p_iatmed[atom_index + 1]      = 1
 
         return self.natoms
@@ -198,7 +200,7 @@ class Delphi(object):
     def get_iatmed(self):
         return self.p_iatmed
 
-    def readFiles(self, outputfile=None):
+    def readInput(self, outputfile=None):
         """ """
         if outputfile:
             self.redirectOutput("start", outputfile)
@@ -216,12 +218,12 @@ class Delphi(object):
             self.redirectOutput("stop", outputfile)
 
         if self.debug:
-            print '    x        y        z     radius  charge       atinf'
+            print('    x        y        z     radius  charge       atinf')
             for i in range(self.natoms):
-                print ('{0:8.3f} {1:8.3f} {2:8.3f} {3:7.3f} {4:7.3f} {5}'
+                print(('{0:8.3f} {1:8.3f} {2:8.3f} {3:7.3f} {4:7.3f} {5}'
                        .format(self.p_atpos[i][0], self.p_atpos[i][1],
                                self.p_atpos[i][2], self.p_rad3[i],
-                               self.p_chrgv4[i],   self.atinf[i].value))
+                               self.p_chrgv4[i],   self.atinf[i].value)))
 
     def runDelPhi(self, scale=None, nonit=None, nlit=None,
                   relpar=None, relfac=None, nlit_prefocus=None,
@@ -232,7 +234,6 @@ class Delphi(object):
                   outputfile=None):
         """
         """
-        
         if scale != None:
             self.scale = scale
         if acent != None:
@@ -329,13 +330,11 @@ class Delphi(object):
 
             self.p_sitpot_list = []
 
-        if not (self.debug or debug):
-            outputfile = '/dev/null'
-        self.redirectOutput("start", outputfile)
+        if outputfile:
+            self.redirectOutput("start", outputfile)
 
         if self.debug or debug:
             output = self.__str__()
-            print output
             if filename:
                 with open(filename, 'a') as f_new:
                     f_new.write(output)
@@ -362,7 +361,8 @@ class Delphi(object):
                                            self.parallel)
         self.saveSitePotential()
 
-        self.redirectOutput("stop", outputfile)
+        if outputfile:
+            self.redirectOutput("stop", outputfile)
 
         if focusing:
             self.runDelPhi(focusing=True, nonit_focus=nonit_focus,

@@ -22,9 +22,11 @@ def inputPDBCheck(filename, sites):
 
     for site in sites['A']:
         if site[-1] == 'C':
-            done[site[:-1]] = 'CTR'
+            resnumb = site[:-1]
+            done[resnumb] = 'CTR'
         if site[-1] == 'N':
-            done[site[:-1]] = 'NTR'
+            resnumb = site[:-1]
+            done[resnumb] = 'NTR'
 
     if filetype == 'pdb' and not config.params['clean_pdb']:
         new_gro_header = 'CREATED within PyPka\n'
@@ -112,7 +114,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     log.redirectOutput("start", logfile)
     log.redirectErr("start", errfile)
 
-    sites_numbs = sites.keys()
+    sites_numbs = list(sites.keys())
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
     os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
@@ -150,11 +152,10 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     #                config.tit_mole._NTR = resnumb
     
     chains = copy(chains_res['A'])
-    for res in chains:
-        if res > config.terminal_offset:
-            print res, chains_res['A'][res]
+    #for res in chains:
+    #    if str(res) > config.terminal_offset:
+    #        print((res, chains_res['A'][res]))
     #        del chains_res['A'][res]
-
     #chains_res['A'][config.tit_mole._NTR] = 'NTR'
     #chains_res['A'][config.tit_mole._CTR] = 'CTR'
 
@@ -175,7 +176,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     if config.debug:
         logfile = 'LOG_addHtaut'
-        print sites_addHtaut
+        print(sites_addHtaut)
     else:
         logfile = config.f_log
     log.redirectErr("start", logfile)
@@ -257,7 +258,7 @@ def addMembrane(grofile, pdbfile):
                     new_file_body += new_gro_line(atom_number, aname, resname,
                                                   resnumb, x, y, z)
 
-                if resname in config.lipids.values():
+                if resname in list(config.lipids.values()):
                     aname, resname, to_include = convert_FF_atomnames(aname, resname)
                     if to_include:
                         atom_number += 1

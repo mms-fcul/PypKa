@@ -1,47 +1,31 @@
-
-        DelPhi Parameters
-
-        igrid       = 81
-        scale       = 4.0
-        perfil      = 0
-
-        repsin  = 2.0
-        repsout = 80.0
-        conc    = 0.1
-        ibctyp  = 4
-        res2    = 0.01
-        nlit    = 500
-
-        acent  = [24.215, 23.95, 13.47]
-        natoms = 43
-        in_crg = /home/pedror/PypKa/pypka/G54A7/DataBaseT.crg
-        in_siz = /home/pedror/PypKa/pypka/G54A7/DataBaseT.siz
-        in_pdb = delphi_in_stmod.pdb
-
-        radprb  = 1.4
-        energy  = ['s', 'c']
-        site    = ['a', 'q', 'p']
-        in_crg_len = 44
-        in_siz_len = 44
-        in_pdb_len = 19
-
-        relfac = 0.0
-        relpar = 0.75
-        nonit  = 0
-        fcrg   = False
-        pbx    = False
-        pby    = False
-        pbz    = False
-
-        precision  = single
-        float_type = <class 'ctypes.c_float'>
-        isurftype  = -1
-        parallel   = False
-        debug      = True
-
-        
+  0.438232660       30.9179382      at          20  iterations
+  0.159626976       14.4186554      at          30  iterations
+   6.34347796E-02   5.93746853      at          40  iterations
+   2.78103128E-02   2.41210175      at          50  iterations
+   1.07246777E-02   1.14529419      at          60  iterations
+   4.01102286E-03  0.368103027      at          70  iterations
+   1.69514061E-03  0.157371521      at          80  iterations
+   7.21744611E-04   5.64661026E-02  at          90  iterations
+   2.71952274E-04   1.99564695E-02  at         100  iterations
+   1.04512837E-04   8.47053528E-03  at         110  iterations
+ finished qdiffx linear iterations
+ at                       : 10:24:03
+ total time elapsed so far:    2.43750000    
+ # loops                  :          110
+ mean,max change (kT/e)   :    1.04512837E-04   8.47053528E-03
+ self-reaction field energy :      -23425.3613      kt
+ total s.charge,no epsin carrying :    0.0000
+ corrected reaction field energy:   -22.679637295998351       kt
+ total reaction field energy :     -23448.040965420998       kt
+ coulombic energy :                -68.527143072153635       kt
+ All required energy terms but grid and self_react.:  -91.2067795     kt
+ energy calculations done at   2.43750000    
    
- loading variables time was (sec)    1.96570903E-02
+ total cpu time was (sec)    7.81250000E-02
+   
+ DelPhi exited at 10:24:03
+   
+ loading variables time was (sec)    0.00000000    
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -65,7 +49,7 @@
  nmedia ->                     1
  nobject ->                     1
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   2.26562500    
+ time to read in and/or assign rad/chrg=   2.43750000    
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.2609997    
@@ -116,7 +100,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            4
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    2.28125000    
+ start vw surface at    2.43750000    
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
@@ -125,7 +109,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   1.00000000       3.94500017       2.00000000     T
  setout method 1 T F
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    2.28125000    
+ fill in re-entrant regions at    2.43750000    
  here in vwtms	
  boundary points facing continuum solvent=          257
  total number of boundary points before elab.=          257
@@ -148,7 +132,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  scaling boundary grid points
  time taken =    0.00000000    
            0  points had to be assigned by global comparison
- time to turn everything in is   2.28125000    
+ time to turn everything in is   2.43750000    
    
  number of atom coordinates read  :           43
  total number of assigned charges    :            4
@@ -161,7 +145,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  number of dielectric boundary points         244
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =           9
- iepsmp to db, and charging done at   2.29687500    
+ iepsmp to db, and charging done at   2.45312500    
  number of grid points assigned charge          24
   
    setting boundary conditions
@@ -178,10 +162,10 @@ gauss-seidel spectral radius is        0.9949075580
   
  estimated iterations to convergence         113
    
- setup time was (sec)    2.31250000    
+ setup time was (sec)    2.45312500    
    
  isolvarch           0
- now iterating at: 12:30:10
+ now iterating at: 10:24:03
   
   
    rms-change     max change       #iterations
@@ -192,19 +176,3 @@ gauss-seidel spectral radius is        0.9949075580
    1.64729121E-04   3.70416641E-02  at          50  iterations
    3.02451463E-05   5.10016084E-03  at          60  iterations
  finished qdiffx linear iterations
- at                       : 12:30:10
- total time elapsed so far:    2.35937500    
- # loops                  :           60
- mean,max change (kT/e)   :    3.02451463E-05   5.10016084E-03
- self-reaction field energy :      -23425.3613      kt
- total s.charge,no epsin carrying :   -0.0000
- corrected reaction field energy:   -16.051615444932342       kt
- total reaction field energy :     -23441.412943569932       kt
- coulombic energy :                -67.925477507652701       kt
- All required energy terms but grid and self_react.:  -83.9770966     kt
- energy calculations done at   2.35937500    
-   3.11656622E-04   3.11656622E-04          46          46           1
-   
- total cpu time was (sec)    9.37500000E-02
-   
- DelPhi exited at 12:30:10

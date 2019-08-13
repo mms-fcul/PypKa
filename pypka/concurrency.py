@@ -1,5 +1,5 @@
-from multiprocessing import Pool, Manager, Value
 import config
+from multiprocessing import Pool, Manager, Value
 from time import time
 from datetime import timedelta, datetime
 from sys import stdout
@@ -174,13 +174,13 @@ def calcPotential(taut):
     e_solvationM, sitpotM = taut.CalcPotentialTitratingMolecule()
 
     if config.debug:
-        print 'finished Whole Molecule', taut._name, e_solvationM
+        print(('finished Whole Molecule', taut._name, e_solvationM))
 
     # Single Site Tautomer
     e_solvationS, sitpotS = taut.CalcPotentialTautomer()
 
     if config.debug:
-        print 'finished Tautomer', taut._name, e_solvationS
+        print(('finished Tautomer', taut._name, e_solvationS))
 
     return (taut._name, taut.getSiteResNumber(), e_solvationM,
             sitpotM, e_solvationS, sitpotS)

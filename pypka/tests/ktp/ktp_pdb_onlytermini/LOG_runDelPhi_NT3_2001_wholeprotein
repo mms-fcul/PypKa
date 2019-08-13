@@ -1,5 +1,33 @@
+ realsiz ==            4
+ atom radii read from file
+ /mnt/c/Users/pedro/Documents/pypka/pypka/pypka/G54A7/DataBaseT.siz
+  
+ ! Hydrogen atoms have 0.001 radii because                   
+ ! DelPhi complains if H has charge and no                   
+ ! radii. It does not change final results                   
+ # of radius parameter records:        1177
+  
+ atomic charges read from file
+ /mnt/c/Users/pedro/Documents/pypka/pypka/pypka/G54A7/DataBaseT.crg
+  
+ !aminoacids from 54a7                                       
+ # of charge parameter records:        1177
+ assigning charges and radii...
+  
+ opening formatted file:delphi_in_stmod.pdb
+ Delphi Format Number =            0
+ You are not reading from an objectfile!
+ Assuming having only molecules, and one medium
+ You are not reading from an objectfile! assuming       having only molecules, and one dielectric medium
+ number of atoms read in =           42
+ in setrc, iatrad= F
+!!! WARNING: TYR    1 has a net charge of  -0.4080
+!!! WARNING: TYR    1 has a net charge of   0.4080
+ Direct mapping of epsilon: (0/1)(n/y)           1
+ cmin   18.9689999       16.4569988       6.64000034    
+ cmax   27.5730000       30.4099998       16.1009998    
    
- loading variables time was (sec)    9.18660398E-29
+ loading variables time was (sec)    0.00000000    
    
  realsiz ==            4
  igrid     ->            0                   81
@@ -23,7 +51,7 @@
  nmedia ->                     1
  nobject ->                     1
  Direct mapping of epsilon: (0/1)(n/y)           1
- time to read in and/or assign rad/chrg=   0.00000000    
+ time to read in and/or assign rad/chrg=   1.56250000E-02
  object number :              1 ,  is a molecule
  cmin   18.9689999       16.4569988       6.64000034    
  cmax   27.5730000       30.4099998       16.1009998    
@@ -74,7 +102,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
   
  number of charges coming from molecules            7
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
- start vw surface at    0.00000000    
+ start vw surface at    1.56250000E-02
  radmax2 ->   1.00000000       1.35631564E-19   2.80259693E-45   538976288
  Starting creating Van der Waals  Epsilon Map 
  radmax2 =   1.00000000       1.94500005       2.00000000    
@@ -83,7 +111,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  radmax2 ->   1.00000000       3.94500017       2.00000000     T
  setout method 1 T F
  Ending creating Van der Waals  Epsilon Map 
- fill in re-entrant regions at    0.00000000    
+ fill in re-entrant regions at    1.56250000E-02
  here in vwtms	
  boundary points facing continuum solvent=          257
  total number of boundary points before elab.=          257
@@ -106,7 +134,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  scaling boundary grid points
  time taken =    0.00000000    
            0  points had to be assigned by global comparison
- time to turn everything in is   0.00000000    
+ time to turn everything in is   1.56250000E-02
    
  number of atom coordinates read  :           42
  total number of assigned charges    :            7
@@ -119,7 +147,7 @@ qdiffxas: qdiffxs4 with an improved surfacing routine
  number of dielectric boundary points         245
  no. dielectric boundary points in salt =            0
  no. charged boundary grid points =          14
- iepsmp to db, and charging done at   0.00000000    
+ iepsmp to db, and charging done at   1.56250000E-02
  number of grid points assigned charge          32
   
    setting boundary conditions
@@ -136,10 +164,10 @@ gauss-seidel spectral radius is        0.9949078560
   
  estimated iterations to convergence         113
    
- setup time was (sec)    1.56250000E-02
+ setup time was (sec)    3.12500000E-02
    
  isolvarch           0
- now iterating at: 14:40:46
+ now iterating at: 10:24:24
   
   
    rms-change     max change       #iterations
@@ -151,19 +179,5 @@ gauss-seidel spectral radius is        0.9949078560
    4.97609690E-05   1.15203857E-02  at          60  iterations
    1.02453778E-05   1.83105469E-03  at          70  iterations
  finished qdiffx linear iterations
- at                       : 14:40:46
- total time elapsed so far:   0.140625000    
- # loops                  :           70
- mean,max change (kT/e)   :    1.02453778E-05   1.83105469E-03
- self-reaction field energy :      -25966.5137      kt
- total s.charge,no epsin carrying :   -0.4875
- corrected reaction field energy:   -87.665636821714230       kt
- total reaction field energy :     -26054.179308696715       kt
- coulombic energy :                 34.584024313599947       kt
- All required energy terms but grid and self_react.:  -53.0816116     kt
- energy calculations done at  0.140625000    
-   3.06090200E-03   3.06090200E-03          46          46           1
-   
- total cpu time was (sec)   0.140625000    
-   
- DelPhi exited at 14:40:46
+ at                       : 10:24:24
+ total time elapsed so far:    6.25000000E-02
