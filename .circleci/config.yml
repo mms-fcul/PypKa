@@ -2,7 +2,7 @@ sshversion: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:2.7
+      - image: circleci/python:3.6
 
     steps:
       - checkout
@@ -20,17 +20,17 @@ jobs:
             sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ cosmic-backports main restricted universe multiverse">> /etc/apt/sources.list'
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
-            sudo apt install libgfortran4 gawk
+            sudo apt install gawk #libgfortran4
             #pip install --user $delphi4py_whl 
             #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/readFiles/__init__.py
             #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/rundelphi/__init__.py
-            pip install --user pytest numpy coverage
+            python3.6 -m pip install --user pytest numpy coverage
 
       - save_cache:
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python2.7/site-packages"
+            - "/usr/local/lib/python3.6/site-packages"
             - "/home/circleci/.local/share/virtualenvs/"
           key: v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
 
@@ -39,4 +39,4 @@ jobs:
           command: |
             set -e
             cd pypka/tests/
-            python -m pytest -s test.py
+            python3.6 -m pytest test.py

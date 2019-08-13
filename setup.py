@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pypka",
-    version="0.0.3",
+    version="0.0.4",
     author="Pedro Reis",
     author_email="pdreis@fc.ul.pt",
     description="A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism",
@@ -29,7 +29,7 @@ setuptools.setup(
                             'delphi4py/rundelphi/*.so']},
     install_requires=['numpy', 'pytest', 'coverage'],
     classifiers=[
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Cython",
         "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3) ",
         "Operating System :: OS Independent",

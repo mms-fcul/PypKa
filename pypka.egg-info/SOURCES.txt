@@ -120,8 +120,8 @@ pypka/G54A7/sts/THRtau3.st~
 pypka/G54A7/sts/TYRall.st
 pypka/G54A7/sts/TYRtau1.st
 pypka/G54A7/sts/TYRtau2.st
-pypka/delphi4py/__init__.py
 pypka/delphi4py/delphi4py.py
+pypka/delphi4py/delphi4py.py~
 pypka/delphi4py/readFiles/__init__.py
 pypka/delphi4py/readFiles/memalloc.so
 pypka/delphi4py/readFiles/readFiles.so
@@ -175,6 +175,7 @@ pypka/delphi4py/rundelphi/rdhcrg.so
 pypka/delphi4py/rundelphi/rdhrad.so
 pypka/delphi4py/rundelphi/rdiv.so
 pypka/delphi4py/rundelphi/react2.so
+pypka/delphi4py/rundelphi/readFiles.so
 pypka/delphi4py/rundelphi/relfac4b.so
 pypka/delphi4py/rundelphi/rent4.so
 pypka/delphi4py/rundelphi/rfind4.so
@@ -206,6 +207,7 @@ pypka/delphi4py/rundelphi/wrtphi_last.so
 pypka/delphi4py/rundelphi/wrtprm.so
 pypka/delphi4py/rundelphi/wrtsit4.so
 pypka/delphi4py/rundelphi/wrtsurf.so
+pypka/example/__init__.py
 pypka/pdb2pqr/AUTHORS
 pypka/pdb2pqr/AppService_client.pyc
 pypka/pdb2pqr/AppService_services.pyc
@@ -311,3 +313,5 @@ pypka/pdb2pqr/src/server.pyc
 pypka/pdb2pqr/src/structures.pyc
 pypka/pdb2pqr/src/topology.pyc
 pypka/pdb2pqr/src/utilities.pyc
+pypka/tests/__init__.py
+pypka/tests/test.py
