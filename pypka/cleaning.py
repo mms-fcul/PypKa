@@ -117,7 +117,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     sites_numbs = list(sites.keys())
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
-    os.system('python {0} {1} {2} --ff {3} --ffout GROMOS '
+    os.system('python2 {0} {1} {2} --ff {3} --ffout GROMOS '
               '--drop-water -v --chain'.format(pdb2pqr_path,
                                                inputpdbfile, inputpqr,
                                                config.params['ffinput']))
