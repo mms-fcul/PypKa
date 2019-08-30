@@ -118,20 +118,23 @@ def inputParametersFilter(settings):
             setParameter(param, param_value)
 
     # Check particular parameter conditions
-    if 'bndcon' in param_names and \
-       settings['bndcon'] not in ('1', '2', '3', '4'):
+    if 'bndcon' in param_names:
+        if str(settings['bndcon']) not in ('1', '2', '3', '4'):
 
-        log.inputVariableError('bndcon',
-                               '1 (zero), 2(dipolar),'
-                               ' 3(focusing) or 4 (coulombic).', '')
-        setParameter('bndcon', settings['bndcon'])
+            log.inputVariableError('bndcon',
+                                   '1 (zero), 2(dipolar),'
+                                   ' 3(focusing) or 4 (coulombic).', '')
+        
+        else:
+            setParameter('bndcon', int(settings['bndcon']))
 
-    if 'precision' in param_names and \
-       settings['precision'] not in ('single', 'double'):
+    if 'precision' in param_names:
+       if settings['precision'] not in ('single', 'double'):
 
-        log.inputVariableError('precision',
-                               'either "single" or "double".', '')
-        setParameter('precision', settings['precision'])
+           log.inputVariableError('precision',
+                                  'either "single" or "double".', '')
+       else:
+           setParameter('precision', settings['precision'])
 
     if 'ffID' in param_names:
         setParameter('ffID', settings['ffID'])
@@ -156,6 +159,14 @@ def inputParametersFilter(settings):
         param_value = int(settings['pbc_dimensions'])
         setParameter('pbc_dimensions', param_value)
 
+    if 'nanoshaper' in settings:
+        if settings['nanoshaper'] in ('0', '1', '2', '3', '4', '-1'):
+            log.inputVariableError('nanoshaper',
+                                   'either "-1" to turn of nanoshaper or "0" to turn on nanoshaper.', '')
+        else:
+            param_value = int(settings['nanoshaper'])
+            config.nanoshaper = param_value
+        
     # Needs to accept both a single value and a range
     if 'pH' in param_names:
         pH_parts = settings['pH'].split(',')

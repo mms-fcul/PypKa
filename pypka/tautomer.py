@@ -1,7 +1,6 @@
 import config
 import time
 import log
-import subprocess as sb
 from copy import copy
 from formats import new_pdb_line
 
@@ -410,6 +409,12 @@ class Tautomer(object):
         delphimol = molecule.getDelPhi()
         acent = self.setDetailsFromTautomer()
 
+
+        if config.params['bndcon'] == 3:
+            ibctyp = 4
+        else:
+            ibctyp = config.params['bndcon']
+
         filename = '{0}_{1}.prm'.format(self._name, self._site._res_number)
         logfile = 'LOG_runDelPhi_{0}_{1}_modelcompound'.format(self._name,
                                                                self._site._res_number)
@@ -419,7 +424,7 @@ class Tautomer(object):
         delphimol.runDelPhi(scale=config.params['scaleM'],
                             nonit=0, nlit=500, relpar=0, relfac=0,
                             acent=acent, pbx=False, pby=False, debug=config.debug,
-                            filename=filename,
+                            filename=filename, ibctyp=ibctyp,
                             outputfile=logfile)
         if config.debug:
             print(('ended', self._name, self._site._res_number, 'modelcompound'))
@@ -433,9 +438,7 @@ class Tautomer(object):
             filename = '{0}_{1}.profl'.format(self._name, self.getSiteResNumber())
             with open(filename, 'a') as f_new:
                 f_new.write('time -> {0:10} {1:10}\n'.format(t0, t1))
-        else:
-            sb.run(f'rm -f {logfile}*', shell=True, stdout=sb.PIPE)
-            
+        
         return self._esolvation, self._p_sitpot[:]
 
     def CalcPotentialTitratingMolecule(self):
@@ -483,10 +486,11 @@ class Tautomer(object):
                                 relfac=config.params['relfac'],
                                 pbx=True,
                                 pby=True, pbx_focus=False,
-                                pby_focus=False, debug=config.debug,
+                                pby_focus=False, ibctyp=4,
+                                debug=config.debug,
                                 filename=filename,
                                 outputfile=logfile)
-        else:
+        elif config.params['pbc_dim'] == 0 and config.params['bndcon'] == 3:
             delphimol.runDelPhi(scale_prefocus=config.params['scaleP'],
                                 scale=config.params['scaleM'],
                                 nlit_prefocus=config.params['nlit'],
@@ -497,9 +501,18 @@ class Tautomer(object):
                                 relfac=config.params['relfac'],
                                 pbx=False,
                                 pby=False, pbx_focus=False,
-                                pby_focus=False, debug=config.debug,
+                                pby_focus=False, ibctyp=4,
+                                debug=config.debug,
                                 filename=filename,
                                 outputfile=logfile)
+        else:
+            delphimol.runDelPhi(scale=config.params['scaleM'],
+                                nonit=0, nlit=500, relpar=0, relfac=0,
+                                acent=acent, pbx=False, pby=False,
+                                debug=config.debug,
+                                filename=filename,
+                                outputfile=logfile)
+            
         if config.debug:
             print(('ended', self._name, self._site._res_number, 'wholeprotein'))
 
@@ -532,8 +545,6 @@ class Tautomer(object):
 
             print((self._esolvation, self._name))
 
-        else:
-            sb.run(f'rm -f {logfile}*', shell=True, stdout=sb.PIPE)
         return self._esolvation, self._p_sitpot[:]
 
     def calcBackEnergy(self):

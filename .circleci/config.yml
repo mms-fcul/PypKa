@@ -39,4 +39,4 @@ jobs:
           command: |
             set -e
             cd pypka/tests/
-            python3.6 -m pytest test.py
+            python3.6 -m pytest -s test.py

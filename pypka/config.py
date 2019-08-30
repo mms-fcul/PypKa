@@ -26,7 +26,7 @@ params = {'perfil': 0.9,
           'scaleM': 4,
           'precision': 'single',
           'ionicstr': 0.1,
-          'bndcon': 4,
+          'bndcon': 3,
           'maxc': 0.01,
           'nlit': 500,
           'nonit': 0,
@@ -51,6 +51,14 @@ params = {'perfil': 0.9,
           'couple_min': 2.0,
           'mcsteps': 200000,
           'eqsteps': 1000}
+
+# -1 NanoShaper off
+# 0 connolly surface
+# 1 skin
+# 2 blobby
+# 3 mesh
+# 4 msms
+nanoshaper = -1
 
 # Paths
 # TODO: include in dependencies

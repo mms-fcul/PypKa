@@ -219,6 +219,4 @@ def runMCCalcs(job_list):
         mc_output = config.tit_mole.parallelMCrun(pH_index)
         results.append(mc_output) 
 
-    stdout.write('\rPB MC Ended{0:>70}'.format(''))
-    stdout.flush()
     return results

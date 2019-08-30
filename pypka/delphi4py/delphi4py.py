@@ -1,8 +1,5 @@
-from .readFiles import readFiles
-from .rundelphi import rundelphi
-
-#import readFiles.readFiles as readF
-#import rundelphi.rundelphi as DelPhi
+from .readFiles import readFiles as readF
+from .rundelphi import rundelphi as DelPhi
 from ctypes import (c_int, c_double, c_float,
                     c_char, addressof, memmove, sizeof)
 import os
@@ -13,7 +10,7 @@ import sys
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/pedror/delphit/dependencies/NanoShaper0.7/build_lib:/home/pedror/delphit/dependencies/cppDelphi77/lib/
 
 
-class DelPhi(object):
+class DelPhi4py(object):
     """
     """
     def __init__(self, in_crg, in_siz, in_pdb, natoms, igrid, scale,
@@ -94,7 +91,7 @@ class DelPhi(object):
         #######################################################
 
         self.resetDelPhiData()
-        self.readInput(outputfile=outputfile)
+        self.readFiles(outputfile=outputfile)
 
         if self.perfil != 0:
             self.igrid = int(self.scale * 100 / self.perfil * self.rmaxdim)
@@ -180,7 +177,7 @@ class DelPhi(object):
             self.p_atpos[atom_index][2]  = atom[2]
             self.p_rad3[atom_index]      = atom[3]
             self.p_chrgv4[atom_index]    = atom[4]
-            self.atinf[atom_index].value = atom[5].encode('utf-8')
+            self.atinf[atom_index].value = atom[5]
             self.p_iatmed[atom_index + 1]      = 1
 
         return self.natoms
@@ -200,20 +197,20 @@ class DelPhi(object):
     def get_iatmed(self):
         return self.p_iatmed
 
-    def readInput(self, outputfile=None):
+    def readFiles(self, outputfile=None):
         """ """
         if outputfile:
             self.redirectOutput("start", outputfile)
-        self.rmaxdim = readFiles.delphi(self.igrid, self.scale,
-                                        self.repsin, self.repsout,
-                                        self.acent, self.in_pdb,
-                                        self.in_crg, self.in_siz,
-                                        self.natoms, self.nobject,
-                                        self.i_atpos, self.i_rad3,
-                                        self.i_chrgv4, self.i_atinf,
-                                        self.i_medeps, self.i_iatmmed,
-                                        self.i_dataobject,
-                                        self.rmaxdim)
+        self.rmaxdim = readF.delphi(self.igrid, self.scale,
+                                    self.repsin, self.repsout,
+                                    self.acent, self.in_pdb,
+                                    self.in_crg, self.in_siz,
+                                    self.natoms, self.nobject,
+                                    self.i_atpos, self.i_rad3,
+                                    self.i_chrgv4, self.i_atinf,
+                                    self.i_medeps, self.i_iatmmed,
+                                    self.i_dataobject,
+                                    self.rmaxdim)
         if outputfile:
             self.redirectOutput("stop", outputfile)
 
@@ -230,7 +227,7 @@ class DelPhi(object):
                   scale_prefocus=None, acent=None, pbx=None, pby=None,
                   nonit_focus=None, relfac_focus=None,
                   relpar_focus=None, pbx_focus=None, pby_focus=None,
-                  focusing=False, debug=False, filename=None,
+                  focusing=False, ibctyp=None, debug=False, filename=None,
                   outputfile=None):
         """
         """
@@ -250,6 +247,8 @@ class DelPhi(object):
             self.pbx = pbx
         if pby != None:
             self.pby = pby
+        if ibctyp != None:
+            self.ibctyp = ibctyp
 
         if scale_prefocus:
             scale  = float(scale_prefocus)
@@ -335,30 +334,31 @@ class DelPhi(object):
 
         if self.debug or debug:
             output = self.__str__()
+            print(output)
             if filename:
                 with open(filename, 'a') as f_new:
                     f_new.write(output)
 
-        self.esolvation = rundelphi.delphi(self.igrid, scale,
-                                           self.repsin, self.repsout,
-                                           self.radprb, self.conc,
-                                           ibctyp, self.res2, nlit,
-                                           self.acent, self.energy,
-                                           self.site, nonit, relfac,
-                                           relpar, pbx, pby, in_frc,
-                                           self.natoms, self.nmedia,
-                                           self.nobject, self.i_atpos,
-                                           self.i_rad3, self.i_chrgv4,
-                                           self.i_atinf,
-                                           self.i_medeps,
-                                           self.i_iatmmed,
-                                           self.i_dataobject,
-                                           self.i_phimap4,
-                                           scale_prefocus, out_phi,
-                                           self.i_sitpot,
-                                           self.esolvation,
-                                           self.isurftype,
-                                           self.parallel)
+        self.esolvation = DelPhi.delphi(self.igrid, scale,
+                                        self.repsin, self.repsout,
+                                        self.radprb, self.conc,
+                                        ibctyp, self.res2, nlit,
+                                        self.acent, self.energy,
+                                        self.site, nonit, relfac,
+                                        relpar, pbx, pby, in_frc,
+                                        self.natoms, self.nmedia,
+                                        self.nobject, self.i_atpos,
+                                        self.i_rad3, self.i_chrgv4,
+                                        self.i_atinf,
+                                        self.i_medeps,
+                                        self.i_iatmmed,
+                                        self.i_dataobject,
+                                        self.i_phimap4,
+                                        scale_prefocus, out_phi,
+                                        self.i_sitpot,
+                                        self.esolvation,
+                                        self.isurftype,
+                                        self.parallel)
         self.saveSitePotential()
 
         if outputfile:

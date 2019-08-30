@@ -11,7 +11,7 @@ from cleaning import inputPDBCheck, cleanPDB
 from formats import convertTermini, pdb2gro
 import log
 
-from delphi4py.delphi4py import DelPhi
+from delphi4py.delphi4py import DelPhi4py
 
 from molecule import Molecule
 from concurrency import startPoolProcesses, runDelPhiSims
@@ -169,7 +169,7 @@ class Titration(object):
         else:
             logfile = config.f_log
 
-        delphimol = DelPhi(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
+        delphimol = DelPhi4py(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
                            config.tit_mole.getNAtoms(),
                            config.params['gsize'],
                            config.params['scaleM'],
@@ -185,6 +185,7 @@ class Titration(object):
                            relpar=0.0,
                            pbx=config.params['pbx'],
                            pby=config.params['pby'],
+                           isurftype=config.nanoshaper,
                            debug=config.debug, outputfile=logfile)
         if not config.debug:
             os.remove('delphi_in_stmod.pdb')

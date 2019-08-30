@@ -1094,7 +1094,7 @@ MODEL        1
                 for ii in range(diff):
                     i.append(filler)
 
-        print('\nStart MC')
+        print('\nStart MC', end='\r')
 
         sites = self.getSitesOrdered()
         nsites = len(sites)
@@ -1149,11 +1149,13 @@ MODEL        1
         results = startPoolProcesses(runMCCalcs,
                                      list(range(pHsteps)), ncpus,
                                      assign='ordered', merged_results=True)
+
+        print('Ended MC')
         counter = 0
         for i in results:
             avgs_all.append(i[0])
             counts_all.append(i[1])
-        
+
         pKs = np.array([[100.0 for ii in range(MAXNPKHALFS)] for i in range(nsites)])
         pmeans = avgs_all[0] / float(mcsteps)
         pmeans_raw = [100.0]
@@ -1161,7 +1163,6 @@ MODEL        1
             pH = pHmin + pHstep * dpH
             totalP, pKs, pmeans = self.calcpKhalfs(pH, nsites, avgs_all[pHstep], pmeans, pKs, counts_all[pHstep], mcsteps, pHmin, dpH)
             pmeans_raw.append(totalP)
-
         pKas = pKs
         
         #pKas, pmeans_raw = mc.MCrun(nsites, self._npossible_states,
