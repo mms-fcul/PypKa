@@ -348,7 +348,7 @@ class Tautomer(object):
         x_new = x
         y_new = y
         z_new = z
-        inf = '-' + inf[1:].decode("utf-8") 
+        inf = inf[1:]
         charge = 0.0
         cutoff_x = config.params['slice'] * box
         cutoff_y = config.params['slice'] * box

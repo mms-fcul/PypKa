@@ -11,7 +11,7 @@ in the 4lzt.pdb structure.
 
 .. code-block:: python
    
-   from pypka import Titration
+   from pypka.pypka import Titration
 
    parameters = {'structure'     : '4lzt.pdb',
                  'epsin'         : 10,
@@ -22,9 +22,9 @@ in the 4lzt.pdb structure.
    pKa = Titration(parameters)
    
    for site in pKa:
-       print site, pKa[site], pKa.getProtState(site, 7)
+       print(site, pKa[site], pKa.getProtState(site, 7))
    
-   print pKa.getParameters()
+   print(pKa.getParameters())
 
 
 ===

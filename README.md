@@ -8,7 +8,6 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
 # Dependencies 
 
-  - delphi4py #1.0.0
   - libgfortran4
   - gawk 
   - pytest
@@ -28,7 +27,7 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
 # Installation
 
-  pip install pypka
+  pip3 install pypka
 
   apt install gawk gcc gfortran libgfortran4
 
@@ -39,6 +38,17 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
 
 # Change Log
+## v0.7
+  - bug fixes
+
+## v0.6
+  - python3 porting
+  - dna support
+  - nanoshaper integration
+
+## v0.5
+  - MC parallelization
+  - delphi4py distributed within
 
 ## v0.4
   - API development

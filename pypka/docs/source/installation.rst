@@ -7,7 +7,7 @@ Python Package Index
 
 To install the latest stable release with pip do::
 
-   pip install pypka
+   pip3 install pypka
 
 ====================
 Required Software
@@ -15,7 +15,7 @@ Required Software
 
 Pypka depends on the following software:
 
-* Python2.7 (installed by default on most Linux distributions)
+* Python3.6
 * gawk
 
 For the moment DelPhi depends on the following software:

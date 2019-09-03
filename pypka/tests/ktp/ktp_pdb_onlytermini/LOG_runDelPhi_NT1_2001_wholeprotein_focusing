@@ -148,10 +148,10 @@ gauss-seidel spectral radius is        0.9978435040
   
  estimated iterations to convergence         171
    
- setup time was (sec)   0.484375000    
+ setup time was (sec)   0.500000000    
    
  isolvarch           0
- now iterating at: 15:22:17
+ now iterating at: 10:19:31
   
   
    rms-change     max change       #iterations
@@ -166,8 +166,8 @@ gauss-seidel spectral radius is        0.9978435040
    7.12481269E-04   2.75878906E-02  at          90  iterations
    2.82280089E-04   8.75091553E-03  at         100  iterations
  finished qdiffx linear iterations
- at                       : 15:22:17
- total time elapsed so far:   0.578125000    
+ at                       : 10:19:31
+ total time elapsed so far:   0.546875000    
  # loops                  :          100
  mean,max change (kT/e)   :    2.82280089E-04   8.75091553E-03
  self-reaction field energy :      -54482.6602      kt
@@ -176,8 +176,8 @@ gauss-seidel spectral radius is        0.9978435040
  total reaction field energy :     -54504.006023196445       kt
  coulombic energy :                -180.81159649509004       kt
  All required energy terms but grid and self_react.:  -202.157471     kt
- energy calculations done at  0.578125000    
+ energy calculations done at  0.546875000    
    
- total cpu time was (sec)   0.109375000    
+ total cpu time was (sec)    7.81250000E-02
    
- DelPhi exited at 15:22:17
+ DelPhi exited at 10:19:31
