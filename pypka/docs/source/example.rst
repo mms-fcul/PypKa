@@ -42,6 +42,7 @@ parameter file.
    ionicstr        = 0.1
    pbc_dimensions  = 0
    ncpus           = 4
+   sites_A         = all
 
 To execute pypka simply type:
 
