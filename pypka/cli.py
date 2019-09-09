@@ -103,7 +103,7 @@ def inputParametersFilter(settings):
             setParameter(param, param_value)
 
     # Check parameters conditions: parameter is boolean
-    bool_params = ('pbx', 'pby', 'clean_pdb')
+    bool_params = ('pbx', 'pby', 'clean_pdb', 'keep_ions')
     for param in bool_params:
         if param in param_names:
             param_value = settings[param]
@@ -111,7 +111,7 @@ def inputParametersFilter(settings):
                 param_value = True
             elif param_value == 'no':
                 param_value = False
-            else:
+            elif param_value not in (True, False):
                 log.inputVariableError(param,
                                        'either "yes" or "no".', '')
 
@@ -202,7 +202,7 @@ def inputParametersFilter(settings):
                                'a string containing a file extension.',
                                'Ex: structure.pdb or structure.gro')
 
-    extension = f_in_parts[1].lower().replace('pqr', 'pdb')
+    extension = f_in_parts[-1].lower().replace('pqr', 'pdb')
     if extension not in ('gro', 'pdb'):
         log.inputVariableError('structure',
                                'a string containing a valid file extension.',

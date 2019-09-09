@@ -133,21 +133,39 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                 CYS_bridges.append(int(parts[-1]))
 
     new_pdb_text = ''
-    aposition = 0
+    removed_pdb_text = ''
+    removed_pdb_lines = []
     #ntr_trigger = True
     with open(inputpqr) as f:
         for line in f:
             if "ATOM" in line[:4]:
                 (aname, anumb, resname, chain, resnumb, x, y,
                  z, charge, radius) = read_pqr_line(line)
-                aposition += 1
+                
+                if chain in (' ', 'A'):
+                    aname, resname = correct_names(sites_numbs, resnumb,
+                                                   resname, aname, sites_numbs)
+                    resnumb_max = resnumb
+                new_line = new_pqr_line(anumb, aname, resname,
+                                        resnumb, x, y, z, charge, radius)
+                if chain in (' ', 'A'):
+                    new_pdb_text += new_line
+                elif aname not in ('H1', 'H2', 'H3', 'O1', 'O2'):
+                    if resname in ('SER', 'THR') and aname == 'HG1':
+                        aname = 'HG'
+                    removed_pdb_lines.append(new_line)
 
-                aname, resname = correct_names(sites_numbs, resnumb,
-                                               resname, aname, sites_numbs)
-
-                new_pdb_text += new_pqr_line(aposition, aname, resname,
-                                             resnumb, x, y, z, charge, radius)
-
+    resnumb_old = resnumb_max + 1
+    for line in removed_pdb_lines:
+        (aname, anumb_old, resname, chain, resnumb, x, y,
+         z, charge, radius) = read_pqr_line(line)
+        anumb += 1
+        resnumb += resnumb_old
+        while resnumb < resnumb_max:
+            resnumb += resnumb_old
+        removed_pdb_text += new_pqr_line(anumb, aname, resname,
+                                         resnumb, x, y, z, charge, radius)        
+        resnumb_max = resnumb
     #            if ntr_trigger and :
     #                config.tit_mole._NTR = resnumb
     
@@ -162,7 +180,8 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     with open('cleaned.pqr', 'w') as f_new:
         f_new.write(new_pdb_text)
 
-    
+    with open('removed.pqr', 'w') as f_new:
+        f_new.write(removed_pdb_text)
 
     # TODO: .sites files should not exist
     # adapt addHtaut to work without these
@@ -181,12 +200,16 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         logfile = config.f_log
     log.redirectErr("start", logfile)
 
-    os.system('{0}/addHtaut cleaned.pqr {1} > '
-              'cleaned_tau.pqr'.format(config.script_dir, sites_addHtaut))
+    os.system(f'{config.script_dir}/addHtaut cleaned.pqr {sites_addHtaut} > {outputpqr}')
 
     log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
 
+    with open(outputpqr) as f:
+        content = f.read()
+    with open(outputpqr, 'w') as f_new:
+        f_new.write(content + removed_pdb_text)
+    
     with open(pdb_filename) as f:
         for line in f:
             if 'CRYST1' in line:
@@ -198,8 +221,11 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)
 
+    if config.params['keep_ions']:
+        addIons("TMP.gro", pdb_filename)
+
     tmpfiles = ('LOG_pdb2pqr', 'LOG_pdb2pqr_err', 'clean.pqr', 'cleaned.pqr',
-                'cleaned_tau.pqr', 'input_clean.pdb', config.f_log)
+                'cleaned_tau.pqr', 'input_clean.pdb', 'removed.pqr', config.f_log)
     for filename in tmpfiles:
         if not config.debug and os.path.isfile(filename):
             os.remove(filename)
@@ -212,7 +238,7 @@ def removeMembrane(pdbfile):
             if 'ATOM ' == line[0:5]:
                 (aname, anumb, resname,
                  chain, resnumb, x, y, z) = read_pdb_line(line)
-                if resname not in config.lipid_residues and chain in (' ', 'A'):
+                if resname not in config.lipid_residues:
                     nomembrane_text += line
             else:
                 nomembrane_text += line
@@ -269,8 +295,37 @@ def addMembrane(grofile, pdbfile):
     with open('tmp.tmp', 'w') as f_new:
         new_file_header += str(atom_number) + '\n'
         f_new.write(new_file_header + new_file_body + new_file_footer)
-    os.rename('tmp.tmp', 'TMP.gro')
+    os.rename('tmp.tmp', grofile)
 
+
+def addIons(grofile, pdbfile):
+    with open(grofile) as f:
+        content = f.readlines()
+        header = content[0]
+        natoms = int(content[1].strip())
+        coordinates = content[2:-1]
+        box = content[-1]
+
+    (aname, last_anumb, resname, last_resnumb, x, y, z) = read_gro_line(coordinates[-1])
+    extra_lines = ''
+    with open(pdbfile) as f:
+        for line in f:
+            if line.startswith('ATOM'):
+                (aname, anumb, resname,
+                 chain, resnumb, x, y, z) = read_pdb_line(line)
+                if aname in config.ions and resname == aname:
+                    last_anumb += 1
+                    last_resnumb +=1
+                    natoms += 1
+                    x, y, z = x/10, y/10, z/10
+                    extra_lines += new_gro_line(last_anumb, aname, resname,
+                                                last_resnumb, x, y, z)
+
+    with open(grofile, 'w') as f_new:
+        natoms = f'{natoms}\n'
+        coordinates = ''.join(coordinates)
+        content = header + natoms + coordinates + extra_lines + box
+        f_new.write(content)
 
 def convert_FF_atomnames(aname, resname):
     popc_resname = config.lipids['POPC']

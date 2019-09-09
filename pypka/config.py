@@ -48,6 +48,7 @@ params = {'perfil': 0.9,
           'slice': 0.05,
           'ncpus': 1,
           'clean_pdb': True,
+          'keep_ions': False,
           'couple_min': 2.0,
           'mcsteps': 200000,
           'eqsteps': 1000}
@@ -86,6 +87,9 @@ lipids = {'cholesterol': 'CHO',  # to edit
           'POPC': 'POP'}
 lipid_residues = ['POX', 'PJ2', 'CHL']  # allowed residue names
 
+ions = ['CL-', 'NA+']
+
+
 # Constants
 kBoltz = 5.98435e-6  # e^2/(Angstrom*K)
 log10 = 2.302585092994046
@@ -104,6 +108,7 @@ TITRABLETAUTOMERS = {'LYS': 3,
                      'CTR': 4,
                      'NTR': 3,
                      'TYR': 2}
+
 
 TITRABLERESIDUES = list(TITRABLETAUTOMERS.keys())
 REGULARTITRATINGRES = copy(list(TITRABLETAUTOMERS.keys()))

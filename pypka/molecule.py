@@ -265,7 +265,7 @@ class Molecule(object):
                             sites_file += SitesFileLine(resnumb, 'NTR')
                             self._NTR = resnumb
                         if resname in config.TITRABLERESIDUES and \
-                           resname != 'NTR' and resname != 'CTR':
+                           resname != 'NTR' and resname != 'CTR'  and chain == 'A':
                             sites.append(resnumb)
                             sites_file += SitesFileLine(resnumb, resname)
                             add2chain(chain, chain_res, resnumb, resname)

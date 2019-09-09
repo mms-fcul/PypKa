@@ -3,10 +3,10 @@ Main Methods
 
 .. autofunction:: pypka.pypka.getTitrableSites
 
-.. autoclass:: pypka.Titration
+.. autoclass:: pypka.pypka.Titration
 
-.. automethod:: pypka.Titration.getAverageProt
+.. automethod:: pypka.pypka.Titration.getAverageProt
 
-.. automethod:: pypka.Titration.getProtState
+.. automethod:: pypka.pypka.Titration.getProtState
 
-.. automethod:: pypka.Titration.getParameters
+.. automethod:: pypka.pypka.Titration.getParameters

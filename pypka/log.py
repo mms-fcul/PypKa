@@ -73,5 +73,9 @@ def checkDelPhiErrors(filename, mode=None):
                     errors += line
     if exit_trigger:
         raise Exception('The following errors have been found on {0}: \n{1}'.format(filename, errors))
-    if not config.debug and os.path.isfile(filename):
-        os.remove(filename)
+    if not config.debug:
+        if os.path.isfile(filename):
+            os.remove(filename)
+        focusing_log = f'{filename}_focusing'
+        if os.path.isfile(focusing_log):
+            os.remove(focusing_log)

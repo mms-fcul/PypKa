@@ -105,15 +105,6 @@ def runDelPhiSims(job_list):
         sitpotS (list):  the site potential in the Site
           the index corresponds to the atoms in the site
     """
-    if config.debug:
-        # each process will run in its own directory
-        #os.system('mkdir -p core_{0}'.format('_'.join([str(i) for i in job_list])))
-        #os.chdir('core_{0}'.format('_'.join([str(i) for i in job_list])))
-
-        # TODO: file name may be too long. needs fix
-        pass
-
-
     results = []
     for tau_number in job_list:
         time1 = time()

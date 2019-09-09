@@ -26,7 +26,7 @@ def read_pqr_line(line):
     anumb   = int(line[7:11].strip())
     resname = line[17:21].strip()
     chain   = line[21]
-    resnumb = int(line[23:26])
+    resnumb = int(line[22:26])
     x       = float(line[30:38])
     y       = float(line[38:46])
     z       = float(line[46:54])
@@ -61,7 +61,7 @@ def read_gro_line(line):
     return (aname, anumb, resname, resnumb, x, y, z)
 
 
-def pdb2gro(filename_in, filename_out, box, sites, pqr=False):
+def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False):
     """
     Returns
       - aposition (int) of last atom id in filename_out
@@ -74,6 +74,8 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False):
     header = 'CREATED within PyPka\n'
     new_pdb_text = ''
     aposition = 0
+    rposition = 1
+    prev_resnumb = None
 
     sites_pos = list(sites.keys())
     with open(filename_in) as f:
@@ -104,11 +106,17 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False):
                 aposition -= 1
                 continue
 
+            if prev_resnumb and prev_resnumb != resnumb:
+                rposition +=1
+
             x /= 10.0
             y /= 10.0
             z /= 10.0
+            if not renumber_res:
+                rposition = resnumb
             new_pdb_text += new_gro_line(aposition, aname, resname,
-                                         resnumb, x, y, z)
+                                         rposition, x, y, z)
+            prev_resnumb = resnumb
 
     header += '{0}\n'.format(aposition)
     if box == []:
