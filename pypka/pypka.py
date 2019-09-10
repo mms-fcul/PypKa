@@ -323,7 +323,7 @@ class Titration(object):
     def getParameters(self):
         """Get the parameters used in the calculations
         """
-        return config.tit_mole.getDelPhi()
+        return config.tit_mole.getDelPhi().__str__()
     
     def __getitem__(self, numb):
         numb = self.correct_site_numb(numb)
