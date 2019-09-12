@@ -1,9 +1,0 @@
-{
-  "pypka/tests/test.py::TestAPI::test_api_ktp_pdb_allsites": true,
-  "pypka/tests/test.py::TestAPI::test_ktp_gro": true,
-  "pypka/tests/test.py::TestCLI::test_cli_ktp_gro_onesite": true,
-  "pypka/tests/test.py::TestCLI::test_cli_pHLIP_pdb_all": true,
-  "pypka/tests/test.py::TestCLI::test_ktp_gro": true,
-  "pypka/tests/test.py::TestCLI::test_ktp_pdb_allsites": true,
-  "pypka/tests/test.py::TestCLI::test_ktp_pdb_onlytermini": true
-}
