@@ -11,4 +11,17 @@ P_*.pdb
 
 build/
 pypka/build/
-
+.pytest_cache/
+dist/
+pypka.egg-info/
+pypka/__pycache__/
+pypka/build/
+pypka/*.pyc
+pypka/delphi4py/*.pyc
+pypka/delphi4py/*.pyc
+pypka/delphi4py/__pycache__/
+pypka/delphi4py/readFiles/*f
+pypka/delphi4py/rundelphi/*f
+pypka/delphi4py/readFiles/__pycache__/
+pypka/delphi4py/rundelphi/__pycache__/
+pypka/delphi4py/rundelphi/benchmark
