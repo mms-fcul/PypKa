@@ -1036,10 +1036,12 @@ MODEL        1
                 f_new1.write(pkints)
                 f_new2.write(contributions)
 
-    def calcpKhalfs(self, pH, nsites, avgs, pmean, pKs, count, mcsteps, pHmin, dpH):
+    def calcpKhalfs(self, pH, nsites, avgs, pmean, pKs, mcsteps, dpH):
         totalP = 0.0
+        means = []
         for site in range(nsites):
             mean = avgs[site] / float(mcsteps)
+            means.append(mean)
             totalP += mean
         
             p = pmean[site]
@@ -1059,9 +1061,9 @@ MODEL        1
                         break
         
             pmean[site] = mean
-        return totalP, pKs, pmean
+        totalP /= nsites
+        return totalP, pKs, pmean, means
 
-                
     def parallelMCrun(self, pHstep):
         sites = self.getSitesOrdered()
         nsites = len(sites)
@@ -1076,15 +1078,15 @@ MODEL        1
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
         pH = pHmin + pHstep * dpH
-        avgs, pmean, count = MCrun(nsites, self._npossible_states,
-                                   self._possible_states_g,
-                                   self._possible_states_occ,
-                                   self._interactions,
-                                   self._interactions_look,
-                                   pHsteps, mcsteps, eqsteps, seed,
-                                   pHmin, dpH, couple_min, pH)
+        avgs, pmean, count, cur_states = MCrun(nsites, self._npossible_states,
+                                               self._possible_states_g,
+                                               self._possible_states_occ,
+                                               self._interactions,
+                                               self._interactions_look,
+                                               pHsteps, mcsteps, eqsteps, seed,
+                                               pHmin, dpH, couple_min, pH)
 
-        return (avgs, count)
+        return (avgs, count, pmean, cur_states)
 
 
     def runMC(self):
@@ -1119,12 +1121,10 @@ MODEL        1
                 self._possible_states_occ[isite].append(prot_state)
                 itaut += 1
 
-            if site._type == 'c':
-                prot_state = 1
-            elif site._type == 'a':
-                prot_state = 0
-            self._possible_states_occ[isite].append(prot_state)
             self._possible_states_g[isite].append(0.0)
+            prot_state = site.getRefProtState()
+            self._possible_states_occ[isite].append(prot_state)
+
         
         maxstates = max(self._npossible_states)
         resize_list_of_lists(self._possible_states, maxstates)
@@ -1141,45 +1141,55 @@ MODEL        1
 
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
-        pmeans_all = []
         counts_all = []
         avgs_all = []
+        cur_states = []
 
         ncpus = min(config.params['ncpus'], nsites)
         results = startPoolProcesses(runMCCalcs,
                                      list(range(pHsteps)), ncpus,
                                      assign='ordered', merged_results=True)
-
-        print('Ended MC')
+        
+        print(f'\rMC Runs Ended{"":>80}\n')
         counter = 0
         for i in results:
             avgs_all.append(i[0])
             counts_all.append(i[1])
+            cur_states.append(i[3])
 
         pKs = np.array([[100.0 for ii in range(MAXNPKHALFS)] for i in range(nsites)])
         pmeans = avgs_all[0] / float(mcsteps)
-        pmeans_raw = [100.0]
+
+        tit_curve  = {}
+        tit_curve[pHmin] = {}
+        tit_curve[pHmin]['total'] = sum(avgs_all[0]) / mcsteps / nsites
+        for i, mean in enumerate(avgs_all[0]):
+            site = sites[i]
+            sitenumber = site.getResNumber()
+            tit_curve[pHmin][sitenumber] = mean / mcsteps
+
+        sites = self.getSitesOrdered()
+
         for pHstep in range(1, pHsteps):
             pH = pHmin + pHstep * dpH
-            totalP, pKs, pmeans = self.calcpKhalfs(pH, nsites, avgs_all[pHstep], pmeans, pKs, counts_all[pHstep], mcsteps, pHmin, dpH)
-            pmeans_raw.append(totalP)
-        pKas = pKs
-        
-        #pKas, pmeans_raw = mc.MCrun(nsites, self._npossible_states,
-        #                            self._possible_states_g,
-        #                            self._possible_states_occ,
-        #                            self._interactions,
-        #                            self._interactions_look,
-        #                            pHsteps, mcsteps, eqsteps, seed,
-        #                            pHmin, dpH, couple_min)
+            totalP, pKs, pmeans, means = self.calcpKhalfs(pH, nsites, avgs_all[pHstep], 
+                                                          pmeans, pKs, mcsteps, dpH)
+            tit_curve[pH] = {}
+            tit_curve[pH]['total'] = totalP
+            for i, mean in enumerate(means):
+                site = sites[i]
+                sitenumber = site.getResNumber()
+                tit_curve[pH][sitenumber] = mean
 
-        print('\n\nResults')
+        pKas = pKs
+
+        print('\nResults')
         text_pks = ''
-        text_prots = '# pH      total'
+        text_prots = '#pH       total'
         c = -1
         for i in pKas:
             c += 1
-            site = self.getSitesOrdered()[c]
+            site = sites[c]
             sitename = site.getName()
             if sitename in ('NTR', 'CTR'):
                 resnumb = site.getResNumber() - config.terminal_offset
@@ -1198,28 +1208,41 @@ MODEL        1
             with open(config.f_out, 'w') as f:
                 f.write(text_pks)
 
-        pmeans = {}
+        final_states = {}
+        state_distribution = {}
+        most_prob_states = {}
         for pHstep in range(pHsteps):
             pH = pHmin + pHstep * dpH
-            c = -1
-            pmeans[pH] = {}
-            text_prots += '\n{0:5.2f}'.format(pH)
+            text_prots += f'\n{pH:5.2f}'
 
-            # total protonation
-            #pmean = pmeans_raw[pHstep][c]
-            pmean = pmeans_raw[pHstep]
-            pmeans[pH]['total'] = pmean
-            text_prots += '\t{0:7.4f}'.format(pmean)
+            tmean = tit_curve[pH]['total']
+            text_prots += f'\t{tmean:7.4f}'
 
-            for site in self.getSitesOrdered():
-                c += 1
+            final_states[pH] = {}
+            state_distribution[pH] = {}
+            most_prob_states[pH] = {}
+            for c, site in enumerate(sites):
                 sitename = site.getName()
                 sitenumb = site.getResNumber()
-                #pmean = pmeans_raw[pHstep][c]
-                pmean = avgs_all[pHstep][c]
-                pmeans[pH][sitenumb] = pmean
-                if pmean != 100.0:
-                    text_prots += '\t{0:7.4f}'.format(pmean)
+                mean = tit_curve[pH][sitenumb]
+                final_states[pH][sitenumb] = cur_states[pHstep][c]
+                state_distribution[pH][sitenumb] = list(counts_all[pHstep][c] / mcsteps)
+
+                ntauts = site.getNTautomers()
+                ref_i = ntauts - 1
+                prot_state = site.getRefProtState()
+                if (mean > 0.5 and prot_state == 1) or \
+                   (mean <= 0.5 and prot_state == -1):
+                    state_i = ref_i
+                else:  
+                    max_prob = max(state_distribution[pH][sitenumb][:ref_i])
+                    state_i = state_distribution[pH][sitenumb].index(max_prob)
+
+                most_prob_state = state_i + 1
+                most_prob_states[pH][sitenumb] = most_prob_state
+
+                if mean != 100.0:
+                    text_prots += f'\t{mean:7.4f}'
                 else:
                     text_prots += '\t-'
 
@@ -1227,4 +1250,4 @@ MODEL        1
             with open(config.f_prot_out, 'w') as f:
                 f.write(text_prots)
 
-        return pKas, pmeans
+        return pKas, tit_curve, final_states, state_distribution, most_prob_states

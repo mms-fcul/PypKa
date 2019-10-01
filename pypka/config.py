@@ -76,6 +76,7 @@ f_in = None
 f_in_extension = None
 f_out = None
 f_prot_out = None
+f_structure_out = None
 f_log = "LOG"
 f_dat = None
 

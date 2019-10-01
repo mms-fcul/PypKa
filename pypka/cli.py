@@ -220,6 +220,9 @@ def inputParametersFilter(settings):
     # Output Titration File
     if 'titration_output' in param_names:
         config.f_prot_out = settings['titration_output']
+    
+    if 'structure_output' in param_names:
+        config.f_structure_out = settings['structure_output']
 
     # Output log File
     if 'logfile' in param_names:

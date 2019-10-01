@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, '../')
 
-from delphi4py import Delphi
+from delphi4py import DelPhi4py as Delphi
 
 #import os
 

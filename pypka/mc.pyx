@@ -316,4 +316,4 @@ cpdef MCrun(int nsites, npossible_states_aux,
 
     #print '\n', pH, np.asarray(avgs)
 
-    return np.asarray(avgs), np.asarray(pmean), np.asarray(count)
+    return np.asarray(avgs), np.asarray(pmean), np.asarray(count), np.asarray(cur_states)

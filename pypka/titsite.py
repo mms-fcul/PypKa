@@ -42,6 +42,7 @@ class Titsite:
         self._ref_tautomer = ''
         self._center = []
         self._type = ''
+        self._pK = None
 
     # Set Methods
     def setTautomers(self, ntauts, resname):
@@ -57,6 +58,8 @@ class Titsite:
 
             tID = Tautomer(tautomer, self, self._molecule)
             self._tautomers[tautomer] = tID
+    def setpK(self, pK):
+        self._pK = pK
             
     def addReferenceTautomer(self):
         """Gets last tautomer from .sites file adds one and saves it as the
@@ -111,6 +114,9 @@ class Titsite:
         except the tautomers of reference"""
         return list(self._tautomers.values())
 
+    def getNTautomers(self):
+        return len(self.getTautomers())
+
     def getAtomNumbersList(self):
         return list(self._atoms.values())
 
@@ -150,6 +156,9 @@ class Titsite:
 
     def getResNumber(self):
         return self._res_number
+
+    def getpK(self):
+        return self._pK
 
     # Iter Methods
     def iterTautomers(self):

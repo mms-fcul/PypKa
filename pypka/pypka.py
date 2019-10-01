@@ -216,7 +216,7 @@ class Titration(object):
         config.tit_mole.calcSiteInteractionsParallel(config.params['ncpus'])
 
         #  Monte Carlo sampling
-        pKas, pmeans = config.tit_mole.runMC()
+        pKas, tit_curve, final_states, states_prob, most_prob_states = config.tit_mole.runMC()
 
         sites = config.tit_mole.getSitesOrdered()
 
@@ -227,9 +227,45 @@ class Titration(object):
             pK = i[0]
             if pK != 100.0:
                 self._pKas[site] = pK
+                sites[c].setpK(pK)
             else:
                 self._pKas[site] = '-'
-        self._pmeans = pmeans
+
+        self._most_prob_states = most_prob_states 
+        self._states_prob      = states_prob
+        self._final_states     = final_states
+        self._tit_curve        = tit_curve      
+        self._pH_values        = sorted(tit_curve.keys())
+
+    def getStuffFromStructures(self, site, pH):    
+        if pH not in self._pH_values:
+            raise Exception('pH value not calculated in the previous run'
+                            f'pH values allowed: {self._pH_values}')
+        site_i = self.correct_site_numb(site)
+        return site_i
+
+    def getMostProbStates(self, site, pH):
+        site_i = self.getStuffFromStructures(site, pH)
+        return self._most_prob_states[pH][site_i]
+
+    def getStatesProb(self, site, pH):
+        site_i = self.getStuffFromStructures(site, pH)
+        return self._states_prob[pH][site_i]
+
+    def getFinalState(self, site, pH):
+        site_i = self.getStuffFromStructures(site, pH)
+        return self._final_states[pH][site_i]
+
+    def getTitrationCurve(self, site):
+        """
+        Arguments:
+            site {integer} -- number of the site, "total" is also valid
+        """
+        site_i = self.correct_site_numb(site)
+        tit_curve = {}
+        for pH in self._tit_curve.keys():
+            tit_curve[pH] = self._tit_curve[pH][site_i]
+        return tit_curve
 
     def getAverageProt(self, site, pH):
         """Calculates the average protonation of a site at a given pH value

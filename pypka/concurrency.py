@@ -9,6 +9,27 @@ def configRefresh(config, pb_time, njobs):
     config.pb_time = pb_time
     config.njobs = njobs
 
+def printTimeLeft(time1, time2, message):
+    config.njobs.value -= 1
+    njobs = config.njobs.value
+    total_jobs = config.total_jobs
+    step = total_jobs - njobs
+    config.pb_time.append(time2 - time1)
+    left = sum(config.pb_time) / len(config.pb_time) * njobs / config.params['ncpus']
+    if left > 3600:
+        left_time = f'~{int(left / 3600.0)}h'
+    elif left > 60:
+        left_time = f'~{int(left / 60.0)}m'
+    else:
+        left_time = f'{int(left)}s'
+    
+    end = datetime.now() + timedelta(seconds=left)
+    end_time = end.strftime('%H:%M:%S %d/%m/%Y')
+
+    stdout.write(f'\r{message} '
+                 f'Run {step:5} of {total_jobs:<10} '
+                 f'Ends in {left_time:5} at {end_time:5}')
+    stdout.flush()
 
 def startPoolProcesses(targetFunction, iterable_job_arguments_list,
                        ncpus, assign='distributed', merged_results=False):
@@ -41,11 +62,12 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
             jobs[i % ncpus].append(i)
             config.njobs += 1
     elif assign == 'ordered':
-        max_njobs = len(iterable_job_arguments_list) / ncpus
+        max_njobs = int(len(iterable_job_arguments_list) / ncpus)
         ncores_extra_load = len(iterable_job_arguments_list) % ncpus
         core = 0
         core_jobs = 0
         extra_load = False
+        config.njobs = 0
         for tautomer in iterable_job_arguments_list:
             i += 1
             if core_jobs == max_njobs:
@@ -58,10 +80,17 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
                     extra_load = False
             jobs[core].append(i)
             core_jobs += 1
+            config.njobs += 1
+        if config.debug:
+            print(f'max_njobs = {max_njobs}, ncores_extra_load = {ncores_extra_load}')
 
     config.total_jobs = config.njobs
     pb_time = Manager().list()
     njobs = Value('i', config.njobs)
+    if config.debug:
+        print(f'ncpus = {ncpus}, njobs = {config.njobs}')
+        for i, job in enumerate(jobs):
+            print(f'ncore {i}: njobs = {len(job)}')
     pool = Pool(processes=ncpus, initializer=configRefresh,
                 initargs=(config, pb_time, njobs))
     for job in jobs:
@@ -112,29 +141,11 @@ def runDelPhiSims(job_list):
         results.append([tauname, sitenum, esolvM, sitpotM, esolvS, sitpotS])
         time2 = time()
 
-        config.njobs.value -= 1
-        njobs = config.njobs.value
-        config.pb_time.append(time2 - time1)
-        left = sum(config.pb_time) / len(config.pb_time) * njobs / config.params['ncpus']
-        if left > 3600:
-            left_time = '~{0}h'.format(int(left / 3600.0))
-        elif left > 60:
-            left_time = '~{0}m'.format(int(left / 60.0))
-        else:
-            left_time = '{0}s'.format(int(left))
-        
-        end = datetime.now() + timedelta(seconds=left)
-        end_time = end.strftime('%H:%M:%S %d/%m/%Y')
-        stdout.write('\rPB Runs: {0:3} {1:<10} '
-                     'Run {2:5} of {3:<10} '
-                     'Ends in {4} at {5}'.format(tauname, sitenum,
-                                                 config.total_jobs - njobs,
-                                                 config.total_jobs,
-                                                 left_time,
-                                                 end_time))
-        stdout.flush()
+        message = f'PB Runs: {tauname:3} {sitenum:<10}'
 
-    stdout.write('\rPB Runs Ended{0:>70}'.format(''))
+        printTimeLeft(time1, time2, message)
+
+    stdout.write(f'\rPB Runs Ended{"":>80}')
     stdout.flush()
 
     return results
@@ -207,7 +218,13 @@ def runMCCalcs(job_list):
     results = []
         
     for pH_index in job_list:
+        time1 = time()
         mc_output = config.tit_mole.parallelMCrun(pH_index)
-        results.append(mc_output) 
+        results.append(mc_output)
+        time2 = time()
+
+        message = f'MC'
+
+        printTimeLeft(time1, time2, message)
 
     return results
