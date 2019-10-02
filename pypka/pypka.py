@@ -80,7 +80,6 @@ class Titration(object):
         """
         self._pKas = {}
         """
-        print('what')
         self._pKas = {}
 
         if sites:  # None if from CLI

@@ -259,6 +259,8 @@ class Molecule(object):
                      resnumb, x, y, z) = read_pdb_line(line)
                     if chain == ' ':
                         chain = 'A'
+                    if chain == 'A':
+                        last_res = resnumb
                     if resnumb not in sites:
                         if len(sites) == 0 and 'NTR' not in sites and chain == 'A':
                             sites.append('NTR')
@@ -276,7 +278,12 @@ class Molecule(object):
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb
                         add2chain(chain, chain_res, resnumb, 'CTR')
-                        
+        if 'CTR' not in sites:
+            sites.append('CTR')
+            sites_file += SitesFileLine(last_res, 'CTR')
+            self._CTR = resnumb
+            add2chain('A', chain_res, str(last_res), 'CTR')
+
         # Adding the reference tautomer to each site
         self.addReferenceTautomers()
         # Assigning a charge set to each tautomer
