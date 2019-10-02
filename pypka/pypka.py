@@ -80,6 +80,7 @@ class Titration(object):
         """
         self._pKas = {}
         """
+        print('what')
         self._pKas = {}
 
         if sites:  # None if from CLI
@@ -121,7 +122,7 @@ class Titration(object):
                                        'defined.',
                                        'When using a .gro file format input is used, '
                                        'sites needs to be defined')
-        if config.f_in_extension == 'pdb':
+        elif config.f_in_extension == 'pdb':
             # Reading .st files
             # If the titrable residues are defined
             if len(config.sites) > 0:

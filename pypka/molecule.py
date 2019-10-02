@@ -670,6 +670,7 @@ MODEL        1
         new_pdb_content = ""
         site_positions = {}
         site_Hs = {}
+        max_box_size = [0.0, 0.0, 0.0]
         with open(groname) as f:
             line_counter = 0
             natoms_left = 0
@@ -681,7 +682,6 @@ MODEL        1
             #final_res_numb = int(penul_line[:5].strip())
             #final_atom_numb = int(penul_line[15:20].strip())
             self.box = [float(i) for i in last_line.split()[:3]]
-
             if config.params['pbc_dim'] == 2:
                 scaleP = (config.params['gsize'] - 1) / (self.box[0] * 10)
                 scaleM = int(4 / scaleP + 0.5) * scaleP
@@ -699,6 +699,15 @@ MODEL        1
 
                     (aname, anumb, resname,
                      resnumb, x, y, z) = read_gro_line(line)
+                    max_x, max_y, max_z = max_box_size
+                    if max_x < x:
+                        max_x = x
+                    if max_y < y:
+                        max_y = y
+                    if max_z < z:
+                        max_z = z
+                    max_box_size = [max_x, max_y, max_z]
+
                     x, y, z = x * 10, y * 10, z * 10
 
                     #print resnumb, resname, aname, anumb, aposition, x, y, z
@@ -750,6 +759,9 @@ MODEL        1
                 elif line_counter == 2:
                     natoms_left = int(line.strip())
                     self._natoms = natoms_left
+
+        if self.box == [0.1, 0.1, 0.1]:
+            self.box = max_box_size
 
         new_pdb_content += 'TER\nENDMDL\n'
         with open('delphi_in_stmod.pdb', 'w') as f_new:

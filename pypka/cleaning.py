@@ -211,10 +211,13 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         f_new.write(content + removed_pdb_text)
     
     with open(pdb_filename) as f:
+        box = None
         for line in f:
-            if 'CRYST1' in line:
+            if line.startswith('CRYST1'):
                 tmp = line.split()[1:4]
                 box = (float(tmp[0]), float(tmp[1]), float(tmp[2]))
+        if not box:
+            box = (1.0, 1.0, 1.0)
 
     pdb2gro(outputpqr, "TMP.gro", box, sites, pqr=True)
 
