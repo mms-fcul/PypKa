@@ -741,6 +741,13 @@ CG1   VAL   1.702
 CG2   VAL   1.702
 C     VAL   1.525
 O     VAL   1.326
+CT    CTR   1.525
+O1    CTR   1.471
+O2    CTR   1.471
+HO11  CTR   0.001
+HO21  CTR   0.001
+HO12  CTR   0.001
+HO22  CTR   0.001
 CT    CT0   1.525
 O1    CT0   1.471
 O2    CT0   1.471

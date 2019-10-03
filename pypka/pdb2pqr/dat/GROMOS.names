@@ -16,6 +16,20 @@
     </atom>
   </residue>
   <residue>
+    <name>CYX</name>
+    <useresname>CYS</useresname>
+  </residue>
+    <residue>
+    <name>HI([PDE])$</name>
+    <useresname>HIS</useresname>
+  </residue>
+  <residue>
+    <name>HS([PDE])$</name>
+    <useresname>HIS</useresname>
+
+  </residue>
+
+  <residue>
     <name>C(...)$</name>
     <useresname>$group</useresname>
   </residue>
@@ -89,39 +103,6 @@
         <useatomname>HG1</useatomname>
     </atom>
   </residue>
-  <residue>
-    <name>CYX</name>
-    <useresname>CYS</useresname>
-  </residue>
-  <residue>
-    <name>HIS</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HID</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HIE</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HIP</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HSD</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HSE</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HSP</name>
-    <useresname>HIS</useresname>
-  </residue>
-
   
   <residue>
     <name>[RD]A[35]?$</name>
