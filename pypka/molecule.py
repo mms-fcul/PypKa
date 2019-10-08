@@ -1140,10 +1140,12 @@ MODEL        1
                 self._possible_states_occ[isite].append(prot_state)
                 itaut += 1
 
-            self._possible_states_g[isite].append(0.0)
-            prot_state = site.getRefProtState()
+            if site._type == 'c':
+                prot_state = 1
+            elif site._type == 'a':
+                prot_state = 0
             self._possible_states_occ[isite].append(prot_state)
-
+            self._possible_states_g[isite].append(0.0)
         
         maxstates = max(self._npossible_states)
         resize_list_of_lists(self._possible_states, maxstates)
