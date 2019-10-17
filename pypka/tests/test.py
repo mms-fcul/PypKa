@@ -14,7 +14,9 @@ def runTest(path, ncpus, results):
     sb.Popen("cd {0}; "
              "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
              "python3 -m coverage erase; "
-             "python3 -m coverage run ../../../pypka.py parameters.dat".format(path, ncpus), shell=True).wait()
+             "python3 -m coverage run ../../../pypka.py parameters.dat;"
+             "rm -f *-*.pdb *.profl *.prm *.xvg *.frc *.crg cent "
+             "contributions interactions.dat pkint tmp.sites".format(path, ncpus), shell=True).wait()
     checkOutput('{0}/pKas.out'.format(path), results_lines)    
 
 def checkOutput(filename, results_lines):

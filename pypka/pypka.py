@@ -8,7 +8,7 @@ proteins or lipid bilayers.
 import config
 from cli import checkParsedInput, readSettings, inputParametersFilter
 from cleaning import inputPDBCheck, cleanPDB
-from formats import convertTermini, pdb2gro
+from formats import convertTermini, pdb2gro, read_pdb_line, new_pdb_line
 import log
 
 from delphi4py.delphi4py import DelPhi4py
@@ -148,7 +148,7 @@ class Titration(object):
                 site_numb_n_ref = {}
                 for site in sites:
                     site_numb_n_ref[site] = sites[site].getRefTautomerName()
-                
+
                 cleanPDB(config.f_in, config.pdb2pqr, chains_res,
                          inputpqr, outputpqr, site_numb_n_ref)
                 config.tit_mole.deleteAllSites()
@@ -187,7 +187,8 @@ class Titration(object):
                            pby=config.params['pby'],
                            isurftype=config.nanoshaper,
                            debug=config.debug, outputfile=logfile)
-        if not config.debug:
+
+        if not config.debug and not config.f_structure_out:
             os.remove('delphi_in_stmod.pdb')
 
         log.checkDelPhiErrors(logfile, 'readFiles')
@@ -237,6 +238,63 @@ class Titration(object):
         self._tit_curve        = tit_curve      
         self._pH_values        = sorted(tit_curve.keys())
 
+        if config.f_structure_out:
+            self.writeOutputStructure(config.f_structure_out, config.f_structure_out_pH)
+
+    def writeOutputStructure(self, outputname, pH):
+        def getProtomerResname(resnumb):
+            new_state = self.getMostProbState(resnumb, pH)
+            for amber_resname, protomers in config.AMBER_protomers[resname].iteritems():
+                if new_state in protomers.keys():
+                    new_resname = amber_resname
+                    taut_hs = protomers[new_state]
+            print(resnumb, new_state, new_resname, taut_hs)
+            return new_state, new_resname, taut_hs
+
+        new_pdb = ''
+        sites = config.tit_mole.getSites()
+        new_states = {}
+        for resnumb, site in sites.items():
+            if resnumb == config.tit_mole._NTR:
+                resname = 'NTR'
+            elif resnumb == config.tit_mole._CTR:
+                resname = 'CTR'
+            else:
+                resname  = site.getName()
+            
+            new_state, new_resname, taut_hs = getProtomerResname(resnumb)
+            
+            if resnumb in (config.tit_mole._NTR, config.tit_mole._CTR):
+                resname  = site.getName()
+
+            new_states[resnumb] = (resname, new_state, new_resname)
+
+        with open('delphi_in_stmod.pdb') as f:
+            for line in f:
+                if line.startswith('ATOM '):
+                    (aname, anumb, resname, chain,
+                     resnumb, x, y, z) = read_pdb_line(line)
+
+                    if resnumb in sites:
+                        site = sites[resnumb]
+                        resname, new_state, new_resname = new_states[resnumb]
+                        if resnumb > config.terminal_offset:
+                            resnumb -= config.terminal_offset
+                            resname = site._termini_resname
+
+                    new_pdb += new_pdb_line(anumb, aname, resname, resnumb, x, y, z)
+                    if resnumb in config.mainchain_Hs:
+                        while len(config.mainchain_Hs[resnumb]) > 0:
+                            (aname, anumb, resname, chain, x, y, z) = config.mainchain_Hs[resnumb].pop()
+                            new_pdb += new_pdb_line(anumb, aname, resname, resnumb, x, y, z)
+                        del config.mainchain_Hs[resnumb]
+                else:
+                    new_pdb += line
+
+        with open(outputname, 'w') as f_new:
+            f_new.write(new_pdb)
+
+
     def getStuffFromStructures(self, site, pH):    
         if pH not in self._pH_values:
             raise Exception('pH value not calculated in the previous run'
@@ -244,7 +302,7 @@ class Titration(object):
         site_i = self.correct_site_numb(site)
         return site_i
 
-    def getMostProbStates(self, site, pH):
+    def getMostProbState(self, site, pH):
         site_i = self.getStuffFromStructures(site, pH)
         return self._most_prob_states[pH][site_i]
 

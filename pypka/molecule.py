@@ -248,6 +248,7 @@ class Molecule(object):
 
         sites = []
         chain_res = {}
+        last_res = None
         with open(config.f_in) as f:
             nline = 0
             resnumb = None
@@ -257,6 +258,8 @@ class Molecule(object):
                 if 'ATOM ' == line[0:5]:
                     (aname, anumb, resname, chain,
                      resnumb, x, y, z) = read_pdb_line(line)
+                    if line[26] != ' ':
+                        continue
                     if chain == ' ':
                         chain = 'A'
                     if chain == 'A':
@@ -277,11 +280,16 @@ class Molecule(object):
                         sites.append('CTR')
                         sites_file += SitesFileLine(resnumb, 'CTR')
                         self._CTR = resnumb
-                        add2chain(chain, chain_res, resnumb, 'CTR')
+                        add2chain(chain, chain_res, str(resnumb), 'CTR')
+
+        if not last_res:
+            raise Exception('PypKa assumes that the residues of interest are located on chain "A".'
+                            f'The input file {config.f_in} does not contain a chain "A".')
+
         if 'CTR' not in sites:
             sites.append('CTR')
             sites_file += SitesFileLine(last_res, 'CTR')
-            self._CTR = resnumb
+            self._CTR = last_res
             add2chain('A', chain_res, str(last_res), 'CTR')
 
         # Adding the reference tautomer to each site
@@ -305,7 +313,7 @@ class Molecule(object):
                     return res
             return resname
 
-        def makeSite(resnumb, resname):
+        def makeSite(resnumb, resname, termini_resname=None):
             if resname in config.TITRABLETAUTOMERS:
                 ntautomers = config.TITRABLETAUTOMERS[resname]
             else:
@@ -313,7 +321,7 @@ class Molecule(object):
                     if res[0:2] == resname[0:2]:
                         ntautomers = config.TITRABLETAUTOMERS[res]
             sID = self.addSite(resnumb)
-            self.addTautomers(sID, ntautomers, resname)
+            self.addTautomers(sID, ntautomers, resname, termini_resname=termini_resname)
 
         def warning(resnumb, resname, res_atoms, mode=None):
             if mode == 'CYS' or resname == 'CYS':
@@ -363,7 +371,7 @@ class Molecule(object):
         prev_resname = None
         with open(filename) as f:
             nline = 0
-            maxnlines = 0
+            maxnlines = -1
             for line in f:
                 resname = None
                 nline += 1
@@ -380,8 +388,9 @@ class Molecule(object):
 
                 if line == 'TER\n':
                     resnumb += 1
+
                 if (prev_resnumb != resnumb or nline == maxnlines) and \
-                   prev_resnumb:
+                   prev_resnumb != None:
                     if nline == maxnlines:
                         prev_resnumb = copy(resnumb)
                         resnumb = 'None'
@@ -397,14 +406,17 @@ class Molecule(object):
                             else:
                                 res_tits = False
 
+
                             (integrity_nter,
                              integrity_site) = self.check_integrity(prev_resname,
                                                                     cur_atoms,
                                                                     nter=True,
                                                                     site=res_tits)
+
+
                             if integrity_nter:
                                 nter_resnumb = prev_resnumb + config.terminal_offset
-                                makeSite(nter_resnumb, 'NTR')
+                                makeSite(nter_resnumb, 'NTR', termini_resname=prev_resname)
                                 self._NTR = prev_resnumb
                             else:
                                 warning(prev_resnumb, 'NTR', '')
@@ -433,7 +445,7 @@ class Molecule(object):
                                                                                   site=res_tits)
                             if integrity_cter:
                                 cter_resnumb = prev_resnumb + config.terminal_offset
-                                makeSite(cter_resnumb, 'CTR')
+                                makeSite(cter_resnumb, 'CTR', termini_resname=prev_resname)
                                 self._CTR = prev_resnumb
                             else:
                                 warning(prev_resnumb, 'CTR', '')
@@ -445,13 +457,13 @@ class Molecule(object):
                                     warning(prev_resnumb, prev_resname, cur_atoms)
 
                         # Dealing with the previous residue
-                        elif prev_resnumb:
+                        elif prev_resnumb != None:
                             if sites and prev_resnumb in sites:
                                 prev_resname = correctResName(prev_resname)
                                 res_atoms = copy(cur_atoms)
                                 integrity_site = self.check_integrity(prev_resname,
                                                                       cur_atoms)
-                                
+
                                 if integrity_site:
                                     makeSite(prev_resnumb, prev_resname)
                                 else:
@@ -475,7 +487,7 @@ class Molecule(object):
                     prev_resnumb = resnumb
                     prev_resname = resname
 
-                elif resnumb:
+                elif resnumb != None:
                     cur_atoms.append(aname)
                     if prev_resname in ('NTR', 'CTR') and \
                        prev_resname != resname:
@@ -578,9 +590,11 @@ class Molecule(object):
 
         return sID
 
-    def addTautomers(self, sID, ntautomers, resname):
+    def addTautomers(self, sID, ntautomers, resname, termini_resname=None):
         rootname = resname[0:2]
         sID._res_name = resname
+        if termini_resname:
+            sID.setTerminiResname(termini_resname)
         for itautomer in range(ntautomers):
             tautomer = rootname + str(itautomer)
             tID = Tautomer(tautomer, sID, sID._molecule)
@@ -745,7 +759,7 @@ MODEL        1
                         #(aname in ('N', 'H', 'C', 'O', 'CA') and resname == 'NTR')):
                         # change res name to reference tautomer
                         ref_tau_name = self._sites[resnumb].getRefTautomerName()
-
+                        
                         # add atom to corresponding site
                         self._sites[resnumb].addAtom(aname, anumb)
                         if resnumb in site_positions:

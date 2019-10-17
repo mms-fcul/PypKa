@@ -122,16 +122,41 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                                                inputpdbfile, inputpqr,
                                                config.params['ffinput']))
 
+    if config.f_structure_out:
+        os.system('python2 {0} {1} Hs.pqr --ff AMBER --ffout AMBER '
+                  '--drop-water -v --chain'.format(pdb2pqr_path,
+                                                   inputpdbfile))
+
     log.redirectOutput("stop", logfile)
     log.redirectErr("stop", errfile)
 
-    CYS_bridges = []
+    if config.f_structure_out:
+        with open('Hs.pqr') as f:
+            for line in f:
+                if line.startswith('ATOM '):
+                    (aname, anumb, resname, chain, resnumb, x, y,
+                     z, charge, radius) = read_pqr_line(line)
+
+                    if resnumb in chains_res['A'] and \
+                       resname in config.AMBER_Hs and \
+                       aname in config.AMBER_Hs[resname]:
+                        continue
+                    elif aname[0] == 'H':
+                        if not resnumb in config.mainchain_Hs:
+                            config.mainchain_Hs[resnumb] = []
+                        config.mainchain_Hs[resnumb].append((aname, anumb, resname, chain, 
+                                                             x, y, z))
+
+    CYS_bridges = {'A': []}
     with open('LOG_pdb2pqr') as f:
         for line in f:
             if 'patched with CYX' in line:
                 parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
-                CYS_bridges.append(int(parts[-1]))
-
+                resname, chain, resnumb = parts
+                if not chain in CYS_bridges:
+                    CYS_bridges[chain] = []
+                CYS_bridges[chain].append(int(parts[-1]))
+    
     new_pdb_text = ''
     removed_pdb_text = ''
     removed_pdb_lines = []
@@ -146,6 +171,8 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                     aname, resname = correct_names(sites_numbs, resnumb,
                                                    resname, aname, sites_numbs)
                     resnumb_max = resnumb
+                if line[26] != ' ':
+                    resnumb += config.terminal_offset
                 new_line = new_pqr_line(anumb, aname, resname,
                                         resnumb, x, y, z, charge, radius)
                 if chain in (' ', 'A'):
@@ -187,7 +214,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     # adapt addHtaut to work without these
     sites_addHtaut = ''
     for res in chains_res['A']:
-        if chains_res['A'][res] != 'NTR' and res not in CYS_bridges:
+        if chains_res['A'][res] != 'NTR' and res not in CYS_bridges['A']:
             sites_addHtaut += '{0}_{1},'.format(res, chains_res['A'][res])
 
     if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ',':
@@ -204,7 +231,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
     log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
-
+    
     with open(outputpqr) as f:
         content = f.read()
     with open(outputpqr, 'w') as f_new:
@@ -219,7 +246,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         if not box:
             box = (1.0, 1.0, 1.0)
 
-    pdb2gro(outputpqr, "TMP.gro", box, sites, pqr=True)
+    pdb2gro(outputpqr, "TMP.gro", box, sites, pqr=True, fix_termini=False)
 
     if config.params['pbc_dim'] == 2:
         addMembrane("TMP.gro", pdb_filename)

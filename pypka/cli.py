@@ -222,7 +222,25 @@ def inputParametersFilter(settings):
         config.f_prot_out = settings['titration_output']
     
     if 'structure_output' in param_names:
-        config.f_structure_out = settings['structure_output']
+        error_raise = False
+        if len(settings['structure_output']) != 2:
+            error_raise = True
+
+        outfilename = settings['structure_output'][0]
+        try:
+            pH = float(settings['structure_output'][1])
+        except:
+            error_raise = True
+        if type(outfilename) != str:
+            error_raise = True
+
+        if error_raise:
+            log.inputVariableError('structure_output',
+                               'a tuple containing a filename and the desired pH value.',
+                               'Ex: ("structure.pdb", 7)')
+        config.f_structure_out = outfilename
+        config.f_structure_out_pH = pH
+        
 
     # Output log File
     if 'logfile' in param_names:

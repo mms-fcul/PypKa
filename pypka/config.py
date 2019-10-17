@@ -118,3 +118,39 @@ for res in REGULARTITRATINGRES:
     ntautomers = TITRABLETAUTOMERS[res]
     for i in range(ntautomers):
         TITRABLERESIDUES.append(res[0:2] + str(i + 1))
+
+AMBER_Hs = {'NTR': ('H1', 'H2', 'H3'), 
+            'ASP': ('HD2'),
+            'CYS': ('HG'),
+            'GLH': ('HE2'),
+            'HIP': ('HD1', 'HE2'),
+            'HID': ('HD1'),
+            'HIE': ('HE2'),
+            'LYS': ('HZ1', 'HZ2', 'HZ3'),
+            'LYN': ('HZ2', 'HZ3'),
+            'SER': ('HG'),
+            'THR': ('HG1'),
+            'TYR': ('HH')
+}
+
+AMBER_mainchain_Hs = ['H', 'HA']
+mainchain_Hs = {}
+
+AMBER_protomers = {'ASP': {'ASH': {0: 'HD11', 1: 'HD21', 2: 'HD12', 3: 'HD22'}, 
+                           'ASP': {4: ''}},
+                   'CYS': {'CYS': {0: 'HG1', 1: 'HG2', 2: 'HG3'}, 
+                           'CYM': {3: ''}},
+                   'GLU': {'GLH': {0: 'HE11', 1: 'HE21', 2: 'HE12', 3: 'HE22'}, 
+                           'GLU': {4: ''}},
+                   'HIS': {'HID': {0: 'HE2'}, 
+                           'HIE': {1: 'HD1'}, 
+                           'HIP': {2: ''}}, # reverse logic, what Hs to delete
+                   'TYR': {'TYR': {0: 'HH1', 1:'HH2'}, 
+                           'TYM': {2: ''}},
+                   'LYS': {'LYN': {0: 'HZ1', 1: 'HZ2', 2: 'HZ3'}, 
+                           'LYS': {3: ''}}, # reverse logic, what Hs to delete
+                   'SER': {'SER': {0: 'HG1', 1: 'HG2', 2: 'HG3'}, 
+                           'SEN': {3: ''}},
+                   'THR': {'THR': {0: 'HG1', 1: 'HG2', 2: 'HG3'}, 
+                           'THN': {3: ''}}
+}

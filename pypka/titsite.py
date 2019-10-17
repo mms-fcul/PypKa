@@ -58,8 +58,12 @@ class Titsite:
 
             tID = Tautomer(tautomer, self, self._molecule)
             self._tautomers[tautomer] = tID
+
     def setpK(self, pK):
         self._pK = pK
+
+    def setTerminiResname(self, resname):
+        self._termini_resname = resname
             
     def addReferenceTautomer(self):
         """Gets last tautomer from .sites file adds one and saves it as the

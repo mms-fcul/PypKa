@@ -42,7 +42,7 @@ def read_pdb_line(line):
     anumb   = int(line[7:11].strip())
     resname = line[17:21].strip()
     chain   = line[21]
-    resnumb = int(line[23:26])
+    resnumb = int(line[22:26])
     x       = float(line[30:38])
     y       = float(line[38:46])
     z       = float(line[46:54])
@@ -61,7 +61,7 @@ def read_gro_line(line):
     return (aname, anumb, resname, resnumb, x, y, z)
 
 
-def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False):
+def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False, fix_termini=True):
     """
     Returns
       - aposition (int) of last atom id in filename_out
@@ -94,7 +94,7 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False
                  resnumb, x, y, z) = read_pdb_line(line)
             aposition += 1
 
-            if resnumb in sites_pos:
+            if fix_termini and resnumb in sites_pos:
                 if ((resnumb == NTR_numb and
                      aname in NTR_atoms) or
                     (resnumb == CTR_numb and
