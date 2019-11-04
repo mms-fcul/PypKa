@@ -2,9 +2,11 @@ import pytest
 import os
 import subprocess as sb
 import sys
+from pypka.tests.builder.check_diffs import compareFiles
+
 sys.path.insert(1, '../')
 
-ncpus = 1
+ncpus = 2
 
 # run coverage.sh to generate coverage
 
@@ -27,6 +29,14 @@ def checkOutput(filename, results_lines):
             line = line.strip()
             assert line == results_lines[c]
     assert c + 1 == len(results_lines)
+
+def checkStructureOutput(filename):
+    problems = compareFiles(f'builder/{filename}', filename)    
+    if problems:
+        raise Exception(f'Problems found with {filename}')
+    else:
+        os.remove(filename)
+
 
 def checkAPIResult(pKa, results):
     i = -1
@@ -222,19 +232,20 @@ class TestCLI(object):
     def test_cli_pHLIP_pdb_all(self):
         path = "pHLIP/pHLIP_pdb_all"
         results = """
-769 NTR 11.202571597654359
-770 CYS 24.21238816620012
-771 GLU 4.010786085385137
-776 TYR 18.77569436939371
-780 TYR 24.348420389190892
+769 NTR 11.20670245619075
+770 CYS 24.20614026887048
+771 GLU 4.006259451388756
+776 TYR 18.773742141263668
+780 TYR 24.34882079633006
 782 ASP 100.0
 786 THR 100.0
 787 THR 100.0
-793 ASP 22.658592170556883
-799 ASP 0.37064577017674316
-801 ASP 1.4856797431942301
-802 GLU 3.965613455945925
-804 CTR 4.289631904096492
+793 ASP 22.671456552380604
+799 ASP 0.4467670504871568
+801 ASP 1.4713225156432284
+802 GLU 3.954407177042764
+804 CTR 4.7834128769177315
+804 THR 100.0
         """
         runTest(path, ncpus, results)
 
@@ -464,3 +475,53 @@ CTR 3.390519247038917 ('deprotonated', 0.0002457041692844058)
         pKa = Titration(parameters, sites=sites)
 
         checkAPIResult(pKa, results)
+
+class TestBuilder(object):
+    def test_lyso_pH1(self):
+        outfile = 'gromos1.pdb'
+        from ..pypka import Titration
+
+        parameters = {'structure'     : 'builder/4lzt.pdb',
+                      'epsin'         : 15,
+                      'ionicstr'      : 0.1,
+                      'pbc_dimensions': 0,
+                      'ncpus'         : ncpus,
+                      'output'        : 'pKas.out',
+                      'titration_output': 'titration.out',
+                      'structure_output': (outfile, 1)
+                      }
+        sites = {'A': ('1N', '2C')} # overwritten
+        pKa = Titration(parameters, sites=sites)
+        checkStructureOutput(outfile)
+
+    def test_lyso_pH7(self):
+        outfile = 'gromos7.pdb'
+        from ..pypka import Titration
+
+        parameters = {'structure'     : 'builder/4lzt.pdb',
+                      'epsin'         : 15,
+                      'ionicstr'      : 0.1,
+                      'pbc_dimensions': 0,
+                      'ncpus'         : ncpus,
+                      'output'        : 'pKas.out',
+                      'titration_output': 'titration.out',
+                      'structure_output': (outfile, 7)
+                      }
+        pKa = Titration(parameters)
+        checkStructureOutput(outfile)
+
+    def test_lyso_pH12(self):
+        outfile = 'gromos12.pdb'
+        from ..pypka import Titration
+        
+        parameters = {'structure'     : 'builder/4lzt.pdb',
+                      'epsin'         : 15,
+                      'ionicstr'      : 0.1,
+                      'pbc_dimensions': 0,
+                      'ncpus'         : ncpus,
+                      'output'        : 'pKas.out',
+                      'titration_output': 'titration.out',
+                      'structure_output': (outfile, 12)
+                      }
+        pKa = Titration(parameters)
+        checkStructureOutput(outfile)

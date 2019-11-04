@@ -1,6 +1,7 @@
 from tautomer import Tautomer
 import config
 
+
 class Titsite:
     """Titrable Site with more than one Tautomer"""
     def __init__(self, res_number, molecule):
@@ -24,7 +25,6 @@ class Titsite:
                                       cent file when dimension is 2
 
         # Site Tautomers
-        self._tautomers (dict): tautomers of Site (except reference tautomer)
                                 key is tautomer name
                                 value is tautomer instance
         self._ref_tautomer (Tautomer): reference tautomer instance

@@ -101,6 +101,9 @@ class Molecule(object):
         self.p_chrgv4 = copy(delphimol.get_chrgv4())
         self.atinf    = copy(delphimol.get_atinf())
         self.p_iatmed = copy(delphimol.get_iatmed())
+    
+    def saveCYSBridges(self, CYS_bridges):
+        self.CYS_bridges = CYS_bridges
 
     # Get Methods
     def getSites(self):
@@ -168,6 +171,9 @@ class Molecule(object):
 
     def getPQROffset(self):
         return self._InputPQRoffSet
+
+    def getCYS_bridges(self):
+        return self.CYS_bridges
 
     # Iter Methods
     def iterAtoms(self):
@@ -478,11 +484,11 @@ class Molecule(object):
                                     prev_resname = warning(prev_resnumb, prev_resname,
                                                            res_atoms, mode='CYS')
                     elif prev_resname == 'ALA':
-                        #TODO: check residue block integrity for other non titrating residues
+                        # TODO: check residue block integrity for other non titrating residues
                         pass
 
                 # Dealing with the new residue
-                if prev_resnumb != resnumb:                    
+                if prev_resnumb != resnumb:
                     cur_atoms = [aname]
                     prev_resnumb = resnumb
                     prev_resname = resname
@@ -1098,29 +1104,29 @@ MODEL        1
         return totalP, pKs, pmean, means
 
     def parallelMCrun(self, pHstep):
+        pHmin = config.params['pHmin']
+        dpH = config.params['pHstep']
+        pH = pHmin + pHstep * dpH
+        (avgs, count, pmean, cur_states) = self.runSingleMC(pH)
+        return (avgs, count, pmean, cur_states)
+
+    def runSingleMC(self, pH):
         sites = self.getSitesOrdered()
         nsites = len(sites)
 
-        pHmin, pHmax = config.params['pHmin'], config.params['pHmax']
-        dpH = config.params['pHstep']
         couple_min = config.params['couple_min']
         mcsteps = config.params['mcsteps']
         eqsteps = config.params['eqsteps']
         seed = config.params['seed']
 
-        pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
-
-        pH = pHmin + pHstep * dpH
         avgs, pmean, count, cur_states = MCrun(nsites, self._npossible_states,
                                                self._possible_states_g,
                                                self._possible_states_occ,
                                                self._interactions,
                                                self._interactions_look,
-                                               pHsteps, mcsteps, eqsteps, seed,
-                                               pHmin, dpH, couple_min, pH)
-
+                                               mcsteps, eqsteps, seed,
+                                               couple_min, pH)
         return (avgs, count, pmean, cur_states)
-
 
     def runMC(self):
         def resize_list_of_lists(listn, maxsize, filler=None):
@@ -1264,12 +1270,12 @@ MODEL        1
                 state_distribution[pH][sitenumb] = list(counts_all[pHstep][c] / mcsteps)
 
                 ntauts = site.getNTautomers()
-                ref_i = ntauts - 1
+                ref_i = ntauts
                 prot_state = site.getRefProtState()
                 if (mean > 0.5 and prot_state == 1) or \
                    (mean <= 0.5 and prot_state == -1):
                     state_i = ref_i
-                else:  
+                else:
                     max_prob = max(state_distribution[pH][sitenumb][:ref_i])
                     state_i = state_distribution[pH][sitenumb].index(max_prob)
 

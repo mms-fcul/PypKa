@@ -14,7 +14,7 @@ def requiredParameterError(parameter):
 
 
 def inputVariableError(parameter, complaint, explanation):
-    raise IOError('Input parameter {0} is not {1}\n '
+    raise ValueError('Input parameter {0} is not {1}\n '
                   '{2}'.format(parameter, complaint, explanation))
 
 

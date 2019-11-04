@@ -25,3 +25,4 @@ pypka/delphi4py/rundelphi/*f
 pypka/delphi4py/readFiles/__pycache__/
 pypka/delphi4py/rundelphi/__pycache__/
 pypka/delphi4py/rundelphi/benchmark
+pypka/example/test/

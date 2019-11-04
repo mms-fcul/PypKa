@@ -13,6 +13,7 @@ delphimol = Delphi(f_crg, f_siz, fpdb, 17250, 121, 4.0895400000,
                    'single', conc=0.1, ibctyp=4, res2=0.01, nlit=500,
                    pbx=True, pby=True, outputfile='LOG_readFiles')
 
+
 natoms = delphimol.natoms
 p_atpos = delphimol.p_atpos
 

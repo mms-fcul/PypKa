@@ -1,33 +1,34 @@
 import sys
 sys.path.insert(1, '../../')
-
 from pypka import Titration
 
+pH = 1
 parameters = {'structure'     : 'lyso.pdb',
-              'gsize'         : 41,
-              'convergence'   : 0.2,
-              'pH'            : "6,8",
+              'pH'            : "0,12",
               'scaleM'        : 2,
               'epsin'         : 10,
               'ionicstr'      : 0.1,
               'pbc_dimensions': 0,
-              'ncpus'         : 2,
+              'ncpus'         : 16,
               'output'        : 'pKas.out',
               'titration_output': 'titration.out',
-              'structure_output': ('gromos.pdb', 7)
+              'structure_output': ('gromos.pdb', pH),
+              'gsize'         : 41,
+              'convergence'   : 0.2,
+              'pHstep'        : 0.5,
               }
-              #'bndcon'        : 4,
-              #'nanoshaper'    : 0,
-              #'precision'     : 'single'}
-pKa = Titration(parameters, sites={'A': ['1N', '7', '129C']})
+
+pKa = Titration(parameters, sites={'A': ['1N', '1', '7', '129C']})
 
 
 #pKa = Titration(parameters)
 
-#for site in pKa:
-#    print(site, pKa[site], pKa.getProtState(site, 7))
-#    print(pKa.getMostProbState(site, 7))
-#    print(pKa.getStatesProb(site, 7))
-#    print(pKa.getFinalState(site, 7))
-#    print(pKa.getTitrationCurve(site))
-#    exit()
+for site in pKa:
+    pK = pKa[site]
+    if pK != '-':
+        taut = pKa.getMostProbState(site, pH)
+        print(site, pKa[site], pKa.getProtState(site, pH),
+              taut, pKa.getStatesProb(site, pH),
+              pKa.getStateProb(site, taut, pH))
+    # print(pKa.getFinalState(site, pH))
+    # print(pKa.getTitrationCurve(site))

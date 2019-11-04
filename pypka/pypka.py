@@ -164,35 +164,35 @@ class Titration(object):
 
     def processDelPhiParams(self):
         # Storing DelPhi parameters and Creates DelPhi data structures
-        if config.debug:
-            logfile = 'LOG_readFiles'
-        else:
-            logfile = config.f_log
-
+        logfile = 'LOG_readFiles'
+        
         delphimol = DelPhi4py(config.f_crg, config.f_siz, 'delphi_in_stmod.pdb',
-                           config.tit_mole.getNAtoms(),
-                           config.params['gsize'],
-                           config.params['scaleM'],
-                           config.params['precision'],
-                           epsin=config.params['epsin'],
-                           epsout=config.params['epssol'],
-                           conc=config.params['ionicstr'],
-                           ibctyp=config.params['bndcon'],
-                           res2=config.params['maxc'],
-                           nlit=config.params['nlit'],
-                           nonit=config.params['nonit'],
-                           relfac=0.0,
-                           relpar=0.0,
-                           pbx=config.params['pbx'],
-                           pby=config.params['pby'],
-                           isurftype=config.nanoshaper,
-                           debug=config.debug, outputfile=logfile)
+                              config.tit_mole.getNAtoms(),
+                              config.params['gsize'],
+                              config.params['scaleM'],
+                              config.params['precision'],
+                              epsin=config.params['epsin'],
+                              epsout=config.params['epssol'],
+                              conc=config.params['ionicstr'],
+                              ibctyp=config.params['bndcon'],
+                              res2=config.params['maxc'],
+                              nlit=config.params['nlit'],
+                              nonit=config.params['nonit'],
+                              relfac=0.0,
+                              relpar=0.0,
+                              pbx=config.params['pbx'],
+                              pby=config.params['pby'],
+                              isurftype=config.nanoshaper,
+                              debug=config.debug, outputfile=logfile)
 
-        if not config.debug and not config.f_structure_out:
+        if config.f_structure_out:
+            with open('delphi_in_stmod.pdb') as f:
+                self.delphi_input_content = f.readlines()
+        if not config.debug:
             os.remove('delphi_in_stmod.pdb')
 
         log.checkDelPhiErrors(logfile, 'readFiles')
-        
+
         # Loads delphi4py object as TitratingMolecule attributes
         config.tit_mole.loadDelPhiParams(delphimol)
 
@@ -232,72 +232,116 @@ class Titration(object):
             else:
                 self._pKas[site] = '-'
 
-        self._most_prob_states = most_prob_states 
+        self._most_prob_states = most_prob_states
         self._states_prob      = states_prob
         self._final_states     = final_states
-        self._tit_curve        = tit_curve      
+        self._tit_curve        = tit_curve
         self._pH_values        = sorted(tit_curve.keys())
 
         if config.f_structure_out:
             self.writeOutputStructure(config.f_structure_out, config.f_structure_out_pH)
 
     def writeOutputStructure(self, outputname, pH):
+        def writeSelectedProtonationsProbs(text):
+            self._selected_prots_probs += f'REMARK     {text}\n'
+
         def getProtomerResname(resnumb):
             new_state = self.getMostProbState(resnumb, pH)
-            for amber_resname, protomers in config.AMBER_protomers[resname].iteritems():
-                if new_state in protomers.keys():
+            new_state_i = new_state - 1
+            for amber_resname, protomers in config.AMBER_protomers[resname].items():
+                if new_state_i in protomers.keys():
                     new_resname = amber_resname
-                    taut_hs = protomers[new_state]
-            print(resnumb, new_state, new_resname, taut_hs)
-            return new_state, new_resname, taut_hs
+                    remove_hs = protomers[new_state_i]
 
-        new_pdb = ''
+                    state_prob, taut_prob = self.getStateProb(resnumb, new_state, pH)
+
+                    if resnumb > config.terminal_offset:
+                        resnumb -= config.terminal_offset
+                    if state_prob < 0.75:
+                        warn = f'{resname}{resnumb} ' \
+                               f'protonation state probability: {state_prob}, ' \
+                               f'tautomer probability: {taut_prob}'
+                        log.reportWarning(warn)
+
+                        print(warn)
+                    rounded_sprob = round(state_prob, 2)
+                    rounded_tprob = round(taut_prob, 2)
+                    remark_line = f'{resname: <5}{resnumb: <10}{"": ^7}'\
+                                  f'{rounded_sprob: >1.2f}{"": ^13}{rounded_tprob: >1.2f}'
+                    writeSelectedProtonationsProbs(remark_line)
+
+            #print(resnumb, new_state, new_resname, remove_hs, state_prob, taut_prob)
+            return new_state_i, new_resname, remove_hs
+
+        self._selected_prots_probs = 'REMARK     Protonation states assigned according to PypKa\n'\
+                                     'REMARK     Residue    Prot State Prob    Tautomer Prob\n'
+
+        #cona cona cona
+        #cona cona cona
+        #cona cona cona
+        #cona cona cona
+        
         sites = config.tit_mole.getSites()
         new_states = {}
         for resnumb, site in sites.items():
-            if resnumb == config.tit_mole._NTR:
-                resname = 'NTR'
-            elif resnumb == config.tit_mole._CTR:
-                resname = 'CTR'
-            else:
-                resname  = site.getName()
-            
-            new_state, new_resname, taut_hs = getProtomerResname(resnumb)
-            
+            resname = site.getName()
+
+            new_state, new_resname, remove_hs = getProtomerResname(resnumb)
+
             if resnumb in (config.tit_mole._NTR, config.tit_mole._CTR):
-                resname  = site.getName()
+                resname = site.getName()
 
-            new_states[resnumb] = (resname, new_state, new_resname)
+            new_states[resnumb] = (resname, new_state, new_resname, remove_hs)
 
-        with open('delphi_in_stmod.pdb') as f:
-            for line in f:
-                if line.startswith('ATOM '):
-                    (aname, anumb, resname, chain,
-                     resnumb, x, y, z) = read_pdb_line(line)
+        new_pdb = self._selected_prots_probs
+        counter = 0
+        for line in self.delphi_input_content:
+            if line.startswith('ATOM '):
+                (aname, anumb, resname, chain,
+                 resnumb, x, y, z) = read_pdb_line(line)
 
-                    if resnumb in sites:
-                        site = sites[resnumb]
-                        resname, new_state, new_resname = new_states[resnumb]
-                        if resnumb > config.terminal_offset:
-                            resnumb -= config.terminal_offset
+                if resnumb in sites:
+                    site = sites[resnumb]
+                    oldresname, new_state, resname, removeHs = new_states[resnumb]
+
+                    if aname in removeHs:
+                        continue
+
+                    if oldresname in config.gromos2amber and \
+                       new_state in config.gromos2amber[oldresname] and \
+                       aname in config.gromos2amber[oldresname][new_state]:
+                        aname = config.gromos2amber[oldresname][new_state][aname]
+
+                    if resnumb > config.terminal_offset:
+                        resnumb -= config.terminal_offset
+                        if resnumb in sites:
+                            ter_resname, ter_new_state, \
+                            resname, ter_removeHs = new_states[resnumb]
+                        else:
                             resname = site._termini_resname
 
-                    new_pdb += new_pdb_line(anumb, aname, resname, resnumb, x, y, z)
-                    if resnumb in config.mainchain_Hs:
-                        while len(config.mainchain_Hs[resnumb]) > 0:
-                            (aname, anumb, resname, chain, x, y, z) = config.mainchain_Hs[resnumb].pop()
-                            new_pdb += new_pdb_line(anumb, aname, resname, resnumb, x, y, z)
-                        del config.mainchain_Hs[resnumb]
-                else:
-                    new_pdb += line
+                        #print(new_pdb_line(anumb, aname, resname, resnumb, x, y, z).strip())
+                if resnumb in config.tit_mole.getCYS_bridges()['A']:
+                    resname = 'CYX'
+
+                counter += 1
+                new_pdb += new_pdb_line(counter, aname, resname, resnumb, x, y, z)
+                if resnumb in config.mainchain_Hs:
+                    while len(config.mainchain_Hs[resnumb]) > 0:
+                        counter += 1
+                        (aname, anumb, oldresname, chain, \
+                         x, y, z) = config.mainchain_Hs[resnumb].pop()
+                        new_pdb += new_pdb_line(counter, aname, resname, resnumb, x, y, z)
+                    del config.mainchain_Hs[resnumb]
+            else:
+                new_pdb += line
 
         with open(outputname, 'w') as f_new:
             f_new.write(new_pdb)
 
-
-    def getStuffFromStructures(self, site, pH):    
+    def getStuffFromStructures(self, site, pH):
         if pH not in self._pH_values:
-            raise Exception('pH value not calculated in the previous run'
+            raise Exception('pH value not calculated in the previous run '
                             f'pH values allowed: {self._pH_values}')
         site_i = self.correct_site_numb(site)
         return site_i
@@ -309,6 +353,25 @@ class Titration(object):
     def getStatesProb(self, site, pH):
         site_i = self.getStuffFromStructures(site, pH)
         return self._states_prob[pH][site_i]
+
+    def getStateProb(self, sitenumb, taut, pH):
+        site_i = self.getStuffFromStructures(sitenumb, pH)
+        taut_i = taut - 1
+        taut_prob = self._states_prob[pH][site_i][taut_i]
+        site = config.tit_mole.getSites()[site_i]
+        ntauts = site.getNTautomers() + 1
+        state_prob = 0.0
+        if taut_i == ntauts - 1:
+            state_prob = taut_prob
+        else:
+            i = 0
+            while i < ntauts - 1:
+                prob = self._states_prob[pH][site_i][i]
+                state_prob += prob
+                i += 1
+
+        return state_prob, taut_prob
+
 
     def getFinalState(self, site, pH):
         site_i = self.getStuffFromStructures(site, pH)

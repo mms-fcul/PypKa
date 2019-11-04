@@ -2,7 +2,7 @@ import argparse
 import os
 import config
 import log
-
+from copy import copy
 
 def drange(dmin, dmax, step):
     """Decimal Range
@@ -52,6 +52,7 @@ def inputParametersFilter(settings):
       - Ionic Strength
 
     """
+    config.params = copy(config.default_params)
     config.pid = os.getpid()
     config.script_dir = os.path.dirname(__file__)
     param_names = list(settings.keys())
@@ -238,9 +239,18 @@ def inputParametersFilter(settings):
             log.inputVariableError('structure_output',
                                'a tuple containing a filename and the desired pH value.',
                                'Ex: ("structure.pdb", 7)')
+
+        if pH < getParameter('pHmin') or pH > getParameter('pHmax'):
+            message = 'pH value for output structure not in range [pHmin, pHmax].'
+            log.inputVariableError('structure_output', message, '')
         config.f_structure_out = outfilename
         config.f_structure_out_pH = pH
-        
+
+        if config.sites != {}:
+            config.sites = {}
+            warning = 'When using f_structure_out all titratable '\
+                      'residues are included in the calculation'
+            log.reportWarning(warning)
 
     # Output log File
     if 'logfile' in param_names:

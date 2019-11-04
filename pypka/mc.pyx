@@ -1,10 +1,16 @@
+#!python
+# cython: language_level=3
+# cython: boundscheck=False
+# cython: cdivision=True
+# cython: wraparound=False
+
 import numpy as np
 cimport numpy as np
-import cython
+cimport cython
 from libc.stdio cimport printf, fflush, stdout
 
-cdef int pHsteps, mcsteps, eqsteps, MAXNPKHALFS, MAXDELTA, seed
-cdef float LN10, pHmin, dpH, couple_min
+cdef int mcsteps, eqsteps, MAXNPKHALFS, MAXDELTA, seed
+cdef float LN10, couple_min
 
 
 LN10        = 2.302585092994
@@ -21,7 +27,7 @@ cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
                   float[:, ::1] possible_states_u, int npairs, int[:] pair1, int[:] pair2):
     cdef int site, site2, state, newstate, site1i, site1newi, \
              state1, state2, site2i, site1, isite1, isite1new, \
-             isite2, isite2new, site3, state3,site3i, newstate1, newstate2
+             isite2, isite2new, site3, state3, site3i, newstate1, newstate2
 
     cdef float dU, newG, G, dG, new_interaction, \
                old_interaction, U1_new, U2_new, U1, U2
@@ -29,47 +35,47 @@ cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
     for site in range(nsites):
         state  = cur_states[site]
         newstate = int(drand48() * npossible_states[site])
-    
+
         site1i    = interactions_lookup[site][state]
         site1newi = interactions_lookup[site][newstate]
-    
+
         dU = possible_states_u[site][newstate] - possible_states_u[site][state]
-    
+
         for site2 in range(nsites):
             if site != site2:
                 state2 = cur_states[site2]
                 site2i = interactions_lookup[site2][state2]
-                
+
                 dU += interactions[site1newi][site2i] - interactions[site1i][site2i]
-        
+
         if accept_move(dU):
             cur_states[site] = newstate
 
     for npair in range(npairs):
         site1 = pair1[npair]
         site2 = pair2[npair]
-    
+
         state1 = cur_states[site1]
         state2 = cur_states[site2]
-        
+
         newstate1 = int(drand48() * npossible_states[site1])
         newstate2 = int(drand48() * npossible_states[site2])
-    
+        
         U1     = possible_states_u[site1][state1]
         U2     = possible_states_u[site2][state2]
         U1_new = possible_states_u[site1][newstate1]
         U2_new = possible_states_u[site2][newstate2]
-    
+
         isite1    = interactions_lookup[site1][state1]
         isite1new = interactions_lookup[site1][newstate1]
         isite2    = interactions_lookup[site2][state2]
         isite2new = interactions_lookup[site2][newstate2]
-    
+
         old_interaction = interactions[isite1][isite2]
         new_interaction = interactions[isite1new][isite2new]
-    
+
         dU = U1_new - U1 + U2_new - U2 + new_interaction - old_interaction
-    
+
         for site3 in range(nsites):
             if site3 != site1 and site3 != site2:
                 state3 = cur_states[site3]
@@ -77,12 +83,12 @@ cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
 
                 dU += interactions[isite1new][site3i] - interactions[isite1][site3i] \
                     + interactions[isite2new][site3i] - interactions[isite2][site3i]
-    
+
         if accept_move(dU):
             cur_states[site1] = newstate1
             cur_states[site2] = newstate2
-        
-        
+
+
 cdef int accept_move(float e):
     if e > MAXDELTA:
         return 0
@@ -102,7 +108,7 @@ cdef void compute_statistics(float t, int nsites, int [:] cur_states,
         state = cur_states[site]
         avgs[site] += possible_states_occ[site][state]
         count[site][state] += 1
-        
+
 
 cdef void initialize_u(float pH, int nsites, float [:, :]
                        possible_states_u, int [:] npossible_states,
@@ -118,49 +124,6 @@ cdef void initialize_u(float pH, int nsites, float [:, :]
         avgs[site] = 0
 
 
-cpdef write_EpH_point(double pH, int nsites, int [:] avgs,
-                      double[:] pmean, double [:, ::1] pKs, int [:, ::1] count, double mcsteps, double pHmin, double dpH):
-    cdef int site, i
-    cdef float mean, p, pKhalf, totalP
-
-    totalP = 0.0
-    for site in range(nsites):
-        mean = avgs[site] / float(mcsteps)
-        totalP += mean
-
-        if pH != pHmin:
-            p = pmean[site]
-
-            if p > 0.5 and mean <= 0.5 or p < 0.5 and mean >= 0.5:
-                pKhalf = pH - dpH * (mean - 0.5) / (mean - p)
-                for i in range(MAXNPKHALFS): 
-                    if pKs[site][i] == 100.0:
-                        pKs[site][i] = pKhalf
-                        break
-
-            if p > 1.5 and mean <= 1.5 or p < 1.5 and mean >= 1.5:
-                pKhalf = pH - dpH * (mean - 1.5) / (mean - p)
-                for i in range(MAXNPKHALFS): 
-                    if pKs[site][i] == 100.0:
-                        pKs[site][i] = pKhalf
-                        break
-                printf("\n%f %d %f %f ", pH, site, mean, p)
-
-        pmean[site] = mean
-    return totalP, np.asarray(pKs), np.asarray(pmean)
-
-cdef void write_E_line(int nsites, float [:, ::1] pKs):
-    cdef int site, i, aux
-    for site in range(nsites):
-        aux = 0
-        for i in range(MAXNPKHALFS):
-            if pKs[site][i] != 100.0:
-                printf("\n%f", pKs[site][i])
-                aux += 1
-        if aux == 0:
-            printf("%d NotInRange\n", site)
-
-
 cdef float invexp(float x):
     """
     This function is a piecewise rational polynomial approximation of
@@ -170,29 +133,29 @@ cdef float invexp(float x):
     cdef float x2, x3, x4
     if x > 13:
         return 8.194236147130614e-10 - 1.3290994520804703e-11 * x
-    else:    
+    else:
         x2 = x * x
         x3 = x2 * x
         if x > 6:
             return (-0.0013245823657199278 + 0.00027464252539452071 * x - 0.000019314947607346905 * x2 + 4.598224667374957e-7 * x3) / (1.0 - 0.5165170691890946 * x + 0.09211442135429947 * x2 - 0.006143102546214945 * x3) 
-        else:            
+        else:
             x4 = x2 * x2
             return (0.9999965470613797 - 0.3960827416191208 * x + 0.06303500815508939 * x2 - 0.00476617578304489 * x3 + 0.00014392025197088043 * x4) / (1.0 + 0.6038220689877429 * x + 0.16732494517488303 * x2 + 0.026354026827091058 * x3 + 0.00289071552898347 * x4)
 
 
 cdef select_pairs(int nsites, npossible_states,
                   interactions_lookup,
-		  interactions, float couple_min):
+                  interactions, float couple_min):
     cdef float ggmax, ggmax_tmp
     cdef int npairs, site1, site2, state1, state2, s1, s2, coup
     pair1 = []
     pair2 = []
-    
+
     #print "### Coupled site pairs, with max|gg| >= {0} pK units:\n".format(couple_min)
     npairs = 0
     for site1 in range(nsites):
         for site2 in range(site1 + 1, nsites):
-            coup = 0 
+            coup = 0
             ggmax = 0.0
             for state1 in range(npossible_states[site1]):
                 for state2 in range(npossible_states[site2]):
@@ -214,22 +177,14 @@ cdef select_pairs(int nsites, npossible_states,
     return npairs, pair1, pair2
 
 
-
-
 cpdef MCrun(int nsites, npossible_states_aux,
             possible_states_g_aux, possible_states_occ_aux,
-	    interactions_aux, interactions_lookup_aux,
-            int pHsteps, int mcsteps_aux, int eqsteps, int seed,
-	    float pHmin_aux, float dpH_aux, float couple_min, float pH):
+            interactions_aux, interactions_lookup_aux,
+            int mcsteps_aux, int eqsteps, int seed, 
+            float couple_min, float pH):
 
     global mcsteps
     mcsteps = mcsteps_aux
-
-    global dpH
-    dpH = dpH_aux
-    
-    global pHmin
-    pHmin = pHmin_aux
 
     npairs_aux, pair1_aux, pair2_aux = select_pairs(nsites, npossible_states_aux,
                                                     interactions_lookup_aux,
@@ -246,7 +201,7 @@ cpdef MCrun(int nsites, npossible_states_aux,
     cdef int i, t, pHstep
 
     maxstates = max(npossible_states_aux)
-    
+
     avgs_arr = np.zeros(nsites, dtype='intc')
     cdef int [:] avgs = avgs_arr
 
@@ -282,10 +237,6 @@ cpdef MCrun(int nsites, npossible_states_aux,
 
     srand48(seed)
 
-    pmeans_arr = np.array([np.zeros(nsites + 1) for i in range(pHsteps)], 'single')
-    cdef float [:, ::1] pmeans = pmeans_arr
-
-
     initialize_u(pH, nsites, possible_states_u, npossible_states,
                  possible_states_occ, possible_states_g, avgs)
 
@@ -299,21 +250,5 @@ cpdef MCrun(int nsites, npossible_states_aux,
                 possible_states_u, npairs, pair1, pair2)
         compute_statistics(t, nsites, cur_states, avgs,
                            possible_states_occ, count)
-
-    #totalP = write_EpH_point(pH, nsites, avgs, pmean, pKs, count)
-    #
-    #pmeans[pHstep][:-1] = pmean
-    #pmeans[pHstep][nsites] = totalP
-	
-    #    printf("\rMC Runs: pH %.2f \t\t Run %d of %d", pH, pHstep, pHsteps - 1)
-    #    fflush(stdout)
-    #printf("\rMC Runs Ended%70s", "")
-    #fflush(stdout)
-
-    #write_E_line(nsites, pKs)
-
-    #return np.asarray(pKs), np.asarray(pmeans)
-
-    #print '\n', pH, np.asarray(avgs)
 
     return np.asarray(avgs), np.asarray(pmean), np.asarray(count), np.asarray(cur_states)

@@ -78,6 +78,7 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False
     prev_resnumb = None
 
     sites_pos = list(sites.keys())
+
     with open(filename_in) as f:
         for line in f:
             if 'CRYST1' in line[:6]:
@@ -95,19 +96,18 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False
             aposition += 1
 
             if fix_termini and resnumb in sites_pos:
-                if ((resnumb == NTR_numb and
-                     aname in NTR_atoms) or
-                    (resnumb == CTR_numb and
-                     aname in CTR_atoms)):
+                if (resnumb == NTR_numb and aname in NTR_atoms) or \
+                   (resnumb == CTR_numb and aname in CTR_atoms):
                     site_numb = resnumb
                     resname = sites[site_numb]
 
-            elif resname == 'HIS' and aname == 'HD1':
+            elif (resname == 'HIS' and aname == 'HD1' and
+                  resnumb not in sites_pos):
                 aposition -= 1
                 continue
 
             if prev_resnumb and prev_resnumb != resnumb:
-                rposition +=1
+                rposition += 1
 
             x /= 10.0
             y /= 10.0

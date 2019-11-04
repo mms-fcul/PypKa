@@ -139,14 +139,15 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
 
                     if resnumb in chains_res['A'] and \
                        resname in config.AMBER_Hs and \
-                       aname in config.AMBER_Hs[resname]:
+                       aname in config.AMBER_Hs[resname] and \
+                       aname not in config.AMBER_mainchain_Hs:
                         continue
-                    elif aname[0] == 'H':
+                    elif aname[0] == 'H' and aname not in ('H1', 'H2', 'H3'):
                         if not resnumb in config.mainchain_Hs:
                             config.mainchain_Hs[resnumb] = []
                         config.mainchain_Hs[resnumb].append((aname, anumb, resname, chain, 
                                                              x, y, z))
-
+    
     CYS_bridges = {'A': []}
     with open('LOG_pdb2pqr') as f:
         for line in f:
@@ -156,6 +157,7 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                 if not chain in CYS_bridges:
                     CYS_bridges[chain] = []
                 CYS_bridges[chain].append(int(parts[-1]))
+    config.tit_mole.saveCYSBridges(CYS_bridges)
     
     new_pdb_text = ''
     removed_pdb_text = ''
@@ -210,8 +212,6 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     with open('removed.pqr', 'w') as f_new:
         f_new.write(removed_pdb_text)
 
-    # TODO: .sites files should not exist
-    # adapt addHtaut to work without these
     sites_addHtaut = ''
     for res in chains_res['A']:
         if chains_res['A'][res] != 'NTR' and res not in CYS_bridges['A']:
@@ -220,23 +220,20 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
     if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ',':
         sites_addHtaut = sites_addHtaut[:-1]
 
-    if config.debug:
-        logfile = 'LOG_addHtaut'
-        print(sites_addHtaut)
-    else:
-        logfile = config.f_log
+    logfile = 'LOG_addHtaut'
     log.redirectErr("start", logfile)
 
     os.system(f'{config.script_dir}/addHtaut cleaned.pqr {sites_addHtaut} > {outputpqr}')
 
     log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
-    
+
+
     with open(outputpqr) as f:
         content = f.read()
     with open(outputpqr, 'w') as f_new:
         f_new.write(content + removed_pdb_text)
-    
+
     with open(pdb_filename) as f:
         box = None
         for line in f:
@@ -255,11 +252,10 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         addIons("TMP.gro", pdb_filename)
 
     tmpfiles = ('LOG_pdb2pqr', 'LOG_pdb2pqr_err', 'clean.pqr', 'cleaned.pqr',
-                'cleaned_tau.pqr', 'input_clean.pdb', 'removed.pqr', config.f_log)
+                'cleaned_tau.pqr', 'input_clean.pdb', 'removed.pqr', 'Hs.pqr')
     for filename in tmpfiles:
         if not config.debug and os.path.isfile(filename):
             os.remove(filename)
-
 
 def removeMembrane(pdbfile):
     nomembrane_text = ''
