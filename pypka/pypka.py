@@ -382,7 +382,11 @@ class Titration(object):
         Arguments:
             site {integer} -- number of the site, "total" is also valid
         """
-        site_i = self.correct_site_numb(site)
+        if site == 'total':
+            site_i = 'total'
+
+        else:
+            site_i = self.correct_site_numb(site)
         tit_curve = {}
         for pH in self._tit_curve.keys():
             tit_curve[pH] = self._tit_curve[pH][site_i]
@@ -396,7 +400,7 @@ class Titration(object):
             or 'C' to indicate a N-ter or C-ter, respectively.
 
             pH (float): pH value 
-        
+
         Returns:  
             A float of the average protonation of the site at the
             selected pH value

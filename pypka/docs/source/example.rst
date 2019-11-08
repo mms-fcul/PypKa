@@ -44,13 +44,12 @@ parameter file.
    ncpus           = 4
    sites_A         = all
 
-To execute pypka simply type:
+To execute pypka simply type one of the two:
 
 .. code-block:: bash
 
    pypka parameters.dat
-
-
+   python3 -m pypka parameters.dat
 
 ====================
 Mandatory Parameters

@@ -221,9 +221,11 @@ def inputParametersFilter(settings):
     # Output Titration File
     if 'titration_output' in param_names:
         config.f_prot_out = settings['titration_output']
-    
+
     if 'structure_output' in param_names:
         error_raise = False
+        if len(settings['structure_output']) == 1:
+            settings['structure_output'] = settings['structure_output'].split(',')
         if len(settings['structure_output']) != 2:
             error_raise = True
 

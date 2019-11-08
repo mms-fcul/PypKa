@@ -1,9 +1,9 @@
 #!/usr/bin/gawk -f
 ###########################################################################
-# This file is part of meadTools, version 2.0.0.
+# This file is part of meadTools, version 2.0.
 # 
-# Copyright (c) 2001-2012, Antonio M. Baptista, Instituto de Tecnologia
-# Quimica e Biologica, Universidade Nova de Lisboa, Portugal.
+# Copyright (c) 2001-2019, Instituto de Tecnologia Quimica e Biologica,
+# Universidade Nova de Lisboa, Portugal.
 # 
 # meadTools is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -20,9 +20,8 @@
 # 
 # For further details and info check the README file.
 # 
-# You can get meadTools at <http://www.itqb.unl.pt/simulation>.
+# You can get meadTools at www.itqb.unl.pt/simulation
 ###########################################################################
-
 
 ############################################################################
 # addHtaut: a program to add protons for tautomeric calculations.

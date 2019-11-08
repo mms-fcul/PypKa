@@ -87,7 +87,7 @@ f_siz = None
 
 lipids = {'cholesterol': 'CHO',  # to edit
           'POPC': 'POP'}
-lipid_residues = ['POX', 'PJ2', 'CHL']  # allowed residue names
+lipid_residues = ['DMX', 'POX', 'PJ2', 'PJ1', 'PJ0', 'CHL']  # allowed residue names
 
 ions = ['CL-', 'NA+']
 
