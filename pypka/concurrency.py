@@ -1,34 +1,38 @@
-import config
+from config import Config
 from multiprocessing import Pool, Manager, Value
 from time import time
 from datetime import timedelta, datetime
 from sys import stdout
 
+from mc import MCrun
 
-def configRefresh(config, pb_time, njobs):
-    config.pb_time = pb_time
-    config.njobs = njobs
+
+def configRefresh(configs, pb_time, njobs):
+    configs.pb_time = pb_time
+    configs.njobs = njobs
 
 def printTimeLeft(time1, time2, message):
-    config.njobs.value -= 1
-    njobs = config.njobs.value
-    total_jobs = config.total_jobs
+    Config.parallel_params.njobs.value -= 1
+    njobs = Config.parallel_params.njobs.value
+    total_jobs = Config.parallel_params.total_jobs
     step = total_jobs - njobs
-    config.pb_time.append(time2 - time1)
-    left = sum(config.pb_time) / len(config.pb_time) * njobs / config.params['ncpus']
+    Config.parallel_params.pb_time.append(time2 - time1)
+    pb_time = Config.parallel_params.pb_time
+    left = sum(pb_time) / len(pb_time) * njobs / Config.pypka_params['ncpus']
     if left > 3600:
-        left_time = f'~{int(left / 3600.0)}h'
+        left_time = '~{0}h'.format(int(left / 3600.0))
     elif left > 60:
-        left_time = f'~{int(left / 60.0)}m'
+        left_time = '~{0}m'.format(int(left / 60.0))
     else:
-        left_time = f'{int(left)}s'
-    
+        left_time = '{0}s'.format(int(left))
+
     end = datetime.now() + timedelta(seconds=left)
     end_time = end.strftime('%H:%M:%S %d/%m/%Y')
 
-    stdout.write(f'\r{message} '
-                 f'Run {step:5} of {total_jobs:<10} '
-                 f'Ends in {left_time:5} at {end_time:5}')
+    stdout.write('\r{0} '
+                 'Run {1:5} of {2:<10} '
+                 'Ends in {3:5} at {4:5}'.format(message, step, total_jobs,
+                                                 left_time, end_time))
     stdout.flush()
 
 def startPoolProcesses(targetFunction, iterable_job_arguments_list,
@@ -56,18 +60,18 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
     results = []
     i = -1
     if assign == 'distributed':
-        config.njobs = 0
+        Config.parallel_params.njobs = 0
         for tautomer in iterable_job_arguments_list:
             i += 1
             jobs[i % ncpus].append(i)
-            config.njobs += 1
+            Config.parallel_params.njobs += 1
     elif assign == 'ordered':
         max_njobs = int(len(iterable_job_arguments_list) / ncpus)
         ncores_extra_load = len(iterable_job_arguments_list) % ncpus
         core = 0
         core_jobs = 0
         extra_load = False
-        config.njobs = 0
+        Config.parallel_params.njobs = 0
         for tautomer in iterable_job_arguments_list:
             i += 1
             if core_jobs == max_njobs:
@@ -80,19 +84,22 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
                     extra_load = False
             jobs[core].append(i)
             core_jobs += 1
-            config.njobs += 1
-        if config.debug:
-            print(f'max_njobs = {max_njobs}, ncores_extra_load = {ncores_extra_load}')
+            Config.parallel_params.njobs += 1
+        if Config.debug:
+            print('max_njobs = {}, ncores_extra_load = {}'.format(max_njobs, ncores_extra_load))
 
-    config.total_jobs = config.njobs
+    Config.parallel_params.total_jobs = Config.parallel_params.njobs
     pb_time = Manager().list()
-    njobs = Value('i', config.njobs)
-    if config.debug:
-        print(f'ncpus = {ncpus}, njobs = {config.njobs}')
+    njobs = Value('i', Config.parallel_params.njobs, lock=False)
+    Config.parallel_params.njobs = njobs
+
+    if Config.debug:
+        print('ncpus = {}, njobs = {}'.format(ncpus, Config.parallel_params.njobs))
         for i, job in enumerate(jobs):
-            print(f'ncore {i}: njobs = {len(job)}')
+            print('ncore {}: njobs = {}'.format(i, len(job)))
+
     pool = Pool(processes=ncpus, initializer=configRefresh,
-                initargs=(config, pb_time, njobs))
+                initargs=(Config.parallel_params, pb_time, njobs))
     for job in jobs:
         result = pool.apply_async(targetFunction, args=(job, ))
         results.append(result)
@@ -101,9 +108,9 @@ def startPoolProcesses(targetFunction, iterable_job_arguments_list,
 
     pool.close()
     pool.join()
-    #print 'exit'
+    #print('exit')
     #exit()
-    
+
     unpacked_results = []
     for results_percore in results:
         result = results_percore.get()
@@ -134,6 +141,7 @@ def runDelPhiSims(job_list):
         sitpotS (list):  the site potential in the Site
           the index corresponds to the atoms in the site
     """
+
     results = []
     for tau_number in job_list:
         time1 = time()
@@ -141,12 +149,9 @@ def runDelPhiSims(job_list):
         results.append([tauname, sitenum, esolvM, sitpotM, esolvS, sitpotS])
         time2 = time()
 
-        message = f'PB Runs: {tauname:3} {sitenum:<10}'
+        message = 'PB Runs: {:3} {:<10}'.format(tauname, sitenum)
 
         printTimeLeft(time1, time2, message)
-
-    stdout.write(f'\rPB Runs Ended{"":>80}')
-    stdout.flush()
 
     return results
 
@@ -170,21 +175,21 @@ def calcPotential(taut):
     """
     # get the tautomer object from the tautomer number
     # transformation needed due to multiprocessing
-    taut = config.tit_mole.getTautomerNumber(taut)
+    taut = Config.parallel_params.all_tautomers_order[taut]
 
     # Whole Molecule with zero charge except for the tautomer being evaluated
     e_solvationM, sitpotM = taut.CalcPotentialTitratingMolecule()
 
-    if config.debug:
-        print(('finished Whole Molecule', taut._name, e_solvationM))
+    if Config.debug:
+        print(('finished Whole Molecule', taut.name, e_solvationM))
 
     # Single Site Tautomer
     e_solvationS, sitpotS = taut.CalcPotentialTautomer()
 
-    if config.debug:
-        print(('finished Tautomer', taut._name, e_solvationS))
+    if Config.debug:
+        print(('finished Tautomer', taut.name, e_solvationS))
 
-    return (taut._name, taut.getSiteResNumber(), e_solvationM,
+    return (taut.name, taut.getSiteResNumber(), e_solvationM,
             sitpotM, e_solvationS, sitpotS)
 
 
@@ -206,24 +211,43 @@ def runInteractionCalcs(job_list):
     """
     results = []
     for interaction_number in job_list:
-        interaction_energies = config.tit_mole.calcInteractionNumber(interaction_number)
+        site1, site2 = Config.parallel_params.site_interactions[interaction_number]
+        interaction_energies = site1.calc_interaction_between(site2)
         results += interaction_energies
-
     return results
 
+def parallelMCrun(pHstep):
+    params = Config.mc_params
+    parallel_params = Config.parallel_params
+
+    pHmin = params['pHmin']
+    dpH = params['pHstep']
+    pH = pHmin + pHstep * dpH
+
+    sites = Config.parallel_params.all_sites
+    nsites = len(sites)
+
+    avgs, pmean, count, cur_states = MCrun(nsites,
+                                           parallel_params.npossible_states,
+                                           parallel_params.possible_states_g,
+                                           parallel_params.possible_states_occ,
+                                           parallel_params.interactions,
+                                           parallel_params.interactions_look,
+                                           params['mcsteps'], params['eqsteps'],
+                                           params['seed'],
+                                           params['couple_min'], pH)
+    return (avgs, count, pmean, cur_states)
 
 def runMCCalcs(job_list):
-    """
-    """
     results = []
-        
+
     for pH_index in job_list:
         time1 = time()
-        mc_output = config.tit_mole.parallelMCrun(pH_index)
+        mc_output = parallelMCrun(pH_index)
         results.append(mc_output)
         time2 = time()
 
-        message = f'MC'
+        message = 'MC'
 
         printTimeLeft(time1, time2, message)
 

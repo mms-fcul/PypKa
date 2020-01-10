@@ -1,4 +1,3 @@
 #! /bin/bash -e
 
-python ../../../__main__.py parameters.dat
-
+python3 ../../../pypka.py parameters.dat

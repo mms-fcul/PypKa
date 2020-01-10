@@ -4,8 +4,7 @@ epsin           = 20
 ionicstr        = 0.1
 pbc_dimensions  = 0
 temp            = 310
-grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 8
+ncpus           = 16
 pH              = -5,15
 sites_A         = 1N, 18, 35, 48, 66, 129C
 
@@ -25,3 +24,5 @@ titration_output = protonation.out
 
 pHstep = 0.2
 relfac = 0.2
+
+clean_pdb = no

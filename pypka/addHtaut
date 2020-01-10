@@ -1,25 +1,25 @@
 #!/usr/bin/gawk -f
 ###########################################################################
 # This file is part of meadTools, version 2.0.
-# 
+#
 # Copyright (c) 2001-2019, Instituto de Tecnologia Quimica e Biologica,
 # Universidade Nova de Lisboa, Portugal.
-# 
+#
 # meadTools is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 2 of the License, or (at your
 # option) any later version.
-# 
+#
 # meadTools is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with meadTools.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # For further details and info check the README file.
-# 
+#
 # You can get meadTools at www.itqb.unl.pt/simulation
 ###########################################################################
 
@@ -53,13 +53,14 @@ BEGIN{
   split(tit_input,tit_array,",")
   for (i in tit_array)
   {
-      split(tit_array[i],residue,"_")
-      if (residue[2] != "CTR")
-      {
-	  tit[residue[1]] = residue[2]
-      } else
-      {
-	  cterm[residue[1]] = 1
+      split(tit_array[i],residue,"-")
+      resnumb=residue[1]
+      resname=residue[2]
+      chain=residue[3]
+      if (residue[2] != "CTR") {
+        tit[chain][resnumb] = resname
+      } else {
+	      cterm[chain][resnumb] = 1
       }
   }
 
@@ -70,18 +71,19 @@ BEGIN{
   while (getline < pqr_file)
   {
     nline++ ;
-    if (nline != 1 && $5 != resnumb) process_residue() ;
-    if (NF != 10) error("Wrong number of fields ("NF") in pqr line "nline) ;
+    if (nline != 1 && $6 != resnumb) process_residue() ;
+    if (NF != 11) error("Wrong number of fields ("NF") in pqr line "nline) ;
     resname = $4 ;
-    resnumb = $5 ;
+    resnumb = $6 ;
+    chain = $5
     atm = $3 ;
-    for (k = 1 ; k <= 3 ; k++) r[atm,k] = $(5+k) ;
+    for (k = 1 ; k <= 3 ; k++) r[atm,k] = $(6+k) ;
     line[atm] = $0 ;
-    print_pqr_line($2, $3, $4, $5, $6, $7, $8, $9, $10) ;
+    print_pqr_line($2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ;
     # the next 2nd condition may not be totally general...
-    if (tit[resnumb] != "" && tit[resnumb] != substr(resname,1,3))
+    if (tit[chain][resnumb] != "" && tit[chain][resnumb] != substr(resname,1,3))
     {
-      warning("tit[resnumb] = "tit[resnumb]) ;
+      warning("tit[chain][resnumb] = "tit[chain][resnumb]) ;
       error(resname " " resnumb " : name in .pqr and .sites do not match!\n") ;
     }
   }
@@ -91,11 +93,11 @@ BEGIN{
 
 function process_residue()
 {
-  if (tit[resnumb] ~ carboxyl) process_carboxyl(resname) ;
-  if (cterm[resnumb] == 1) process_carboxyl("CTR") ;
-  if (tit[resnumb] ~ phenyl) process_phenyl(resname) ;
-  if (tit[resnumb] ~ alcohol) process_alcohol(resname) ;
-  if (tit[resnumb] ~ water) process_water(resname) ;
+  if (tit[chain][resnumb] ~ carboxyl) process_carboxyl(resname) ;
+  if (cterm[chain][resnumb] == 1) process_carboxyl("CTR") ;
+  if (tit[chain][resnumb] ~ phenyl) process_phenyl(resname) ;
+  if (tit[chain][resnumb] ~ alcohol) process_alcohol(resname) ;
+  if (tit[chain][resnumb] ~ water) process_water(resname) ;
   delete r ;
   delete line ;
 }
@@ -126,12 +128,12 @@ function process_carboxyl(stype)
     ru[k] = sin(angCOH) * distOH * rc[k] / norm(rc) ;
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[o1[stype],k] + ra[k] + ru[k] ;
-  print_pqr_line(0, h1[stype], resname, resnumb,
+  print_pqr_line(0, h1[stype], resname, chain, resnumb,
 		 rH[1], rH[2], rH[3], chargeH, radiusH) ;
   # Compute and write h3 ("back" proton):
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[o1[stype],k] + ra[k] - ru[k] ;
-  print_pqr_line(0, h3[stype], resname, resnumb,
+  print_pqr_line(0, h3[stype], resname, chain, resnumb,
 		 rH[1], rH[2], rH[3], chargeH, radiusH) ;
   # Compute and write h2:
   cross(rCO1,rCO2,rb) ;
@@ -142,12 +144,12 @@ function process_carboxyl(stype)
     ru[k] = sin(angCOH) * distOH * rc[k] / norm(rc) ;
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[o2[stype],k] + ra[k] + ru[k] ;
-  print_pqr_line(0, h2[stype], resname, resnumb,
+  print_pqr_line(0, h2[stype], resname, chain, resnumb,
 		 rH[1], rH[2], rH[3], chargeH, radiusH) ;
   # Compute and write h4 ("back" proton):
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[o2[stype],k] + ra[k] - ru[k] ;
-  print_pqr_line(0, h4[stype], resname, resnumb,
+  print_pqr_line(0, h4[stype], resname, chain, resnumb,
 		 rH[1], rH[2], rH[3], chargeH, radiusH) ;
 }
 
@@ -166,7 +168,7 @@ function process_phenyl(stype)
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[h1[stype],k] - 2 * dot(rOH,rb) / dot(rb,rb) * rb[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h2[stype], f[4], f[5], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h2[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
 }
 
 function process_alcohol(stype)
@@ -188,11 +190,11 @@ function process_alcohol(stype)
   # Compute and write h2:
   for (k = 1 ; k <= 3 ; k++) rH[k] = r[h1[stype],k] - 1.5 * rc[k] + ru[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h2[stype], f[4], f[5], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h2[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
   # Compute and write h3:
   for (k = 1 ; k <= 3 ; k++) rH[k] = r[h1[stype],k] - 1.5 * rc[k] - ru[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h3[stype], f[4], f[5], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h3[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
 }
 
 function process_water(stype)
@@ -219,7 +221,7 @@ function process_water(stype)
   rOH1[3] = distOH * cos(phi) ;
   for (k = 1 ; k <= 3 ; k++) rH1[k] = r[o[stype],k] + rOH1[k] ;
   split(line[o[stype]], f) ;
-  print_pqr_line(0, h1[stype], f[4], f[5],
+  print_pqr_line(0, h1[stype], f[4], chain, f[6],
 		 rH1[1], rH1[2], rH1[3], chargeH, radiusH) ;
   # Compute random orientation for h2:
   theta = rand() * 2 * pi ;
@@ -232,7 +234,7 @@ function process_water(stype)
   for (k = 1 ; k <= 3 ; k++) ra[k] = distOH * sin(angHOH) * ru[k] / norm(ru) ;
   for (k = 1 ; k <= 3 ; k++) rb[k] = rOH1[k] * cos(angHOH) ;
   for (k = 1 ; k <= 3 ; k++) rH2[k] = r[o[stype],k] + ra[k] + rb[k] ;
-  print_pqr_line(0, h2[stype], f[4], f[5],
+  print_pqr_line(0, h2[stype], f[4], f[6],
 		 rH2[1], rH2[2], rH2[3], chargeH, radiusH) ;
   # Compute and write h3:
   for (k = 1 ; k <= 3 ; k++) rOH2[k] = rH2[k] - r[o[stype],k] ;
@@ -242,18 +244,18 @@ function process_water(stype)
   for (k = 1 ; k <= 3 ; k++)
     ru[k] = 0.5 * sqrt(3) * norm(rc) * ra[k] / norm(ra) ;
   for (k = 1 ; k <= 3 ; k++) rH3[k] = rH1[k] - 1.5 * rc[k] + ru[k] ;
-  print_pqr_line(0, h3[stype], f[4], f[5],
+  print_pqr_line(0, h3[stype], f[4], chain, f[6],
 		 rH3[1], rH3[2], rH3[3], chargeH, radiusH) ;
   # Compute and write h4:
   for (k = 1 ; k <= 3 ; k++) rH4[k] = rH1[k] - 1.5 * rc[k] - ru[k] ;
-  print_pqr_line(0, h4[stype], f[4], f[5],
+  print_pqr_line(0, h4[stype], f[4], chain, f[6],
 		 rH4[1], rH4[2], rH4[3], chargeH, radiusH) ;
 }
 
-function print_pqr_line(atnu,atna,resna,resnu,x,y,z,charge,rad)
+function print_pqr_line(atnu,atna,resna,chain,resnu,x,y,z,charge,rad)
 {
-  printf ("ATOM  %5d %-4s %-4s %4s     %7.3f %7.3f %7.3f %6.3f %6.3f\n",  \
-          atnu, atna, resna, resnu, x, y, z, charge, rad) ;
+  printf ("ATOM  %5d %-4s %-4s%1s%4s     %7.3f %7.3f %7.3f %6.3f %6.3f\n",  \
+          atnu, atna, resna, chain, resnu, x, y, z, charge, rad) ;
 }
 
 # Vector stuff:

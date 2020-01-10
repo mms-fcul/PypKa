@@ -3,7 +3,7 @@ sys.path.insert(1, '../../')
 from pypka import Titration
 
 pH = 1
-parameters = {'structure'     : 'lyso.pdb',
+parameters = {'structure'     : 'lyso_cleaned.pdb',
               'pH'            : "0,12",
               'scaleM'        : 2,
               'epsin'         : 10,
@@ -16,12 +16,13 @@ parameters = {'structure'     : 'lyso.pdb',
               'gsize'         : 41,
               'convergence'   : 0.2,
               'pHstep'        : 0.5,
-              }
+              'clean_pdb': False
+}
 
-pKa = Titration(parameters, sites={'A': ['1N', '1', '7', '129C']})
+#pKa = Titration(parameters, sites={'A': ['1N', '1', '7', '129C']})
 
 
-#pKa = Titration(parameters)
+pKa = Titration(parameters)
 
 for site in pKa:
     pK = pKa[site]

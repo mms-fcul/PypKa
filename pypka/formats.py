@@ -1,13 +1,13 @@
-import config
+from config import Config
+from constants import TERMINAL_OFFSET
 
-def new_pdb_line(aID, aname, resname, resnumb, x, y, z):
-    pdb_format = "ATOM  {:5d} {:4s} {:4s} {:4d}    {:8.3f}{:8.3f}{:8.3f}\n"
-    return pdb_format.format(aID, aname, resname, resnumb, x, y, z)
+def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=' '):
+    pdb_format = "ATOM  {:5d} {:4s} {:4s}{:1s}{:4d}    {:8.3f}{:8.3f}{:8.3f}\n"
+    return pdb_format.format(aID, aname, resname, chain, resnumb, x, y, z)
 
-
-def new_pqr_line(aID, aname, resname, resnumb, x, y, z, charge, radius):
-    pdb_format = "ATOM  {:5d} {:4s} {:4s} {:4d}    {:8.3f}{:8.3f}{:8.3f}{:8.3f}{:8.3f}\n"
-    return pdb_format.format(aID, aname, resname, resnumb, x, y, z, charge, radius)
+def new_pqr_line(aID, aname, resname, resnumb, x, y, z, charge, radius, chain=' '):
+    pdb_format = "ATOM  {:5d} {:4s} {:4s}{:1s}{:4d}    {:8.3f}{:8.3f}{:8.3f}{:8.3f}{:8.3f}\n"
+    return pdb_format.format(aID, aname, resname, chain, resnumb, x, y, z, charge, radius)
 
 def new_gro_line(aID, aname, resname, resnumb, x, y, z):
     gro_format = '{:5}{:5}{:>5}{:5}{:8.3f}{:8.3f}{:8.3f}\n'
@@ -39,7 +39,7 @@ def read_pqr_line(line):
 
 def read_pdb_line(line):
     aname   = line[12:16].strip()
-    anumb   = int(line[7:11].strip())
+    anumb   = int(line[5:11].strip())
     resname = line[17:21].strip()
     chain   = line[21]
     resnumb = int(line[22:26])
@@ -60,24 +60,54 @@ def read_gro_line(line):
     z = float(line[36:44].strip())
     return (aname, anumb, resname, resnumb, x, y, z)
 
+def gro2pdb(f_in, f_out, save_box=False):
+    new_pdb_content = "REMARK    CONVERTED from {} by PypKa\n".format(f_in)
+    with open(f_in) as f:
+        line_counter = 0
+        natoms_left = 0
+        natoms = 0
+        lines = f.read().splitlines()
+        penul_line = lines[-2]
+        last_line  = lines[-1]
+        box = [float(i) * 10 for i in last_line.split()[:3]]
+        if save_box:
+            Config.pypka_params.setBox(box)
+        new_pdb_content += "CRYST1  {0:3.3f}  {1:3.3f}  {2:3.3f}  "\
+                           "60.00  60.00  90.00 P 1           1\n".format(box[0],
+                                                                          box[1], box[2])
+        for line in lines:
+            line_counter += 1
+            if natoms_left > 0:
+                natoms_left -= 1
+                natoms += 1
+                (aname, anumb, resname,
+                 resnumb, x, y, z) = read_gro_line(line)
 
-def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False, fix_termini=True):
+                x, y, z = x * 10, y * 10, z * 10
+
+                new_pdb_content += new_pdb_line(anumb, aname,
+                                                resname, resnumb,
+                                                x, y, z, chain='A')
+            elif line_counter == 2:
+                natoms_left = int(line.strip())
+    new_pdb_content += 'TER\nENDMDL\n'
+    with open(f_out, 'w') as f_new:
+        f_new.write(new_pdb_content)
+
+def pdb2gro(filename_in, filename_out, chains_res, box=[], pqr=False,
+            renumber_res=False, fix_termini=True):
     """
     Returns
       - aposition (int) of last atom id in filename_out
     """
-    NTR_numb = config.tit_mole._NTR
-    NTR_atoms = config.tit_mole._NTR_atoms
-    CTR_numb = config.tit_mole._CTR
-    CTR_atoms = config.tit_mole._CTR_atoms
+    NTR_atoms = Config.pypka_params['NTR_atoms']
+    CTR_atoms = Config.pypka_params['CTR_atoms']
 
     header = 'CREATED within PyPka\n'
     new_pdb_text = ''
     aposition = 0
     rposition = 1
     prev_resnumb = None
-
-    sites_pos = list(sites.keys())
 
     with open(filename_in) as f:
         for line in f:
@@ -95,14 +125,23 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False
                  resnumb, x, y, z) = read_pdb_line(line)
             aposition += 1
 
-            if fix_termini and resnumb in sites_pos:
+            chains_sites_numbs = []
+            if chain in chains_res:
+                chains_sites_numbs = chains_res[chain]
+                for site_numb, site_name in chains_sites_numbs.items():
+                    if site_name == 'NTR':
+                        NTR_numb = int(site_numb)
+                    elif site_name == 'CTR':
+                        CTR_numb = int(site_numb)
+
+            if fix_termini and resnumb in chains_sites_numbs:
                 if (resnumb == NTR_numb and aname in NTR_atoms) or \
                    (resnumb == CTR_numb and aname in CTR_atoms):
                     site_numb = resnumb
-                    resname = sites[site_numb]
+                    resname = chains_res[chain][site_numb]
 
             elif (resname == 'HIS' and aname == 'HD1' and
-                  resnumb not in sites_pos):
+                  resnumb not in chains_sites_numbs):
                 aposition -= 1
                 continue
 
@@ -135,14 +174,14 @@ def pdb2gro(filename_in, filename_out, box, sites, pqr=False, renumber_res=False
     return aposition
 
 
-def correct_names(sites_numbs, resnumb, resname, aname,
-                  titrating_sites):
+def correct_names(resnumb, resname, aname,
+                  titrating_sites, NTR_numb, CTR_numb):
     def change_aname(aname, restype, mode='regular'):
         if mode == 'titrating':
             not_correct_names = list(correct_atoms_sites_table[restype].keys())
         else:
             not_correct_names = list(correct_atoms_table[restype].keys())
-        for not_corrected in not_correct_names:            
+        for not_corrected in not_correct_names:
             if aname == not_corrected:
                 if mode == 'titrating':
                     aname = correct_atoms_sites_table[restype][not_corrected]
@@ -150,8 +189,6 @@ def correct_names(sites_numbs, resnumb, resname, aname,
                     aname = correct_atoms_table[restype][not_corrected]
 
         return aname
-    NTR_numb = config.tit_mole._NTR
-    CTR_numb = config.tit_mole._CTR
 
     # no longer used as it is done by pdb2pqr
     correct_atoms_table = {'CTR': {'O': 'O1',
@@ -213,6 +250,6 @@ def readPBPFile(f_dat):
 
 
 def convertTermini(site_numb):
-    if site_numb >= config.terminal_offset:
-        return site_numb - config.terminal_offset
+    if site_numb >= TERMINAL_OFFSET:
+        return site_numb - TERMINAL_OFFSET
     return site_numb

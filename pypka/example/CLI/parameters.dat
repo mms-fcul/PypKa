@@ -1,7 +1,24 @@
 structure     = lyso.pdb
-sites_A       = all
+# sites_A       = all
+# sites_B       = 1N, 1, 2, 3C
+sites = all
 epsin         = 10
 ionicstr      = 0.1
-pbc_dimensions= 0
+pbc_dimensions= 2
 ncpus         = 2
 output        = pKas.out
+
+f_dat = cona
+
+cona = siiiim
+
+convergence = 3
+bndcon = 1
+
+pH = 7
+pHstep = 0.3
+
+structure_output = structure.pdb, 7
+
+lipid_definition = cholesterol:CHL
+lipid_definition = POPC:POP

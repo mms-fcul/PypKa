@@ -1,0 +1,4 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "python.pythonPath": "/usr/bin/python3.7"
+}

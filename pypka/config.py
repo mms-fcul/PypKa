@@ -1,231 +1,539 @@
-from copy import copy
 import os
+from constants import *
+from psutil import cpu_count
+from pprint import pformat
+from numpy import arange
+from copy import copy
 
-tit_mole = None
-sites    = {}
-pid      = None
-debug    = False
+class Config:
+    @classmethod
+    def storeParams(cls, titration_obj, log, debug, parameters):
+        cls.log = log
+        cls.debug = debug
+        cls.titration = titration_obj
+        cls.pypka_params = PypKaConfig(log)
+        cls.delphi_params = DelPhiConfig(log)
+        cls.mc_params = MCConfig(log)
+        cls.parallel_params = ParallelConfig()
 
-input_conversion = {'grid_fill': 'perfil',
-                    'pbc_dimensions': 'pbc_dim',
-                    'convergence': 'maxc'}
-stdout = None
-stderr = None
+        cls.filter_params(parameters)
 
-stdout_file = None
-stderr_file = None
+        return cls.pypka_params, cls.delphi_params, cls.mc_params, cls.parallel_params
 
-njobs   = None # to be redeclared in concurrency
-pb_time = None # to be redeclared in concurrency
-total_jobs = None # to be redeclared in concurrency
+    @classmethod
+    def loadParams(cls, parameters):
+        pypka_params, delphi_params, mc_params, parallel_params = parameters
+        cls.pypka_params = pypka_params
+        cls.delphi_params = delphi_params
+        cls.mc_params = mc_params
+        cls.parallel_params = parallel_params
 
-# DelPhi related
-params = {}
-default_params = {'perfil': 0.9,
-                  'gsize': 81,
-                  'scaleP': 1,
-                  'scaleM': 4,
-                  'precision': 'single',
-                  'ionicstr': 0.1,
-                  'bndcon': 3,
-                  'maxc': 0.01,
-                  'nlit': 500,
-                  'nonit': 0,
-                  'relfac': 0.75,
-                  'relpar': 0.75,
-                  'pbx': False,
-                  'pby': False,
-                  'ffID': 'G54A7',
-                  'ffinput': 'GROMOS',
-                  'pHmin': 0,
-                  'pHmax': 14,
-                  'pHstep': 0.25,
-                  'epssol': 80.0,
-                  'temp': 298.0,
-                  'seed': 1234567,
-                  'cutoff': 2.5,
-                  'pbc_dim': 0,
-                  'epsin': 20.0,
-                  'slice': 0.05,
-                  'ncpus': 1,
-                  'clean_pdb': True,
-                  'keep_ions': False,
-                  'couple_min': 2.0,
-                  'mcsteps': 200000,
-                  'eqsteps': 1000}
+    @classmethod
+    def getConfigObj(cls, name):
+        if name in cls.__dict__:
+            return cls.__dict__
+        elif name in cls.pypka_params:
+            return cls.pypka_params
+        elif name in cls.delphi_params:
+            return cls.delphi_params
+        elif name in cls.mc_params:
+            return cls.mc_params
+        else:
+            return None
 
-# -1 NanoShaper off
-# 0 connolly surface
-# 1 skin
-# 2 blobby
-# 3 mesh
-# 4 msms
-nanoshaper = -1
+    @classmethod
+    def filter_params(cls, parameters):
+        """Checks the validity of the input parameters
 
-# Paths
-# TODO: include in dependencies
-# in dependencies there is a pdb2pqr that has a important dat folder
-fileDir = os.path.dirname(os.path.abspath(__file__))
-script_dir = fileDir
-pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(fileDir)
-userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(fileDir)
-usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(fileDir)
+        Args:
+            parameters (dict): input parameters
+        """
+        # Define all parameters
+        for param_name, param_value in parameters.items():
+            if param_name.startswith('sites') or param_name in IGNORED_PARAMS:
+                continue
+            config_obj = cls.getConfigObj(param_name)
+            if config_obj:
+                config_obj[param_name] = param_value
+            else:
+                info = '{} is not a valid parameter.'.format(param_name)
+                cls.log.report_warning(info, stdout=True)
 
+        # Check if mandatory parameters were defined
+        for param_name in MANDATORY_PARAMS:
+            config_obj = cls.getConfigObj(param_name)
+            if not (config_obj and config_obj[param_name] is not None):
+                cls.log.raise_required_param_error(param_name)
 
-# Input Files
-f_in = None
-f_in_extension = None
-f_out = None
-f_prot_out = None
-f_structure_out = None
-f_log = "LOG"
-f_dat = None
+        cls.pypka_params.set_structure_extension()
+        cls.pypka_params.set_ncpus()
+        cls.pypka_params.set_radii_charges_paths()
+        cls.pypka_params.readTermini()
 
-# Force Field Files
-f_crg = None
-f_siz = None
+        cls.mc_params.set_pH_values(parameters)
 
-lipids = {'cholesterol': 'CHO',  # to edit
-          'POPC': 'POP'}
-lipid_residues = ['DMX', 'POX', 'PJ2', 'PJ1', 'PJ0', 'CHL']  # allowed residue names
+        if cls.pypka_params['structure_output']:
+            cls.pypka_params.set_structure_output(cls.mc_params['pHmin'],
+                                                   cls.mc_params['pHmax'])
 
-ions = ['CL-', 'NA+']
+        if cls.delphi_params['pbc_dim'] == 2:
+            cls.delphi_params.set_nonlinear_params(cls.pypka_params, parameters)
+
+        if 'lipid_definition' in parameters:
+            cls.pypka_params.define_lipids(parameters['lipid_definition'])
 
 
-# Constants
-kBoltz = 5.98435e-6  # e^2/(Angstrom*K)
-log10 = 2.302585092994046
+class ParametersDict:
+    input_conversion = {'structure': 'f_in',
+                        'grid_fill': 'perfil',
+                        'pbc_dimensions': 'pbc_dim',
+                        'convergence': 'maxc',
+                        'output': 'f_out',
+                        'logfile': 'f_log',
+                        'titration_output': 'f_prot_out',
+                        'clean': 'clean_pdb'}
+
+    def __init__(self, log):
+        self.log = log
+        self.input_special_conditions = {}
+        self.input_type = {}
+
+    def convert_param_name(self, name):
+        if name in self.input_conversion.keys():
+            return self.input_conversion[name]
+        return name
+
+    def check_param_type(self, param_name, param_value, param_type, msg=''):
+        """Checks if param_value is of type param_type
+
+        If param_value is not of param_type, it tries to convert into the desired type.
+        An error is raised if the conversion is not possible.
+
+        Args:
+            param_name (str): name of the parameter
+            param_value: value of the parameter
+            param_type (type): desired type for the parameter
+            msg (str): error help message
+
+        Returns:
+            param_type: param_value is returned with the type param_type
+        """
+        if param_type is bool and not isinstance(param_value, bool):
+            param_value = param_value.lower()
+            if param_value in ('false', 'no'):
+                param_value = False
+            elif param_value in ('true', 'yes'):
+                param_value = True
+
+        if not isinstance(param_value, param_type):
+            try:
+                param_value = param_type(param_value)
+            except ValueError:
+                self.log.raise_input_param_error(param_name, param_type, msg)
+        return param_value
+
+    def check_conditions(self, param_name, param_value):
+        if param_name in self.input_type:
+            param_type = self.input_type[param_name]
+            param_value = self.check_param_type(param_name, param_value, param_type)
+        else:
+            info = 'parameter {} is not being checked for type. ' \
+                    'Please warn the developement team.'.format(param_name)
+            self.log.report_warning(info, stdout=True)
+        if param_name in self.input_special_conditions:
+            condition = self.input_special_conditions[param_name]
+            if condition == '>0':
+                if  param_value <= 0:
+                    self.log.raise_input_param_error(param_name,
+                                                     'greater than zero.', '')
+            elif param_value not in condition:
+                    self.log.raise_input_param_error(param_name,
+                                                     'in {}'.format(condition), '')
+
+        return param_value
+
+    def __getitem__(self, name):
+        name = self.convert_param_name(name)
+        if name not in self.__dict__:
+            raise Exception('{} not in {}'.format(name, self.name))
+        return self.__dict__[name]
+
+    def __setitem__(self, name, key):
+        name = self.convert_param_name(name)
+        key = self.check_conditions(name, key)
+
+        self.__dict__[name] = key
+
+    def __contains__(self, item):
+        item = self.convert_param_name(item)
+        return item in self.__dict__
 
 
-# Tautomer Variables
-terminal_offset = 2000
+class PypKaConfig(ParametersDict):
+    """Configuration parameters
+    """
+    def __init__(self, log):
+        super().__init__(log)
 
-TITRABLETAUTOMERS = {'LYS': 3,
-                     'HIS': 2,
-                     'ASP': 4,
-                     'GLU': 4,
-                     'SER': 3,
-                     'THR': 3,
-                     'CYS': 3,
-                     'CTR': 4,
-                     'NTR': 3,
-                     'TYR': 2}
+        self.name = 'PypKa configurations'
+
+        self.tmpsites    = {}
+        self.pid         = os.getpid()
+        self.debug       = False
+        self.ncpus       = None
+        self.temp        = 298
+
+        # Paths
+        self.file_dir   = os.path.dirname(os.path.abspath(__file__))
+        self.script_dir = os.path.dirname(__file__)
+        self.pdb2pqr    = "{0}/pdb2pqr/pdb2pqr.py".format(self.file_dir)
+        self.userff     = "{0}/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
+        self.usernames  = "{0}/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
+
+        # File Naming
+        self.f_in               = None
+        self.f_in_extension     = None
+        self.f_out              = None
+        self.f_prot_out         = None
+        self.f_structure_out    = None
+        self.f_structure_out_pH = None
+        self.structure_output   = None
+
+        # Force Field
+        self.f_crg = None
+        self.f_siz = None
+        self.ffID  = 'G54A7'
+        self.NTR_atoms = None
+        self.CTR_atoms = None
+
+        # Preprocessing parameters
+        self.ffinput    = 'GROMOS'
+        self.clean_pdb  = True
+        self.keep_ions  = False
+        self.ser_thr_titration = True
+
+        self.cutoff     = -1
+        self.slice      = 0.05
+        self.box        = []
+
+        # Parameters Validity
+        self.input_special_conditions = {
+            'temp': '>0',
+            'ffID': ('G54A7'),
+            'ffinput': ('GROMOS', 'AMBER', 'CHARMM')
+        }
+        self.input_type = {
+            'debug'             : bool,
+            'ncpus'             : int,
+            'temp'              : float,
+            'f_in'              : str,
+            'f_out'             : str,
+            'f_prot_out'        : str,
+            'f_structure_out'   : str,
+            'f_structure_out_pH': str,
+            'structure_output'  : str,
+            'ffID'              : str,
+            'ffinput'           : str,
+            'cutoff'            : float,
+            'slice'             : float,
+            'clean_pdb'         : bool,
+            'keep_ions'         : bool,
+            'ser_thr_titration' : bool,
+            'f_crg'             : str,
+            'f_siz'             : str,
+            'box'               : list
+        }
+
+    def __str__(self):
+        out = '# PypKa Parameters{}\n\n' \
+              '# PB Parameters\n{}\n\n'  \
+              '# MC Parameters\n{}\n'.format(pformat(self.__dict__),
+                                             pformat(self.delphi_params.__dict__),
+                                             pformat(self.mc_params.__dict__))
+
+        return out
+
+    def set_structure_extension(self):
+        structure = self['structure']
+        f_in_parts = structure.split('.')
+        if len(f_in_parts) <= 1:
+            self.log.raise_input_param_error('structure',
+                'a string containing a file extension.',
+                'Ex: structure.pdb or structure.gro')
+
+        extension = f_in_parts[-1].lower().replace('pqr', 'pdb')
+        if extension not in ('gro', 'pdb'):
+            self.log.raise_input_param_error('structure',
+                'a string containing a valid file extension.',
+                'Ex: structure.pdb or structure.gro or structure.pqr')
+
+        self.f_in_extension = extension
+
+    def setBox(self, box):
+        self['box'] = box
+
+    def set_ncpus(self):
+        ncpus = self['ncpus']
+        if ncpus == -1:
+            self['ncpus'] = cpu_count(logical=False)
+        elif ncpus < 1:
+            self['ncpus'] = 1
+
+    def set_radii_charges_paths(self):
+        file_path = os.path.join(self['script_dir'], self['ffID'])
+        if not self['f_crg']:
+            self['f_crg'] = '{}/DataBaseT.crg'.format(file_path)
+        if not self['f_siz']:
+            self['f_siz'] = '{}/DataBaseT.siz'.format(file_path)
+
+    def define_lipids(self, lipids):
+        for lipid in lipids:
+            resname = lipids[lipid]
+            LIPIDS[lipid] = resname
+
+    def set_structure_output(self, pHmin, pHmax):
+        error_raise = False
+        structure_output = self['structure_output'].split(',')
+        msg = 'CLI Example: "structure_output": ("structure.pdb", 7)\n '\
+              'API Example: structure_output = structure.pdb, 7'
+        if len(structure_output) != 2:
+            error_msg = 'a tuple containing a filename and the desired pH value.'
+            self.log.raise_input_param_error('structure_output', error_msg, msg)
+
+        outfilename = structure_output[0].strip('()"\'')
+        pH =  structure_output[1].strip('()"\'')
+
+        pH = self.check_param_type('structure_output_pH', pH, float, msg)
+
+        self['f_structure_out'] = outfilename
+        self['f_structure_out_pH'] = pH
+
+        if pH < pHmin or pH > pHmax:
+            message = 'in range [pHmin, pHmax].'
+            self.log.raise_input_param_error('structure_output', message, '')
 
 
-TITRABLERESIDUES = list(TITRABLETAUTOMERS.keys())
-REGULARTITRATINGRES = copy(list(TITRABLETAUTOMERS.keys()))
+    def readTermini(self):
+        script_dir = self['script_dir']
+        ffID = self['ffID']
+        NTR_atoms = []
+        ntr_fname = "{}/{}/sts/NTRtau1.st".format(script_dir, ffID)
+        with open(ntr_fname) as f:
+            for line in f:
+                parts = line.split()
+                if len(parts) > 1:
+                    NTR_atoms.append(parts[1].strip())
+        CTR_atoms = []
+        ctr_fname = "{}/{}/sts/CTRtau1.st".format(script_dir, ffID)
+        with open(ctr_fname) as f:
+            for line in f:
+                parts = line.split()
+                if len(parts) > 1:
+                    CTR_atoms.append(parts[1].strip())
+        self.NTR_atoms = NTR_atoms
+        self.CTR_atoms = CTR_atoms
 
-for res in REGULARTITRATINGRES:
-    ntautomers = TITRABLETAUTOMERS[res]
-    for i in range(ntautomers):
-        TITRABLERESIDUES.append(res[0:2] + str(i + 1))
-
-
-gromos2amber = {
-    'ASP': {0: {'HD11': 'HD2', 
-                'OD1': 'OD2', 
-                'OD2': 'OD1'},
-            1: {'HD21': 'HD2'},
-            2: {'HD12': 'HD2', 
-                'OD1': 'OD2', 
-                'OD2': 'OD1'},
-            3: {'HD22': 'HD2'}
-    },
-    'CYS': {0: {'HG1': 'HG'},
-            1: {'HG2': 'HG'},
-            2: {'HG3': 'HG'}
-    },
-    'GLU': {0: {'HE11': 'HE2',
-                'OE1': 'OE2', 
-                'OE2': 'OE1'},
-            1: {'HE21': 'HE2'},
-            2: {'HE12': 'HE2',
-                'OE1': 'OE2', 
-                'OE2': 'OE1'},
-            3: {'HE22': 'HE2'}
-    },
-    'HIS': {},
-    'TYR': {0: {'HH1': 'HH'},
-            1: {'HH2': 'HH'}
-    },
-    'LYS': {0: {'HZ3': 'HZ1'},
-            1: {'HZ3': 'HZ2'}},
-    'SER': {0: {'HG1': 'HG'},
-            1: {'HG2': 'HG'},
-            2: {'HG3': 'HG'}
-    },
-    'THR': {0: {'HG1': 'HG1'},
-            1: {'HG2': 'HG1'},
-            2: {'HG3': 'HG1'}
-    },
-    'NTR': {0: {'H3': 'H1'},
-            1: {'H3': 'H2'}},
-    'CTR': {0: {'HO11': 'HO',
-                'O1': 'O',
-                'O2': 'OXT',
-                'CT': 'C'},
-            1: {'HO21': 'HO',
-                'O2': 'O',
-                'O1': 'OXT',
-                'CT': 'C'},
-            2: {'HO12': 'HO',
-                'O1': 'O',
-                'O2': 'OXT',
-                'CT': 'C'},
-            3: {'HO22': 'HO',
-                'O2': 'O',
-                'O1': 'OXT',
-                'CT': 'C'},
-            4: {'O1': 'O',
-                'O2': 'OXT',
-                'CT': 'C'}
-    }
-}
+    def redefine_f_in(self, new_f_in):
+        self['f_in'] = new_f_in
+        self.set_structure_extension()
 
 
-ffconversions = {'GROMOS': {'AMBER': gromos2amber}}
+class DelPhiConfig(ParametersDict):
+    """DelPhi configuration parameters
+    """
+    def __init__(self, log):
+        super().__init__(log)
 
-AMBER_Hs = {
-    'NTR': ('H1', 'H2', 'H3'),
-    'CTR': ('HO'),
-    'ASP': ('HD2'),
-    'CYS': ('HG'),
-    'GLH': ('HE2'),
-    'HIP': ('HD1', 'HE2'),
-    'HID': ('HD1'),
-    'HIE': ('HE2'),
-    'LYS': ('HZ1', 'HZ2', 'HZ3'),
-    'LYN': ('HZ2', 'HZ3'),
-    'SER': ('HG'),
-    'THR': ('HG1'),
-    'TYR': ('HH')
-}
+        self.name = 'DelPhi configurations'
 
-AMBER_mainchain_Hs = ['H', 'HA']
-mainchain_Hs = {}
+        self.perfil     = 0.9
+        self.gsize      = 81
+        self.scaleP     = 1
+        self.scaleM     = 4
+        self.precision  = 'single'
+        self.ionicstr   = 0.1
+        self.bndcon     = 3
+        self.maxc       = 0.01
+        self.nlit       = 500
+        self.nonit      = 0
+        self.relfac     = 0.75
+        self.relpar     = 0.75
+        self.pbx        = False
+        self.pby        = False
+        self.epssol     = 80.0
+        self.pbc_dim    = 0
+        self.epsin      = 20.0
 
-AMBER_protomers = {'ASP': {'ASH': {0: ('HD21', 'HD12', 'HD22'), 1: ('HD11', 'HD12', 'HD22'), 
-                                   2: ('HD11', 'HD21', 'HD22'), 3: ('HD11', 'HD21', 'HD21')}, 
-                           'ASP': {4: ('HD11', 'HD12', 'HD21', 'HD22')}},
-                   'CYS': {'CYS': {0: ('HG2', 'HG3'), 1: ('HG1', 'HG3'), 2: ('HG1', 'HG2')}, 
-                           'CYM': {3: ('HG1', 'HG2', 'HG3')}},
-                   'GLU': {'GLH': {0: ('HE21', 'HE12', 'HE22'), 1: ('HE11', 'HE12', 'HE22'), 
-                                   2: ('HE11', 'HE21', 'HE22'), 3: ('HE11', 'HE12', 'HE21')}, 
-                           'GLU': {4: ('HE11', 'HE12', 'HE21', 'HE22')}},
-                   'HIS': {'HID': {0: ('HE2')}, 
-                           'HIE': {1: ('HD1')}, 
-                           'HIP': {2: ('')}}, 
-                   'TYR': {'TYR': {0: ('HH2'), 1:('HH1')}, 
-                           'TYM': {2: ('HH1', 'HH2')}},
-                   'LYS': {'LYN': {0: ('HZ1'), 1: ('HZ2'), 2: ('HZ3')}, 
-                           'LYS': {3: ('')}}, 
-                   'SER': {'SER': {0: ('HG2', 'HG3'), 1: ('HG1', 'HG3'), 2: ('HG1', 'HG2')}, 
-                           'SEM': {3: ('HG1', 'HG2', 'HG3')}},
-                   'THR': {'THR': {0: ('HG2', 'HG3'), 1: ('HG1', 'HG3'), 2: ('HG1', 'HG2')}, 
-                           'THM': {3: ('HG1', 'HG2', 'HG3')}},
-                   'NTR': {'NTR': {0: ('H1'), 1: ('H2'), 2: ('H3')},
-                           'NTN': {3: ('')}},
-                   'CTR': {'CTH': {0: ('HO21', 'HO12', 'HO22'), 1: ('HO11', 'HO12', 'HO22'), 
-                                   2: ('HO11', 'HO21', 'HO22'), 3: ('HO11', 'HO12', 'HO21')},
-                           'CTR': {4: ('HO11', 'HO12', 'HO21', 'HO22')}},
-}
+        # -1 NanoShaper off
+        # 0 connolly surface
+        # 1 skin
+        # 2 blobby
+        # 3 mesh
+        # 4 msms
+        self.nanoshaper = -1
+
+        self.p_atpos   = None
+        self.p_rad3    = None
+        self.p_chrgv4  = None
+        self.atinf     = None
+        self.p_iatmed  = None
+        self.delphimol = None
+
+        self.input_type = {
+            'perfil'    : float,
+            'gsize'     : int,
+            'scaleP'    : float,
+            'scaleM'    : float,
+            'precision' : str,
+            'ionicstr'  : float,
+            'bndcon'    : int,
+            'maxc'      : float,
+            'nlit'      : int,
+            'nonit'     : int,
+            'relfac'    : float,
+            'relpar'    : float,
+            'pbx'       : bool,
+            'pby'       : bool,
+            'epssol'    : float,
+            'pbc_dim'   : int,
+            'epsin'     : float,
+            'nanoshaper': int
+        }
+
+        self.input_special_conditions = {
+            'scaleP'   : '>0',
+            'scaleM'   : '>0',
+            'maxc'     : '>0',
+            'gsize'    : '>0',
+            'perfil'   : '>0',
+            'ionicstr' : '>0',
+            'nlit'     : '>0',
+            'epssol'   : '>0',
+            'epsin'    : '>0',
+            'bndcon'   : (1, 2, 3, 4),
+            'precision': ('single', 'double'),
+            'pbc_dim'  : (0, 2),
+            'nanoshaper': (0, 1, 2, 3, 4, -1)
+        }
+
+    def set_nonlinear_params(self, pypka_config, input_params):
+        if self['relfac'] != 0.2 and \
+            'relfac' not in input_params:
+            self['relfac'] = 0.2
+        if self['nonit'] != 5 and \
+            'nonit' not in input_params:
+            self['nonit'] = 5
+        if pypka_config['cutoff'] == -1 and \
+            'cutoff' not in input_params:
+            pypka_config['cutoff'] = 5
+
+    def redefineScale(self):
+        scaleP = (self['gsize'] - 1) / (Config.pypka_params['box'][0])
+        scaleM = int(4 / scaleP + 0.5) * scaleP
+
+        self['scaleP'] = scaleP
+        self['scaleM'] = scaleM
+
+    def store_run_params(self, delphimol):
+        if delphimol != 'reload':
+            self.delphimol = delphimol
+        else:
+            delphimol = self.delphimol
+        self.p_atpos  = copy(delphimol.get_atpos())
+        self.p_rad3   = copy(delphimol.get_rad3())
+        self.p_chrgv4 = copy(delphimol.get_chrgv4())
+        self.atinf    = copy(delphimol.get_atinf())
+        self.p_iatmed = copy(delphimol.get_iatmed())
+
+    def __str__(self):
+        out = '# PB Parameters{}\n'.format(pformat(self.__dict__))
+        return out
+
+
+class MCConfig(ParametersDict):
+    """Monte Carlo configuration parameters
+    """
+    def __init__(self, log):
+        super().__init__(log)
+
+        self.name = 'Monte Carlo configurations'
+        self.pHmin      = 0
+        self.pHmax      = 14
+        self.pHstep     = 0.25
+        self.seed       = 1234567
+        self.couple_min = 2.0
+        self.mcsteps    = 200000
+        self.eqsteps    = 1000
+
+        self.pH_values = []
+
+        self.input_special_conditions = {
+            'pHstep' : '>0',
+            'mcsteps': '>0',
+            'eqsteps': '>0'
+        }
+        self.input_type = {
+            'pHmin'     : float,
+            'pHmax'     : float,
+            'pHstep'    : float,
+            'seed'      : int,
+            'couple_min': float,
+            'mcsteps'   : int,
+            'eqsteps'   : int
+        }
+
+    def set_pH_values(self, parameters):
+        if 'pH' in parameters:
+            pH = parameters['pH']
+        else:
+            pH = '{}-{}'.format(self.pHmin, self.pHmax)
+
+        pH_error_info = 'pH can be a single value or a range. '\
+                        'As default pH is set to [0, 14]\n'\
+                        'API Example: pH = 7 or pH = 5,8\n'\
+                        'CLI Example: "pH": 7 or "pH": "5,18"'
+
+        pH_parts = pH.split(',')
+        if len(pH_parts) == 1:
+            pH_parts = pH.split('-')
+        if len(pH_parts) == 2:
+            self.pHmin = self.check_param_type('pHmin', pH_parts[0], float)
+            self.pHmax = self.check_param_type('pHmax', pH_parts[1], float)
+
+            diff = self.pHmax - self.pHmin
+            if diff < 0:
+                self.log.raise_input_param_error('pH', 'correctly defined.',
+                                                 pH_error_info)
+            if diff % self.pHstep != 0:
+                self.pHmax += self.pHstep
+            self.pH_values = arange(self.pHmin, self.pHmax + 0.001, self.pHstep)
+            self.pHmax = float(self.pH_values[-1])
+        elif len(pH_parts) == 1:
+            pH = self.check_param_type('pH', pH, float)
+            self.pH_values = (pH)
+            self.pHmin = pH
+            self.pHmax = pH
+        else:
+            self.log.raise_input_param_error('pH', 'correctly defined.',
+                                             pH_error_info)
+
+    def __str__(self):
+        out = '# MC Parameters{}\n'.format(pformat(self.__dict__))
+        return out
+
+class ParallelConfig:
+    def __init__(self):
+        self.njobs      = None
+        self.pb_time    = None
+        self.total_jobs = None
+
+        self.all_tautomers_order = None
+        self.site_interactions = None
+        self.interactions_look = None
+        self.all_sites = None
+
+        self.npossible_states = None
+        self.possible_states_g = None
+        self.possible_states_occ = None
+        self.interactions = None
+

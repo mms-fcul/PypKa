@@ -1,13 +1,16 @@
 import os
 import log
 from formats import (read_pdb_line, read_pqr_line, read_gro_line,
-                     correct_names, new_pqr_line, new_gro_line, pdb2gro)
-import config
+                     correct_names, new_pqr_line, new_pdb_line, new_gro_line, pdb2gro)
+
+from config import Config
+from constants import *
+from ffconverter import *
 from copy import copy
 
-def inputPDBCheck(filename, sites):
+def inputPDBCheck(filename, sites, clean_pdb):
     """
-    chains_length, chains_res
+    Returns: chains_length, chains_res
     """
     if filename[-3:] in ('pdb', 'pqr'):
         filetype = 'pdb'
@@ -18,17 +21,18 @@ def inputPDBCheck(filename, sites):
 
     chains_length = {}
     chains_res = {}
-    done = {}
 
-    for site in sites['A']:
-        if site[-1] == 'C':
-            resnumb = site[:-1]
-            done[resnumb] = 'CTR'
-        if site[-1] == 'N':
-            resnumb = site[:-1]
-            done[resnumb] = 'NTR'
+    for chain in sites.keys():
+        chains_res[chain] = {}
+        for site in sites[chain]:
+            if site[-1] == 'C':
+                resnumb = site[:-1]
+                chains_res[chain][resnumb] = 'CTR'
+            elif site[-1] == 'N':
+                resnumb = site[:-1]
+                chains_res[chain][resnumb] = 'NTR'
 
-    if filetype == 'pdb' and not config.params['clean_pdb']:
+    if filetype == 'pdb' and not clean_pdb:
         new_gro_header = 'CREATED within PyPka\n'
         new_gro_body = ''
     with open(filename) as f:
@@ -48,7 +52,7 @@ def inputPDBCheck(filename, sites):
                     (aname, anumb, resname,
                      chain, resnumb, x, y, z) = read_pdb_line(line)
                     atom_number += 1
-                    if not config.params['clean_pdb']:
+                    if not clean_pdb:
                         if len(aname) > 2 and \
                            aname[1] == 'H' and \
                            aname[0] in ('1', '2'):
@@ -73,64 +77,60 @@ def inputPDBCheck(filename, sites):
                     maxnlines = natoms + 3
 
             if atom_line:
-                if chain == ' ':
-                    chain = 'A'
-
                 if chain_length == 1:
                     last_chain = chain
 
                 if chain != last_chain and chain_length != 1:
                     chains_length[last_chain] = chain_length
-                    chains_res[chain] = done
+                    #chains_res[chain] = done[chain]
                     chain_length = 0
                     last_chain = chain
 
                 if chain in sites and \
-                   resnumb not in done and \
+                   resnumb not in chains_res[chain] and \
                    str(resnumb) in sites[chain]:
-                    done[resnumb] = resname
+                    chains_res[chain][resnumb] = resname
 
-    if filetype == 'pdb' and not config.params['clean_pdb']:
+    if filetype == 'pdb' and not clean_pdb:
         new_gro_header += '{0}\n'.format(atom_number)
         with open('TMP.gro', 'w') as f:
             f.write(new_gro_header + new_gro_body + new_gro_footer)
 
     chains_length[last_chain] = chain_length
-    chains_res[chain] = done
+    #chains_res[chain] = done[chain]
 
     return chains_length, chains_res
 
 
-def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
-             inputpqr, outputpqr, sites):
+def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
     """
     """
-
+    pdb_filename = Config.pypka_params['f_in']
+    pdb2pqr_path = Config.pypka_params['pdb2pqr']
     inputpdbfile = removeMembrane(pdb_filename)
 
     logfile = 'LOG_pdb2pqr'
-    errfile = 'LOG_pdb2pqr_err'
+    #errfile = 'LOG_pdb2pqr_err'
 
-    log.redirectOutput("start", logfile)
-    log.redirectErr("start", errfile)
-
-    sites_numbs = list(sites.keys())
+    #log.redirectOutput("start", logfile)
+    #log.redirectErr("start", errfile)
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
     os.system('python2 {0} {1} {2} --ff {3} --ffout GROMOS '
-              '--drop-water -v --chain'.format(pdb2pqr_path,
-                                               inputpdbfile, inputpqr,
-                                               config.params['ffinput']))
+              '--drop-water -v --chain > {4} 2>&1 '.format(pdb2pqr_path,
+                                                           inputpdbfile, inputpqr,
+                                                           Config.pypka_params['ffinput'],
+                                                           logfile))
 
-    if config.f_structure_out:
+    if Config.pypka_params['f_structure_out']:
         os.system('python2 {0} {1} Hs.pqr --ff AMBER --ffout AMBER '
-                  '--drop-water -v --chain'.format(pdb2pqr_path,
-                                                   inputpdbfile))
+                  '--drop-water -v --chain >> {2} 2>&1 '.format(pdb2pqr_path,
+                                                                inputpdbfile, logfile))
 
-    log.redirectOutput("stop", logfile)
-    log.redirectErr("stop", errfile)
+    #log.redirectOutput("stop", logfile)
+    #log.redirectErr("stop", errfile)
 
-    if config.f_structure_out:
+    if Config.pypka_params['f_structure_out']:
         with open('Hs.pqr') as f:
             for line in f:
                 if line.startswith('ATOM '):
@@ -138,46 +138,82 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
                      z, charge, radius) = read_pqr_line(line)
 
                     if resnumb in chains_res['A'] and \
-                       resname in config.AMBER_Hs and \
-                       aname in config.AMBER_Hs[resname] and \
-                       aname not in config.AMBER_mainchain_Hs:
+                       resname in AMBER_Hs and \
+                       aname in AMBER_Hs[resname] and \
+                       aname not in AMBER_mainchain_Hs:
                         continue
                     elif aname[0] == 'H' and aname not in ('H1', 'H2', 'H3'):
-                        if not resnumb in config.mainchain_Hs:
-                            config.mainchain_Hs[resnumb] = []
-                        config.mainchain_Hs[resnumb].append((aname, anumb, resname, chain, 
-                                                             x, y, z))
-    
-    CYS_bridges = {'A': []}
+                        if not resnumb in mainchain_Hs:
+                            mainchain_Hs[resnumb] = []
+                        mainchain_Hs[resnumb].append((aname, anumb, resname, chain,
+                                                      x, y, z))
+
+    CYS_bridges = {}
     with open('LOG_pdb2pqr') as f:
         for line in f:
             if 'patched with CYX' in line:
                 parts = line.split('patched')[0].replace('PATCH INFO: ', '').split()
                 resname, chain, resnumb = parts
+                chain = chain.replace('_', ' ')
                 if not chain in CYS_bridges:
                     CYS_bridges[chain] = []
-                CYS_bridges[chain].append(int(parts[-1]))
-    config.tit_mole.saveCYSBridges(CYS_bridges)
-    
+                cys_res_numb = int(parts[-1])
+                if cys_res_numb not in CYS_bridges[chain]:
+                    CYS_bridges[chain].append(cys_res_numb)
+
+    for chain, molecule in molecules.items():
+        if chain in CYS_bridges:
+            molecule.saveCYSBridges(CYS_bridges[chain])
+
     new_pdb_text = ''
     removed_pdb_text = ''
     removed_pdb_lines = []
     #ntr_trigger = True
+    resnumb_max = 0
+    chains = list(molecules.keys())
+
     with open(inputpqr) as f:
         for line in f:
             if "ATOM" in line[:4]:
-                (aname, anumb, resname, chain, resnumb, x, y,
+                (aname, anumb, resname, original_chain, resnumb, x, y,
                  z, charge, radius) = read_pqr_line(line)
-                
-                if chain in (' ', 'A'):
-                    aname, resname = correct_names(sites_numbs, resnumb,
-                                                   resname, aname, sites_numbs)
+
+                if original_chain == '_':
+                    chain = ' '
+                else:
+                    chain = original_chain
+
+                termini_trigger = False
+                if chain in chains:
+                    molecule = molecules[chain]
+                    NTR_numb = molecule.NTR
+                    CTR_numb = molecule.CTR
+
+                    sites_numbs = molecule.sites.keys()
+
+                    aname, resname = correct_names(resnumb,
+                                                   resname, aname,
+                                                   sites_numbs, NTR_numb, CTR_numb)
                     resnumb_max = resnumb
+
+                    if resnumb in (NTR_numb, CTR_numb):
+                        termini_trigger = True
+
+                if aname in ('O1', 'O2', 'H1', 'H2', 'H3') and \
+                   not termini_trigger and resname in PROTEIN_RESIDUES:
+                    if aname == 'O1':
+                        aname = 'O'
+                    elif aname == 'H1':
+                        aname = 'H'
+                    else:
+                        continue
+
                 if line[26] != ' ':
-                    resnumb += config.terminal_offset
+                    resnumb += TERMINAL_OFFSET
+
                 new_line = new_pqr_line(anumb, aname, resname,
-                                        resnumb, x, y, z, charge, radius)
-                if chain in (' ', 'A'):
+                                        resnumb, x, y, z, charge, radius, chain=original_chain)
+                if chain in molecules:
                     new_pdb_text += new_line
                 elif aname not in ('H1', 'H2', 'H3', 'O1', 'O2'):
                     if resname in ('SER', 'THR') and aname == 'HG1':
@@ -193,12 +229,12 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         while resnumb < resnumb_max:
             resnumb += resnumb_old
         removed_pdb_text += new_pqr_line(anumb, aname, resname,
-                                         resnumb, x, y, z, charge, radius)        
+                                         resnumb, x, y, z, charge, radius)
         resnumb_max = resnumb
     #            if ntr_trigger and :
     #                config.tit_mole._NTR = resnumb
-    
-    chains = copy(chains_res['A'])
+
+    #chains = copy(chains_res['A'])
     #for res in chains:
     #    if str(res) > config.terminal_offset:
     #        print((res, chains_res['A'][res]))
@@ -213,21 +249,27 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         f_new.write(removed_pdb_text)
 
     sites_addHtaut = ''
-    for res in chains_res['A']:
-        if chains_res['A'][res] != 'NTR' and res not in CYS_bridges['A']:
-            sites_addHtaut += '{0}_{1},'.format(res, chains_res['A'][res])
+    for chain in molecules:
+        for res in chains_res[chain]:
+            if chains_res[chain][res] == 'NTR' or \
+               (chain in CYS_bridges and res in CYS_bridges[chain]):
+               continue
+            sites_addHtaut += '{0}-{1}-{2},'.format(res, chains_res[chain][res],
+                                                    chain.replace(' ', '_'))
 
     if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ',':
         sites_addHtaut = sites_addHtaut[:-1]
 
     logfile = 'LOG_addHtaut'
-    log.redirectErr("start", logfile)
+    #log.redirectErr("start", logfile)
 
-    os.system(f'{config.script_dir}/addHtaut cleaned.pqr {sites_addHtaut} > {outputpqr}')
+    script_dir = Config.pypka_params['script_dir']
+    os.system('{}/addHtaut cleaned.pqr {} > {} 2> {}'.format(script_dir,
+                                                             sites_addHtaut,
+                                                             outputpqr, logfile))
 
-    log.redirectErr("stop", logfile)
+    #log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
-
 
     with open(outputpqr) as f:
         content = f.read()
@@ -243,18 +285,40 @@ def cleanPDB(pdb_filename, pdb2pqr_path, chains_res,
         if not box:
             box = (1.0, 1.0, 1.0)
 
-    pdb2gro(outputpqr, "TMP.gro", box, sites, pqr=True, fix_termini=False)
+    #pdb2gro(outputpqr, "TMP.gro", chains_res, box, pqr=True, fix_termini=False)
 
-    if config.params['pbc_dim'] == 2:
-        addMembrane("TMP.gro", pdb_filename)
+    with open(outputpqr) as f,\
+         open('TMP.pdb', 'w') as fnew:
+        counter = 0
+        new_pdb_text = "CRYST1  {:3.3f}  {:3.3f}  {:3.3f}  "\
+                       "60.00  60.00  90.00 P 1           1\n".format(box[0],
+                                                                      box[1], box[2])
+        for line in f:
+            counter += 1
+            (aname, anumb_old, resname, chain, resnumb, x, y,
+             z, charge, radius) = read_pqr_line(line)
 
-    if config.params['keep_ions']:
-        addIons("TMP.gro", pdb_filename)
+            if chain == '_':
+                chain = ' '
+
+            new_pdb_text += new_pdb_line(counter, aname, resname, resnumb, x, y, z, chain=chain)
+        fnew.write(new_pdb_text)
+
+    keep_membrane = False
+    keep_ions = False
+    if Config.delphi_params['pbc_dim'] == 2:
+        keep_membrane = True
+
+    if Config.pypka_params['keep_ions']:
+        keep_ions = True
+    if keep_ions or keep_membrane:
+        add_non_protein(pdb_filename, 'TMP.pdb',
+                        keep_membrane=keep_membrane, keep_ions=keep_ions)
 
     tmpfiles = ('LOG_pdb2pqr', 'LOG_pdb2pqr_err', 'clean.pqr', 'cleaned.pqr',
                 'cleaned_tau.pqr', 'input_clean.pdb', 'removed.pqr', 'Hs.pqr')
     for filename in tmpfiles:
-        if not config.debug and os.path.isfile(filename):
+        if not Config.debug and os.path.isfile(filename):
             os.remove(filename)
 
 def removeMembrane(pdbfile):
@@ -264,8 +328,14 @@ def removeMembrane(pdbfile):
             if 'ATOM ' == line[0:5]:
                 (aname, anumb, resname,
                  chain, resnumb, x, y, z) = read_pdb_line(line)
-                if resname not in config.lipid_residues:
-                    nomembrane_text += line
+
+                if chain == ' ':
+                    chain = '_' # workaround to deal with pdb2pqr
+
+                if resname not in LIPID_RESIDUES:
+                    nomembrane_text += new_pdb_line(anumb, aname, resname, resnumb,
+                                                    x, y, z, chain=chain)
+
             else:
                 nomembrane_text += line
     with open('tmp.tmp', 'w') as f_new:
@@ -274,84 +344,44 @@ def removeMembrane(pdbfile):
     return 'input_clean.pdb'
 
 
-def addMembrane(grofile, pdbfile):
-    atom_number = 0
-    new_file_header = ''
+def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=False):
     new_file_body = ''
-    new_file_footer = ''
-    # Read the grofile with only the protein
-    with open(grofile) as f:
-        nline = 0
-        maxnlines = 0
+
+    with open(add_to_pdb) as f:
         for line in f:
-            nline += 1
-            if nline > 2 and nline < maxnlines:
-                atom_number += 1
-                (aname, anumb, resname, resnumb, x, y, z) = read_gro_line(line)
-                new_file_body += new_gro_line(atom_number, aname, resname,
-                                              resnumb, x, y, z)
-            elif nline == 2:
-                natoms = int(line.strip())
-                maxnlines = natoms + 3
-            elif nline == 1:
-                new_file_header += line
-            else:
-                new_file_footer += line
+            if line.startswith('ATOM '):
+                (aname, anumb, resname,
+                 chain, resnumb, x, y, z) = read_pdb_line(line)
+                last_anumb = anumb
+                last_resnumb = resnumb
 
     # Read the original pdb with the membrane
-    with open(pdbfile) as f:
+    with open(pdbfile_origin) as f:
         for line in f:
             if 'ATOM ' == line[0:5]:
                 (aname, anumb, resname,
                  chain, resnumb, x, y, z) = read_pdb_line(line)
-                if resname in config.lipid_residues:
-                    atom_number += 1
-                    x, y, z = x/10, y/10, z/10
-                    new_file_body += new_gro_line(atom_number, aname, resname,
-                                                  resnumb, x, y, z)
+                if keep_membrane:
+                    if resname in LIPID_RESIDUES:
+                        last_anumb += 1
+                        new_file_body += new_pdb_line(last_anumb, aname, resname,
+                                                      resnumb, x, y, z, chain=chain)
 
-                if resname in list(config.lipids.values()):
-                    aname, resname, to_include = convert_FF_atomnames(aname, resname)
-                    if to_include:
-                        atom_number += 1
-                        x, y, z = x/10, y/10, z/10
-                        new_file_body += new_gro_line(atom_number, aname, resname,
-                                                      resnumb, x, y, z)
-
-    with open('tmp.tmp', 'w') as f_new:
-        new_file_header += str(atom_number) + '\n'
-        f_new.write(new_file_header + new_file_body + new_file_footer)
-    os.rename('tmp.tmp', grofile)
-
-
-def addIons(grofile, pdbfile):
-    with open(grofile) as f:
-        content = f.readlines()
-        header = content[0]
-        natoms = int(content[1].strip())
-        coordinates = content[2:-1]
-        box = content[-1]
-
-    (aname, last_anumb, resname, last_resnumb, x, y, z) = read_gro_line(coordinates[-1])
-    extra_lines = ''
-    with open(pdbfile) as f:
-        for line in f:
-            if line.startswith('ATOM'):
-                (aname, anumb, resname,
-                 chain, resnumb, x, y, z) = read_pdb_line(line)
-                if aname in config.ions and resname == aname:
+                    if resname in list(LIPIDS.values()):
+                        aname, resname, to_include = convert_FF_atomnames(aname, resname)
+                        if to_include:
+                            last_anumb += 1
+                            resnumb += last_resnumb
+                            new_file_body += new_pdb_line(last_anumb, aname, resname,
+                                                          resnumb, x, y, z, chain=chain)
+                if keep_ions and aname in IONS and resname == aname:
                     last_anumb += 1
-                    last_resnumb +=1
-                    natoms += 1
-                    x, y, z = x/10, y/10, z/10
-                    extra_lines += new_gro_line(last_anumb, aname, resname,
-                                                last_resnumb, x, y, z)
+                    resnumb += last_resnumb
+                    new_file_body += new_pdb_line(last_anumb, aname, resname,
+                                                  resnumb, x, y, z, chain=chain)
 
-    with open(grofile, 'w') as f_new:
-        natoms = f'{natoms}\n'
-        coordinates = ''.join(coordinates)
-        content = header + natoms + coordinates + extra_lines + box
-        f_new.write(content)
+    with open(add_to_pdb, 'a') as f_new:
+        f_new.write(new_file_body)
 
 def convert_FF_atomnames(aname, resname):
     popc_resname = config.lipids['POPC']

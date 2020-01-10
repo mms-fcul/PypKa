@@ -4,10 +4,9 @@ epsin           = 2
 ionicstr        = 0.1
 pbc_dimensions  = 0
 temp            = 310
-grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 8
+ncpus           = 16
 pH              = 0, 15
-sites_A         = 1N, 2C
+sites           = 1N, 2C
 
 ### optional ###
 clean_pdb = no

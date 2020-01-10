@@ -13,16 +13,28 @@ parameters = {'structure'     : 'lyso.pdb',
               'ncpus'         : sys.argv[1],
               'output'        : 'pKas.out',
               'titration_output': 'titration.out',
-              }
+              'ser_thr_titration': False,
+              'structure_output': ('out12.pdb', 12)
+}
               #'gsize'         : 91,
               #'bndcon'        : 4,
               #'nanoshaper'    : 0,
               #'precision'     : 'single'}
+
 pKa = Titration(parameters)
+exit()
+# Run each step separately
+#pKa = Titration(parameters, run='preprocess')
+#pKa.DelPhiLaunch()
+#pKa.calcSiteInteractionsParallel()
+#pKa.run_mc()
+#print(pKa)
+
+#from IPython import embed; embed()
 
 #for pH in pKa.getTitrationCurve('total').keys():
 #    print(pH, pKa.getTitrationCurve('total')[pH])
-exit()
+
 for site in pKa:
     print(site, pKa[site], pKa.getProtState(site, 7))
     print(pKa.getMostProbStates(site, 7))

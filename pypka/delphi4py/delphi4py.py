@@ -15,7 +15,7 @@ import sys
 class DelPhi4py(object):
     """
     """
-    def __init__(self, in_crg, in_siz, in_pdb, natoms, igrid, scale,
+    def __init__(self, in_crg, in_siz, in_pdb, igrid, scale,
                  precision, perfil=0, epsin=2, epsout=80,
                  conc=0, ibctyp=2, res2=0, nlit=0, radprb=1.4,
                  relfac=0.0, relpar=0.0, nonit=0, fcrg=False,
@@ -38,11 +38,12 @@ class DelPhi4py(object):
         self.res2    = float(res2)
         self.nlit    = int(nlit)
 
-        self.acent  = []
-        self.natoms = int(natoms)
         self.in_crg = str(in_crg)
         self.in_siz = str(in_siz)
         self.in_pdb = str(in_pdb)
+
+        self.acent  = []
+        self.natoms = int(self.get_total_atoms())
 
         self.radprb = float(radprb)
         self.energy = ['s', 'c']
@@ -104,6 +105,14 @@ class DelPhi4py(object):
 
         self.esolvation = 999.999
 
+    def get_total_atoms(self):
+        c = 0
+        with open(self.in_pdb) as f:
+            for line in f:
+                if line.startswith('ATOM '):
+                    c += 1
+        return c
+
     def resetDelPhiData(self):
         """Resets all DelPhi Input data structures"""
         # internal DelPhi DataStructures
@@ -139,10 +148,14 @@ class DelPhi4py(object):
         self.dataobject   = (c_char * 96 * self.nobject * 2)()
         self.i_dataobject = addressof(self.dataobject)
 
-    def changeStructureSize(self, natoms, p_atpos, p_rad3, p_chrgv4,
-                            atinf, p_iatmed, extra_atoms=None):
+    def changeStructureSize(self, p_atpos, p_rad3, p_chrgv4,
+                            atinf, p_iatmed, extra_atoms=None, natoms=None):
+
         if not extra_atoms:
             extra_atoms = []
+
+        if not natoms:
+            natoms = self.natoms
 
         self.natoms  = natoms + len(extra_atoms)
 
@@ -292,7 +305,7 @@ class DelPhi4py(object):
             ibctyp = 3
             nlit = self.nlit
 
-            in_frc   = 'self'            
+            in_frc   = 'self'
             out_phi   = False
 
             focusing = False

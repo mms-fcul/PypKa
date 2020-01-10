@@ -4,10 +4,9 @@ epsin           = 2
 ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
-grid_fill       = 0.8 # FUTURE VERSION
-ncpus           = 8
+ncpus           = 16
 pH              = -10,25
-sites_A         = all
+sites           = all
 
 ### optional ###
 logfile   = LOGFILE

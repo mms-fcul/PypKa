@@ -1,0 +1,30 @@
+### mandatory ###
+structure       = lyso.pdb
+epsin           = 20
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 310
+ncpus           = 16
+pH              = -5,15
+#sites           = 1N, 18, 35, 48, 66, 129C
+sites_A = 1N
+sites_B = 1
+sites_C = 35
+sites_D = 35, 66, 1C
+
+### optional ###
+logfile   = LOGFILE
+
+scaleM = 4.14731
+scaleP = 1.38243747
+gsize = 111
+
+convergence = 0.01
+nlit   = 50
+cutoff = -1
+
+output = pKas.out
+titration_output = protonation.out
+
+pHstep = 0.2
+relfac = 0.2
