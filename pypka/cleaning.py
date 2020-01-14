@@ -123,9 +123,14 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
                                                            logfile))
 
     if Config.pypka_params['f_structure_out']:
-        os.system('python2 {0} {1} Hs.pqr --ff AMBER --ffout AMBER '
+        ff_out = Config.pypka_params['ff_structure_out']
+        if ff_out == 'gromos_cph':
+            ff_out = 'gromos'
+        os.system('python2 {0} {1} Hs.pqr --ff {3} --ffout {3} '
                   '--drop-water -v --chain >> {2} 2>&1 '.format(pdb2pqr_path,
-                                                                inputpdbfile, logfile))
+                                                                inputpdbfile,
+                                                                logfile,
+                                                                ff_out))
 
     #log.redirectOutput("stop", logfile)
     #log.redirectErr("stop", errfile)

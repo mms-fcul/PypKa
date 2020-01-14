@@ -3,7 +3,7 @@ sys.path.insert(1, '../../')
 
 from pypka import Titration
 
-parameters = {'structure'     : 'lyso.pdb',
+parameters = {'structure'     : 'lyso1.gro',
               'convergence'   : 0.01,
               'pH'            : "0,14",
               'scaleM'        : 2,
@@ -14,14 +14,17 @@ parameters = {'structure'     : 'lyso.pdb',
               'output'        : 'pKas.out',
               'titration_output': 'titration.out',
               'ser_thr_titration': False,
-              'structure_output': ('out12.pdb', 12)
+              'structure_output': ('out4.pdb', 4.5, 'gromos_cph'),
+              'clean': False
 }
               #'gsize'         : 91,
               #'bndcon'        : 4,
               #'nanoshaper'    : 0,
               #'precision'     : 'single'}
 
-pKa = Titration(parameters)
+sites = {'A': ['1N', 1, 7, 15, 18, 35, 48, 52, 66, 87, 101, 119, '129C']}
+ 
+pKa = Titration(parameters, sites=sites)
 exit()
 # Run each step separately
 #pKa = Titration(parameters, run='preprocess')

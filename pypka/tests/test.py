@@ -547,7 +547,7 @@ CTR 2002 3.390519247038917 ('deprotonated', 0.0002457041692844058)
 
 class TestBuilder(object):
     def test_lyso_pH0(self):
-        outfile = 'gromos1.pdb'
+        outfile = 'amber1.pdb'
         from ..pypka import Titration
 
         parameters = {'structure'     : 'builder/4lzt.pdb',
@@ -557,13 +557,13 @@ class TestBuilder(object):
                       'ncpus'         : ncpus,
                       'output'        : 'pKas.out',
                       'titration_output': 'titration.out',
-                      'structure_output': (outfile, 1)
+                      'structure_output': (outfile, 1, "amber")
                       }
         pKa = Titration(parameters)
         checkStructureOutput(outfile)
 
     def test_lyso_pH7(self):
-        outfile = 'gromos7.pdb'
+        outfile = 'amber7.pdb'
         from ..pypka import Titration
 
         parameters = {'structure'     : 'builder/4lzt.pdb',
@@ -573,12 +573,28 @@ class TestBuilder(object):
                       'ncpus'         : ncpus,
                       'output'        : 'pKas.out',
                       'titration_output': 'titration.out',
-                      'structure_output': (outfile, 7)
+                      'structure_output': (outfile, 7, "amber")
                       }
         pKa = Titration(parameters)
         checkStructureOutput(outfile)
 
     def test_lyso_pH12(self):
+        outfile = 'amber12.pdb'
+        from ..pypka import Titration
+
+        parameters = {'structure'     : 'builder/4lzt.pdb',
+                      'epsin'         : 15,
+                      'ionicstr'      : 0.1,
+                      'pbc_dimensions': 0,
+                      'ncpus'         : ncpus,
+                      'output'        : 'pKas.out',
+                      'titration_output': 'titration.out',
+                      'structure_output': (outfile, 12, "amber")
+                      }
+        pKa = Titration(parameters)
+        checkStructureOutput(outfile)
+
+    def test_lyso_pH12_gromos(self):
         outfile = 'gromos12.pdb'
         from ..pypka import Titration
 
@@ -589,7 +605,7 @@ class TestBuilder(object):
                       'ncpus'         : ncpus,
                       'output'        : 'pKas.out',
                       'titration_output': 'titration.out',
-                      'structure_output': (outfile, 12)
+                      'structure_output': (outfile, 12, "gromos_CpH")
                       }
         pKa = Titration(parameters)
         checkStructureOutput(outfile)

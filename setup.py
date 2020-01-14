@@ -13,6 +13,7 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
   - gawk 
   - pytest
   - numpy
+  - psutil
 
 
 # License
@@ -64,9 +65,9 @@ setuptools.setup(
                             'delphi4py/*',
                             'delphi4py/readFiles/*.so',
                             'delphi4py/rundelphi/*.so']},
-    install_requires=['numpy', 'pytest', 'coverage'],
+    install_requires=['numpy', 'pytest', 'coverage', 'psutil'],
     classifiers=[
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Cython",
         "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3) ",
         "Operating System :: OS Independent",

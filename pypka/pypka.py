@@ -14,7 +14,7 @@ from formats import convertTermini, gro2pdb, pdb2gro, read_pdb_line, new_pdb_lin
 from molecule import Molecule
 from concurrency import startPoolProcesses, runDelPhiSims, runInteractionCalcs, runMCCalcs
 import log
-from ffconverter import AMBER_protomers, gromos2amber, mainchain_Hs
+from ffconverter import AMBER_protomers, GROMOS_protomers, gromos2amber, mainchain_Hs
 
 from delphi4py.delphi4py import DelPhi4py
 
@@ -28,7 +28,7 @@ __email__ = "pdreis@fc.ul.pt"
 __status__ = "Development"
 
 
-def getTitrableSites(pdb):
+def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     """Gets the all titrable sites from the pdb
 
     Returns an input structure to the Titration class containing all
@@ -42,28 +42,30 @@ def getTitrableSites(pdb):
 
     """
 
-    config.f_in = pdb
-    config.params['ffID'] = 'G54A7'
+    parameters = {'structure': pdb,
+                  'ncpus': 1,
+                  'epsin': 15,
+                  'ser_thr_titration': ser_thr_titration}
+    Config.storeParams('', log.Log(), debug, parameters)
 
-    tit_mol = Molecule()
+    chains = get_chains_from_file(pdb)
+    sites = {chain: 'all' for chain in chains}
 
-    tit_mol.makeSimpleSites()
+    chains_res = identify_tit_sites(sites, instanciate_sites=False)
 
-    sites = tit_mol.getSitesOrdered()
-    sites_keys = []
-    for site in sites:
-        sitename = site.getName()
-        sitenumber = site.getResNumber()
-        sitenumber = convertTermini(sitenumber)
-        if sitename in ('NTR', 'CTR'):
-            if sitename == 'NTR':
-                sites_keys.append('{0}N'.format(sitenumber))
-            else:
-                sites_keys.append('{0}C'.format(sitenumber))
-        else:
-            sites_keys.append(str(sitenumber))
+    out_sites = {chain: [] for chain in chains_res.keys()}
 
-    return sites_keys
+    for chain, sites in chains_res.items():
+        for resnumb, resname in sites.items():
+            out_site = resnumb
+            if resname == 'NTR':
+                out_site += 'N'
+            elif resname == 'CTR':
+                out_site += 'C'
+
+            out_sites[chain].append(out_site)
+
+    return out_sites, chains_res
 
 
 class Titration:
@@ -133,15 +135,17 @@ class Titration:
         if sites == 'all':
             f_in = Config.pypka_params['f_in']
             chains = get_chains_from_file(f_in)
-            sites = {chain: 'all' for chain in chains}
+            sites = {chain: ['all'] for chain in chains}
 
         for chain, site_list in sites.items():
             if site_list == ['all']:
                 site_list = 'all'
+            else:
+                site_list = [str(site) for site in site_list]
+                sites[chain] = site_list
             self.molecules[chain] = Molecule(chain, site_list)
             if site_list == 'all':
                 automatic_sites = True
-
 
         if Config.pypka_params['f_in_extension'] == 'pdb':
             f_in = Config.pypka_params['f_in']
@@ -183,7 +187,6 @@ class Titration:
                 cleanPDB(self.molecules, chains_res, inputpqr, outputpqr)
                 create_tit_sites(chains_res, TMPpdb=True)
                 f_in = 'TMP.pdb'
-
         else:
             f_format = Config.pypka_params['f_in_extension']
             raise Exception("{0} file format is not currently supported".format(f_format))
@@ -672,17 +675,15 @@ class Titration:
             sites[c].setpK(pK)
             #self.pKas[chain][site] = pK
 
-        print('closing mc_run')
-
     def writeOutputStructure(self):
-        def getProtomerResname(selected_prots_probs, site):
+        def getProtomerResname(pdb_content, site, pH, ff_protomers):
             resnumb = site.getResNumber()
             resname = site.getName()
             new_state, new_state_prob = site.getMostProbTaut(pH)
             new_state_i = new_state - 1
-            for amber_resname, protomers in AMBER_protomers[resname].items():
+            for ff_resname, protomers in ff_protomers[resname].items():
                 if new_state_i in protomers.keys():
-                    new_resname = amber_resname
+                    new_resname = ff_resname
                     remove_hs = protomers[new_state_i]
 
                     state_prob, taut_prob = site.getTautProb(new_state,
@@ -704,16 +705,20 @@ class Titration:
                                                                         "", rounded_sprob,
                                                                         "", rounded_tprob)
 
-                    selected_prots_probs += 'REMARK     {text}\n'.format(text=remark_line)
+                    pdb_content += 'REMARK     {text}\n'.format(text=remark_line)
 
             #print(resnumb, new_state, new_resname, remove_hs, state_prob, taut_prob)
-            return selected_prots_probs, new_state_i, new_resname, remove_hs
+            return pdb_content, new_state_i, new_resname, remove_hs
 
         outputname = Config.pypka_params['f_structure_out']
         pH = float(Config.pypka_params['f_structure_out_pH'])
+        ff_out = Config.pypka_params['ff_structure_out']
 
-        selected_prots_probs = 'REMARK     Protonation states assigned according to PypKa\n'\
-                               'REMARK     Residue    Prot State Prob    Tautomer Prob\n'
+        ff_protomer = {'amber': AMBER_protomers,
+                       'gromos_cph': GROMOS_protomers}[ff_out]
+
+        pdb_content = 'REMARK     Protonation states assigned according to PypKa\n'\
+                      'REMARK     Residue    Prot State Prob    Tautomer Prob\n'
 
 
         sites = self.get_all_sites(get_list=True)
@@ -724,9 +729,10 @@ class Titration:
             molecule = site.molecule
             chain = molecule.chain
 
-            (selected_prots_probs, new_state,
-             new_resname, remove_hs) = getProtomerResname(selected_prots_probs,
-                                                          site)
+            (pdb_content, new_state,
+             new_resname, remove_hs) = getProtomerResname(pdb_content,
+                                                          site, pH,
+                                                          ff_protomer)
 
             if resname in ('NTR', 'CTR'):
                 new_resname = site.termini_resname
@@ -737,7 +743,7 @@ class Titration:
             new_states[resnumb] = (resname, new_state,
                                    new_resname, remove_hs)
 
-        new_pdb = selected_prots_probs
+        new_pdb = pdb_content
         counter = 0
 
         tit_atoms = {}
@@ -757,12 +763,14 @@ class Titration:
                 if anumb in tit_atoms.keys():
                     molecule = tit_atoms[anumb]
 
-                    oldresname, new_state, resname, removeHs = new_states[resnumb]
+                    (oldresname, new_state,
+                     resname, removeHs) = new_states[resnumb]
 
                     if aname in removeHs:
                         continue
 
-                    if oldresname in gromos2amber and \
+                    if ff_out == 'amber' and \
+                       oldresname in gromos2amber and \
                        new_state in gromos2amber[oldresname] and \
                        aname in gromos2amber[oldresname][new_state]:
                         aname = gromos2amber[oldresname][new_state][aname]

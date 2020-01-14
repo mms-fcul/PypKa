@@ -196,8 +196,12 @@ class PypKaConfig(ParametersDict):
         self.f_out              = None
         self.f_prot_out         = None
         self.f_structure_out    = None
-        self.f_structure_out_pH = None
+
+        # Output File
         self.structure_output   = None
+        self.f_structure_out_pH = None
+        self.ff_structure_out   = None
+
 
         # Force Field
         self.f_crg = None
@@ -220,7 +224,8 @@ class PypKaConfig(ParametersDict):
         self.input_special_conditions = {
             'temp': '>0',
             'ffID': ('G54A7'),
-            'ffinput': ('GROMOS', 'AMBER', 'CHARMM')
+            'ffinput': ('GROMOS', 'AMBER', 'CHARMM'),
+            'ff_structure_out': ('gromos_cph', 'amber')
         }
         self.input_type = {
             'debug'             : bool,
@@ -230,7 +235,8 @@ class PypKaConfig(ParametersDict):
             'f_out'             : str,
             'f_prot_out'        : str,
             'f_structure_out'   : str,
-            'f_structure_out_pH': str,
+            'f_structure_out_pH': float,
+            'ff_structure_out'  : str,
             'structure_output'  : str,
             'ffID'              : str,
             'ffinput'           : str,
@@ -294,19 +300,22 @@ class PypKaConfig(ParametersDict):
     def set_structure_output(self, pHmin, pHmax):
         error_raise = False
         structure_output = self['structure_output'].split(',')
-        msg = 'CLI Example: "structure_output": ("structure.pdb", 7)\n '\
-              'API Example: structure_output = structure.pdb, 7'
-        if len(structure_output) != 2:
-            error_msg = 'a tuple containing a filename and the desired pH value.'
+        msg = 'CLI Example: "structure_output": ("structure.pdb", 7, "amber")\n '\
+              'API Example: structure_output = structure.pdb, 7, amber'
+        if len(structure_output) != 3:
+            error_msg = 'a tuple containing a filename, the desired pH value and force field naming scheme.'
             self.log.raise_input_param_error('structure_output', error_msg, msg)
 
-        outfilename = structure_output[0].strip('()"\'')
-        pH =  structure_output[1].strip('()"\'')
+
+        outfilename = structure_output[0].strip('()"\' ')
+        pH =  structure_output[1].strip('()"\' ')
+        ff_out = structure_output[2].strip('()"\' ').lower()
 
         pH = self.check_param_type('structure_output_pH', pH, float, msg)
 
         self['f_structure_out'] = outfilename
         self['f_structure_out_pH'] = pH
+        self['ff_structure_out'] = ff_out
 
         if pH < pHmin or pH > pHmax:
             message = 'in range [pHmin, pHmax].'

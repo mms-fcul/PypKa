@@ -5,7 +5,7 @@ from constants import *
 from formats import read_pdb_line, read_gro_line, new_pdb_line
 from copy import copy
 
-def identify_tit_sites(molecules):
+def identify_tit_sites(molecules, instanciate_sites=True):
     def SitesFileLine(resnumb, resname):
         for res in REGULARTITRATINGRES:
             if res[0:2] == resname[0:2]:
@@ -20,12 +20,17 @@ def identify_tit_sites(molecules):
         text = '{0} '.format(resnumb)
         for i in range(ntautomers):
             text += '{0}tau{1} '.format(resname, i + 1)
-        if resname in ('NTR', 'CTR'):
+
+        if res in ('NTR', 'CTR'):
             resnumb += TERMINAL_OFFSET
-        molecule = molecules[chain]
+
+        if instanciate_sites:
+            instanciate_site(resnumb, resname, ntautomers)
+        return text + '\n'
+
+    def instanciate_site(resnumb, resname, ntautomers):
         sID = molecule.addSite(resnumb)
         molecule.addTautomers(sID, ntautomers, resname)
-        return text + '\n'
 
     def add2chain(chain, chain_res, resnumb, resname):
         chain_res[chain][resnumb] = resname
@@ -56,14 +61,14 @@ def identify_tit_sites(molecules):
                     molecule = molecules[chain]
                     chain_sites = chain_res[chain]
 
-                    if (resname in PROTEIN_RESIDUES or resname in TITRABLERESIDUES) and \
-                       molecule.input_sites == 'all':
+                    if resname in PROTEIN_RESIDUES or \
+                       resname in TITRABLERESIDUES:
                         if resnumb not in chain_sites:
                             if not chain_res[chain]:
                                 sites_file += SitesFileLine(resnumb, 'NTR')
-                                molecule = molecules[chain]
-                                molecule.NTR = resnumb
                                 add2chain(chain, chain_res, str(resnumb), 'NTR')
+                                if instanciate_sites:
+                                    molecule.NTR = resnumb
 
                             if resname in TITRABLERESIDUES and \
                                resname != 'NTR' and resname != 'CTR':
@@ -76,26 +81,29 @@ def identify_tit_sites(molecules):
                         if 'CTR' not in sites and \
                            aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT'):
                             sites_file += SitesFileLine(resnumb, 'CTR')
-                            molecule = molecules[chain]
-                            molecule.CTR = resnumb
                             add2chain(chain, chain_res, str(resnumb), 'CTR')
+                            if instanciate_sites:
+                                molecule.CTR = resnumb
+
 
     if 'CTR' not in sites and \
        aname in ('CT', 'OT', 'OT1', 'OT2', 'O1', 'O2', 'OXT') and molecule.sites == 'all':
         sites_file += SitesFileLine(last_res, 'CTR')
-        molecule = molecules[chain]
-        molecule.CTR = resnumb
         add2chain(last_chain, chain_res, str(last_res), 'CTR')
+        if instanciate_sites:
+            molecule = molecules[chain]
+            molecule.CTR = resnumb
 
-    if not chain_res:
+    if not chain_res and instanciate_sites:
         f_in = Config.pypka_params['f_in']
         raise Exception('Not one titrable residue was found in {}'.format(f_in))
 
-    for molecule in molecules.values():
-        # Adding the reference tautomer to each site
-        molecule.addReferenceTautomers()
-        # Assigning a charge set to each tautomer
-        molecule.addTautomersChargeSets()
+    if instanciate_sites:
+        for molecule in molecules.values():
+            # Adding the reference tautomer to each site
+            molecule.addReferenceTautomers()
+            # Assigning a charge set to each tautomer
+            molecule.addTautomersChargeSets()
 
     if Config.debug:
         with open('tmp.sites', 'w') as f_new:
@@ -139,6 +147,7 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                                            res_atoms,
                                            ter=ter,
                                            site=res_tits)
+
 
         if integrity_terminal:
             ter_resnumb = prev_resnumb + TERMINAL_OFFSET

@@ -35,8 +35,8 @@ REGULARTITRATINGRES = list(TITRABLETAUTOMERS.keys())
 
 for res in REGULARTITRATINGRES:
     ntautomers = TITRABLETAUTOMERS[res]
-    for i in range(ntautomers):
-        TITRABLERESIDUES.append(res[0:2] + str(i + 1))
+    for i in range(ntautomers + 1):
+        TITRABLERESIDUES.append(res[0:2] + str(i))
 
 MANDATORY_PARAMS = [
     'structure', 'epsin', 'ionicstr',

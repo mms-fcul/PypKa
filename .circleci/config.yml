@@ -24,7 +24,7 @@ jobs:
             #pip install --user $delphi4py_whl 
             #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/readFiles/__init__.py
             #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/rundelphi/__init__.py
-            python3.6 -m pip install --user pytest numpy coverage
+            python3.6 -m pip install --user pytest numpy coverage psutil
 
       - save_cache:
           paths:

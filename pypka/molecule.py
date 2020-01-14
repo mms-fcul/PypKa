@@ -63,6 +63,8 @@ class Molecule:
         self.correct_names = {}
         self.correct_atoms = {}
 
+        self.CYS_bridges = {}
+
         self.NTR = None
         self.CTR = None
 
@@ -209,7 +211,7 @@ class Molecule:
                         if res[:-1] == resname[:-1]:
                             ntauts = TITRABLETAUTOMERS[res]
                             return ntauts, res
-            raise Exception('Something is wrong.')
+            raise Exception('{0}_{1} is not a titrable residue'.format(resname, resnum))
 
         for site_number, site_name in sites.items():
             if site_name == "NTR":
