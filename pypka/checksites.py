@@ -3,6 +3,7 @@
 from config import Config
 from constants import *
 from formats import read_pdb_line, read_gro_line, new_pdb_line
+from ffconverter import main_chains
 from copy import copy
 
 def identify_tit_sites(molecules, instanciate_sites=True):
@@ -331,11 +332,14 @@ def check_integrity(resname, res_atoms,
         res_atoms, integrity_ter = pop_atoms(res_atoms_st, res_atoms)
 
     if site:
-        main_chain = ('N', 'H', 'CA', 'C', 'O')
+        main_chain_atoms = main_chains[Config.pypka_params['ffID']]
         if ter == 'NTR':
-            main_chain = ()
-        if ter == 'CTR':
-            main_chain = ('N', 'H', 'CA')
+            main_chain = main_chain_atoms['NTR']
+        elif ter == 'CTR':
+            main_chain = main_chain_atoms['CTR']
+        else:
+            main_chain = main_chain_atoms['main']
+
         for aname in main_chain:
             if aname in res_atoms:
                 res_atoms.remove(aname)
@@ -353,6 +357,7 @@ def check_integrity(resname, res_atoms,
             if Config.debug:
                 print((res_atoms_st, res_atoms))
                 print(('i', integrity))
+
     if len(res_atoms) != 0 and integrity:
         raise Exception('Something is wrong')
 

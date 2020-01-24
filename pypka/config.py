@@ -223,7 +223,7 @@ class PypKaConfig(ParametersDict):
         # Parameters Validity
         self.input_special_conditions = {
             'temp': '>0',
-            'ffID': ('G54A7'),
+            'ffID': ('G54A7', 'CHARMM36m'),
             'ffinput': ('GROMOS', 'AMBER', 'CHARMM'),
             'ff_structure_out': ('gromos_cph', 'amber')
         }

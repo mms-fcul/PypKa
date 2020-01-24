@@ -164,3 +164,11 @@ GROMOS_protomers = {
                            'CT4': {4: ()}
                            }
 }
+
+main_chains = {'G54A7': {'main': ('N', 'H', 'CA', 'C', 'O'),
+                         'NTR': (),
+                         'CTR': ('N', 'H', 'CA')},
+               'CHARMM36m': {'main': ('N', 'HN', 'HA', 'CA', 'C', 'O'),
+                             'NTR': ('C', 'O'),
+                             'CTR': ('N', 'HN', 'HA', 'CA')}
+}

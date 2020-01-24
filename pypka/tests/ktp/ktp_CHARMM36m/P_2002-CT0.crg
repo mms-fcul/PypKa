@@ -1,0 +1,45 @@
+!crg file created by gen_files.awk
+atom__resnumbc_charge_
+b'N'  b'NT3'    0.000 
+b'H1' b'NT3'    0.000 
+b'H2' b'NT3'    0.000 
+b'CA' b'NT3'    0.000 
+b'CB' b'TY2'    0.000 
+b'CG' b'TY2'    0.000 
+b'CD1'b'TY2'    0.000 
+b'HD1'b'TY2'    0.000 
+b'CD2'b'TY2'    0.000 
+b'HD2'b'TY2'    0.000 
+b'CE1'b'TY2'    0.000 
+b'HE1'b'TY2'    0.000 
+b'CE2'b'TY2'    0.000 
+b'HE2'b'TY2'    0.000 
+b'CZ' b'TY2'    0.000 
+b'OH' b'TY2'    0.000 
+b'C'  b'NT3'    0.000 
+b'O'  b'NT3'    0.000 
+b'H3' b'NT3'    0.000 
+b'HH1'b'TY2'    0.000 
+b'HH2'b'TY2'    0.000 
+b'N'  b'ARG'    0.000 
+b'H'  b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'CT' b'CT4'    0.330 
+b'O2' b'CT4'   -0.450 
+b'O1' b'CT4'   -0.288 
+b'HO11'b'CT4'    0.408 
+b'HO12'b'CT4'    0.000 
+b'HO21'b'CT4'    0.000 
+b'HO22'b'CT4'    0.000 

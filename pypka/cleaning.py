@@ -116,12 +116,18 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
     #log.redirectErr("start", errfile)
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
-    os.system('python2 {0} {1} {2} --ff {3} --ffout GROMOS '
-              '--drop-water -v --chain > {4} 2>&1 '.format(pdb2pqr_path,
+    if Config.pypka_params['ffID'] == 'CHARMM36m':
+        ffcalc = 'CHARMM'
+    elif Config.pypka_params['ffID'] == 'G54A7':
+        ffcalc = 'GROMOS'
+    else:
+        raise Exception()
+    os.system('python2 {0} {1} {2} --ff {4} --ffout {4} '
+              '--drop-water -v --chain > {5} 2>&1 '.format(pdb2pqr_path,
                                                            inputpdbfile, inputpqr,
                                                            Config.pypka_params['ffinput'],
+                                                           ffcalc,
                                                            logfile))
-
     if Config.pypka_params['f_structure_out']:
         ff_out = Config.pypka_params['ff_structure_out']
         if ff_out == 'gromos_cph':
@@ -269,9 +275,10 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
     #log.redirectErr("start", logfile)
 
     script_dir = Config.pypka_params['script_dir']
-    os.system('{}/addHtaut cleaned.pqr {} > {} 2> {}'.format(script_dir,
-                                                             sites_addHtaut,
-                                                             outputpqr, logfile))
+    os.system('{}/addHtaut_{} cleaned.pqr {} > {} 2> {}'.format(script_dir,
+                                                                Config.pypka_params['ffID'],
+                                                                sites_addHtaut,
+                                                                outputpqr, logfile))
 
     #log.redirectErr("stop", logfile)
     log.checkDelPhiErrors(logfile, 'addHtaut')
