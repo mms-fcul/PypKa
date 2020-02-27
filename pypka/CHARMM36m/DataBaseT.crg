@@ -218,7 +218,9 @@ HD22  ASN       0.300
  HB1  CY0       0.090
  HB2  CY0       0.090
   SG  CY0      -0.230
-  HG  CY0       0.160
+ HG1  CY0       0.000
+ HG2  CY0       0.000
+ HG3  CY0       0.000
    C  CY0       0.510
    O  CY0      -0.510
    N  CY1      -0.470
@@ -229,9 +231,39 @@ HD22  ASN       0.300
  HB1  CY1       0.090
  HB2  CY1       0.090
   SG  CY1      -0.800
-  HG  CY1       0.000
-   C  CY1       0.510
-   O  CY1      -0.510
+ HG1  CY1       0.160
+ HG2  CY1       0.000
+ HG3  CY1       0.000
+   C  CY2       0.510
+   O  CY2      -0.510
+   N  CY2      -0.470
+  HN  CY2       0.310
+  CA  CY2       0.070
+  HA  CY2       0.090
+  CB  CY2      -0.380
+ HB1  CY2       0.090
+ HB2  CY2       0.090
+  SG  CY2      -0.800
+ HG1  CY2       0.000
+ HG2  CY2       0.160
+ HG3  CY2       0.000
+   C  CY2       0.510
+   O  CY2      -0.510
+   C  CY3       0.510
+   O  CY3      -0.510
+   N  CY3      -0.470
+  HN  CY3       0.310
+  CA  CY3       0.070
+  HA  CY3       0.090
+  CB  CY3      -0.380
+ HB1  CY3       0.090
+ HB2  CY3       0.090
+  SG  CY3      -0.800
+ HG1  CY3       0.000
+ HG2  CY3       0.000
+ HG3  CY3       0.160
+   C  CY3       0.510
+   O  CY3      -0.510
    N  GLU      -0.470
   HN  GLU       0.310
   CA  GLU       0.070
@@ -418,6 +450,24 @@ HE22  GLN       0.300
  HE1  HSP       0.180
    C  HSP       0.510
    O  HSP      -0.510
+   N  HIS      -0.470
+  HN  HIS       0.310
+  CA  HIS       0.070
+  HA  HIS       0.090
+  CB  HIS      -0.050
+ HB1  HIS       0.090
+ HB2  HIS       0.090
+ CD2  HIS       0.190
+ HD2  HIS       0.130
+  CG  HIS       0.190
+ NE2  HIS      -0.510
+ HE2  HIS       0.440
+ ND1  HIS      -0.510
+ HD1  HIS       0.440
+ CE1  HIS       0.320
+ HE1  HIS       0.180
+   C  HIS       0.510
+   O  HIS      -0.510
    N  HI0      -0.470
   HN  HI0       0.310
   CA  HI0       0.070

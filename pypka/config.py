@@ -207,6 +207,7 @@ class PypKaConfig(ParametersDict):
         self.f_crg = None
         self.f_siz = None
         self.ffID  = 'G54A7'
+        self.ff_family = 'GROMOS'
         self.NTR_atoms = None
         self.CTR_atoms = None
 
@@ -239,6 +240,7 @@ class PypKaConfig(ParametersDict):
             'ff_structure_out'  : str,
             'structure_output'  : str,
             'ffID'              : str,
+            'ff_family'         : str,
             'ffinput'           : str,
             'cutoff'            : float,
             'slice'             : float,
@@ -291,6 +293,15 @@ class PypKaConfig(ParametersDict):
             self['f_crg'] = '{}/DataBaseT.crg'.format(file_path)
         if not self['f_siz']:
             self['f_siz'] = '{}/DataBaseT.siz'.format(file_path)
+
+        ffID = Config.pypka_params['ffID'].lower()
+        if 'charmm36m' in ffID:
+            self['ff_family'] = 'CHARMM'
+        elif 'g54a7' in ffID:
+            self['ff_family'] = 'GROMOS'
+        else:
+            raise Exception('Forcefield {0} not supported'.format(ffID))
+
 
     def define_lipids(self, lipids):
         for lipid in lipids:

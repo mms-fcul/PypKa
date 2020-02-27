@@ -140,7 +140,11 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
 
         res_tits = True
         if ter:
-            res_tits = bool(prev_resname in TITRABLERESIDUES)
+            if (not Config.pypka_params['ser_thr_titration'] and 
+                prev_resname in ('SER', 'THR')):
+                res_tits = False
+            else:
+                res_tits = bool(prev_resname in TITRABLERESIDUES)
 
         res_atoms = copy(cur_atoms)
         (integrity_terminal,
@@ -261,8 +265,11 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                         elif prev_resnumb == molecule.CTR and resnumb != molecule.CTR:
                             check_site(prev_resname, cur_atoms, ter='CTR')
                         # Dealing with the previous residue
-                        elif prev_resnumb is not None and prev_resname in TITRABLERESIDUES:
-                            check_site(prev_resname, cur_atoms)
+                        elif prev_resnumb is not None and \
+                             prev_resname in TITRABLERESIDUES:
+                            if not (not Config.pypka_params['ser_thr_titration'] and \
+                                prev_resname in ('SER', 'THR')):
+                                check_site(prev_resname, cur_atoms)
 
                     elif prev_resname == 'ALA':
                         # TODO: check residue block integrity for other non titrating residues
@@ -332,7 +339,7 @@ def check_integrity(resname, res_atoms,
         res_atoms, integrity_ter = pop_atoms(res_atoms_st, res_atoms)
 
     if site:
-        main_chain_atoms = main_chains[Config.pypka_params['ffID']]
+        main_chain_atoms = main_chains[Config.pypka_params['ff_family']]
         if ter == 'NTR':
             main_chain = main_chain_atoms['NTR']
         elif ter == 'CTR':
@@ -376,10 +383,12 @@ def make_delphi_inputfile(f_in, f_out, molecules):
         return max_x, max_y, max_z
 
     def correct_termini(resnumb, resname, aname, ntr_res, ctr_res):
-        if resnumb == ntr_res and aname in Config.pypka_params['NTR_atoms']:
+        if resnumb == ntr_res and \
+           aname in Config.pypka_params['NTR_atoms']:
             resname = 'NTR'
             resnumb += TERMINAL_OFFSET
-        elif resnumb == ctr_res and aname in Config.pypka_params['CTR_atoms']:
+        elif resnumb == ctr_res and \
+             aname in Config.pypka_params['CTR_atoms']:
             resname = 'CTR'
             resnumb += TERMINAL_OFFSET
             if aname == 'C':

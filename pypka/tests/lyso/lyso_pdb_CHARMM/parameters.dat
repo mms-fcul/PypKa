@@ -1,0 +1,29 @@
+### mandatory ###
+structure       = lyso.pdb
+epsin           = 20
+ionicstr        = 0.1
+pbc_dimensions  = 0
+temp            = 310
+ncpus           = 8
+pH              = 1,11
+sites           = all
+
+### optional ###
+logfile   = LOGFILE
+
+scaleM = 4.0
+scaleP = 1.0
+gsize = 111
+
+convergence = 0.01
+nlit   = 50
+cutoff = -1
+
+output = pKas.out
+titration_output = protonation.out
+
+pHstep = 0.5
+relfac = 0.0
+
+ffID = CHARMM36m
+ser_thr_titration = False

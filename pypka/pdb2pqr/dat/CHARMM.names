@@ -17,7 +17,7 @@
         <atom>
             <name>HA3</name>
             <useatomname>HA1</useatomname>
-        </atom> 
+        </atom>
         <atom>
             <name>HG3</name>
             <useatomname>HG1</useatomname>
@@ -30,21 +30,21 @@
     <residue>
         <name>[NC]?(?!ALA$)...$</name> <!-- ALA has HB1, HB2, HB3 -->
         <exclud>ALA</exclud>
-        <atom>   
+        <atom>
             <name>HB3</name>
             <useatomname>HB1</useatomname>
         </atom>
     </residue>
     <residue>
         <name>[NC]?(?!ILE$)...$</name> <!-- ILE has HD11, HD12, HD13 -->
-        <atom>   
+        <atom>
             <name>HD3</name>
             <useatomname>HD1</useatomname>
         </atom>
     </residue>
     <residue>
         <name>[NC]?(?!MET$|TRP$)...$</name> <!-- both have HE1/HE3 -->
-        <atom>   
+        <atom>
             <name>HE3</name>
             <useatomname>HE1</useatomname>
         </atom>
@@ -102,7 +102,7 @@
     </residue>
     <residue>
         <name>CYX</name>
-        <useresname>DISU</useresname>
+        <useresname>CYS</useresname>
         <atom>
             <name>CB</name>
             <useatomname>1CB</useatomname>
@@ -182,7 +182,7 @@
     </residue>
 
 <!-- Nucleic Acid Subtitutions -->
-   
+
     <residue>
        <name>[RD]A[35]?$</name>
        <useresname>ADE</useresname>

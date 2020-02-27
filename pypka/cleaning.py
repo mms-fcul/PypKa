@@ -116,17 +116,11 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
     #log.redirectErr("start", errfile)
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
-    if Config.pypka_params['ffID'] == 'CHARMM36m':
-        ffcalc = 'CHARMM'
-    elif Config.pypka_params['ffID'] == 'G54A7':
-        ffcalc = 'GROMOS'
-    else:
-        raise Exception()
     os.system('python2 {0} {1} {2} --ff {4} --ffout {4} '
               '--drop-water -v --chain > {5} 2>&1 '.format(pdb2pqr_path,
                                                            inputpdbfile, inputpqr,
                                                            Config.pypka_params['ffinput'],
-                                                           ffcalc,
+                                                           Config.pypka_params['ff_family'],
                                                            logfile))
     if Config.pypka_params['f_structure_out']:
         ff_out = Config.pypka_params['ff_structure_out']
@@ -210,7 +204,9 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
                     if resnumb in (NTR_numb, CTR_numb):
                         termini_trigger = True
 
-                if aname in ('O1', 'O2', 'H1', 'H2', 'H3') and \
+                if aname in ('O1', 'O2',
+                             'OT1', 'OT2',
+                             'H1', 'H2', 'H3') and \
                    not termini_trigger and resname in PROTEIN_RESIDUES:
                     if aname == 'O1':
                         aname = 'O'
@@ -226,7 +222,9 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
                                         resnumb, x, y, z, charge, radius, chain=original_chain)
                 if chain in molecules:
                     new_pdb_text += new_line
-                elif aname not in ('H1', 'H2', 'H3', 'O1', 'O2'):
+                elif aname not in ('O1', 'O2',
+                                   'OT1', 'OT2',
+                                   'H1', 'H2', 'H3'):
                     if resname in ('SER', 'THR') and aname == 'HG1':
                         aname = 'HG'
                     removed_pdb_lines.append(new_line)
@@ -276,7 +274,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
 
     script_dir = Config.pypka_params['script_dir']
     os.system('{}/addHtaut_{} cleaned.pqr {} > {} 2> {}'.format(script_dir,
-                                                                Config.pypka_params['ffID'],
+                                                                Config.pypka_params['ff_family'],
                                                                 sites_addHtaut,
                                                                 outputpqr, logfile))
 

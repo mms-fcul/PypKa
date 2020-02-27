@@ -84,8 +84,6 @@ AMBER_Hs = {
 AMBER_mainchain_Hs = ['H', 'HA']
 mainchain_Hs = {}
 
-
-
 AMBER_protomers = {'ASP': {'ASH': {0: ('HD21', 'HD12', 'HD22'), 1: ('HD11', 'HD12', 'HD22'),
                                    2: ('HD11', 'HD21', 'HD22'), 3: ('HD11', 'HD21', 'HD21')},
                            'ASP': {4: ('HD11', 'HD12', 'HD21', 'HD22')}},
@@ -165,10 +163,10 @@ GROMOS_protomers = {
                            }
 }
 
-main_chains = {'G54A7': {'main': ('N', 'H', 'CA', 'C', 'O'),
-                         'NTR': (),
-                         'CTR': ('N', 'H', 'CA')},
-               'CHARMM36m': {'main': ('N', 'HN', 'HA', 'CA', 'C', 'O'),
-                             'NTR': ('C', 'O'),
-                             'CTR': ('N', 'HN', 'HA', 'CA')}
+main_chains = {'GROMOS': {'main': ('N', 'H', 'CA', 'C', 'O'),
+                          'NTR': (),
+                          'CTR': ('N', 'H', 'CA')},
+               'CHARMM': {'main': ('N', 'HN', 'HA', 'CA', 'C', 'O'),
+                          'NTR': ('C', 'O'),
+                          'CTR': ('N', 'HN', 'HA', 'CA')}
 }

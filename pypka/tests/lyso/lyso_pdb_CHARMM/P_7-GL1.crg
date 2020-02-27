@@ -1,0 +1,2006 @@
+!crg file created by gen_files.awk
+atom__resnumbc_charge_
+b'N'  b'NT3'    0.000 
+b'HT1'b'NT3'    0.000 
+b'HT2'b'NT3'    0.000 
+b'HT3'b'NT3'    0.000 
+b'CA' b'NT3'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'NT3'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'PHE'    0.000 
+b'HN' b'PHE'    0.000 
+b'CA' b'PHE'    0.000 
+b'CB' b'PHE'    0.000 
+b'CG' b'PHE'    0.000 
+b'CD1'b'PHE'    0.000 
+b'HD1'b'PHE'    0.000 
+b'CD2'b'PHE'    0.000 
+b'HD2'b'PHE'    0.000 
+b'CE1'b'PHE'    0.000 
+b'HE1'b'PHE'    0.000 
+b'CE2'b'PHE'    0.000 
+b'HE2'b'PHE'    0.000 
+b'CZ' b'PHE'    0.000 
+b'HZ' b'PHE'    0.000 
+b'C'  b'PHE'    0.000 
+b'O'  b'PHE'    0.000 
+b'HA' b'PHE'    0.000 
+b'HB1'b'PHE'    0.000 
+b'HB2'b'PHE'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'GLU'    0.000 
+b'HN' b'GLU'    0.000 
+b'CA' b'GLU'    0.000 
+b'CB' b'GL4'   -0.180 
+b'CG' b'GL4'   -0.210 
+b'CD' b'GL4'    0.750 
+b'OE1'b'GL4'   -0.610 
+b'OE2'b'GL4'   -0.550 
+b'C'  b'GLU'    0.000 
+b'O'  b'GLU'    0.000 
+b'HG2'b'GL4'    0.090 
+b'HA' b'GLU'    0.000 
+b'HG1'b'GL4'    0.090 
+b'HB1'b'GL4'    0.090 
+b'HB2'b'GL4'    0.090 
+b'HE11'b'GL4'    0.000 
+b'HE12'b'GL4'    0.000 
+b'HE21'b'GL4'    0.440 
+b'HE22'b'GL4'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'MET'    0.000 
+b'HN' b'MET'    0.000 
+b'CA' b'MET'    0.000 
+b'CB' b'MET'    0.000 
+b'CG' b'MET'    0.000 
+b'SD' b'MET'    0.000 
+b'CE' b'MET'    0.000 
+b'C'  b'MET'    0.000 
+b'O'  b'MET'    0.000 
+b'HG2'b'MET'    0.000 
+b'HE1'b'MET'    0.000 
+b'HE2'b'MET'    0.000 
+b'HE3'b'MET'    0.000 
+b'HB2'b'MET'    0.000 
+b'HG1'b'MET'    0.000 
+b'HA' b'MET'    0.000 
+b'HB1'b'MET'    0.000 
+b'N'  b'LYS'    0.000 
+b'HN' b'LYS'    0.000 
+b'CA' b'LYS'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'LYS'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'HIS'    0.000 
+b'HN' b'HIS'    0.000 
+b'CA' b'HIS'    0.000 
+b'CB' b'HI2'    0.000 
+b'CG' b'HI2'    0.000 
+b'C'  b'HIS'    0.000 
+b'O'  b'HIS'    0.000 
+b'HA' b'HIS'    0.000 
+b'HB1'b'HI2'    0.000 
+b'HB2'b'HI2'    0.000 
+b'CD2'b'HI2'    0.000 
+b'HE2'b'HI2'    0.000 
+b'HE1'b'HI2'    0.000 
+b'HD1'b'HI2'    0.000 
+b'CE1'b'HI2'    0.000 
+b'ND1'b'HI2'    0.000 
+b'NE2'b'HI2'    0.000 
+b'HD2'b'HI2'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'TYR'    0.000 
+b'HN' b'TYR'    0.000 
+b'CA' b'TYR'    0.000 
+b'CB' b'TY2'    0.000 
+b'CG' b'TY2'    0.000 
+b'CD1'b'TY2'    0.000 
+b'HD1'b'TY2'    0.000 
+b'CD2'b'TY2'    0.000 
+b'HD2'b'TY2'    0.000 
+b'CE1'b'TY2'    0.000 
+b'HE1'b'TY2'    0.000 
+b'CE2'b'TY2'    0.000 
+b'HE2'b'TY2'    0.000 
+b'CZ' b'TY2'    0.000 
+b'OH' b'TY2'    0.000 
+b'C'  b'TYR'    0.000 
+b'O'  b'TYR'    0.000 
+b'HA' b'TYR'    0.000 
+b'HB1'b'TY2'    0.000 
+b'HB2'b'TY2'    0.000 
+b'HH1'b'TY2'    0.000 
+b'HH2'b'TY2'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'TYR'    0.000 
+b'HN' b'TYR'    0.000 
+b'CA' b'TYR'    0.000 
+b'CB' b'TY2'    0.000 
+b'CG' b'TY2'    0.000 
+b'CD1'b'TY2'    0.000 
+b'HD1'b'TY2'    0.000 
+b'CD2'b'TY2'    0.000 
+b'HD2'b'TY2'    0.000 
+b'CE1'b'TY2'    0.000 
+b'HE1'b'TY2'    0.000 
+b'CE2'b'TY2'    0.000 
+b'HE2'b'TY2'    0.000 
+b'CZ' b'TY2'    0.000 
+b'OH' b'TY2'    0.000 
+b'C'  b'TYR'    0.000 
+b'O'  b'TYR'    0.000 
+b'HA' b'TYR'    0.000 
+b'HB1'b'TY2'    0.000 
+b'HB2'b'TY2'    0.000 
+b'HH1'b'TY2'    0.000 
+b'HH2'b'TY2'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'LYS'    0.000 
+b'HN' b'LYS'    0.000 
+b'CA' b'LYS'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'LYS'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'PHE'    0.000 
+b'HN' b'PHE'    0.000 
+b'CA' b'PHE'    0.000 
+b'CB' b'PHE'    0.000 
+b'CG' b'PHE'    0.000 
+b'CD1'b'PHE'    0.000 
+b'HD1'b'PHE'    0.000 
+b'CD2'b'PHE'    0.000 
+b'HD2'b'PHE'    0.000 
+b'CE1'b'PHE'    0.000 
+b'HE1'b'PHE'    0.000 
+b'CE2'b'PHE'    0.000 
+b'HE2'b'PHE'    0.000 
+b'CZ' b'PHE'    0.000 
+b'HZ' b'PHE'    0.000 
+b'C'  b'PHE'    0.000 
+b'O'  b'PHE'    0.000 
+b'HA' b'PHE'    0.000 
+b'HB1'b'PHE'    0.000 
+b'HB2'b'PHE'    0.000 
+b'N'  b'GLU'    0.000 
+b'HN' b'GLU'    0.000 
+b'CA' b'GLU'    0.000 
+b'CB' b'GL4'    0.000 
+b'CG' b'GL4'    0.000 
+b'CD' b'GL4'    0.000 
+b'OE1'b'GL4'    0.000 
+b'OE2'b'GL4'    0.000 
+b'C'  b'GLU'    0.000 
+b'O'  b'GLU'    0.000 
+b'HG2'b'GL4'    0.000 
+b'HA' b'GLU'    0.000 
+b'HG1'b'GL4'    0.000 
+b'HB1'b'GL4'    0.000 
+b'HB2'b'GL4'    0.000 
+b'HE11'b'GL4'    0.000 
+b'HE12'b'GL4'    0.000 
+b'HE21'b'GL4'    0.000 
+b'HE22'b'GL4'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'PHE'    0.000 
+b'HN' b'PHE'    0.000 
+b'CA' b'PHE'    0.000 
+b'CB' b'PHE'    0.000 
+b'CG' b'PHE'    0.000 
+b'CD1'b'PHE'    0.000 
+b'HD1'b'PHE'    0.000 
+b'CD2'b'PHE'    0.000 
+b'HD2'b'PHE'    0.000 
+b'CE1'b'PHE'    0.000 
+b'HE1'b'PHE'    0.000 
+b'CE2'b'PHE'    0.000 
+b'HE2'b'PHE'    0.000 
+b'CZ' b'PHE'    0.000 
+b'HZ' b'PHE'    0.000 
+b'C'  b'PHE'    0.000 
+b'O'  b'PHE'    0.000 
+b'HA' b'PHE'    0.000 
+b'HB1'b'PHE'    0.000 
+b'HB2'b'PHE'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'GLN'    0.000 
+b'HN' b'GLN'    0.000 
+b'CA' b'GLN'    0.000 
+b'CB' b'GLN'    0.000 
+b'CG' b'GLN'    0.000 
+b'CD' b'GLN'    0.000 
+b'C'  b'GLN'    0.000 
+b'O'  b'GLN'    0.000 
+b'HG2'b'GLN'    0.000 
+b'HA' b'GLN'    0.000 
+b'HG1'b'GLN'    0.000 
+b'HB1'b'GLN'    0.000 
+b'HB2'b'GLN'    0.000 
+b'HE22'b'GLN'    0.000 
+b'OE1'b'GLN'    0.000 
+b'NE2'b'GLN'    0.000 
+b'HE21'b'GLN'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'TYR'    0.000 
+b'HN' b'TYR'    0.000 
+b'CA' b'TYR'    0.000 
+b'CB' b'TY2'    0.000 
+b'CG' b'TY2'    0.000 
+b'CD1'b'TY2'    0.000 
+b'HD1'b'TY2'    0.000 
+b'CD2'b'TY2'    0.000 
+b'HD2'b'TY2'    0.000 
+b'CE1'b'TY2'    0.000 
+b'HE1'b'TY2'    0.000 
+b'CE2'b'TY2'    0.000 
+b'HE2'b'TY2'    0.000 
+b'CZ' b'TY2'    0.000 
+b'OH' b'TY2'    0.000 
+b'C'  b'TYR'    0.000 
+b'O'  b'TYR'    0.000 
+b'HA' b'TYR'    0.000 
+b'HB1'b'TY2'    0.000 
+b'HB2'b'TY2'    0.000 
+b'HH1'b'TY2'    0.000 
+b'HH2'b'TY2'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'GLN'    0.000 
+b'HN' b'GLN'    0.000 
+b'CA' b'GLN'    0.000 
+b'CB' b'GLN'    0.000 
+b'CG' b'GLN'    0.000 
+b'CD' b'GLN'    0.000 
+b'C'  b'GLN'    0.000 
+b'O'  b'GLN'    0.000 
+b'HG2'b'GLN'    0.000 
+b'HA' b'GLN'    0.000 
+b'HG1'b'GLN'    0.000 
+b'HB1'b'GLN'    0.000 
+b'HB2'b'GLN'    0.000 
+b'HE22'b'GLN'    0.000 
+b'OE1'b'GLN'    0.000 
+b'NE2'b'GLN'    0.000 
+b'HE21'b'GLN'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'PRO'    0.000 
+b'CA' b'PRO'    0.000 
+b'CB' b'PRO'    0.000 
+b'CG' b'PRO'    0.000 
+b'CD' b'PRO'    0.000 
+b'C'  b'PRO'    0.000 
+b'O'  b'PRO'    0.000 
+b'HG2'b'PRO'    0.000 
+b'HA' b'PRO'    0.000 
+b'HD1'b'PRO'    0.000 
+b'HD2'b'PRO'    0.000 
+b'HG1'b'PRO'    0.000 
+b'HB1'b'PRO'    0.000 
+b'HB2'b'PRO'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'PRO'    0.000 
+b'CA' b'PRO'    0.000 
+b'CB' b'PRO'    0.000 
+b'CG' b'PRO'    0.000 
+b'CD' b'PRO'    0.000 
+b'C'  b'PRO'    0.000 
+b'O'  b'PRO'    0.000 
+b'HG2'b'PRO'    0.000 
+b'HA' b'PRO'    0.000 
+b'HD1'b'PRO'    0.000 
+b'HD2'b'PRO'    0.000 
+b'HG1'b'PRO'    0.000 
+b'HB1'b'PRO'    0.000 
+b'HB2'b'PRO'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'C'  b'LEU'    0.000 
+b'O'  b'LEU'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'LYS'    0.000 
+b'HN' b'LYS'    0.000 
+b'CA' b'LYS'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'LYS'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'LYS'    0.000 
+b'HN' b'LYS'    0.000 
+b'CA' b'LYS'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'LYS'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'SER'    0.000 
+b'HN' b'SER'    0.000 
+b'CA' b'SER'    0.000 
+b'CB' b'SER'    0.000 
+b'OG' b'SER'    0.000 
+b'C'  b'SER'    0.000 
+b'O'  b'SER'    0.000 
+b'HA' b'SER'    0.000 
+b'HB1'b'SER'    0.000 
+b'HB2'b'SER'    0.000 
+b'HG1'b'SER'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'MET'    0.000 
+b'HN' b'MET'    0.000 
+b'CA' b'MET'    0.000 
+b'CB' b'MET'    0.000 
+b'CG' b'MET'    0.000 
+b'SD' b'MET'    0.000 
+b'CE' b'MET'    0.000 
+b'C'  b'MET'    0.000 
+b'O'  b'MET'    0.000 
+b'HG2'b'MET'    0.000 
+b'HE1'b'MET'    0.000 
+b'HE2'b'MET'    0.000 
+b'HE3'b'MET'    0.000 
+b'HB2'b'MET'    0.000 
+b'HG1'b'MET'    0.000 
+b'HA' b'MET'    0.000 
+b'HB1'b'MET'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'ASN'    0.000 
+b'HN' b'ASN'    0.000 
+b'CA' b'ASN'    0.000 
+b'CB' b'ASN'    0.000 
+b'CG' b'ASN'    0.000 
+b'C'  b'ASN'    0.000 
+b'O'  b'ASN'    0.000 
+b'HA' b'ASN'    0.000 
+b'HB1'b'ASN'    0.000 
+b'HB2'b'ASN'    0.000 
+b'OD1'b'ASN'    0.000 
+b'ND2'b'ASN'    0.000 
+b'HD22'b'ASN'    0.000 
+b'HD21'b'ASN'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'LYS'    0.000 
+b'HN' b'LYS'    0.000 
+b'CA' b'LYS'    0.000 
+b'CB' b'LY3'    0.000 
+b'CG' b'LY3'    0.000 
+b'CD' b'LY3'    0.000 
+b'CE' b'LY3'    0.000 
+b'NZ' b'LY3'    0.000 
+b'HZ1'b'LY3'    0.000 
+b'HZ2'b'LY3'    0.000 
+b'HZ3'b'LY3'    0.000 
+b'C'  b'LYS'    0.000 
+b'O'  b'LYS'    0.000 
+b'HA' b'LYS'    0.000 
+b'HE2'b'LY3'    0.000 
+b'HE1'b'LY3'    0.000 
+b'HG2'b'LY3'    0.000 
+b'HG1'b'LY3'    0.000 
+b'HD1'b'LY3'    0.000 
+b'HD2'b'LY3'    0.000 
+b'HB1'b'LY3'    0.000 
+b'HB2'b'LY3'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'THR'    0.000 
+b'HN' b'THR'    0.000 
+b'CA' b'THR'    0.000 
+b'CB' b'THR'    0.000 
+b'OG1'b'THR'    0.000 
+b'CG2'b'THR'    0.000 
+b'C'  b'THR'    0.000 
+b'O'  b'THR'    0.000 
+b'HA' b'THR'    0.000 
+b'HG22'b'THR'    0.000 
+b'HG21'b'THR'    0.000 
+b'HB' b'THR'    0.000 
+b'HG23'b'THR'    0.000 
+b'HG1'b'THR'    0.000 
+b'N'  b'ASP'    0.000 
+b'HN' b'ASP'    0.000 
+b'CA' b'ASP'    0.000 
+b'CB' b'AS4'    0.000 
+b'CG' b'AS4'    0.000 
+b'OD1'b'AS4'    0.000 
+b'OD2'b'AS4'    0.000 
+b'C'  b'ASP'    0.000 
+b'O'  b'ASP'    0.000 
+b'HA' b'ASP'    0.000 
+b'HB1'b'AS4'    0.000 
+b'HB2'b'AS4'    0.000 
+b'HD11'b'AS4'    0.000 
+b'HD12'b'AS4'    0.000 
+b'HD21'b'AS4'    0.000 
+b'HD22'b'AS4'    0.000 
+b'N'  b'VAL'    0.000 
+b'HN' b'VAL'    0.000 
+b'CA' b'VAL'    0.000 
+b'CB' b'VAL'    0.000 
+b'CG1'b'VAL'    0.000 
+b'CG2'b'VAL'    0.000 
+b'C'  b'VAL'    0.000 
+b'O'  b'VAL'    0.000 
+b'HA' b'VAL'    0.000 
+b'HG11'b'VAL'    0.000 
+b'HG21'b'VAL'    0.000 
+b'HB' b'VAL'    0.000 
+b'HG12'b'VAL'    0.000 
+b'HG13'b'VAL'    0.000 
+b'HG23'b'VAL'    0.000 
+b'HG22'b'VAL'    0.000 
+b'N'  b'GLN'    0.000 
+b'HN' b'GLN'    0.000 
+b'CA' b'GLN'    0.000 
+b'CB' b'GLN'    0.000 
+b'CG' b'GLN'    0.000 
+b'CD' b'GLN'    0.000 
+b'C'  b'GLN'    0.000 
+b'O'  b'GLN'    0.000 
+b'HG2'b'GLN'    0.000 
+b'HA' b'GLN'    0.000 
+b'HG1'b'GLN'    0.000 
+b'HB1'b'GLN'    0.000 
+b'HB2'b'GLN'    0.000 
+b'HE22'b'GLN'    0.000 
+b'OE1'b'GLN'    0.000 
+b'NE2'b'GLN'    0.000 
+b'HE21'b'GLN'    0.000 
+b'N'  b'ALA'    0.000 
+b'HN' b'ALA'    0.000 
+b'CA' b'ALA'    0.000 
+b'CB' b'ALA'    0.000 
+b'C'  b'ALA'    0.000 
+b'O'  b'ALA'    0.000 
+b'HA' b'ALA'    0.000 
+b'HB1'b'ALA'    0.000 
+b'HB3'b'ALA'    0.000 
+b'HB2'b'ALA'    0.000 
+b'N'  b'TRP'    0.000 
+b'HN' b'TRP'    0.000 
+b'CA' b'TRP'    0.000 
+b'CB' b'TRP'    0.000 
+b'CG' b'TRP'    0.000 
+b'CD1'b'TRP'    0.000 
+b'HD1'b'TRP'    0.000 
+b'CD2'b'TRP'    0.000 
+b'NE1'b'TRP'    0.000 
+b'HE1'b'TRP'    0.000 
+b'CE2'b'TRP'    0.000 
+b'CE3'b'TRP'    0.000 
+b'HE3'b'TRP'    0.000 
+b'CZ2'b'TRP'    0.000 
+b'HZ2'b'TRP'    0.000 
+b'CZ3'b'TRP'    0.000 
+b'HZ3'b'TRP'    0.000 
+b'CH2'b'TRP'    0.000 
+b'HH2'b'TRP'    0.000 
+b'C'  b'TRP'    0.000 
+b'O'  b'TRP'    0.000 
+b'HA' b'TRP'    0.000 
+b'HB1'b'TRP'    0.000 
+b'HB2'b'TRP'    0.000 
+b'N'  b'ILE'    0.000 
+b'HN' b'ILE'    0.000 
+b'CA' b'ILE'    0.000 
+b'CB' b'ILE'    0.000 
+b'CG1'b'ILE'    0.000 
+b'CG2'b'ILE'    0.000 
+b'CD' b'ILE'    0.000 
+b'C'  b'ILE'    0.000 
+b'O'  b'ILE'    0.000 
+b'HA' b'ILE'    0.000 
+b'HG22'b'ILE'    0.000 
+b'HG21'b'ILE'    0.000 
+b'HB' b'ILE'    0.000 
+b'HG12'b'ILE'    0.000 
+b'HG11'b'ILE'    0.000 
+b'HD3'b'ILE'    0.000 
+b'HD2'b'ILE'    0.000 
+b'HG23'b'ILE'    0.000 
+b'HD1'b'ILE'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'GLY'    0.000 
+b'HN' b'GLY'    0.000 
+b'CA' b'GLY'    0.000 
+b'C'  b'GLY'    0.000 
+b'O'  b'GLY'    0.000 
+b'HA2'b'GLY'    0.000 
+b'HA1'b'GLY'    0.000 
+b'N'  b'CYS'    0.000 
+b'HN' b'CYS'    0.000 
+b'CA' b'CYS'    0.000 
+b'CB' b'CYS'    0.000 
+b'SG' b'CYS'    0.000 
+b'C'  b'CYS'    0.000 
+b'O'  b'CYS'    0.000 
+b'HB1'b'CYS'    0.000 
+b'HA' b'CYS'    0.000 
+b'HB2'b'CYS'    0.000 
+b'N'  b'ARG'    0.000 
+b'HN' b'ARG'    0.000 
+b'CA' b'ARG'    0.000 
+b'CB' b'ARG'    0.000 
+b'CG' b'ARG'    0.000 
+b'CD' b'ARG'    0.000 
+b'NE' b'ARG'    0.000 
+b'HE' b'ARG'    0.000 
+b'CZ' b'ARG'    0.000 
+b'NH1'b'ARG'    0.000 
+b'HH11'b'ARG'    0.000 
+b'HH12'b'ARG'    0.000 
+b'NH2'b'ARG'    0.000 
+b'HH21'b'ARG'    0.000 
+b'HH22'b'ARG'    0.000 
+b'C'  b'ARG'    0.000 
+b'O'  b'ARG'    0.000 
+b'HG1'b'ARG'    0.000 
+b'HA' b'ARG'    0.000 
+b'HG2'b'ARG'    0.000 
+b'HD1'b'ARG'    0.000 
+b'HD2'b'ARG'    0.000 
+b'HB1'b'ARG'    0.000 
+b'HB2'b'ARG'    0.000 
+b'N'  b'LEU'    0.000 
+b'HN' b'LEU'    0.000 
+b'CA' b'LEU'    0.000 
+b'CB' b'LEU'    0.000 
+b'CG' b'LEU'    0.000 
+b'CD1'b'LEU'    0.000 
+b'CD2'b'LEU'    0.000 
+b'CT' b'CT4'    0.000 
+b'OT2'b'CT4'    0.000 
+b'OT1'b'CT4'    0.000 
+b'HD22'b'LEU'    0.000 
+b'HD23'b'LEU'    0.000 
+b'HD21'b'LEU'    0.000 
+b'HD13'b'LEU'    0.000 
+b'HD12'b'LEU'    0.000 
+b'HD11'b'LEU'    0.000 
+b'HA' b'LEU'    0.000 
+b'HG' b'LEU'    0.000 
+b'HB1'b'LEU'    0.000 
+b'HB2'b'LEU'    0.000 
+b'HT11'b'CT4'    0.000 
+b'HT12'b'CT4'    0.000 
+b'HT21'b'CT4'    0.000 
+b'HT22'b'CT4'    0.000 

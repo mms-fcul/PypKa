@@ -1,5 +1,5 @@
 from config import Config
-from constants import TERMINAL_OFFSET
+from constants import TERMINAL_OFFSET, TITRABLETAUTOMERS, PROTEIN_RESIDUES
 
 def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=' '):
     pdb_format = "ATOM  {:5d} {:4s} {:4s}{:1s}{:4d}    {:8.3f}{:8.3f}{:8.3f}\n"
@@ -190,6 +190,13 @@ def correct_names(resnumb, resname, aname,
 
         return aname
 
+    def change_resname(resname):
+        for tit_res in TITRABLETAUTOMERS.keys():
+            if tit_res[:2] == resname[:2]:
+                return tit_res
+        return resname
+
+
     # no longer used as it is done by pdb2pqr
     correct_atoms_table = {'CTR': {'O': 'O1',
                                    'OXT': 'O2'},
@@ -202,7 +209,7 @@ def correct_names(resnumb, resname, aname,
 
     correct_residues_table = {'HSD': 'HI0',
                               'HSE': 'HI1',
-                              'HSP': 'HS2',
+                              'HSP': 'HI2',
                               'ARGN': 'AR0',
                               'ASPH': 'AS0',
                               'CYS2': 'CYS',
@@ -215,7 +222,8 @@ def correct_names(resnumb, resname, aname,
                               'HISB': 'HI1',
                               'HISP': 'HI2',
                               'LYSH': 'LY3',
-                              'LYSN': 'LY0'}
+                              'LYSN': 'LY0',
+                              'ISU': 'CYS'}
 
     if resnumb == CTR_numb:
         restype = 'CTR'
@@ -231,9 +239,11 @@ def correct_names(resnumb, resname, aname,
     if resname in list(correct_residues_table.keys()):
         resname = correct_residues_table[resname]
 
-    if resnumb in titrating_sites and \
-       resname in list(correct_atoms_sites_table.keys()):
-        aname = change_aname(aname, resname, mode='titrating')
+    if resnumb in titrating_sites:
+        if resname not in PROTEIN_RESIDUES:
+            resname = change_resname(resname)
+        if resname in list(correct_atoms_sites_table.keys()):
+            aname = change_aname(aname, resname, mode='titrating')
 
 
     return aname, resname
