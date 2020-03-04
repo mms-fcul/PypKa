@@ -1,0 +1,496 @@
+
+
+.topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  background-color: transparent;
+  height: $navbar-height;
+  border-radius: 0;
+  z-index: $zindex-navbar;
+  transition: margin-left .5s;
+
+  .body-scrolled &.topbar-sticky {
+    position: fixed;
+    height: $navbar-height-scrolled;
+    background-color: $navbar-bg-color;
+    box-shadow: 0 0 15px rgba(0,0,0,.06);
+    transition: margin-left .5s, background-color .5s;
+
+
+    // Fix .btn-outline.btn-white on sticky topbar
+    //
+    .btn-white.btn-outline {
+      border-color: $color-divider-light;
+      color: $color-text-secondary;
+    }
+
+  }
+
+  .modal-open & {
+    right: 16px;
+  }
+
+
+  &,
+  & > .container,
+  //& > .container-wide,
+  & > .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  & > .container,
+  & > .container-wide,
+  & > .container-fluid {
+    height: $navbar-height;
+  }
+
+  & > .container-fluid {
+    width: 80%;
+  }
+
+  & > .container-wide {
+    width: 100%;
+  }
+
+
+}
+
+
+
+
+// Toggler
+//
+.topbar-toggler {
+  align-self: flex-start;
+  padding: .25rem .75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background: 0 0;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  cursor: pointer;
+  vertical-align: baseline;
+
+  display: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+
+
+// Brand
+//
+.topbar-brand {
+  float: none;
+  font-size: 0.875rem;
+  line-height: 1;
+
+  img {
+    max-height: 50px;
+  }
+
+  .logo-inverse {
+    display: none;
+  }
+
+  @include media-down(sm) {
+    max-width: 150px;
+  }
+}
+
+
+
+// Topbar left
+// 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+
+
+//----------------------------------------------------/
+// Topbar menu
+//----------------------------------------------------/
+.topbar-nav {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  font-weight: 600;
+  font-size: .75rem;
+  line-height: $navbar-height;
+  z-index: $zindex-navbar-nav;
+
+  .nav-item {
+    position: relative;
+    transition: .4s;
+
+    &:hover > .nav-link,
+    &.show > .nav-link {
+      opacity: 1;
+    }
+
+    + .nav-item {
+      margin-left: 1.5rem;
+    }
+  }
+
+  .nav-link {
+    color: $color-text;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: .6;
+    padding: 0;
+    transition: .3s;
+
+    &:hover,
+    &:focus,
+    &.active {
+      opacity: 1;
+    }
+
+    &.active {
+      font-weight: 600;
+    }
+
+    i {
+      margin-left: -3px;
+      font-size: 10px;
+      vertical-align: baseline;
+    }
+  }
+}
+
+
+
+//----------------------------------------------------/
+// Centered nav
+//----------------------------------------------------/
+.topbar-nav-centered {
+
+  .topbar-left,
+  .topbar-right {
+    width: 200px;
+  }
+
+  .topbar-right {
+    text-align: right;
+  }
+
+}
+
+
+
+//----------------------------------------------------/
+// Topbar menu
+//----------------------------------------------------/
+.nav-submenu {
+  position: absolute;
+  top: 100%;
+  background-color: $navbar-bg-color;
+  padding-left: 10px;
+  line-height: 2.4;
+  padding: 8px 16px;
+  left: -16px;
+  min-width: 150px;
+  box-shadow: 0 3px 9px rgba(0,0,0,.05);
+  border-radius: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(0, 10px);
+  transition: .5s;
+  z-index: 1;
+
+
+  &.align-right {
+    left: auto;
+    right: -16px;
+  }
+
+  .nav-item + .nav-item {
+    margin-left: 0;
+  }
+
+  .nav-link {
+    display: flex;
+    justify-content: space-between;
+    text-transform: none;
+    font-weight: 400;
+    opacity: .8;
+
+    &.active {
+      color: $color-primary;
+    }
+  }
+
+  .nav-submenu {
+    left: 100%;
+    top: 0;
+    transform: translate(10px, 0);
+  }
+
+  .nav-item {
+
+    i {
+      line-height: 28px;
+      margin-left: 8px;
+    }
+  }
+
+
+  // 2 Cols
+  // 
+  &.cols-2 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 320px;
+
+    & > .nav-link,
+    & > .nav-item {
+      flex-basis: 50%;
+    }
+  }
+
+}
+
+.topbar-nav:not(.nav-toggle-click) .nav-item:hover > .nav-submenu,
+.topbar-nav .nav-item.show > .nav-submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.topbar-nav:not(.nav-toggle-click) > .nav-item:hover > .nav-submenu,
+.topbar-nav > .nav-item.show > .nav-submenu {
+  transform: translate(0, -15px);
+}
+
+.topbar-nav:not(.nav-toggle-click) .nav-submenu > .nav-item:hover > .nav-submenu,
+.topbar-nav .nav-submenu > .nav-item.show > .nav-submenu {
+  transform: translate(-15px, 0);
+}
+
+
+
+//----------------------------------------------------/
+// Inverse
+//----------------------------------------------------/
+.topbar.topbar-inverse {
+  color: #fff;
+
+  .topbar-brand {
+    .logo-default { display: none; }
+    .logo-inverse { display: inline-block; }
+  }
+
+  .topbar-nav > .nav-item > .nav-link,
+  .topbar-toggler,
+  .drawer-toggler {
+    color: #fff;
+  }
+
+}
+
+
+.body-scrolled .topbar.topbar-inverse.topbar-sticky {
+  color: $color-text;
+
+  .topbar-brand {
+    .logo-default { display: inline-block; }
+    .logo-inverse { display: none; }
+  }
+
+  .topbar-nav > .nav-item > .nav-link,
+  .topbar-toggler,
+  .drawer-toggler {
+    color: $color-text;
+  }
+
+}
+
+
+
+//----------------------------------------------------/
+// Toggleable sizes
+//----------------------------------------------------/
+@mixin topbar-expand($screen) {
+
+  @include media-down($screen) {
+
+    $width: 300px;
+
+    .topbar-expand-#{$screen} {
+
+      &.topbar-inverse .topbar-nav > .nav-item > .nav-link {
+        color: $color-text;
+      }
+
+      .topbar-nav {
+        flex-direction: column;
+        flex-wrap: nowrap;
+
+        position: fixed;
+        overflow: auto;
+        left: -$width;
+        top: 0;
+        bottom: 0;
+        //min-height: 100%;
+        width: $width;
+        background-color: #fff;
+        margin: 0;
+        padding: 30px;
+        transition: .3s;
+
+        .nav-item {
+          flex-direction: column;
+          align-items: flex-start;
+          flex-shrink: 0;
+          line-height: 2.5;
+          margin-bottom: 16px;
+
+          &:hover .nav-submenu {
+            transform: translate(0, 0);
+          }
+        }
+
+        .nav-item + .nav-item {
+          margin-left: 0;
+        }
+
+        .nav-link {
+          font-weight: 600;
+          opacity: 1;
+          width: 100%;
+          color: $color-text;
+
+          &.active {
+            color: $color-primary;
+          }
+
+          &.active + .nav-submenu {
+            display: block;
+          }
+        }
+
+      }
+
+      .nav-submenu {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+        opacity: .7;
+        visibility: visible;
+        transform: translate(0, 0) !important;
+        transition: none;
+
+        display: none;
+
+        &.cols-2 {
+          width: 200px;
+        }
+
+        .nav-link {
+          font-weight: 400;
+        }
+
+        .nav-item {
+          margin-bottom: 0;
+
+          i {
+            float: none;
+            margin-left: 4px;
+            transform: rotate(90deg);
+          }
+        }
+      }
+
+      .nav-link.active {
+        color: $color-primary;
+      }
+
+      .topbar-toggler {
+        display: inline-block;
+      }
+
+    }
+
+  } //.@include
+
+}
+
+@include topbar-expand(xl);
+@include topbar-expand(lg);
+@include topbar-expand(md);
+@include topbar-expand(sm);
+@include topbar-expand(xs);
+
+
+.topbar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255,255,255,0.95);
+  z-index: $zindex-navbar-backdrop;
+
+  cursor: pointer; // Fix iPhone issue
+
+  &::after {
+    content: "\e646";
+    font-family: $font-icon-themify;
+    font-size: 20px;
+    color: $color-text-secondary;
+    opacity: .7;
+
+
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+}
+
+
+.topbar-reveal {
+
+ //overflow: hidden;
+  
+  .topbar {
+    height: 0;
+  }
+
+  .topbar-nav {
+    left: 0;
+    box-shadow: 2px 0px 9px 2px rgba(0, 0, 0, 0.05);
+  }
+
+}
+
+
+
+@include media-down(xs) {
+
+  .topbar > .container {
+    width: 100%;
+  }
+
+}
+
+
+@include media-down(330) {
+
+  .topbar-nav {
+    left: -260px;
+    width: 260px !important;
+  }
+
+}

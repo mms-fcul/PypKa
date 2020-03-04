@@ -1,0 +1,375 @@
+
+body {
+  font-family: $font-body;
+  color: $color-text;
+  font-weight: 300;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+
+  transition: margin-left .5s;
+}
+
+
+::selection {
+  background: lighten($color-primary, 7%);
+  color: #fff;
+}
+::-moz-selection {
+  background: lighten($color-primary, 7%);
+  color: #fff;
+}
+
+// TODO: will fix in Beta release
+button, input, optgroup, select, textarea {
+  font-family: $font-body;
+  font-weight: 300;
+}
+
+a {
+  color: $color-primary;
+  transition: .2s linear;
+
+  &:hover,
+  &:focus {
+    color: $color-primary;
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+.link-color-default a {
+  color: $color-text;
+
+  &:hover,
+  &:focus {
+    color: $color-primary;
+  }
+}
+
+
+b,
+strong {
+  font-weight: 600;
+}
+
+del {
+  opacity: .6;
+}
+
+
+.semibold {
+  font-weight: 400;
+}
+
+
+.lead {
+  font-size: 1.0625rem;
+}
+
+small,
+.small {
+  display: inline-block;
+  color: $color-text-secondary;
+}
+
+.display-1,
+.display-2,
+.display-3,
+.display-4 {
+  font-weight: 600;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $font-title;
+  font-weight: 600;
+  color: $color-title;
+  letter-spacing: 1px;
+  line-height: 1.6;
+
+  small {
+    font-size: 65%;
+  }
+
+  strong,
+  b {
+    font-weight: 700;
+  }
+
+  a {
+    color: $color-title;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
+
+h6, .h6 {
+  font-family: $font-body;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-size: 0.9375rem;
+}
+
+
+
+.heading-alt {
+  font-family: $font-body;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+
+
+.blockquote {
+  margin: 2rem 4rem;
+  border: none;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+  color: $color-text;
+
+  .quote-sign::before {
+    content: '“';
+    display: block;
+    font-size: 9rem;
+    font-family: $font-quote;
+    line-height: .2;
+    font-weight: 600;
+    padding-top: 4rem;
+    opacity: .1;
+  }
+
+  p::before,
+  p::after {
+    font-size: 1.5rem;
+    opacity: .5;
+  }
+
+  p::before {
+    content: '“';
+    margin-left: -13px;
+    padding-right: 4px;
+  }
+  
+  p::after {
+    content: '”';
+    margin-right: -13px;
+    padding-left: 4px;
+  }
+
+  footer {
+    color: $color-text;
+    font-size: 0.875rem;
+    margin-top: 2rem;
+
+    &::before {
+      content: '\2014 \00A0';
+    }
+  }
+
+  .lead {
+    font-size: 1.75rem;
+    line-height: 2.5rem;
+    font-weight: 200;
+  }
+
+  .small {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: $color-text;
+  }
+
+  @include media-down(md) {
+    margin: 2rem 1rem;
+  }
+
+}
+
+
+.text-quoted {
+
+  &::before,
+  &::after {
+    opacity: .7;
+  }
+
+  &::before {
+    content: '“';
+    //margin-left: -7px;
+    padding-right: 2px;
+  }
+  
+  &::after {
+    content: '”';
+    //margin-right: -7px;
+    padding-left: 2px;
+  }
+
+}
+
+
+
+hr {
+  border-top-color: $color-alpha-dark-divider;
+  margin: 2rem auto;
+}
+
+
+.mark-border {
+  padding-bottom: 2px;
+  border-bottom: 1px dashed white;
+}
+
+
+
+.divider {
+  display: flex;
+  align-items: center;
+  flex: 0;
+  color: $color-text-secondary;
+  font-size: 0.75rem;
+  letter-spacing: .5px;
+  margin: 2rem auto;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    flex-grow: 1;
+    border-top: 1px solid $color-divider;
+  }
+
+  &::before {
+    margin-right: 1rem;
+  }
+
+  &::after {
+    margin-left: 1rem;
+  }
+}
+
+
+
+
+//----------------------------------------------------/
+// Code
+//----------------------------------------------------/
+pre {
+  background-color: lighten($color-bg-gray, 0.7%);
+  padding: 12px;
+  border: 1px solid $color-divider-light;
+  border-left: 3px solid $color-primary;
+  color: $color-title;
+  box-shadow: 0 0 15px rgba(0,0,0,.02);
+}
+
+.pre-scrollable {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+
+
+
+//----------------------------------------------------/
+// Typed
+//----------------------------------------------------/
+
+.typed-cursor{
+  font-family: $font-body;
+  font-weight: 300;
+  vertical-align: text-bottom;
+  opacity: 1;
+  animation: blink 0.7s infinite;
+}
+
+@each $name, $color in $colors {
+  [data-type].text-#{$name} + .typed-cursor {
+    color: $color;
+  }
+}
+
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+
+
+
+//----------------------------------------------------/
+// Media queries
+//----------------------------------------------------/
+
+@include media-down(lg) {
+
+  body {
+    font-size: 0.875rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .h1, h1 { font-size:2rem }
+  .h2, h2 { font-size:1.75rem }
+  .h3, h3 { font-size:1.5rem }
+  .h4, h4 { font-size:1.25rem }
+  .h5, h5 { font-size:1.125rem }
+  .h6, h6 { font-size:1rem }
+
+  .display-1 { font-size: 4rem }
+  .display-2 { font-size: 3.5rem }
+  .display-3 { font-size: 3rem }
+  .display-4 { font-size: 2.25rem }
+
+  .blockquote {
+
+    p {
+      font-size: 1rem;
+      line-height: 1.675rem;
+    }
+
+    footer {
+      font-size: 0.75rem;
+    }
+  }
+
+}
+
+
+@include media-down(sm) {
+
+  body {
+    font-size: 0.8125rem;
+  }
+
+  .lead {
+    font-size: 0.9375rem;
+  }
+
+  .h1, h1 { font-size:1.75rem }
+  .h2, h2 { font-size:1.5rem }
+  .h3, h3 { font-size:1.25rem }
+  .h4, h4 { font-size:1.125rem }
+  .h5, h5 { font-size:1rem }
+  .h6, h6 { font-size:0.9375rem }
+
+  .display-1 { font-size: 2.5rem }
+  .display-2 { font-size: 2.25rem }
+  .display-3 { font-size: 2rem }
+  .display-4 { font-size: 1.825rem }
+
+}

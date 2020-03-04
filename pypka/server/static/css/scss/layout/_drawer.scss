@@ -1,0 +1,92 @@
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  bottom: 0;
+  width: 300px;
+  //height: 100%;
+  overflow: auto;
+  background-color: #fff;
+  box-shadow: -2px 0 20px rgba(0,0,0,.06);
+  transition: .5s;
+  z-index: $zindex-drawer;
+}
+
+.drawer-content {
+  padding: 30px;
+}
+
+.drawer-close {
+  position: absolute;
+  top: 26px;
+  right: 15px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  border: 1px solid $color-text-secondary;
+  border-radius: 50%;
+  opacity: .6;
+  background-color: transparent;
+  transition: .3s ease;
+
+  &::after {
+    content: "\e646";
+    font-family: $font-icon-themify;
+    font-size: 16px;
+    color: $color-text-secondary;
+    display: flex;
+    justify-content: center;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 300px;
+  bottom: 0;
+  z-index: $zindex-drawer-backdrop;
+
+  display: none;
+}
+
+.drawer-toggler {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1.5;
+  vertical-align: middle;
+  color: $color-text;
+  opacity: .8;
+  transition: .3s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+
+.drawer-open {
+
+  position: relative;
+  overflow: hidden;
+  margin-left: -100px;
+
+  .topbar {
+    margin-left: -100px;
+  }
+
+  .drawer {
+    right: 0;
+  }
+  
+  .drawer-backdrop {
+    display: block;
+  }
+}

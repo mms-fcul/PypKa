@@ -1,0 +1,25 @@
+
+.lity-close {
+
+  font-family: $font-body;
+  font-weight: 100;
+  opacity: 0.6;
+  padding: 0.5rem 1rem;
+  width: auto;
+  height: auto;
+  transition: 0.3s ease;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:visited {
+    font-family: $font-body;
+    font-weight: 100;
+    opacity: 1;
+    padding: 0.5rem 1rem;
+  }
+
+  &:active {
+    top: 0;
+  }
+}

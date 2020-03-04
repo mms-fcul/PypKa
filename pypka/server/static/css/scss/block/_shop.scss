@@ -1,0 +1,145 @@
+
+.shop-item {
+  display: block;
+  overflow: hidden;
+  border: 1px solid $color-divider;
+  border-radius: 3px;
+  padding: 16px 20px;
+  background-color: $color-bg-lightest;
+  color: $color-text;
+
+  &:hover {
+    @extend .shadow-2;
+
+    img {
+      transform: scale(1.03);
+    }
+
+    background-color: $color-bg-lighter;
+    color: $color-text;
+  }
+
+  img {
+    transition: all 0.5s;
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h5 {
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+
+    p {
+      font-size: 13px;
+      color: $color-text-secondary;
+      line-height: 1.4;
+    }
+
+    .item-price {
+      font-family: $font-title;
+      font-weight: 100;
+      font-size: 25px;
+      letter-spacing: 1px;
+      padding-left: 16px;
+      white-space: nowrap;
+
+      .unit {
+        font-size: 12px;
+        vertical-align: text-top;
+      }
+    }
+  }
+
+}
+
+
+
+
+// Cart table
+// 
+.table-cart {
+
+  border: 1px solid $color-divider;
+  border-top: none;
+
+  td {
+    vertical-align: middle;
+    border-top-color: $color-divider;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  tr td:first-child {
+    padding-left: 30px;
+  }
+
+  tr td:last-child {
+    padding-right: 30px;
+    text-align: right;
+  }
+
+  h5 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  p {
+    font-size: 13px;
+    color: $color-text-secondary;
+    line-height: 1.4;
+    margin-bottom: 0;
+  }
+
+  img {
+    max-height: 80px;
+  }
+
+  label {
+    font-size: 12px;
+    display: inline-block;
+    padding-right: 8px;
+  }
+
+  input {
+    max-width: 60px;
+    display: inline-block;
+  }
+
+  .item-remove {
+    color: $color-text-secondary;
+
+    &:hover {
+      color: $color-danger;
+    }
+  }
+
+  .price {
+    font-weight: 100;
+  }
+}
+
+
+// Cart price
+// 
+.cart-price {
+  border: 1px solid $color-divider;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  padding: 20px;
+  background-color: $color-bg-lightest;
+
+  .flexbox {
+    p {
+      margin-bottom: 4px;
+    }
+    
+    strong {
+      font-weight: 400;
+      font-size: .9em;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+
+        <title>PypKa Server - Electrostatics-based pKa estimations</title>
+
+        <!-- Styles -->
+        <link href="static/css/core.min.css" rel="stylesheet">
+        <link href="static/css/thesaas.min.css" rel="stylesheet">
+        <link href="static/css/style.css" rel="stylesheet">
+
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" href="static/img/favicon.png">
+        <link rel="icon" href="static/img/favicon.png">
+    </head>
+
+    <body>
+        <!-- Topbar -->
+        <nav class="topbar topbar-inverse topbar-expand-md topbar-sticky">
+            <div class="container">
+
+              <div class="topbar-left">
+                <button class="topbar-toggler">&#9776;</button>
+                <a class="topbar-brand" href="/">
+                  <img class="logo-default" src="static/img/pypka_logo.png" alt="logo">
+                  <img class="logo-inverse" src="static/img/pypka_logo_inv.png" alt="logo">
+                </a>
+              </div>
+
+
+              <div class="topbar-right">
+                <ul class="topbar-nav nav">
+                  <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/run-pypka">Run Pypka</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/latest-simulations">Latest Simulations</a></li>
+                  <li class="nav-item"><a class="nav-link" href="https://github.com/mms-fcul/PypKa">Code</a></li>
+                  <li class="nav-item"><a class="nav-link" href="https://pypka.readthedocs.io/en/latest/">Documentation</a></li>
+                  <li class="nav-item"><a class="nav-link" href="http://mms.rd.ciencias.ulisboa.pt">MMS@FCUL</a></li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+        <!-- END Topbar -->
+
+        {% block content %}{% endblock %}
+
+
+        <footer class="site-footer">
+          <div class="container">
+            <div class="row gap-y">
+              <div class="col-12 col-md-6">
+                <p class="text-center text-md-left">PypKa 2020 <a class="text-dark" href="http://mms.rd.ciencias.ulisboa.pt">MMS@FCUL</a>.
+                  Crafted by <a class="text-dark" href="https://github.com/pedrishi">Pedro Reis</a>
+                </p>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <ul class="nav nav-inline nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Terms of use</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Privacy policy</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Scripts -->
+        <script src="static/js/core.min.js"></script>
+        <script src="static/js/thesaas.min.js"></script>
+        <script src="static/js/script.js"></script>
+    </body>
+    {% block scripts %}{% endblock %}
+</html>

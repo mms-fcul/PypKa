@@ -1,0 +1,44 @@
+
+//-----------------------------------------------------------------
+// Element size
+//
+$element-sizes-list: 0 10 20 25 30 40 50 60 64 70 75 80 90 100 120 140 150 160 180 200 250 300 350 400 450 500 600 700 800 900;
+@each $value in $element-sizes-list {
+  .w-#{$value} {
+    width: #{$value}px !important;
+  }
+
+  .h-#{$value} {
+    height: #{$value}px !important;
+  }
+}
+
+
+
+// Percentage width
+//
+.w-full   { width: 100%; }
+.w-half   { width: 50%; }
+.w-third  { width: 33.333333%; }
+.w-fourth { width: 25%; }
+.w-fifth  { width: 20%; }
+
+
+// Percentage height
+//
+.h-full   { height: 100%; }
+.h-half   { height: 50%; }
+.h-third  { height: 33.333333%; }
+.h-fourth { height: 25%; }
+.h-fifth  { height: 20%; }
+
+
+
+
+// Fullscreen
+//
+.w-fullscreen { width: 100vw; }
+.h-fullscreen { height: 100vh; }
+
+.mw-fullscreen { min-width: 100vw; }
+.mh-fullscreen { min-height: 100vh; }

@@ -1,0 +1,216 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<header class="header header-inverse bg-fixed" style="background-image: url(static/img/comp_cluster.jpg)" data-overlay="8">
+    <div class="container text-center">
+
+      <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2">
+
+          <h1>PypKa Server</h1>
+          <p class="fs-18 opacity-70">Leverage the webserver to quickly start calculating p<em>K</em><sub>a</sub> values in your protein of interest</p>
+
+        </div>
+      </div>
+
+    </div>
+</header>
+
+<section class="section" id="section-form">
+    <div class="container">
+      <header class="section-header">
+        <small>input</small>
+        <h2>Parameters</h2>
+      </header>
+
+      <div class="row gap-y">
+
+        <div class="col-12 col-lg-4">
+            <div class="form-group">
+                <label>Input Mode</label>
+                <div class="custom-controls-stacked">
+                    <label class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" name="radio_input_mode" val="pdb_code">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">PDB Code</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                      <input type="radio" class="custom-control-input" name="radio_input_mode" val="upload">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Upload File</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="form-group">
+                <label>PDB Code</label>
+                <input class="form-control" type="text" placeholder="Ex: 4LZT" name="pdb_code" disabled>
+            </div>
+            <div class="form-group">
+                <label>Upload File</label>
+                <input type="file" name="file_uploaded" disabled>
+                <div style="margin-bottom: 5px"></div>
+                <select class="form-control" id="file_uploaded_force_field" disabled>
+                    <option selected disabled>Select the naming scheme</option>
+                    <option value="pdbcode">AMBER</option>
+                    <option value="pdbcode">CHARMM</option>
+                    <option value="upload">GROMOS</option>
+                    <option value="upload">PDB</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4" style="border-left: 0.5px solid rgba(47, 47, 47, 0.8)">
+          <div class="form-group">
+            <label>Help</label>
+            <p>
+                The input PDB file can be retrieved from the Protein Data Bank or it can be uploaded by the user.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <br><br><br>
+      <div class="row gap-y">
+
+        <div class="col-12 col-lg-4">
+            <div class="form-group">
+                <label>Output Files</label>
+                <div class="custom-controls-stacked">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">pKa values</span>
+                    </label>
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">MD-ready PDB</span>
+                      </label>
+
+                  </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="form-group">
+                <label>Output PDB</label>
+                <select class="form-control" disabled>
+                    <option selected disabled>Select the desired naming scheme</option>
+                    <option value="pdbcode">AMBER</option>
+                    <option value="pdbcode">CHARMM</option>
+                    <option value="upload">GROMOS</option>
+                </select>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">pH value</span>
+                    <input type="text" class="form-control" value="7" aria-describedby="basic-addon1" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4" style="border-left: 0.5px solid rgba(47, 47, 47, 0.8)">
+          <div class="form-group">
+            <p>
+                cona cona cona
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <br><br><br>
+      <div class="row gap-y">
+
+        <div class="col-12 col-lg-4">
+            <div class="form-group">
+                <label>pH titration range</label>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">pH min</span>
+                    <input type="text" class="form-control" value="0" aria-describedby="basic-addon1">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">pH max</span>
+                    <input type="text" class="form-control" value="12" aria-describedby="basic-addon1">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">pH step</span>
+                    <input type="text" class="form-control" value="0.25" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <label>Dielectric Constants</label>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Protein</span>
+                <input type="text" class="form-control" value="12" aria-describedby="basic-addon1">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Solvent</span>
+                <input type="text" class="form-control" value="80" aria-describedby="basic-addon1">
+            </div>
+            <label style="margin-bottom: 1px;">Ionic Strength</label>
+            <input type="text" class="form-control" value="0.1" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="col-12 col-lg-4" style="border-left: 0.5px solid rgba(47, 47, 47, 0.8)">
+          <div class="form-group">
+            <label>Help</label>
+            <p>
+                cona x3
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<section class="section section-inverse py-40" style="background-color: #8ea6e6">
+    <div class="container">
+      <div class="row gap-y align-items-center text-center text-md-left" style="align-items: flex-end!important;">
+        <div class="col-12 col-md-9">
+          <h4 class="fw-300 mb-0">50 Titratable Sites over 2 Chains</h4>
+          <h4 class="fw-300 mb-0">Estimated Running Time: 37s</h4>
+          <h4 class="fw-300 mb-0">Queued Submissions: 0 (Average Time per Submission: 60s)</h4>
+        </div>
+
+        <div class="col-12 col-md-3 text-center text-md-right">
+          <a class="btn btn-lg btn-round btn-white" href="#">Submit</a>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function check_extension(filename, ext) {
+        ext_len = ext.length
+        if (ext == filename.slice(-ext_len, -1)) {
+            return true
+        } else {
+            return false
+        }
+    }
+    $('input[name="radio_input_mode"]').change(
+        function() {
+            self_value = $('input[name="radio_input_mode"]:checked').attr("val")
+            if (self_value == "pdb_code") {
+                $('input[name="pdb_code"]').prop("disabled", false)
+                $('input[name="file_uploaded"]').prop("disabled", true)
+                $('#file_uploaded_force_field').prop("disabled", true)
+            } else if (self_value == "upload") {
+                $('input[name="pdb_code"]').prop("disabled", true)
+                $('input[name="file_uploaded"]').prop("disabled", false)
+                $('#file_uploaded_force_field').prop("disabled", false)
+            }
+        }
+    );
+
+</script>
+{% endblock %}

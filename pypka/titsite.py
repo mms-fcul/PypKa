@@ -200,7 +200,7 @@ class Titsite:
             A float of the average protonation of the site at the
             selected pH value
         """
-        if isinstance(self.pK, str):
+        if not self.pK:
             return 'pk Not In Range'
         average_prot = 10 ** (self.pK - pH) / (1 + 10 ** (self.pK - pH))
         return average_prot

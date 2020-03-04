@@ -168,6 +168,13 @@ class ParametersDict:
         item = self.convert_param_name(item)
         return item in self.__dict__
 
+    def __str__(self):
+        self_dict = {}
+        for key, value in self.__dict__.items():
+            if key not in self.not_to_print and key not in ('name', 'not_to_print', 'log'):
+                self_dict[key] = value
+        return '# {} Parameters\n{}\n'.format(self.name, pformat(self_dict))
+
 
 class PypKaConfig(ParametersDict):
     """Configuration parameters
@@ -175,7 +182,8 @@ class PypKaConfig(ParametersDict):
     def __init__(self, log):
         super().__init__(log)
 
-        self.name = 'PypKa configurations'
+        self.name = 'PypKa'
+        self.not_to_print = ['tmpsites', 'temp', 'input_special_conditions', 'input_type', 'NTR_atoms', 'CTR_atoms', 'box']
 
         self.tmpsites    = {}
         self.pid         = os.getpid()
@@ -252,15 +260,6 @@ class PypKaConfig(ParametersDict):
             'box'               : list
         }
 
-    def __str__(self):
-        out = '# PypKa Parameters{}\n\n' \
-              '# PB Parameters\n{}\n\n'  \
-              '# MC Parameters\n{}\n'.format(pformat(self.__dict__),
-                                             pformat(self.delphi_params.__dict__),
-                                             pformat(self.mc_params.__dict__))
-
-        return out
-
     def set_structure_extension(self):
         structure = self['structure']
         f_in_parts = structure.split('.')
@@ -332,7 +331,6 @@ class PypKaConfig(ParametersDict):
             message = 'in range [pHmin, pHmax].'
             self.log.raise_input_param_error('structure_output', message, '')
 
-
     def readTermini(self):
         script_dir = self['script_dir']
         ffID = self['ffID']
@@ -364,7 +362,9 @@ class DelPhiConfig(ParametersDict):
     def __init__(self, log):
         super().__init__(log)
 
-        self.name = 'DelPhi configurations'
+        self.name = 'DelPhi'
+        self.not_to_print = ['p_atpos', 'p_rad3', 'p_chrgv4', 'atinf', 'p_iatmed',
+                             'delphimol', 'input_type', 'input_special_conditions', 'lookup_atoms']
 
         self.perfil     = 0.9
         self.gsize      = 81
@@ -383,6 +383,8 @@ class DelPhiConfig(ParametersDict):
         self.epssol     = 80.0
         self.pbc_dim    = 0
         self.epsin      = 20.0
+
+        self.lookup_atoms = None
 
         # -1 NanoShaper off
         # 0 connolly surface
@@ -465,10 +467,6 @@ class DelPhiConfig(ParametersDict):
         self.atinf    = copy(delphimol.get_atinf())
         self.p_iatmed = copy(delphimol.get_iatmed())
 
-    def __str__(self):
-        out = '# PB Parameters{}\n'.format(pformat(self.__dict__))
-        return out
-
 
 class MCConfig(ParametersDict):
     """Monte Carlo configuration parameters
@@ -476,7 +474,8 @@ class MCConfig(ParametersDict):
     def __init__(self, log):
         super().__init__(log)
 
-        self.name = 'Monte Carlo configurations'
+        self.name = 'Monte Carlo'
+        self.not_to_print = ['input_type', 'input_special_conditions']
         self.pHmin      = 0
         self.pHmax      = 14
         self.pHstep     = 0.25
@@ -537,9 +536,6 @@ class MCConfig(ParametersDict):
             self.log.raise_input_param_error('pH', 'correctly defined.',
                                              pH_error_info)
 
-    def __str__(self):
-        out = '# MC Parameters{}\n'.format(pformat(self.__dict__))
-        return out
 
 class ParallelConfig:
     def __init__(self):
@@ -556,4 +552,3 @@ class ParallelConfig:
         self.possible_states_g = None
         self.possible_states_occ = None
         self.interactions = None
-

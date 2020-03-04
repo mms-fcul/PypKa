@@ -1,16 +1,15 @@
 import setuptools
 
-
 long_description = """
 # PypKa
 
 A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
 
 
-# Dependencies 
+# Dependencies
 
   - libgfortran4
-  - gawk 
+  - gawk
   - pytest
   - numpy
   - psutil
@@ -54,7 +53,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_dir={'pypka': 'pypka'},
     package_data={'pypka': ['mc*.so',
-                            'addHtaut',
+                            'addHtaut*',
                             'G54A7/*',
                             'G54A7/sts/*',
                             'pdb2pqr/*',

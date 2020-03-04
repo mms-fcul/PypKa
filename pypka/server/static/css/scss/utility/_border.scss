@@ -1,0 +1,36 @@
+
+//-----------------------------------------------------------------
+// Borders
+//
+$border-sizes-list: 0 1 2 3;
+@each $size in $border-sizes-list {
+  .b-#{$size}  { border:        #{$size}px solid $color-divider; } // All sides
+  .bt-#{$size} { border-top:    #{$size}px solid $color-divider; }
+  .br-#{$size} { border-right:  #{$size}px solid $color-divider; }
+  .bb-#{$size} { border-bottom: #{$size}px solid $color-divider; }
+  .bl-#{$size} { border-left:   #{$size}px solid $color-divider; }
+
+  // Axes
+  .bx-#{$size} {
+    border-right:  #{$size}px solid $color-divider;
+    border-left:   #{$size}px solid $color-divider;
+  }
+  .by-#{$size} {
+    border-top:    #{$size}px solid $color-divider;
+    border-bottom: #{$size}px solid $color-divider;
+  }
+}
+
+
+// Border colors
+//
+@each $name, $value in $colors {
+  .border-#{$name} {
+    border-color: $value;
+  }
+}
+.border-transparent {border-color: transparent; }
+.border-white       {border-color: #fff; }
+.border-light       {border-color: $color-divider-light; }
+.border-fade        {border-color: $color-alpha-dark-divider; }
+

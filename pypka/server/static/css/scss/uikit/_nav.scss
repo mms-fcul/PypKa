@@ -1,0 +1,239 @@
+
+//-----------------------------------------------------------------
+// Nav general
+//
+.nav {
+
+}
+
+.nav-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  i {
+    width: 1.28571429em;
+    text-align: center;
+  }
+}
+
+.nav-link {
+  flex-grow: 1;
+  font-weight: 400;
+  color: $color-text;
+  padding: 2px 0;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus,
+  &.active {
+    color: $color-primary;
+  }
+
+  &.disabled {
+    color: $color-text-secondary;
+    opacity: .7;
+  }
+
+}
+
+.nav-primary .nav-link:not(.disabled) {
+  &:hover,
+  &:focus {
+    color: $color-primary;
+  }
+}
+
+
+
+// Actions
+//
+.nav-action {
+  color: $color-text-secondary;
+  font-size: 14px;
+  opacity: 0;
+  margin: 0 4px;
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+.nav-item:hover .nav-action {
+  opacity: 1;
+}
+
+.nav-actions-visible .nav-action {
+  opacity: 1;
+}
+
+
+
+
+//-----------------------------------------------------------------
+// Hero
+//
+.nav-hero {
+  justify-content: center;
+
+  .nav-item {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &.flex-column {
+
+    .nav-item {
+      padding: 4px 0;
+    }
+
+  }
+}
+
+
+
+
+//-----------------------------------------------------------------
+// Pills
+//
+.nav-pills {
+
+  .nav-link {
+    border-radius: 2px;
+  }
+
+  .nav-link:not(.disabled):hover {
+    background-color: $color-bg-lighter;
+  }
+
+  .nav-item.open .nav-link,
+  .nav-item.open .nav-link:focus,
+  .nav-item.open .nav-link:hover,
+  .nav-link.active,
+  .nav-link.active:focus,
+  .nav-link.active:hover {
+    color: $color-text;
+    background-color: $color-bg-lighter;
+  }
+
+}
+
+
+
+//-----------------------------------------------------------------
+// Outline
+//
+.nav-outline {
+  $color: $color-text;
+
+  display: inline-flex;
+  justify-content: center;
+
+  .nav-item {
+
+  }
+
+  .nav-link {
+    justify-content: center;
+    padding: 4px 20px;
+    border: 1px solid $color;
+    color: $color;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+
+    &:hover,
+    &.active {
+      color: #fff;
+      background-color: $color;
+    }
+  }
+
+
+  .nav-item + .nav-item .nav-link {
+    border-left: 0;
+  }
+
+}
+
+
+
+//-----------------------------------------------------------------
+// Round
+//
+.nav-round {
+
+  .nav-item:first-child .nav-link {
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+  }
+
+  .nav-item:last-child .nav-link {
+    border-top-right-radius: 10rem;
+    border-bottom-right-radius: 10rem;
+  }
+}
+
+
+
+
+// Dot separated
+//
+.nav-dot-separated .nav-item,
+.nav-dot-separated > .nav-link {
+  margin-left: 0;
+
+  &::after {
+    content: '•';
+    vertical-align: middle;
+    padding: 0 8px;
+    color: $color-text-light;
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
+}
+
+// Dotted nav
+//
+.nav-dotted .nav-link {
+  line-height: normal;
+  border-bottom: 1px dotted lighten($color-text-light, 20%);
+}
+
+
+// Utilities
+// 
+.nav-header {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: $color-text-secondary;
+}
+
+
+
+.nav-round.nav-outline {
+
+  @include media-down(md) {
+
+    .nav-item {
+      margin: 4px;
+    }
+    
+    .nav-link {
+      border-radius: 10rem;
+    }
+  }
+
+}

@@ -1,0 +1,169 @@
+
+.card {
+  border: 0;
+  border-radius: 0;
+  transition: .5s;
+
+  >,
+  .card-body {
+
+    // Alert
+    .alert {
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    // Callout
+    .callout {
+      margin-bottom: 0;
+    }
+
+    // Tabs
+    .nav-tabs {
+      margin-bottom: 0;
+    }
+
+  }
+
+  > a {
+    height: 100%;
+  }
+
+  > .table-responsive .table,
+  > .table {
+    margin-bottom: 0;
+
+    tr td:first-child,
+    tr th:first-child {
+      padding-left: 20px;
+    }
+
+    tr td:last-child,
+    tr th:last-child {
+      padding-right: 20px;
+    }
+  }
+
+
+  .card-hover-show {
+    opacity: 0;
+    transition: .3s linear;
+  }
+
+  &:hover {
+    .card-hover-show {
+      opacity: 1;
+    }
+  }
+
+}
+
+
+
+
+
+.card-block {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+
+
+
+.card-title {
+  //font-family: $font-body;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .5px;
+  border-bottom: $color-divider-light;
+
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+}
+
+
+.h6.card-title, h6.card-title { font-size: 13.5px; }
+.h5.card-title, h5.card-title { font-size: 15px; }
+.h4.card-title, h4.card-title { font-size: 17px; }
+.h3.card-title, h3.card-title { font-size: 19px; }
+.h2.card-title, h2.card-title { font-size: 22px; }
+.h1.card-title, h1.card-title { font-size: 26px; }
+
+
+
+
+.card-bordered {
+  border: 1px solid $color-divider-light;
+}
+
+.card-shadowed {
+  box-shadow: 0 1px 25px rgba(0,0,0,.05);
+}
+
+.card-hover-shadow:hover {
+  box-shadow: 0 1px 35px rgba(0,0,0,.07);
+}
+
+
+.card-inverse,
+.card-outline,
+.map-dialog-inverse,
+.text-inverse {
+  background-color: $color-bg-dark;
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #fff;
+  }
+
+  .card-title a {
+    color: #fff;
+  }
+
+  small,
+  .small {
+    color: #fff;
+    opacity: .6;
+  }
+
+  p {
+    color: rgba(#fff, .75);
+  }
+}
+
+
+
+.card-outline {
+  background-color: transparent;
+  border: 1px solid rgba(#fff,.3);
+}
+
+
+
+.card-hover-inverse:hover {
+  background-color: $color-bg-dark;
+  border-color: $color-bg-dark;
+}
+
+
+.text-inverse {
+  background-color: transparent;
+}
+
+
+
+
+@include media-down(md) {
+
+  .h6.card-title, h6.card-title { font-size: 12px; }
+  .h5.card-title, h5.card-title { font-size: 13px; }
+  .h4.card-title, h4.card-title { font-size: 15px; }
+  .h3.card-title, h3.card-title { font-size: 18px; }
+  .h2.card-title, h2.card-title { font-size: 20px; }
+  .h1.card-title, h1.card-title { font-size: 23px; }
+
+}
+

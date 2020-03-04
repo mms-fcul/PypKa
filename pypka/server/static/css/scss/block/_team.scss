@@ -1,0 +1,79 @@
+
+.team-1 {
+  text-align: center;
+
+  img {
+    border-radius: .25rem;
+    margin-bottom: 2rem;
+  }
+
+  h6 {
+    font-size: 15px;
+    letter-spacing: 1px;
+
+    small {
+      text-transform: uppercase;
+      margin-top: .5rem;
+    }
+  }
+
+  small {
+    display: block;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    opacity: .9;
+  }
+}
+
+
+
+.team-2 {
+
+  text-align: center;
+
+  img {
+    border-radius: 10rem;
+    margin-bottom: 2rem;
+  }
+
+  small {
+    display: block;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+}
+
+
+
+.team-3 {
+  display: flex;
+
+  img {
+    border-radius: .25rem;
+  }
+
+  .team-img {
+    flex-shrink: 0;
+  }
+
+  .team-body {
+    padding-left: 2rem;
+  }
+
+  small {
+    display: block;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  p {
+    opacity: .9;
+  }
+
+}
+

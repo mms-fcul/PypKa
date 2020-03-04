@@ -27,3 +27,5 @@ pypka/delphi4py/rundelphi/__pycache__/
 pypka/delphi4py/rundelphi/benchmark
 pypka/example/test/
 pypka/.nfs*
+
+Dockerfile

@@ -611,12 +611,12 @@ class Titration:
         final_states = {}
         state_distribution = {}
         most_prob_states = {}
+        self.tit_curve = {}
         for pHstep in range(pHsteps):
             pH = pHmin + pHstep * dpH
             text_prots += '\n{pH:5.2f}'.format(pH=pH)
 
-            tmean = tit_curve[pH]['total']
-            text_prots += '\t{tmean:7.4f}'.format(tmean=tmean)
+            self.tit_curve[pH] = tit_curve[pH]['total']
 
             final_states[pH] = {}
             state_distribution[pH] = {}
@@ -825,7 +825,9 @@ class Titration:
     def getParameters(self):
         """Get the parameters used in the calculations
         """
-        return config.tit_mole.getDelPhi().__str__()
+        return '{}\n{}\n{}'.format(Config.pypka_params.__str__(),
+                                           Config.delphi_params.__str__(),
+                                           Config.mc_params.__str__())
 
     def __getitem__(self, chain):
         return self.molecules[chain]

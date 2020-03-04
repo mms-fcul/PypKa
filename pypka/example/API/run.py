@@ -25,7 +25,8 @@ parameters = {'structure'     : 'lyso1.gro',
 sites = {'A': ['1N', 1, 7, 15, 18, 35, 48, 52, 66, 87, 101, 119, '129C']}
  
 pKa = Titration(parameters, sites=sites)
-exit()
+#exit()
+
 # Run each step separately
 #pKa = Titration(parameters, run='preprocess')
 #pKa.DelPhiLaunch()
@@ -44,4 +45,3 @@ for site in pKa:
     print(pKa.getStatesProb(site, 7))
     print(pKa.getFinalState(site, 7))
     print(pKa.getTitrationCurve(site))
-    exit()

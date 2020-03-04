@@ -1,0 +1,40 @@
+
+.nav-vertical {
+
+  flex-direction: column;
+
+  .nav-item {
+    margin-bottom: 10px;
+  }
+
+
+  .nav-link {
+    padding: 20px;
+    border-radius: 5px;
+    white-space: normal;
+    border: 1px solid transparent;
+    opacity: .7;
+
+    &.active {
+      border: 1px solid $color-divider-light;
+      background-color: #fff;
+      opacity: 1;
+      box-shadow: 0 1px 25px rgba(0,0,0,.04);
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    h6 {
+      font-weight: 400;
+    }
+
+    p {
+      margin-bottom: 0;
+      color: $color-text-secondary;
+      font-size: 13px;
+    }
+  }
+
+}
