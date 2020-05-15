@@ -1,0 +1,45 @@
+
+.mega-menu {
+  .nav-submenu {
+    width: 560px;
+    color: $color-text;
+    padding: 0;
+    font-weight: 400;
+    text-align: left;
+
+    @include media-down(md) {
+      width: 100%;
+
+      [class*="col"] {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+
+.mm-header {
+  padding: 12px 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-bottom: 1px solid $color-divider-light;
+  font-size: 1rem;
+
+  h6 {
+    margin-bottom: 0;
+  }
+}
+
+
+.mm-body {
+  padding: 12px 0px;
+  font-size: 0.8275rem;
+}
+
+
+.mm-footer {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 0.8275rem;
+  border-top: 1px solid $color-divider-light;
+}

@@ -1,0 +1,55 @@
+
+
+.feature-1 {
+
+  text-align: center;
+
+  .feature-icon {
+    font-size: 50px;
+    line-height: 1;
+    margin-bottom: 25px;
+    color: $color-text-secondary;
+  }
+
+  h5 {
+    font-weight: 400;
+  }
+
+}
+
+
+
+
+.feature-2 {
+
+  .feature-icon {
+    font-size: 35px;
+    line-height: 1;
+    margin-bottom: 25px;
+    color: $color-text-secondary;
+  }
+
+  h5, h6 {
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+
+}
+
+
+
+
+.feature-3 {
+
+  display: flex;
+
+  .feature-icon {
+    font-size: 40px;
+    line-height: 1;
+    padding-right: 30px;
+    color: $color-text-secondary;
+  }
+
+}
+

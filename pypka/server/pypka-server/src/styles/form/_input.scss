@@ -1,0 +1,403 @@
+
+.form-control {
+  border-color: $color-divider-dark;
+  border-radius: 2px;
+  color: $color-text-secondary;
+  padding: 5px 12px;
+  font-size: 14px;
+  line-height: inherit;
+  transition: 0.2s linear;
+
+  &:disabled,
+  &[readonly] {
+    color: $color-text-secondary;
+  }
+
+  &[readonly] {
+    background-color: #fff;
+  }
+
+  &:focus {
+    border-color: lighten($color-primary, 20%);
+    color: $color-text;
+  }
+
+  &:focus[readonly] {
+    border-color: $color-divider;
+  }
+
+  @include placeholder-color($color-text-placeholder);
+
+  option {
+    font-weight: 300;
+  }
+
+}
+
+label {
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: .5px;
+  margin-bottom: 4px;
+
+  &.require::after {
+    content: '*';
+    color: $color-danger;
+    font-weight: 500;
+    margin-left: 8px
+  }
+}
+
+select.form-control:not([size]):not([multiple]) {
+  height: $height-md;
+}
+
+
+//-----------------------------------------------------------------
+// Sizes
+//
+.form-control-lg,
+.input-group-lg .form-control,
+.input-group-lg>.input-group-addon,
+.input-group-lg>.input-group-btn>.btn {
+  line-height: $line-height-lg;
+  font-size: 14px;
+  padding: 7px 20px;
+}
+
+.form-control-sm,
+.input-group-sm .form-control,
+.input-group-sm>.input-group-addon,
+.input-group-sm>.input-group-btn>.btn {
+  line-height: $line-height-sm;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+
+
+.input-group-sm>.input-group-btn>select.btn:not([size]):not([multiple]),
+.input-group-sm>select.form-control:not([size]):not([multiple]),
+.input-group-sm>select.input-group-addon:not([size]):not([multiple]),
+select.form-control-sm:not([size]):not([multiple]) {
+  height: $height-sm;
+}
+
+.input-group-lg>.input-group-btn>select.btn:not([size]):not([multiple]),
+.input-group-lg>select.form-control:not([size]):not([multiple]),
+.input-group-lg>select.input-group-addon:not([size]):not([multiple]),
+select.form-control-lg:not([size]):not([multiple]) {
+  height: $height-lg;
+}
+
+
+textarea.form-control-lg,
+textarea.form-control-sm {
+  height: auto;
+}
+
+
+
+
+
+
+//-----------------------------------------------------------------
+// Input group
+//
+.input-group {
+
+  border: 1px solid $color-divider;
+
+  .form-control {
+    box-shadow: none;
+    border: none;
+  }
+
+}
+
+
+.input-group-addon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  //background-color: lighten($color-bg-gray, 2%);
+  background-color: #fff;
+  border: none;
+  color: $color-text-placeholder;
+  line-height: 1.5;
+  font-weight: 300;
+  border-radius: 2px;
+
+  .custom-control {
+    //padding-left: 17px;
+    margin-bottom: 0;
+  }
+
+  + .form-control {
+    padding-left: 0;
+  }
+}
+
+.input-group-btn {
+  //display: flex;
+  //align-items: center;
+
+  > .btn {
+    height: 100%;
+  }
+
+}
+
+
+.input-group .form-control:not(:last-child),
+.input-group-addon:not(:last-child) {
+  border-right: 0;
+}
+
+.input-group .form-control:not(:first-child),
+.input-group-addon:not(:first-child) {
+  border-left: 0;
+}
+
+.input-group-btn:not(:first-child)>.btn,
+.input-group-btn:not(:first-child)>.btn-group {
+  margin-left: 0;
+
+}
+
+.input-group-btn:not(:last-child)>.btn,
+.input-group-btn:not(:last-child)>.btn-group {
+  margin-right: 0;
+}
+
+.input-group-addon:last-child,
+.input-group-btn:last-child>.btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group-addon:first-child,
+.input-group-btn:first-child>.btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+//-----------------------------------------------------------------
+// Validation
+//
+.has-success { @include form-validation-colors($color-success); }
+.has-warning { @include form-validation-colors($color-warning); }
+.has-danger  { @include form-validation-colors($color-danger); }
+
+.form-group {
+
+  .form-control-feedback {
+    //line-height: 20px;
+    //font-size: 13px;
+    display: none;
+
+    ul {
+      margin-bottom: .5rem;;
+    }
+  }
+
+  &.has-success,
+  &.has-warning,
+  &.has-danger {
+    .form-control-feedback {
+      display: block;
+    }
+  }
+
+}
+
+
+
+
+
+
+//-----------------------------------------------------------------
+// Round inputs
+//
+.form-round {
+
+  .form-control {
+    border-radius: 10rem;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  textarea.form-control {
+    border-radius: 2px;
+  }
+
+  .input-group-addon {
+
+    border-radius: 10rem;
+    opacity: .7;
+
+    + .form-control {
+      padding-left: 0;
+    }
+
+  }
+
+  .input-group {
+    background-color: #fff;
+    border-radius: 10rem;
+    border: 1px solid $color-divider;
+
+    .input-group-btn .btn {
+      border-radius: 10rem;
+    }
+  }
+
+}
+
+
+
+
+
+
+//-----------------------------------------------------------------
+// Glassy
+//
+.form-glass {
+
+  $bg-color: rgba(#fff, .2);
+
+  .form-control {
+    border: none;
+    background-color: $bg-color;
+    font-weight: 400;
+    color: rgba(#fff, .8);
+
+    @include placeholder-color( rgba(#fff, .6) );
+
+    &:focus {
+      box-shadow: none;
+      color: #fff;
+    }
+  }
+
+  select option {
+    color: $color-title;
+  }
+
+  label {
+    opacity: .8;
+  }
+
+  .input-group {
+    border: none;
+  }
+
+  .input-group-addon {
+    background-color: $bg-color;
+    border: none;
+    color: rgba(#fff, .8);
+  }
+
+  .input-group-btn .btn-outline {
+    background-color: rgba(255,255,255,0.4);
+    border-color: transparent;
+
+    &:hover {
+      background-color: #fff;
+    }
+  }
+
+
+  &.form-round {
+
+    .form-control,
+    .input-group-addon {
+      background-color: transparent;
+    }
+
+    .input-group {
+      background-color: $bg-color;
+    }
+
+  }
+
+}
+
+
+
+
+//-----------------------------------------------------------------
+// Transparent
+//
+.form-transparent {
+
+  $border-color: rgba(#fff, .3);
+  $border-color-focus: rgba(#fff, .5);
+
+  .form-control {
+    border-color: $border-color;
+    background-color: transparent;
+    color: rgba(#fff, .8);
+
+    @include placeholder-color( rgba(#fff, .6) );
+
+    &:focus {
+      box-shadow: none;
+      border-color: $border-color-focus;
+      color: #fff;
+    }
+  }
+
+  select option {
+    color: $color-title;
+  }
+
+  label {
+    opacity: .8;
+  }
+
+  .input-group {
+    border-color: $border-color;
+  }
+
+  .input-group-addon {
+    background-color: transparent;
+    border-color: $border-color;
+    color: rgba(#fff, .6);
+  }
+
+}
+
+
+
+
+//-----------------------------------------------------------------
+// File upload
+//
+.file-group {
+  position: relative;
+  overflow: hidden;
+
+  input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    width: 20px;
+  }
+}
+
+.file-group-inline {
+  display: inline-block;
+}
+
+
+
+//-----------------------------------------------------------------
+// Mailer form
+//
+[data-form="mailer"] .alert {
+  display: none;
+}

@@ -1,0 +1,257 @@
+
+
+// Clearfix
+//
+@mixin clearfix() {
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+
+
+@mixin media-up($point) {
+  
+  $bp-xs: "(min-width: 0)"; // Portrate phones
+  $bp-sm: "(min-width: 576px)"; // Landscape phones
+  $bp-md: "(min-width: 768px)"; // Tablets
+  $bp-lg: "(min-width: 992px)"; // Desktops
+  $bp-xl: "(min-width: 1200px)"; // Large desktops
+
+
+  @if $point == xs {
+    @media #{$bp-xs} { @content; }
+  }
+  @else if $point == sm {
+    @media #{$bp-sm} { @content; }
+  }
+  @else if $point == md {
+    @media #{$bp-md} { @content; }
+  }
+  @else if $point == lg {
+    @media #{$bp-lg}  { @content; }
+  }
+  @else {
+    @media (min-width: #{$point}px) { @content; }
+  }
+
+}
+
+
+
+
+
+@mixin media-down($point) {
+  
+  $bp-xs: "(max-width: 575px)"; // Portrate phones
+  $bp-sm: "(max-width: 767px)"; // Landscape phones
+  $bp-md: "(max-width: 991px)"; // Tablets
+  $bp-lg: "(max-width: 1199px)"; // Desktops
+
+  @if $point == xs {
+    @media #{$bp-xs} { @content; }
+  }
+  @else if $point == sm {
+    @media #{$bp-sm} { @content; }
+  }
+  @else if $point == md {
+    @media #{$bp-md} { @content; }
+  }
+  @else if $point == lg {
+    @media #{$bp-lg}  { @content; }
+  }
+  @else if $point == xl {
+    @content;
+  }
+  @else {
+    @media (max-width: #{$point}px) { @content; }
+  }
+
+}
+
+
+
+
+@mixin link-colors-important($color) {
+  &:hover,
+  &:focus {
+    color: $color !important;
+  }
+}
+
+
+
+
+
+// General button colors
+@mixin btn-colors($color, $percentage, $text-color:#fff) {
+
+  &,
+  &:hover {
+    background-color: $color;
+    border-color: $color;
+    color: $text-color;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 10px rgba($color, .4);
+  }
+
+  &:focus,
+  &.focus {
+    color: $text-color;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $color;
+    border-color: $color;
+    opacity: 0.5;
+  }
+
+
+  &:active,
+  &.active,
+  .show > &.dropdown-toggle {
+    background-color: darken($color, $percentage);
+    border-color: darken($color, $percentage);
+    color: $text-color;
+  }
+
+}
+
+
+
+
+
+// Outline buttons
+@mixin btn-outline($color, $percentage, $text-color:#fff) {
+  color: $color;
+  background-color: transparent;
+
+  @if $color == #fff {
+    border-color: rgba($color, .5);
+  }
+  @else {
+    border-color: $color;
+  }
+
+  &:hover  {
+    color: $text-color;
+    background-color: $color;
+    border-color: $color;
+  }
+
+  &:active,
+  &.active,
+  .show > &.dropdown-toggle {
+    background-color: darken($color, $percentage);
+    border-color: darken($color, $percentage);
+  }
+
+}
+
+
+
+
+@mixin form-validation-colors($color) {
+  .form-control {
+    border-color: $color;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .checkbox,
+  .checkbox-inline,
+  .custom-control,
+  .form-control-feedback,
+  .form-control-label,
+  .radio,
+  .radio-inline,
+  &.checkbox label,
+  &.checkbox-inline label,
+  &.radio label,
+  &.radio-inline label {
+    color: $color;
+  }
+}
+
+
+// Add placeholder color for inputs
+//
+@mixin placeholder-color($color) {
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: $color;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    color: $color;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    color: $color;
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: $color;
+  }
+}
+
+
+// Children gap
+//
+@mixin gap-items($size: 8px) {
+  margin: -$size;
+  > * {
+    margin: $size;
+  }
+}
+
+@mixin gap-items-x($size: 8px) {
+  > * {
+    margin-left:  $size;
+    margin-right: $size;
+
+    &:first-child { margin-left: 0; }
+    &:last-child  { margin-right: 0; }
+  }
+
+}
+
+
+@mixin row-x-gap($size) {
+  $size: $size/2;
+  margin-left: -$size;
+  margin-right: -$size;
+
+  > .col,
+  > [class*="col-"] {
+    padding-left: $size;
+    padding-right: $size;
+  }
+}
+
+
+
+@mixin row-y-gap($size) {
+  $size: $size/2;
+  margin-top: -$size;
+  margin-bottom: -$size;
+
+  > .col,
+  > [class*="col-"] {
+    padding-top: $size;
+    padding-bottom: $size;
+  }
+}
+
+
+
+@mixin masonry-gap($size) {
+  column-gap: $size;
+
+  .masonry-item {
+    padding-bottom: $size;
+  }
+}

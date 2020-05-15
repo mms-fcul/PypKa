@@ -1,0 +1,204 @@
+
+
+.section {
+  padding-top: 90px;
+  padding-bottom: 90px;
+  background-color: #fff;
+
+  @include media-down(md) {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+}
+
+
+
+//----------------------------------------------------/
+// Inverse
+//----------------------------------------------------/
+.section-inverse,
+.header-inverse {
+
+  background-color: $color-bg-dark;
+
+  &,
+  //a,
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #fff;
+  }
+
+  hr {
+    border-top-color: $color-alpha-light-divider;
+  }
+
+  code {
+    background-color: rgba(255,255,255,.1);
+    color: #eee;
+  }
+  
+
+  .divider {
+    color: #fff;
+
+    &::before,
+    &::after {
+      border-top-color: $color-alpha-light-divider;
+    }
+  }
+
+  .section-header {
+
+    small {
+      color: #fff;
+    }
+  }
+
+  .rating label.empty {
+    color: rgba(#fff, .3);
+  }
+
+  .card-inverse {
+    background-color: rgba(#fff, .1);
+  }
+
+  .btn-outline.btn-white {
+    color: rgba(#fff, .6);
+
+    &.active,
+    &:hover {
+      color: $color-text;
+    }
+  }
+
+}
+
+
+//----------------------------------------------------/
+// Header
+//----------------------------------------------------/
+.section-header {
+
+  text-align: center;
+  max-width: 70%;
+  margin: 0 auto 70px;
+
+  small {
+    display: inline-block;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    opacity: .6;
+  }
+
+  hr {
+    width: 50px;
+    margin-bottom: 1.5rem;
+  }
+
+  @include media-down(md) {
+    max-width: 90%;
+  }
+
+}
+
+
+//----------------------------------------------------/
+// Parallax
+//----------------------------------------------------/
+
+.section[data-parallax] {
+  background-color: transparent;
+}
+
+
+.parallax-slider {
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+
+//----------------------------------------------------/
+// Dialog
+//----------------------------------------------------/
+.section-dialog {
+  //width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  //text-align: center;
+
+  @include media-up(sm) {
+    width: 70%;
+  }
+
+  @include media-up(md) {
+    width: 60%;
+    padding: 20px 30px;
+  }
+
+  @include media-up(lg) {
+    width: 45%;
+    padding: 30px 40px;
+  }
+
+  .section-inverse & {
+    background-color: $color-bg-dark;
+  }
+
+}
+
+
+.section-dialog-sm {
+
+  @include media-up(sm) {
+    width: 65%;
+  }
+
+  @include media-up(md) {
+    width: 50%;
+  }
+
+  @include media-up(lg) {
+    width: 35%;
+  }
+
+}
+
+
+.section-dialog-lg {
+
+  @include media-up(sm) {
+    width: 80%;
+  }
+
+  @include media-up(md) {
+    width: 70%;
+  }
+
+  @include media-up(lg) {
+    width: 55%;
+  }
+
+}
+
+
+
+.section-dialog-left {
+  margin-left: 5%;
+}
+
+
+.section-dialog-right {
+  margin-right: 5%;
+}
+
+

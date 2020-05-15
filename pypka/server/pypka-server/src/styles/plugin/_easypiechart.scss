@@ -1,0 +1,13 @@
+
+[data-provide="pie"] {
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.pie-data {
+  position: absolute;
+  width: 100%;
+  padding: 0 12px;
+}

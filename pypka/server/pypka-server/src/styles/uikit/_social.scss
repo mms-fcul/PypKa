@@ -1,0 +1,278 @@
+
+.social {
+
+  a {
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+    color: inherit;
+    font-size: 0.9325rem;
+    border-radius: 3px;
+    opacity: 0.8;
+    transition: .4s;
+
+    &:hover {
+      //color: #fff;
+      opacity: 1;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @each $name, $color in $social-colors {
+      &.social-#{$name}:hover {
+        color: $color;
+      }
+    }
+
+  }
+
+
+
+  // Sizes
+  //
+  &.social-sm {
+    a {
+      font-size: 0.8125rem;
+      margin-right: 16px;
+    }
+  }
+
+
+  &.social-lg {
+    a {
+      font-size: 1.25rem;
+      margin-right: 24px;
+    }
+  }
+
+}
+
+
+
+
+//----------------------------------------------------/
+// Hover primary
+//----------------------------------------------------/
+.social-hover-primary a:hover {
+  color: $color-primary !important;
+}
+
+
+
+
+
+//----------------------------------------------------/
+// Hover brand
+//----------------------------------------------------/
+.social-color-brand a {
+  @each $name, $color in $social-colors {
+    &.social-#{$name} {
+      color: $color;
+    }
+  }
+}
+
+
+
+
+//----------------------------------------------------/
+// Gray
+//----------------------------------------------------/
+.social-gray a {
+  color: $color-text-disable;
+
+  &:hover {
+    color: $color-text-secondary !important;
+  }
+}
+
+
+
+
+
+
+
+//----------------------------------------------------/
+// Rounded
+//----------------------------------------------------/
+.social-rounded a {
+  border-radius: 50%;
+  border: 1px solid $color-divider;
+}
+
+.social-rounded.social-gray a {
+  border-color: $color-bg-light;
+}
+
+.social-rounded.social-inverse {
+
+  a {
+    border-color: rgba(#fff, .5);
+    font-size: 0.8125rem;
+  }
+
+  &.social-sm a {
+    font-size: 0.6875rem;
+  }
+
+
+  &.social-lg a {
+    font-size: 0.9375rem;
+  }
+
+}
+
+
+
+//----------------------------------------------------/
+// Boxed
+//----------------------------------------------------/
+.social-boxed {
+
+  a {
+    $size: 32px;
+    width: $size;
+    height: $size;
+    line-height: $size;
+    margin-right: 4px;
+    margin-bottom: 4px;
+
+    &:hover {
+      color: #fff !important;
+    }
+
+    @each $name, $color in $social-colors {
+      &.social-#{$name}:hover {
+        background-color: $color;
+      }
+    }
+  }
+
+  // Sizes
+  //
+  &.social-sm {
+    a {
+      $size: 28px;
+      width: $size;
+      height: $size;
+      line-height: $size;
+      margin-right: 2px;
+      margin-bottom: 2px;
+    }
+  }
+
+
+  &.social-lg {
+    a {
+      $size: 38px;
+      width: $size;
+      height: $size;
+      line-height: $size - 2px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+  }
+
+}
+
+
+.social-boxed.social-gray a {
+  background-color: $color-bg-light;
+
+  &:hover {
+    color: $color-text-light !important;
+    background-color: darken($color-bg-light, 1%) !important;
+  }
+}
+
+
+
+
+//----------------------------------------------------/
+// Bordered
+//----------------------------------------------------/
+.social-bordered a {
+  border: 1px solid $color-divider;
+}
+
+.social-bordered.social-gray a {
+  border-color: $color-bg-light;
+}
+
+.social-bordered.social-inverse a {
+  border-color: rgba(#fff, .6);
+}
+
+
+
+//----------------------------------------------------/
+// Inverse
+//----------------------------------------------------/
+.social-inverse {
+
+  a {
+    color: #fff;
+
+    &:hover {
+      color: #fff !important;
+    }
+  }
+  
+
+  &.social-boxed a:hover {
+    color: $color-text !important;
+    background-color: #fff !important;
+    border-color: #fff;
+  }
+
+}
+
+
+
+
+//----------------------------------------------------/
+// Colored
+//----------------------------------------------------/
+.social-colored {
+
+  a {
+    color: #fff;
+    opacity: 1;
+  }
+  
+  @each $name, $color in $social-colors {
+    .social-#{$name} {
+      background-color: $color;
+    }
+  }
+
+}
+
+
+
+
+//----------------------------------------------------/
+// Cycling
+//----------------------------------------------------/
+.social-cycling a:hover i {
+  //animation: none;
+  animation: cycle .4s forwards;
+}
+
+
+
+
+@keyframes cycle {
+  49% {
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  51% {
+    opacity: 1;
+  }
+}

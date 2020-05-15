@@ -1,0 +1,18 @@
+
+//-----------------------------------------------------------------
+// No classes
+//
+.no-shadow         { shadow: none; }
+.no-text-shadow    { text-shadow: none; }
+.no-scroll         { overflow: hidden; }
+.no-radius         { border-radius: 0; }
+.no-shrink         { flex-shrink: 0; }
+.no-grow           { flex-grow: 0; }
+.no-letter-spacing { letter-spacing: 0; }
+
+.no-underline {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}

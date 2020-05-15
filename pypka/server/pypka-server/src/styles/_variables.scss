@@ -1,0 +1,225 @@
+
+//-----------------------------------------------------------------
+// General
+//
+
+$line-height-xs:      18px;
+$line-height-sm:      20px;
+$line-height-md:      24px;
+$line-height-lg:      32px;
+$line-height-xl:      54px;
+
+
+//-----------------------------------------------------------------
+// Sizes
+//
+
+// Elements height
+$height-xs:            24px;
+$height-sm:            32px;
+$height-md:            38px;
+$height-lg:            48px;
+$height-xl:            64px;
+$height-xxl:           96px;
+$height-xxxl:          128px;
+
+
+// Elements consistent width
+$width-cons-xs:        85px;
+$width-cons-sm:        100px;
+$width-cons-md:        120px;
+$width-cons-lg:        145px;
+$width-cons-xl:        180px;
+
+
+//-----------------------------------------------------------------
+// Fonts - Consider poppins and Lato
+//
+$font-bootstrap:        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-body:             "Open Sans", sans-serif;
+$font-title:            "Dosis", "Open Sans", sans-serif;
+$font-quote:            Georgia, Verdana, Roboto, Serif;
+$font-icon-fontawesome: FontAwesome;
+$font-icon-themify:     themify;
+
+
+//-----------------------------------------------------------------
+// Colors
+//
+
+// Context colors
+$color-primary:          #0facf3 !default;
+$color-secondary:        #e4e7ea !default;
+$color-success:          #46da60 !default;
+$color-info:             #0e97ff !default;
+$color-warning:          #ffbe00 !default;
+$color-danger:           #ff4954 !default;
+$color-dark:             #000000 !default;
+
+
+// Pale context colors
+$color-pale-primary:     #dcfcfa !default;
+$color-pale-secondary:   #f7fafc !default;
+$color-pale-success:     #e3fcf2 !default;
+$color-pale-info:        #e3f3fc !default;
+$color-pale-warning:     #fcf0e3 !default;
+$color-pale-danger:      #fce3e3 !default;
+$color-pale-dark:        #c8c8c8 !default;
+
+
+// Background colors
+$color-bg-lightest:      #fcfdfe !default;
+$color-bg-lighter:       #f9fafb !default;
+$color-bg-light:         #f5f6f7 !default;
+$color-bg-body:          #ffffff !default;
+$color-bg-dark:          #191919 !default;
+$color-bg-gray:          #f8f8f8 !default;
+
+// Text colors
+$color-title:            #37404d !default;
+$color-subtitle:         #999999 !default;
+$color-text:             #535353 !default;
+$color-text-light:       #788394 !default;
+$color-text-secondary:   #b5b9bf !default;
+$color-text-disable:     #a5b3c7 !default;
+$color-text-placeholder: #b7bbbd !default;
+
+// Divider color
+$color-divider:          #ebebeb !default;
+$color-divider-light:    #f1f2f3 !default;
+$color-divider-dark:     #e8e8e8 !default;
+
+// Social media
+$color-facebook:         #3b5998 !default;
+$color-google-plus:      #dd4b39 !default;
+$color-twitter:          #00aced !default;
+$color-linkedin:         #007bb6 !default;
+$color-pinterest:        #cb2027 !default;
+$color-git:              #666666 !default;
+$color-tumblr:           #32506d !default;
+$color-vimeo:            #aad450 !default;
+$color-youtube:          #bb0000 !default;
+$color-flickr:           #ff0084 !default;
+$color-reddit:           #ff4500 !default;
+$color-dribbble:         #ea4c89 !default;
+$color-skype:            #00aff0 !default;
+$color-instagram:        #517fa4 !default;
+$color-lastfm:           #c3000d !default;
+$color-behance:          #1769ff !default;
+$color-rss:              #f26522 !default;
+
+
+// Alpha channel colors
+$color-alpha-dark-text:           rgba($color-text, .7)  !default;
+$color-alpha-dark-text-light:     rgba($color-text, .4)  !default;
+$color-alpha-dark-text-active:    rgba($color-text, 1)   !default;
+$color-alpha-dark-bg:             rgba($color-text, .04) !default;
+$color-alpha-dark-bg-hover:       rgba($color-text, .05) !default;
+$color-alpha-dark-divider:        rgba($color-text, .07) !default;
+
+$color-alpha-light-text:          rgba(#fff, .7)  !default;
+$color-alpha-light-text-light:    rgba(#fff, .4)  !default;
+$color-alpha-light-text-active:   rgba(#fff, 1)   !default;
+$color-alpha-light-bg:            rgba(#fff, .1)  !default;
+$color-alpha-light-bg-hover:      rgba(#fff, .15) !default;
+$color-alpha-light-divider:       rgba(#fff, .15) !default;
+$color-alpha-light-divider-light: rgba(#fff, .05) !default;
+
+//-----------------------------------------------------------------
+// Z-indexes
+//
+$zindex-navbar:              910 !default;
+$zindex-navbar-nav:          910 !default;
+$zindex-navbar-backdrop:     909 !default;
+$zindex-drawer:              980 !default;
+$zindex-drawer-backdrop:     981 !default;
+$zindex-header:              900 !default;
+$zindex-scrolltop:           980 !default;
+$zindex-dropdown-toggle:     991 !default;
+
+
+
+//-----------------------------------------------------------------
+// Components
+//
+
+
+// Navbar
+$navbar-height:           90px;
+$navbar-height-scrolled:  60px;
+$navbar-padding:          20px;
+$navbar-bg-color:         rgba(255,255,255,.98);
+$navbar-bg-color-inverse: rgba(10,10,10,.8);
+
+
+// Offcanvas
+$offcanvas-right-shadow: 5px 0px 13px 3px rgba(0, 0, 0, 0.1) !default;
+$offcanvas-left-shadow:  0px 0px 25px rgba(0, 0, 0, 0.1) !default;
+
+
+// Notification
+$tooltip-bg:              #323232 !default;
+$toaster-bg:              #323232 !default;
+
+
+
+// Rating
+$color-rating: #ffba00;
+
+
+
+
+
+
+//
+// Lists
+//
+$sides: left right top bottom;
+
+
+
+//
+// Maps
+//
+$colors: (
+  primary:   $color-primary,
+  secondary: $color-secondary,
+  success:   $color-success,
+  info:      $color-info,
+  warning:   $color-warning,
+  danger:    $color-danger,
+  dark:      $color-dark,
+);
+
+$colors-pale: (
+  primary:   $color-pale-primary,
+  secondary: $color-pale-secondary,
+  success:   $color-pale-success,
+  info:      $color-pale-info,
+  warning:   $color-pale-warning,
+  danger:    $color-pale-danger,
+  dark:      $color-pale-dark,
+);
+
+
+$social-colors: (
+  facebook:    $color-facebook,
+  google:      $color-google-plus,
+  gplus:       $color-google-plus,
+  google-plus: $color-google-plus,
+  twitter:     $color-twitter,
+  linkedin:    $color-linkedin,
+  pinterest:   $color-pinterest,
+  git:         $color-git,
+  tumblr:      $color-tumblr,
+  vimeo:       $color-vimeo,
+  youtube:     $color-youtube,
+  flickr:      $color-flickr,
+  reddit:      $color-reddit,
+  dribbble:    $color-dribbble,
+  skype:       $color-skype,
+  instagram:   $color-instagram,
+  lastfm:      $color-lastfm,
+  behance:     $color-behance,
+  rss:         $color-rss,
+);

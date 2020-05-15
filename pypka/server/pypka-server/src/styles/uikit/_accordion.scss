@@ -1,0 +1,75 @@
+
+.accordion {
+
+  .card {
+    background-color: #fff;
+    border: 1px solid $color-divider-light;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .card-title {
+    margin-bottom: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: $color-bg-lightest;
+
+    font-family: $font-body;
+    letter-spacing: 0;
+  }
+
+  .card-title a {
+    display: block;
+    padding: 16px 33px;
+    color: #000;
+
+
+    &::before {
+      content: "\e648";
+      display: inline-block;
+      font-family: $font-icon-themify;
+      font-size: 12px;
+      margin-right: 20px;
+      margin-left: -33px;
+      transition: .2s linear;
+    }
+
+    &.collapsed::before {
+      transform: rotate(180deg);
+    }
+  }
+
+}
+
+
+// Connected accordion
+//
+.accordion {
+
+  box-shadow: 0 0px 15px rgba(0,0,0,.06);
+  .card {
+    margin-bottom: 0;
+    border: none;
+    border-bottom: 1px solid $color-divider-light;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+
+  .card-title {
+    border-bottom: 0;
+    background-color: #fff;
+
+    a {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+}
+
+

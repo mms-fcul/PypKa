@@ -4,7 +4,7 @@ sys.path.insert(1, '../../')
 from pypka import Titration
 
 parameters = {'structure'     : 'lyso1.gro',
-              'convergence'   : 0.01,
+              'convergence'   : 0.1,
               'pH'            : "0,14",
               'scaleM'        : 2,
               'epsin'         : 10,

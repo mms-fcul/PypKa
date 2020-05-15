@@ -191,6 +191,8 @@ class PypKaConfig(ParametersDict):
         self.ncpus       = None
         self.temp        = 298
 
+        self.CpHMD_mode = False
+
         # Paths
         self.file_dir   = os.path.dirname(os.path.abspath(__file__))
         self.script_dir = os.path.dirname(__file__)
@@ -257,7 +259,8 @@ class PypKaConfig(ParametersDict):
             'ser_thr_titration' : bool,
             'f_crg'             : str,
             'f_siz'             : str,
-            'box'               : list
+            'box'               : list,
+            'CpHMD_mode'        : bool
         }
 
     def set_structure_extension(self):

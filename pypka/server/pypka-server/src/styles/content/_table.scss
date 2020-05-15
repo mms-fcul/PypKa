@@ -1,0 +1,46 @@
+
+
+.table th {
+  border-top: 0;
+  font-weight: 400;
+}
+
+.table tbody th {
+  border-top: 1px solid #eceeef;
+}
+
+.table thead th {
+  border-bottom: 1px solid $color-divider;
+}
+
+.thead-default th {
+  background-color: $color-bg-lightest;
+}
+
+.table-hover tbody tr {
+  transition: background-color 0.2s linear;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: $color-bg-lightest;
+}
+
+.table-hover tbody tr:hover {
+  background-color: $color-bg-lighter;
+}
+
+// Sizes
+//
+.table-sm {
+  th,
+  td {
+    padding: .5rem;
+  }
+}
+
+.table-lg {
+  th,
+  td {
+    padding: 1rem;
+  }
+}
