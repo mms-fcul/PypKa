@@ -43,7 +43,7 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
 
 setuptools.setup(
     name="pypka",
-    version="1.1.0",
+    version="1.2.0",
     author="Pedro Reis",
     author_email="pdreis@fc.ul.pt",
     description="A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism",
