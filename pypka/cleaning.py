@@ -377,7 +377,7 @@ def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=F
                         new_file_body += new_pdb_line(last_anumb, aname, resname,
                                                       resnumb, x, y, z, chain=chain)
 
-                    if resname in list(LIPIDS.values()):
+                    if resname in list(Config.pypka_params.LIPIDS.values()):
                         aname, resname, to_include = convert_FF_atomnames(aname, resname)
                         if to_include:
                             last_anumb += 1
@@ -394,8 +394,8 @@ def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=F
         f_new.write(new_file_body)
 
 def convert_FF_atomnames(aname, resname):
-    popc_resname = config.lipids['POPC']
-    chol_resname = config.lipids['cholesterol']
+    popc_resname = Config.pypka_params.LIPIDS['POPC']
+    chol_resname = Config.pypka_params.LIPIDS['cholesterol']
 
     lookup = [((' N  ', popc_resname), ('NTM', 'CHL')),
               ((' C12', popc_resname), ('CB ', 'CHL')),

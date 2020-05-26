@@ -15,9 +15,9 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu cosmic partner">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ cosmic main restricted">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ cosmic-backports main restricted universe multiverse">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu bionic partner">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ bionic main restricted">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse">> /etc/apt/sources.list'
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
             sudo apt install gawk libgfortran4

@@ -218,6 +218,7 @@ class PypKaConfig(ParametersDict):
         self.ff_family = 'GROMOS'
         self.NTR_atoms = None
         self.CTR_atoms = None
+        self.LIPIDS = {}
 
         # Preprocessing parameters
         self.ffinput    = 'GROMOS'
@@ -305,7 +306,7 @@ class PypKaConfig(ParametersDict):
     def define_lipids(self, lipids):
         for lipid in lipids:
             resname = lipids[lipid]
-            LIPIDS[lipid] = resname
+            self.LIPIDS[lipid] = resname
 
     def set_structure_output(self, pHmin, pHmax):
         error_raise = False
