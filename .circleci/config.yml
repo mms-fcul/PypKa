@@ -20,10 +20,7 @@ jobs:
             sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse">> /etc/apt/sources.list'
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
-            sudo apt install gawk libgfortran4
-            #pip install --user $delphi4py_whl 
-            #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/readFiles/__init__.py
-            #touch /home/circleci/.local/lib/python2.7/site-packages/delphi4py/rundelphi/__init__.py
+            sudo apt install gawk libgfortran4 python2
             python3.6 -m pip install --user pytest numpy coverage psutil
 
       - save_cache:

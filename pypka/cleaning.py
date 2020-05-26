@@ -91,10 +91,10 @@ def inputPDBCheck(filename, sites, clean_pdb):
                    str(resnumb) in sites[chain]:
                     chains_res[chain][resnumb] = resname
 
-    if filetype == 'pdb' and not clean_pdb:
-        new_gro_header += '{0}\n'.format(atom_number)
-        with open('TMP.gro', 'w') as f:
-            f.write(new_gro_header + new_gro_body + new_gro_footer)
+    #if filetype == 'pdb' and not clean_pdb:
+    #    new_gro_header += '{0}\n'.format(atom_number)
+    #    with open('TMP.gro', 'w') as f:
+    #        f.write(new_gro_header + new_gro_body + new_gro_footer)
 
     chains_length[last_chain] = chain_length
     #chains_res[chain] = done[chain]

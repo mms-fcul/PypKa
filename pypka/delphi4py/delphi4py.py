@@ -212,10 +212,9 @@ class DelPhi4py(object):
     def get_iatmed(self):
         return self.p_iatmed
 
-    def readFiles(self, outputfile=None):
+    def readFiles(self, outputfile='/dev/null'):
         """ """
-        if outputfile:
-            self.redirectOutput("start", outputfile)
+
         self.rmaxdim = readF.delphi(self.igrid, self.scale,
                                     self.repsin, self.repsout,
                                     self.acent, self.in_pdb,
@@ -225,9 +224,7 @@ class DelPhi4py(object):
                                     self.i_chrgv4, self.i_atinf,
                                     self.i_medeps, self.i_iatmmed,
                                     self.i_dataobject,
-                                    self.rmaxdim)
-        if outputfile:
-            self.redirectOutput("stop", outputfile)
+                                    self.rmaxdim, outputfile)
 
         if self.debug:
             print('    x        y        z     radius  charge       atinf')
@@ -243,7 +240,7 @@ class DelPhi4py(object):
                   nonit_focus=None, relfac_focus=None,
                   relpar_focus=None, pbx_focus=None, pby_focus=None,
                   focusing=False, ibctyp=None, debug=False, filename=None,
-                  outputfile=None):
+                  outputfile='/dev/null'):
         """
         """
         if scale != None:
@@ -344,9 +341,6 @@ class DelPhi4py(object):
 
             self.p_sitpot_list = []
 
-        if outputfile:
-            self.redirectOutput("start", outputfile)
-
         if self.debug or debug:
             output = self.__str__()
             print(output)
@@ -373,11 +367,8 @@ class DelPhi4py(object):
                                         self.i_sitpot,
                                         self.esolvation,
                                         self.isurftype,
-                                        self.parallel)
+                                        self.parallel, outputfile)
         self.saveSitePotential()
-
-        if outputfile:
-            self.redirectOutput("stop", outputfile)
 
         if focusing:
             self.runDelPhi(focusing=True, nonit_focus=nonit_focus,
@@ -393,29 +384,6 @@ class DelPhi4py(object):
         """Returns site potential as a python list
         """
         return self.p_sitpot_list
-
-    def redirectOutput(self, mode, outputname):
-        if mode == 'start':
-            self.stdout = os.dup(sys.stdout.fileno())
-            self.stdout_file = open(outputname, 'w')
-            os.dup2(self.stdout_file.fileno(), sys.stdout.fileno())
-
-            self.stderr = os.dup(sys.stderr.fileno())
-            os.dup2(self.stdout_file.fileno(), sys.stderr.fileno())
-
-        elif mode == 'stop':
-            if not self.stdout or not self.stderr:
-                raise Exception('Output redirection has not been started, '
-                                'thus it can not be ended.')
-            sys.stdout.flush()
-            os.dup2(self.stdout, sys.stdout.fileno())
-
-            sys.stderr.flush()
-            os.dup2(self.stderr, sys.stderr.fileno())
-
-            self.stdout_file.close()
-            os.close(self.stdout)
-            os.close(self.stderr)
 
     def saveSitePotential(self):
         """

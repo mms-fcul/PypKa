@@ -6,17 +6,18 @@ from pypka.tests.builder.check_diffs import compareFiles
 
 sys.path.insert(1, '../')
 
-ncpus = 24
+ncpus = 4
 
 # run coverage.sh to generate coverage
 
 def runTest(path, ncpus, results):
     os.system("rm -f {0}/*out {0}/clean*pqr {0}/TMP.gro {0}/delphi_in_*pdb".format(path))
     results_lines = results.split('\n')[1:-1]
+    #"python3 -m coverage erase; "
+    #"python3 -m coverage run ../../../pypka.py parameters.dat;"
     sb.Popen("cd {0}; "
              "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
-             "python3 -m coverage erase; "
-             "python3 -m coverage run ../../../pypka.py parameters.dat;"
+             "python3 ../../../pypka.py parameters.dat;"
              "rm -f *-*.pdb *.profl *.prm *.xvg *.frc *.crg cent "
              "contributions interactions.dat pkint tmp.sites".format(path, ncpus), shell=True).wait()
     checkOutput('{0}/pKas.out'.format(path), results_lines)
