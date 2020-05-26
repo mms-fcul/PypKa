@@ -51,7 +51,11 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     chains = get_chains_from_file(pdb)
     sites = {chain: 'all' for chain in chains}
 
-    chains_res = identify_tit_sites(sites, instanciate_sites=False)
+    molecules = {}
+    for chain, site_list in sites.items():
+        molecules[chain] = Molecule(chain, site_list)
+
+    chains_res = identify_tit_sites(molecules, instanciate_sites=False)
 
     out_sites = {chain: [] for chain in chains_res.keys()}
 

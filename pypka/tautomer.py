@@ -425,7 +425,7 @@ class Tautomer(object):
             self.p_sitpot (list): potential on site atoms
         """
         if Config.debug:
-            t0 = time.clock()
+            t0 = time.process_time()
             print((self.name))
             print((self.charge_set))
         molecule = self.molecule
@@ -457,7 +457,7 @@ class Tautomer(object):
         self.esolvation = delphimol.getSolvation()
         self.p_sitpot   = delphimol.getSitePotential()
         if Config.debug:
-            t1 = time.clock() - t0
+            t1 = time.process_time() - t0
             filename = '{0}_{1}.profl'.format(self.name, self.getSiteResNumber())
             with open(filename, 'a') as f_new:
                 f_new.write('time -> {0:10} {1:10}\n'.format(t0, t1))
@@ -474,13 +474,13 @@ class Tautomer(object):
         """
 
         if Config.debug:
-            start = time.clock()
+            start = time.process_time()
         molecule = self.molecule
 
         delphimol, acent = self.setDetailsFromWholeMolecule()
 
         if Config.debug:
-            t0 = time.clock() - start
+            t0 = time.process_time() - start
 
             print((self.name, 'starting'))
             p_atpos  = delphimol.get_atpos()
@@ -559,7 +559,7 @@ class Tautomer(object):
                                                        self.p_sitpot[atom_position])
                 f.write(text)
 
-            t1 = time.clock() - start
+            t1 = time.process_time() - start
             filename = '{0}_{1}.profl'.format(self.name,
                                               self.getSiteResNumber())
             with open(filename, 'a') as f_new:
