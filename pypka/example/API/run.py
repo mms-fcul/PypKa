@@ -1,9 +1,10 @@
 import sys
 sys.path.insert(1, '../../')
 
-from pypka import Titration
+import pypka
+#from pypka import Titration
 
-parameters = {'structure'     : 'lyso1.gro',
+parameters = {'structure'     : 'lyso.pdb',
               'convergence'   : 0.1,
               'pH'            : "0,14",
               'scaleM'        : 2,
@@ -14,8 +15,7 @@ parameters = {'structure'     : 'lyso1.gro',
               'output'        : 'pKas.out',
               'titration_output': 'titration.out',
               'ser_thr_titration': False,
-              'structure_output': ('out4.pdb', 4.5, 'gromos_cph'),
-              'clean': False
+              'structure_output': ('out4.pdb', 4.5, 'gromos_cph')
 }
               #'gsize'         : 91,
               #'bndcon'        : 4,
@@ -24,7 +24,7 @@ parameters = {'structure'     : 'lyso1.gro',
 
 sites = {'A': ['1N', 1, 7, 15, 18, 35, 48, 52, 66, 87, 101, 119, '129C']}
  
-pKa = Titration(parameters, sites=sites)
+pKa = pypka.Titration(parameters, sites=sites)
 #exit()
 
 # Run each step separately
@@ -39,9 +39,9 @@ pKa = Titration(parameters, sites=sites)
 #for pH in pKa.getTitrationCurve('total').keys():
 #    print(pH, pKa.getTitrationCurve('total')[pH])
 
-for site in pKa:
-    print(site, pKa[site], pKa.getProtState(site, 7))
-    print(pKa.getMostProbStates(site, 7))
-    print(pKa.getStatesProb(site, 7))
-    print(pKa.getFinalState(site, 7))
-    print(pKa.getTitrationCurve(site))
+#for site in pKa:
+#    print(site, pKa[site], pKa.getProtState(site, 7))
+#    print(pKa.getMostProbStates(site, 7))
+#    print(pKa.getStatesProb(site, 7))
+#    print(pKa.getFinalState(site, 7))
+#    print(pKa.getTitrationCurve(site))
