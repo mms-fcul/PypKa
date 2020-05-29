@@ -1,6 +1,6 @@
 from tautomer import Tautomer
 from config import Config
-from constants import KBOLTZ
+from constants import KBOLTZ, TERMINAL_OFFSET
 
 
 class Titsite:
@@ -166,6 +166,8 @@ class Titsite:
         return self.center
 
     def getResNumber(self):
+        if self.res_number > TERMINAL_OFFSET:
+            return self.res_number - TERMINAL_OFFSET
         return self.res_number
 
     def getpK(self):

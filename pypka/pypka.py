@@ -579,7 +579,7 @@ class Titration:
         tit_curve[pHmin]['total'] = sum(avgs_all[0]) / mcsteps / nsites
         for i, mean in enumerate(avgs_all[0]):
             site = sites[i]
-            sitenumber = site.getResNumber()
+            sitenumber = site.res_number
             tit_curve[pHmin][sitenumber] = mean / mcsteps
 
         sites = Config.parallel_params.all_sites
@@ -592,7 +592,7 @@ class Titration:
             tit_curve[pH]['total'] = totalP
             for i, mean in enumerate(means):
                 site = sites[i]
-                sitenumber = site.getResNumber()
+                sitenumber = site.res_number
                 tit_curve[pH][sitenumber] = mean
 
         pKas = pKs
@@ -604,11 +604,10 @@ class Titration:
             c += 1
             site = sites[c]
             sitename = site.getName()
+            resnumb = site.getResNumber()
             if sitename in ('NTR', 'CTR'):
-                resnumb = site.getResNumber() - TERMINAL_OFFSET
                 text_prots += '     {0:3}'.format(sitename)
             else:
-                resnumb = site.getResNumber()
                 text_prots += '{0:5d}{1:3s}'.format(resnumb, sitename)
             text_pks += '{0} {1} {2}\n'.format(resnumb, sitename, i[0])
 
@@ -627,7 +626,7 @@ class Titration:
             most_prob_states[pH] = {}
             for c, site in enumerate(sites):
                 sitename = site.getName()
-                sitenumb = site.getResNumber()
+                sitenumb = site.res_number
                 mean = tit_curve[pH][sitenumb]
                 final_states[pH][sitenumb] = cur_states[pHstep][c]
                 state_distribution[pH][sitenumb] = list(counts_all[pHstep][c] / mcsteps)
@@ -693,8 +692,6 @@ class Titration:
                     state_prob, taut_prob = site.getTautProb(new_state,
                                                               pH)
 
-                    if resnumb > TERMINAL_OFFSET:
-                        resnumb -= TERMINAL_OFFSET
                     if state_prob < 0.75:
                         warn = '{0}{1} ' \
                                'protonation state probability: {2}, ' \
@@ -729,7 +726,7 @@ class Titration:
         new_states = {}
         for site in sites:
             resname = site.getName()
-            resnumb = site.getResNumber()
+            resnumb = site.res_number
             molecule = site.molecule
             chain = molecule.chain
 
@@ -844,12 +841,12 @@ class Titration:
             for site in sites[chain]:
                 pk = site.pK
                 if pk:
-                    pk = round(pk, 2)
+                    pk = '{:.2f}'.format(round(pk, 2))
                 else:
                     pk = 'Not In Range'
                 #site = convertTermini(site)
-                output += '\n{0:>4} {1:>6}    {2:3}    {3:>}'.format(chain,
-                                                                     site.res_number,
+                output += '\n{0:>4} {1:>6}    {2:3}    {3:>5}'.format(chain,
+                                                                     site.getResNumber(),
                                                                      site.res_name, pk)
         return output
 
