@@ -15,9 +15,9 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu focal partner">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal main restricted">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu xenial partner">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ xenial main restricted">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse">> /etc/apt/sources.list'
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
             sudo apt install gawk libgfortran4 python2
