@@ -12,12 +12,14 @@ in the 4lzt.pdb structure.
 .. code-block:: python
    
    from pypka.pypka import Titration
-
-   parameters = {'structure'     : '4lzt.pdb',
-                 'epsin'         : 10,
-                 'ionicstr'      : 0.1,
-                 'pbc_dimensions': 0,
-                 'ncpus'         : 4}
+   
+   params = {
+    'structure'     : '4lzt.pdb',    
+    'ncpus'         : -1,
+    'epsin'         : 15,
+    'ionicstr'      : 0.1,
+    'pbc_dimensions': 0
+   }
    
    pKa = Titration(parameters)
    
@@ -25,6 +27,10 @@ in the 4lzt.pdb structure.
        print(site, pKa[site], pKa.getProtState(site, 7))
    
    print(pKa.getParameters())
+   
+   
+You may also try it out on a `online notebook.
+<https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb/>`_ 
 
 
 ===
@@ -77,11 +83,10 @@ Mandatory Parameters
 	    
    :type: int
 
-   number of dimensions with periodic boundaries. 0 for solvated
-   proteins and 2 for lipidic systems
+   number of dimensions with periodic boundaries. 0 for solvated proteins and 2 for lipidic systems
 
 .. object:: ncpus
 	    
    :type: int
 
-   number of CPUs to use in the calculations
+   number of CPUs to use in the calculations (-1 to use all available)
