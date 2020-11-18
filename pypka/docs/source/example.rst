@@ -19,14 +19,16 @@ in the 4lzt.pdb structure.
     'epsin'         : 15,
     'ionicstr'      : 0.1,
     'pbc_dimensions': 0
+    #'ffID': 'GROMOS' # options: GROMOS, AMBER, CHARMM
    }
    
-   pKa = Titration(parameters)
-   
-   for site in pKa:
-       print(site, pKa[site], pKa.getProtState(site, 7))
-   
-   print(pKa.getParameters())
+   tit = Titration(parameters)
+      
+   pH = 7.0
+   for site in tit:
+       pK = round(site.pK, 1)
+       state = site.getProtState(pH)[0]    
+       print(site.res_name, site.res_number, pK, state)         
    
    
 You may also try it out on a `online notebook.
