@@ -6,13 +6,25 @@
 A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
 
 
-# Dependencies 
+# Documentation & Basic Usage
 
+  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/)
+
+  Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
+
+
+# Installation & Dependencies 
+
+  - python2.6>= & python3.5>=
   - libgfortran4
   - gawk 
   - pytest
   - numpy
 
+```
+  pip3 install pypka
+  apt install gawk gcc gfortran libgfortran4 python2
+```
 
 # License
 
@@ -20,16 +32,6 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
   DelPhi which is proprietary. To use DelPhi the user is required to
   download the DelPhi license
   [here](https://honiglab.c2b2.columbia.edu/software/cgi-bin/software.pl?input=DelPhi)
-
-# Documentation
-
-  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/). (Under development)
-
-# Installation
-
-  pip3 install pypka
-
-  apt install gawk gcc gfortran libgfortran4
 
 # Contacts
 
