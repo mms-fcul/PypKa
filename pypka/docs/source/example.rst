@@ -19,7 +19,8 @@ in the `4lzt.pdb structure <https://files.rcsb.org/download/4LZT.pdb>`_ download
     'epsin'         : 15,
     'ionicstr'      : 0.1,
     'pbc_dimensions': 0
-    #'ffID': 'GROMOS' # options: GROMOS, AMBER, CHARMM
+    #Set the ffinput when using PDB files from simulations    
+    #'ffinput': 'GROMOS' # options: GROMOS, AMBER, CHARMM
    }
    
    tit = Titration(params)
@@ -45,11 +46,13 @@ parameter file.
    :caption: parameter.dat
       
    structure       = 4lzt.pdb
-   epsin           = 10
+   epsin           = 15
    ionicstr        = 0.1
    pbc_dimensions  = 0
-   ncpus           = 4
-   sites_A         = all
+   ncpus           = -1
+   sites           = all   
+   #Set the ffinput when using PDB files from simulations
+   #Options: GROMOS, AMBER, CHARMM
 
 To execute pypka simply type one of the two:
 
