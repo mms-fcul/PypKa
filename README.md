@@ -4,7 +4,20 @@
 # PypKa
 
 A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
+DOI: <a href="https://doi.org/10.1021/acs.jcim.0c00718">10.1021/acs.jcim.0c00718</a>
 
+```
+@article{reis2020jcim,
+author = {Reis, Pedro B. P. S. and Vila-Viçosa, Diogo and Rocchia, Walter and Machuqueiro, Miguel},
+title = {PypKa: A Flexible Python Module for Poisson–Boltzmann-Based pKa Calculations},
+journal = {Journal of Chemical Information and Modeling},
+volume = {60},
+number = {10},
+pages = {4442-4448},
+year = {2020},
+doi = {10.1021/acs.jcim.0c00718}
+}
+```
 
 # Documentation & Basic Usage
 
