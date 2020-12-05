@@ -261,6 +261,12 @@ class Titration:
         if Config.pypka_params['f_structure_out']:
             with open('delphi_in_stmod.pdb') as f:
                 self.delphi_input_content = f.readlines()
+        if Config.pypka_params['save_pdb']:
+            with open('delphi_in_stmod.pdb') as f, \
+                 open(Config.pypka_params['save_pdb'], 'w') as f_new:
+                content = f.read()
+                f_new.write(content)
+
         if not Config.debug:
             os.remove('delphi_in_stmod.pdb')
 
@@ -384,6 +390,7 @@ class Titration:
         sites = self.get_all_sites(get_list=True)
         if Config.debug:
             writeDatHeader(sites)
+
         counter = 0
         site_interactions = []
         for site1 in sites[:-1]:
@@ -828,8 +835,23 @@ class Titration:
         """Get the parameters used in the calculations
         """
         return '{}\n{}\n{}'.format(Config.pypka_params.__str__(),
-                                           Config.delphi_params.__str__(),
-                                           Config.mc_params.__str__())
+                                   Config.delphi_params.__str__(),
+                                   Config.mc_params.__str__())
+
+    def getParametersDict(self):
+        return (Config.pypka_params.__dict__,
+                Config.delphi_params.__dict__,
+                Config.mc_params.__dict__)
+
+    def getSiteInteractions(self):
+        Config.loadParams(self.__parameters)
+
+        return (
+            Config.parallel_params.all_sites,
+            Config.parallel_params.npossible_states,
+            Config.parallel_params.interactions_look,
+            Config.parallel_params.interactions
+        )
 
     def __getitem__(self, chain):
         return self.molecules[chain]

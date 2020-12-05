@@ -1,38 +1,38 @@
-1 NTR 7.385486289829849
-1 LYS 10.385584365325077
-7 GLU 2.8826946555866253
-13 LYS None
-15 HIS 5.867371279679988
-18 ASP 2.699499030381383
-20 TYR 9.911190805007351
-23 TYR 9.392016503352243
-24 SER None
-33 LYS 10.512639059944679
-35 GLU 4.175352330803779
-36 SER None
-40 THR None
-43 THR None
-47 THR None
-48 ASP 1.859099446300949
-50 SER None
-51 THR None
-52 ASP 2.1516355521689436
-53 TYR 10.738445987683207
-60 SER None
-66 ASP 2.337319641232289
-69 THR None
-72 SER None
-81 SER None
-85 SER None
-86 SER None
-87 ASP 2.0567544019613804
-89 THR None
-91 SER None
-96 LYS None
-97 LYS None
-100 SER None
-101 ASP 3.31453580803786
-116 LYS 10.253852282222178
-118 THR None
-119 ASP 2.3967126151939904
-129 CTR 1.7030741123202797
+    1 NTR 7.414526765648602       
+    1 LYS 10.36729217344299       
+    7 GLU 2.894038631238357       
+   13 LYS None                    
+   15 HIS 5.726972226653197       
+   18 ASP 2.7716275732876303      
+   20 TYR 9.911490578356108       
+   23 TYR 9.396414012870652       
+   24 SER None                    
+   33 LYS 10.487372183063636      
+   35 GLU 4.185039523383046       
+   36 SER None                    
+   40 THR None                    
+   43 THR None                    
+   47 THR None                    
+   48 ASP 1.9185078450208133      
+   50 SER None                    
+   51 THR None                    
+   52 ASP 2.2085225009956195      
+   53 TYR 10.740697784064121      
+   60 SER None                    
+   66 ASP 2.403900927381685       
+   69 THR None                    
+   72 SER None                    
+   81 SER None                    
+   85 SER None                    
+   86 SER None                    
+   87 ASP 2.1193747587803937      
+   89 THR None                    
+   91 SER None                    
+   96 LYS None                    
+   97 LYS None                    
+  100 SER None                    
+  101 ASP 3.3738081246564176      
+  116 LYS 10.226543135843928      
+  118 THR None                    
+  119 ASP 2.45892517060784        
+  129 CTR 1.3758302160470264      

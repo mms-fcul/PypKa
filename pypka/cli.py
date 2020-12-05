@@ -23,7 +23,8 @@ def read_settings(filename):
             nline += 1
             line = line.strip()
             if line and line[0] != '#':
-                parts = line.split('=')
+                no_comments = line.split('#')[0]
+                parts = no_comments.split('=')
                 param_name = parts[0].strip()
                 param_value = '='.join(parts[1:]).strip()
                 if 'lipid_definition' in param_name:

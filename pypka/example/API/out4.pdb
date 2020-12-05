@@ -3,14 +3,14 @@ REMARK     Residue    Prot State Prob    Tautomer Prob
 REMARK     NTR  1                1.00             1.00
 REMARK     LYS  1                1.00             1.00
 REMARK     GLU  7                0.98             0.98
-REMARK     HIS  15               0.88             0.88
-REMARK     ASP  18               0.94             0.94
+REMARK     HIS  15               0.84             0.84
+REMARK     ASP  18               0.93             0.93
 REMARK     GLU  35               0.81             0.51
 REMARK     ASP  48               1.00             1.00
-REMARK     ASP  52               0.87             0.87
+REMARK     ASP  52               0.86             0.86
 REMARK     ASP  66               1.00             1.00
 REMARK     ASP  87               1.00             1.00
-REMARK     ASP  101              0.87             0.87
+REMARK     ASP  101              0.85             0.85
 REMARK     ASP  119              1.00             1.00
 REMARK     CTR  129              1.00             1.00
 ATOM      1 N    LY3     1      10.048   3.100   8.570

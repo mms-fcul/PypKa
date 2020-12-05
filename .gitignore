@@ -8,8 +8,11 @@ LOG*
 *eback.xvg
 *.prm
 P_*.pdb
+*.pyc
 
 build/
+.eggs/
+pypKa.egg-info/
 pypka/build/
 .pytest_cache/
 dist/

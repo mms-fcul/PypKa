@@ -211,6 +211,7 @@ class PypKaConfig(ParametersDict):
         self.structure_output   = None
         self.f_structure_out_pH = None
         self.ff_structure_out   = None
+        self.save_pdb           = None
 
 
         # Force Field
@@ -261,7 +262,8 @@ class PypKaConfig(ParametersDict):
             'f_crg'             : str,
             'f_siz'             : str,
             'box'               : list,
-            'CpHMD_mode'        : bool
+            'CpHMD_mode'        : bool,
+            'save_pdb'          : str
         }
 
     def set_structure_extension(self):
