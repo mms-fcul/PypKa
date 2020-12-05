@@ -16,6 +16,7 @@ Required Software
 Pypka depends on the following software:
 
 * Python3.6
+* Python2
 * gawk
 
 For the moment DelPhi depends on the following software:
@@ -26,5 +27,5 @@ For the moment DelPhi depends on the following software:
 
 These can all be installed via apt in Debian based systems::
 
-  apt install gawk gcc gfortran libgfortran4
+  apt install gawk gcc gfortran libgfortran4 python2
 

@@ -4,15 +4,40 @@
 # PypKa
 
 A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
+DOI: <a href="https://doi.org/10.1021/acs.jcim.0c00718">10.1021/acs.jcim.0c00718</a>
+
+```
+@article{reis2020jcim,
+author = {Reis, Pedro B. P. S. and Vila-Viçosa, Diogo and Rocchia, Walter and Machuqueiro, Miguel},
+title = {PypKa: A Flexible Python Module for Poisson–Boltzmann-Based pKa Calculations},
+journal = {Journal of Chemical Information and Modeling},
+volume = {60},
+number = {10},
+pages = {4442-4448},
+year = {2020},
+doi = {10.1021/acs.jcim.0c00718}
+}
+```
+
+# Documentation & Basic Usage
+
+  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/)
+
+  Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
 
 
-# Dependencies
+# Installation & Dependencies
 
+  - python2.6>= & python3.5>=
   - libgfortran4
   - gawk
   - pytest
   - numpy
 
+```
+  pip3 install pypka
+  apt install gawk gcc gfortran libgfortran4 python2
+```
 
 # License
 
@@ -20,16 +45,6 @@ A python module for flexible Poisson-Boltzmann based pKa calculations with proto
   DelPhi which is proprietary. To use DelPhi the user is required to
   download the DelPhi license
   [here](https://honiglab.c2b2.columbia.edu/software/cgi-bin/software.pl?input=DelPhi)
-
-# Documentation
-
-  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/). (Under development)
-
-# Installation
-
-  pip3 install pypka
-
-  apt install gawk gcc gfortran libgfortran4
 
 # Contacts
 

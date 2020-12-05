@@ -7,24 +7,32 @@ API
 
 A simple example of how to use Pypka as an API is provided below. In
 this snippet we are estimating the pKa values for all titrable sites
-in the 4lzt.pdb structure.
+in the `4lzt.pdb structure <https://files.rcsb.org/download/4LZT.pdb>`_ downloaded from the Protein Data Bank.
 
 .. code-block:: python
    
    from pypka.pypka import Titration
-
-   parameters = {'structure'     : '4lzt.pdb',
-                 'epsin'         : 10,
-                 'ionicstr'      : 0.1,
-                 'pbc_dimensions': 0,
-                 'ncpus'         : 4}
    
-   pKa = Titration(parameters)
+   params = {
+    'structure'     : '4lzt.pdb',    
+    'ncpus'         : -1,
+    'epsin'         : 15,
+    'ionicstr'      : 0.1,
+    'pbc_dimensions': 0
+    #Set the ffinput when using PDB files from simulations    
+    #'ffinput': 'GROMOS' # options: GROMOS, AMBER, CHARMM
+   }
    
-   for site in pKa:
-       print(site, pKa[site], pKa.getProtState(site, 7))
+   tit = Titration(params)
+      
+   pH = 7.0
+   for site in tit:
+       state = site.getProtState(pH)[0]    
+       print(site.res_name, site.res_number, site.pK, state)         
    
-   print(pKa.getParameters())
+   
+You may also try it out on a `online notebook.
+<https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb>`_ 
 
 
 ===
@@ -38,11 +46,13 @@ parameter file.
    :caption: parameter.dat
       
    structure       = 4lzt.pdb
-   epsin           = 10
+   epsin           = 15
    ionicstr        = 0.1
    pbc_dimensions  = 0
-   ncpus           = 4
-   sites_A         = all
+   ncpus           = -1
+   sites           = all   
+   #Set the ffinput when using PDB files from simulations
+   #Options: GROMOS, AMBER, CHARMM
 
 To execute pypka simply type one of the two:
 
@@ -77,11 +87,10 @@ Mandatory Parameters
 	    
    :type: int
 
-   number of dimensions with periodic boundaries. 0 for solvated
-   proteins and 2 for lipidic systems
+   number of dimensions with periodic boundaries. 0 for solvated proteins and 2 for lipidic systems
 
 .. object:: ncpus
 	    
    :type: int
 
-   number of CPUs to use in the calculations
+   number of CPUs to use in the calculations (-1 to use all available)
