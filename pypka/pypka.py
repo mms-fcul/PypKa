@@ -7,12 +7,22 @@ proteins or lipid bilayers.
 
 from config import Config
 from constants import *
-from checksites import identify_tit_sites, check_sites_integrity, make_delphi_inputfile, get_chains_from_file
+from checksites import (
+    identify_tit_sites,
+    check_sites_integrity,
+    make_delphi_inputfile,
+    get_chains_from_file,
+)
 from cli import check_cli_args
 from cleaning import inputPDBCheck, cleanPDB
 from formats import convertTermini, gro2pdb, pdb2gro, read_pdb_line, new_pdb_line
 from molecule import Molecule
-from concurrency import startPoolProcesses, runDelPhiSims, runInteractionCalcs, runMCCalcs
+from concurrency import (
+    startPoolProcesses,
+    runDelPhiSims,
+    runInteractionCalcs,
+    runMCCalcs,
+)
 import log
 from ffconverter import AMBER_protomers, GROMOS_protomers, gromos2amber, mainchain_Hs
 
@@ -42,14 +52,16 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
 
     """
 
-    parameters = {'structure': pdb,
-                  'ncpus': 1,
-                  'epsin': 15,
-                  'ser_thr_titration': ser_thr_titration}
-    Config.storeParams('', log.Log(), debug, parameters)
+    parameters = {
+        "structure": pdb,
+        "ncpus": 1,
+        "epsin": 15,
+        "ser_thr_titration": ser_thr_titration,
+    }
+    Config.storeParams("", log.Log(), debug, parameters)
 
     chains = get_chains_from_file(pdb)
-    sites = {chain: 'all' for chain in chains}
+    sites = {chain: "all" for chain in chains}
 
     molecules = {}
     for chain, site_list in sites.items():
@@ -62,10 +74,10 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     for chain, sites in chains_res.items():
         for resnumb, resname in sites.items():
             out_site = resnumb
-            if resname == 'NTR':
-                out_site += 'N'
-            elif resname == 'CTR':
-                out_site += 'C'
+            if resname == "NTR":
+                out_site += "N"
+            elif resname == "CTR":
+                out_site += "C"
 
             out_sites[chain].append(out_site)
 
@@ -80,7 +92,7 @@ class Titration:
         molecules (dict): titrating molecules ordered by chain
     """
 
-    def __init__(self, parameters, sites='all', debug=False, run='all'):
+    def __init__(self, parameters, sites="all", debug=False, run="all"):
         """Runs the pKa prediction
 
         Args:
@@ -94,17 +106,17 @@ class Titration:
         self.__parameters = Config.storeParams(self, log.Log(), debug, parameters)
         self.pKas = {}
 
-        print('Start Preprocessing')
+        print("Start Preprocessing")
         self.preprocessing(sites)
         self.processDelPhiParams()
 
-        if run == 'preprocess':
+        if run == "preprocess":
             return
 
-        print('Start PB Calculations')
+        print("Start PB Calculations")
         self.DelPhiLaunch()
 
-        if run == 'PB':
+        if run == "PB":
             return
 
         # Calculates sites interaction energies and write .dat file
@@ -113,13 +125,13 @@ class Titration:
         #  Monte Carlo sampling
         self.run_mc()
 
-        if Config.pypka_params['f_structure_out']:
+        if Config.pypka_params["f_structure_out"]:
             self.writeOutputStructure()
 
-        print('Results')
+        print("Results")
         print(self)
 
-        print('API exited successfully')
+        print("API exited successfully")
 
     def preprocessing(self, sites):
         def create_tit_sites(chains_res, TMPpdb=False):
@@ -127,45 +139,43 @@ class Titration:
                 molecule.deleteAllSites()
             check_sites_integrity(self.molecules, chains_res, useTMPpdb=TMPpdb)
 
-        if Config.pypka_params['f_in_extension'] == 'gro':
-            groname = Config.pypka_params['f_in']
-            f_in = 'TMP.pdb'
+        if Config.pypka_params["f_in_extension"] == "gro":
+            groname = Config.pypka_params["f_in"]
+            f_in = "TMP.pdb"
             gro2pdb(groname, f_in, save_box=True)
             Config.pypka_params.redefine_f_in(f_in)
 
-
         # Creating instance of TitratingMolecule
         automatic_sites = False
-        if sites == 'all':
-            f_in = Config.pypka_params['f_in']
+        if sites == "all":
+            f_in = Config.pypka_params["f_in"]
             chains = get_chains_from_file(f_in)
-            sites = {chain: ['all'] for chain in chains}
+            sites = {chain: ["all"] for chain in chains}
 
         for chain, site_list in sites.items():
-            if site_list == ['all']:
-                site_list = 'all'
+            if site_list == ["all"]:
+                site_list = "all"
             else:
                 site_list = [str(site) for site in site_list]
                 sites[chain] = site_list
             self.molecules[chain] = Molecule(chain, site_list)
-            if site_list == 'all':
+            if site_list == "all":
                 automatic_sites = True
 
-        if Config.pypka_params['f_in_extension'] == 'pdb':
-            f_in = Config.pypka_params['f_in']
+        if Config.pypka_params["f_in_extension"] == "pdb":
+            f_in = Config.pypka_params["f_in"]
             # Reading .st files
             # If the titrable residues are defined
             if not automatic_sites:
-                clean_pdb = Config.pypka_params['clean_pdb']
-                chains_length, chains_res = inputPDBCheck(f_in,
-                                                          sites, clean_pdb)
+                clean_pdb = Config.pypka_params["clean_pdb"]
+                chains_length, chains_res = inputPDBCheck(f_in, sites, clean_pdb)
 
                 for chain, molecule in self.molecules.items():
                     molecule.loadSites(chains_res[chain])
 
             # If the titrable residues are not defined and
             # the input pdb file is incomplete
-            elif Config.pypka_params['clean_pdb']:
+            elif Config.pypka_params["clean_pdb"]:
                 chains_res = identify_tit_sites(self.molecules)
 
             # If the titrable residues are not defined and
@@ -176,12 +186,12 @@ class Titration:
 
             # Creates a .pdb input for DelPhi
             # where residues are in their standard state
-            if Config.pypka_params['clean_pdb']:
-                inputpqr = 'clean.pqr'
-                outputpqr = 'cleaned_tau.pqr'
-                #sites = {}
-                #site_numb_n_ref = {}
-                #for chain, molecule in self.molecules.items():
+            if Config.pypka_params["clean_pdb"]:
+                inputpqr = "clean.pqr"
+                outputpqr = "cleaned_tau.pqr"
+                # sites = {}
+                # site_numb_n_ref = {}
+                # for chain, molecule in self.molecules.items():
                 #    sites[chain] = molecule.getSites()
                 #    site_numb_n_ref[chain] = {}
                 #    for site in sites[chain]:
@@ -190,16 +200,17 @@ class Titration:
 
                 cleanPDB(self.molecules, chains_res, inputpqr, outputpqr)
                 create_tit_sites(chains_res, TMPpdb=True)
-                f_in = 'TMP.pdb'
+                f_in = "TMP.pdb"
         else:
-            f_format = Config.pypka_params['f_in_extension']
-            raise Exception("{0} file format is not currently supported".format(f_format))
+            f_format = Config.pypka_params["f_in_extension"]
+            raise Exception(
+                "{0} file format is not currently supported".format(f_format)
+            )
 
-
-        f_out = 'delphi_in_stmod.pdb'
+        f_out = "delphi_in_stmod.pdb"
         make_delphi_inputfile(f_in, f_out, self.molecules)
-        if not Config.debug and os.path.isfile('TMP.pdb'):
-            os.remove('TMP.pdb')
+        if not Config.debug and os.path.isfile("TMP.pdb"):
+            os.remove("TMP.pdb")
 
     def get_total_atoms(self):
         total_atoms = 0
@@ -214,7 +225,7 @@ class Titration:
         for chain, molecule in self.molecules.items():
             chain_sites = molecule.getSitesOrdered()
             if get_list:
-                #if isinstance(chain_sites, dict):
+                # if isinstance(chain_sites, dict):
                 #    chain_sites = chain_sites.values()
                 sites += chain_sites
             else:
@@ -236,41 +247,45 @@ class Titration:
 
     def processDelPhiParams(self):
         # Storing DelPhi parameters and Creates DelPhi data structures
-        logfile = 'LOG_readFiles'
+        logfile = "LOG_readFiles"
 
-        delphimol = DelPhi4py(Config.pypka_params['f_crg'],
-                              Config.pypka_params['f_siz'],
-                              'delphi_in_stmod.pdb',
-                              Config.delphi_params['gsize'],
-                              Config.delphi_params['scaleM'],
-                              Config.delphi_params['precision'],
-                              epsin=Config.delphi_params['epsin'],
-                              epsout=Config.delphi_params['epssol'],
-                              conc=Config.delphi_params['ionicstr'],
-                              ibctyp=Config.delphi_params['bndcon'],
-                              res2=Config.delphi_params['maxc'],
-                              nlit=Config.delphi_params['nlit'],
-                              nonit=Config.delphi_params['nonit'],
-                              relfac=0.0,
-                              relpar=0.0,
-                              pbx=Config.delphi_params['pbx'],
-                              pby=Config.delphi_params['pby'],
-                              isurftype=Config.delphi_params['nanoshaper'],
-                              debug=Config.debug, outputfile=logfile)
+        delphimol = DelPhi4py(
+            Config.pypka_params["f_crg"],
+            Config.pypka_params["f_siz"],
+            "delphi_in_stmod.pdb",
+            Config.delphi_params["gsize"],
+            Config.delphi_params["scaleM"],
+            Config.delphi_params["precision"],
+            epsin=Config.delphi_params["epsin"],
+            epsout=Config.delphi_params["epssol"],
+            conc=Config.delphi_params["ionicstr"],
+            ibctyp=Config.delphi_params["bndcon"],
+            res2=Config.delphi_params["maxc"],
+            nlit=Config.delphi_params["nlit"],
+            nonit=Config.delphi_params["nonit"],
+            relfac=0.0,
+            relpar=0.0,
+            pbx=Config.delphi_params["pbx"],
+            pby=Config.delphi_params["pby"],
+            isurftype=Config.delphi_params["nanoshaper"],
+            debug=Config.debug,
+            outputfile=logfile,
+        )
 
-        if Config.pypka_params['f_structure_out']:
-            with open('delphi_in_stmod.pdb') as f:
+        if Config.pypka_params["f_structure_out"]:
+            with open("delphi_in_stmod.pdb") as f:
                 self.delphi_input_content = f.readlines()
-        if Config.pypka_params['save_pdb']:
-            with open('delphi_in_stmod.pdb') as f, \
-                 open(Config.pypka_params['save_pdb'], 'w') as f_new:
+        if Config.pypka_params["save_pdb"]:
+            with open("delphi_in_stmod.pdb") as f, open(
+                Config.pypka_params["save_pdb"], "w"
+            ) as f_new:
                 content = f.read()
                 f_new.write(content)
 
         if not Config.debug:
-            os.remove('delphi_in_stmod.pdb')
+            os.remove("delphi_in_stmod.pdb")
 
-        log.checkDelPhiErrors(logfile, 'readFiles')
+        log.checkDelPhiErrors(logfile, "readFiles")
 
         lookup_atoms = {}
         for molecule in Config.titration.molecules.values():
@@ -283,7 +298,7 @@ class Titration:
 
         if Config.debug:
             for chain, molecule in self.molecules.items():
-                print('### CHAIN {chain} ###'.format(chain=chain))
+                print("### CHAIN {chain} ###".format(chain=chain))
                 molecule.printAllSites()
                 molecule.printAllTautomers()
             print(delphimol)
@@ -299,61 +314,73 @@ class Titration:
                 for tautomer in sorted(site.tautomers.values()):
                     yield tautomer
 
-
     def calcpKint(self, unpacked_results):
-        """Calculation the pKint of all tautomers
-        """
+        """Calculation the pKint of all tautomers"""
         i = -1
         if Config.debug:
-            print('############ results ############')
-        pkints = ''
-        contributions = ''
+            print("############ results ############")
+        pkints = ""
+        contributions = ""
         for tautomer in self.iterAllSitesTautomers():
             i += 1
-            core_index = i % Config.pypka_params['ncpus']
-            job_index = int(i / Config.pypka_params['ncpus'])
+            core_index = i % Config.pypka_params["ncpus"]
+            job_index = int(i / Config.pypka_params["ncpus"])
             result = unpacked_results[core_index][job_index]
 
-            tautname    = result[0]
+            tautname = result[0]
             tautresnumb = result[1]
 
             esolvationM = result[2]
-            sitpotM     = result[3]
+            sitpotM = result[3]
             esolvationS = result[4]
-            sitpotS     = result[5]
+            sitpotS = result[5]
 
             tautomer = Config.parallel_params.all_tautomers_order[i]
 
-            tautomer.saveDelPhiResults(esolvationS, sitpotS, esolvationM,
-                                       sitpotM)
+            tautomer.saveDelPhiResults(esolvationS, sitpotS, esolvationM, sitpotM)
             if Config.debug:
-                print('### new tautomer ###')
-                print((i, core_index, job_index, tautname,
-                       tautomer.name, esolvationM, esolvationS))
-                print((tautomer.name, tautomer.esolvationS,
-                       len(tautomer.sitpotS), tautomer.esolvationM,
-                       len(tautomer.sitpotM)))
+                print("### new tautomer ###")
+                print(
+                    (
+                        i,
+                        core_index,
+                        job_index,
+                        tautname,
+                        tautomer.name,
+                        esolvationM,
+                        esolvationS,
+                    )
+                )
+                print(
+                    (
+                        tautomer.name,
+                        tautomer.esolvationS,
+                        len(tautomer.sitpotS),
+                        tautomer.esolvationM,
+                        len(tautomer.sitpotM),
+                    )
+                )
 
             tautomer.calcBackEnergy()
             if not tautomer.isRefTautomer():
                 tautomer.calcpKint()
                 if Config.debug:
-                    print(('pkint', tautomer.name, tautomer.dg,
-                           id(tautomer)))
-                    pkints += '{} {} {}\n'.format(tautomer.name,
-                                                  tautomer.dg, tautomer.pKint)
-                    contributions += '{}{} {} {} {} {}\n'.format(tautomer.site.res_number,
-                                                                 tautomer.name,
-                                                                 tautomer.dG_solvationM,
-                                                                 tautomer.dG_solvationS,
-                                                                 tautomer.dG_solvationM - tautomer.dG_solvationS,
-                                                                 tautomer.dG_back)
+                    print(("pkint", tautomer.name, tautomer.dg, id(tautomer)))
+                    pkints += "{} {} {}\n".format(
+                        tautomer.name, tautomer.dg, tautomer.pKint
+                    )
+                    contributions += "{}{} {} {} {} {}\n".format(
+                        tautomer.site.res_number,
+                        tautomer.name,
+                        tautomer.dG_solvationM,
+                        tautomer.dG_solvationS,
+                        tautomer.dG_solvationM - tautomer.dG_solvationS,
+                        tautomer.dG_back,
+                    )
         if Config.debug:
-            with open('pkint', 'w') as f_new1, \
-                 open('contributions', 'w') as f_new2:
+            with open("pkint", "w") as f_new1, open("contributions", "w") as f_new2:
                 f_new1.write(pkints)
                 f_new2.write(contributions)
-
 
     def calcSiteInteractionsParallel(self):
         """Calculates the pairwise interaction energies
@@ -363,26 +390,26 @@ class Titration:
         Args:
           ncpus (int): number of cpus to be used
         """
+
         def writeDatHeader(sites):
             """Writes pKint energies in .dat file header"""
-            to_write = '{0}\n'.format(len(sites))
+            to_write = "{0}\n".format(len(sites))
             for site in sites:
-                to_write += '{0:3s}-{1:<7}{2:>2}  P  *\n'.format(site.res_name,
-                                                                 site.res_number,
-                                                                 len(site.tautomers) + 1)
-                if site.type == 'c':
+                to_write += "{0:3s}-{1:<7}{2:>2}  P  *\n".format(
+                    site.res_name, site.res_number, len(site.tautomers) + 1
+                )
+                if site.type == "c":
                     tau_prot_state = 0
                     ref_prot_state = 1
-                elif site.type == 'a':
+                elif site.type == "a":
                     tau_prot_state = 1
                     ref_prot_state = 0
 
                 for tautomer in site.iterOrderedTautomersWithoutRef():
-                    to_write += '{0:1d} {1:13.6e}\n'.format(tau_prot_state,
-                                                            tautomer.dg)
-                to_write += '{0:1d}  0.000000e+00\n'.format(ref_prot_state)
+                    to_write += "{0:1d} {1:13.6e}\n".format(tau_prot_state, tautomer.dg)
+                to_write += "{0:1d}  0.000000e+00\n".format(ref_prot_state)
             if Config.debug:
-                with open('interactions.dat', 'w') as f_new:
+                with open("interactions.dat", "w") as f_new:
                     f_new.write(to_write)
 
         Config.loadParams(self.__parameters)
@@ -421,17 +448,21 @@ class Titration:
         Config.parallel_params.site_interactions = site_interactions
         Config.parallel_params.all_sites = sites
         Config.parallel_params.interactions = interactions
-        ncpus = min(len(site_interactions), Config.pypka_params['ncpus'])
+        ncpus = min(len(site_interactions), Config.pypka_params["ncpus"])
         results = []
 
         if ncpus > 0:
-            results = startPoolProcesses(runInteractionCalcs,
-                                         site_interactions, ncpus,
-                                         assign='ordered', merged_results=True)
+            results = startPoolProcesses(
+                runInteractionCalcs,
+                site_interactions,
+                ncpus,
+                assign="ordered",
+                merged_results=True,
+            )
 
         interactions = Config.parallel_params.interactions
-        to_write = ''
-        temperature = float(Config.pypka_params['temp'])
+        to_write = ""
+        temperature = float(Config.pypka_params["temp"])
         for interaction in results:
             site1i = interaction[0]
 
@@ -446,32 +477,31 @@ class Titration:
                     col1 = interaction[3][6:18]
                     col2 = interaction[3][:6]
                     col3 = interactions[site1i][site2i] * (KBOLTZ * temperature)
-                    to_write += '{0}{1} {2:13.6e}\n'.format(col1, col2, col3)
+                    to_write += "{0}{1} {2:13.6e}\n".format(col1, col2, col3)
             else:
                 interactions[site1i][site2i] = interaction[2]
                 interactions[site2i][site1i] = interaction[2]
 
-
         if Config.debug:
-            with open('interactions.dat', 'a') as f_new:
+            with open("interactions.dat", "a") as f_new:
                 f_new.write(to_write)
 
     def DelPhiLaunch(self):
         Config.loadParams(self.__parameters)
 
         if self.get_total_sites() < 1:
-            raise Exception('At least one site has to be correctly defined.')
+            raise Exception("At least one site has to be correctly defined.")
 
         all_tautomers = list(self.iterAllSitesTautomers())
 
         Config.parallel_params.all_tautomers_order = all_tautomers
 
         # Runs DelPhi simulations for all tautomers
-        results = startPoolProcesses(runDelPhiSims,
-                                     all_tautomers,
-                                     Config.pypka_params['ncpus'])
+        results = startPoolProcesses(
+            runDelPhiSims, all_tautomers, Config.pypka_params["ncpus"]
+        )
 
-        print('\rPB Runs Ended{:>80}'.format(""))
+        print("\rPB Runs Ended{:>80}".format(""))
 
         # Calculates the pKint of all tautomers
         self.calcpKint(results)
@@ -513,15 +543,15 @@ class Titration:
 
         Config.loadParams(self.__parameters)
 
-        print('\nStart MC', end='\r')
+        print("\nStart MC", end="\r")
 
         sites = self.get_all_sites(get_list=True)
         nsites = len(sites)
-        #possible_states     = [[] for _ in sites]
-        possible_states_g   = [[] for _ in sites]
+        # possible_states     = [[] for _ in sites]
+        possible_states_g = [[] for _ in sites]
         possible_states_occ = [[] for _ in sites]
 
-        temperature = float(Config.pypka_params['temp'])
+        temperature = float(Config.pypka_params["temp"])
         isite = -1
         for site in sites:
             isite += 1
@@ -529,44 +559,47 @@ class Titration:
             for tautomer in site.iterOrderedTautomersWithoutRef():
                 dg = tautomer.dg / (KBOLTZ * temperature)
                 possible_states_g[isite].append(dg)
-                #possible_states[isite].append(itaut)
-                if site.type == 'c':
+                # possible_states[isite].append(itaut)
+                if site.type == "c":
                     prot_state = 0
-                elif site.type == 'a':
+                elif site.type == "a":
                     prot_state = 1
 
                 possible_states_occ[isite].append(prot_state)
                 itaut += 1
 
-            if site.type == 'c':
+            if site.type == "c":
                 prot_state = 1
-            elif site.type == 'a':
+            elif site.type == "a":
                 prot_state = 0
             possible_states_occ[isite].append(prot_state)
             possible_states_g[isite].append(0.0)
 
         maxstates = max(Config.parallel_params.npossible_states)
         interactions_look = Config.parallel_params.interactions_look
-        #resize_list_of_lists(possible_states, maxstates)
+        # resize_list_of_lists(possible_states, maxstates)
         resize_list_of_lists(possible_states_g, maxstates)
         resize_list_of_lists(possible_states_occ, maxstates, filler=-500)
         resize_list_of_lists(interactions_look, maxstates, filler=-500)
 
         params = Config.mc_params
-        pHmin, pHmax = params['pHmin'], params['pHmax']
-        dpH = params['pHstep']
+        pHmin, pHmax = params["pHmin"], params["pHmax"]
+        dpH = params["pHstep"]
         pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
 
-
-        Config.parallel_params.possible_states_g   = possible_states_g
+        Config.parallel_params.possible_states_g = possible_states_g
         Config.parallel_params.possible_states_occ = possible_states_occ
 
-        ncpus = min(Config.pypka_params['ncpus'], nsites)
-        results = startPoolProcesses(runMCCalcs,
-                                     list(range(pHsteps)), ncpus,
-                                     assign='ordered', merged_results=True)
+        ncpus = min(Config.pypka_params["ncpus"], nsites)
+        results = startPoolProcesses(
+            runMCCalcs,
+            list(range(pHsteps)),
+            ncpus,
+            assign="ordered",
+            merged_results=True,
+        )
 
-        print('\rMC Runs Ended{:>80}\n'.format(""))
+        print("\rMC Runs Ended{:>80}\n".format(""))
 
         counts_all = []
         avgs_all = []
@@ -577,13 +610,15 @@ class Titration:
             counts_all.append(i[1])
             cur_states.append(i[3])
 
-        pKs = np.array([[PKAPLACEHOLDER for ii in range(MAXNPKHALFS)] for i in range(nsites)])
-        mcsteps = params['mcsteps']
+        pKs = np.array(
+            [[PKAPLACEHOLDER for ii in range(MAXNPKHALFS)] for i in range(nsites)]
+        )
+        mcsteps = params["mcsteps"]
         pmeans = avgs_all[0] / float(mcsteps)
 
         tit_curve = {}
         tit_curve[pHmin] = {}
-        tit_curve[pHmin]['total'] = sum(avgs_all[0]) / mcsteps / nsites
+        tit_curve[pHmin]["total"] = sum(avgs_all[0]) / mcsteps / nsites
         for i, mean in enumerate(avgs_all[0]):
             site = sites[i]
             sitenumber = site.res_number
@@ -593,10 +628,11 @@ class Titration:
 
         for pHstep in range(1, pHsteps):
             pH = pHmin + pHstep * dpH
-            totalP, pKs, pmeans, means = calcpKhalfs(pH, nsites, avgs_all[pHstep],
-                                                     pmeans, pKs, mcsteps, dpH)
+            totalP, pKs, pmeans, means = calcpKhalfs(
+                pH, nsites, avgs_all[pHstep], pmeans, pKs, mcsteps, dpH
+            )
             tit_curve[pH] = {}
-            tit_curve[pH]['total'] = totalP
+            tit_curve[pH]["total"] = totalP
             for i, mean in enumerate(means):
                 site = sites[i]
                 sitenumber = site.res_number
@@ -604,8 +640,8 @@ class Titration:
 
         pKas = pKs
 
-        text_pks = ''
-        text_prots = '#pH       total'
+        text_pks = ""
+        text_prots = "#pH       total"
         c = -1
         for i in pKas:
             c += 1
@@ -613,11 +649,13 @@ class Titration:
             chain = site.molecule.chain
             sitename = site.getName()
             resnumb = site.getResNumber()
-            if sitename in ('NTR', 'CTR'):
-                text_prots += '     {0:3}'.format(sitename)
+            if sitename in ("NTR", "CTR"):
+                text_prots += "     {0:3}".format(sitename)
             else:
-                text_prots += '{0:5d}{1:3s}'.format(resnumb, sitename)
-            text_pks += '{0:5} {1:3} {2:20} {3:3}\n'.format(resnumb, sitename, str(i[0]), chain)
+                text_prots += "{0:5d}{1:3s}".format(resnumb, sitename)
+            text_pks += "{0:5} {1:3} {2:20} {3:3}\n".format(
+                resnumb, sitename, str(i[0]), chain
+            )
 
         final_states = {}
         state_distribution = {}
@@ -625,9 +663,9 @@ class Titration:
         self.tit_curve = {}
         for pHstep in range(pHsteps):
             pH = pHmin + pHstep * dpH
-            text_prots += '\n{pH:5.2f}'.format(pH=pH)
+            text_prots += "\n{pH:5.2f}".format(pH=pH)
 
-            self.tit_curve[pH] = tit_curve[pH]['total']
+            self.tit_curve[pH] = tit_curve[pH]["total"]
 
             final_states[pH] = {}
             state_distribution[pH] = {}
@@ -642,8 +680,9 @@ class Titration:
                 ntauts = site.getNTautomers()
                 ref_i = ntauts
                 prot_state = site.getRefProtState()
-                if (mean > 0.5 and prot_state == 1) or \
-                   (mean <= 0.5 and prot_state == -1):
+                if (mean > 0.5 and prot_state == 1) or (
+                    mean <= 0.5 and prot_state == -1
+                ):
                     state_i = ref_i
                 else:
                     max_prob = max(state_distribution[pH][sitenumb][:ref_i])
@@ -653,38 +692,38 @@ class Titration:
                 most_prob_states[pH][sitenumb] = most_prob_state
 
                 if mean != PKAPLACEHOLDER:
-                    text_prots += '\t{mean:7.4f}'.format(mean=mean)
+                    text_prots += "\t{mean:7.4f}".format(mean=mean)
                 else:
-                    text_prots += '\t-'
+                    text_prots += "\t-"
 
                 site.most_prob_states[pH] = most_prob_state
                 site.final_states[pH] = final_states[pH][sitenumb]
                 site.tit_curve[pH] = tit_curve[pH][sitenumb]
                 site.states_prob[pH] = state_distribution[pH][sitenumb]
 
-        if Config.pypka_params['f_out']:
-            with open(Config.pypka_params['f_out'], 'w') as f:
+        if Config.pypka_params["f_out"]:
+            with open(Config.pypka_params["f_out"], "w") as f:
                 f.write(text_pks)
-        if Config.pypka_params['f_prot_out']:
-            with open(Config.pypka_params['f_prot_out'], 'w') as f:
+        if Config.pypka_params["f_prot_out"]:
+            with open(Config.pypka_params["f_prot_out"], "w") as f:
                 f.write(text_prots)
 
-        #self.tit_curve = tit_curve
-        #self.pH_values = sorted(tit_curve.keys())
-        #self.final_states = final_states
-        #self.state_prob = state_distribution
-        #self.most_prob_states = most_prob_states
+        # self.tit_curve = tit_curve
+        # self.pH_values = sorted(tit_curve.keys())
+        # self.final_states = final_states
+        # self.state_prob = state_distribution
+        # self.most_prob_states = most_prob_states
 
         c = -1
         for i in pKas:
             c += 1
-            #site = sites[c].res_number
-            #chain = sites[c].molecule.chain
-            #if chain not in self.pKas.keys():
+            # site = sites[c].res_number
+            # chain = sites[c].molecule.chain
+            # if chain not in self.pKas.keys():
             #    self.pKas[chain] = {}
             pK = i[0]
             sites[c].setpK(pK)
-            #self.pKas[chain][site] = pK
+            # self.pKas[chain][site] = pK
 
     def writeOutputStructure(self):
         def getProtomerResname(pdb_content, site, pH, ff_protomers):
@@ -697,38 +736,43 @@ class Titration:
                     new_resname = ff_resname
                     remove_hs = protomers[new_state_i]
 
-                    state_prob, taut_prob = site.getTautProb(new_state,
-                                                              pH)
+                    state_prob, taut_prob = site.getTautProb(new_state, pH)
 
                     if state_prob < 0.75:
-                        warn = '{0}{1} ' \
-                               'protonation state probability: {2}, ' \
-                               'tautomer probability: {3}'.format(resname, resnumb, state_prob, taut_prob)
+                        warn = (
+                            "{0}{1} "
+                            "protonation state probability: {2}, "
+                            "tautomer probability: {3}".format(
+                                resname, resnumb, state_prob, taut_prob
+                            )
+                        )
                         Config.log.report_warning(warn)
 
                         print(warn)
                     rounded_sprob = round(state_prob, 2)
                     rounded_tprob = round(taut_prob, 2)
-                    remark_line = '{0: <5}{1: <10}{2: ^7}'\
-                                  '{3: >1.2f}{4: ^13}{5: >1.2f}'.format(resname, resnumb,
-                                                                        "", rounded_sprob,
-                                                                        "", rounded_tprob)
+                    remark_line = (
+                        "{0: <5}{1: <10}{2: ^7}"
+                        "{3: >1.2f}{4: ^13}{5: >1.2f}".format(
+                            resname, resnumb, "", rounded_sprob, "", rounded_tprob
+                        )
+                    )
 
-                    pdb_content += 'REMARK     {text}\n'.format(text=remark_line)
+                    pdb_content += "REMARK     {text}\n".format(text=remark_line)
 
-            #print(resnumb, new_state, new_resname, remove_hs, state_prob, taut_prob)
+            # print(resnumb, new_state, new_resname, remove_hs, state_prob, taut_prob)
             return pdb_content, new_state_i, new_resname, remove_hs
 
-        outputname = Config.pypka_params['f_structure_out']
-        pH = float(Config.pypka_params['f_structure_out_pH'])
-        ff_out = Config.pypka_params['ff_structure_out']
+        outputname = Config.pypka_params["f_structure_out"]
+        pH = float(Config.pypka_params["f_structure_out_pH"])
+        ff_out = Config.pypka_params["ff_structure_out"]
 
-        ff_protomer = {'amber': AMBER_protomers,
-                       'gromos_cph': GROMOS_protomers}[ff_out]
+        ff_protomer = {"amber": AMBER_protomers, "gromos_cph": GROMOS_protomers}[ff_out]
 
-        pdb_content = 'REMARK     Protonation states assigned according to PypKa\n'\
-                      'REMARK     Residue    Prot State Prob    Tautomer Prob\n'
-
+        pdb_content = (
+            "REMARK     Protonation states assigned according to PypKa\n"
+            "REMARK     Residue    Prot State Prob    Tautomer Prob\n"
+        )
 
         sites = self.get_all_sites(get_list=True)
         new_states = {}
@@ -738,19 +782,17 @@ class Titration:
             molecule = site.molecule
             chain = molecule.chain
 
-            (pdb_content, new_state,
-             new_resname, remove_hs) = getProtomerResname(pdb_content,
-                                                          site, pH,
-                                                          ff_protomer)
+            (pdb_content, new_state, new_resname, remove_hs) = getProtomerResname(
+                pdb_content, site, pH, ff_protomer
+            )
 
-            if resname in ('NTR', 'CTR'):
+            if resname in ("NTR", "CTR"):
                 new_resname = site.termini_resname
 
             if chain not in new_states:
-                new_states[chain] =  {}
+                new_states[chain] = {}
 
-            new_states[resnumb] = (resname, new_state,
-                                   new_resname, remove_hs)
+            new_states[resnumb] = (resname, new_state, new_resname, remove_hs)
 
         new_pdb = pdb_content
         counter = 0
@@ -765,23 +807,23 @@ class Titration:
                     other_atoms[atom_numb] = molecule
 
         for line in self.delphi_input_content:
-            if line.startswith('ATOM '):
-                (aname, anumb, resname, chain,
-                 resnumb, x, y, z) = read_pdb_line(line)
+            if line.startswith("ATOM "):
+                (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
                 if anumb in tit_atoms.keys():
                     molecule = tit_atoms[anumb]
 
-                    (oldresname, new_state,
-                     resname, removeHs) = new_states[resnumb]
+                    (oldresname, new_state, resname, removeHs) = new_states[resnumb]
 
                     if aname in removeHs:
                         continue
 
-                    if ff_out == 'amber' and \
-                       oldresname in gromos2amber and \
-                       new_state in gromos2amber[oldresname] and \
-                       aname in gromos2amber[oldresname][new_state]:
+                    if (
+                        ff_out == "amber"
+                        and oldresname in gromos2amber
+                        and new_state in gromos2amber[oldresname]
+                        and aname in gromos2amber[oldresname][new_state]
+                    ):
                         aname = gromos2amber[oldresname][new_state][aname]
                 else:
                     molecule = other_atoms[anumb]
@@ -790,28 +832,32 @@ class Titration:
                     termini_site = molecule.sites[resnumb]
                     resnumb -= TERMINAL_OFFSET
                     if resnumb in molecule.sites.keys():
-                        ter_resname, ter_new_state, \
-                        resname, ter_removeHs = new_states[resnumb]
+                        ter_resname, ter_new_state, resname, ter_removeHs = new_states[
+                            resnumb
+                        ]
                     else:
                         resname = termini_site.termini_resname
 
-                    #print(new_pdb_line(anumb, aname, resname, resnumb, x, y, z).strip())
+                    # print(new_pdb_line(anumb, aname, resname, resnumb, x, y, z).strip())
                 if resnumb in molecule.getCYS_bridges():
-                    resname = 'CYX'
+                    resname = "CYX"
 
                 counter += 1
                 new_pdb += new_pdb_line(counter, aname, resname, resnumb, x, y, z)
                 if resnumb in mainchain_Hs:
                     while len(mainchain_Hs[resnumb]) > 0:
                         counter += 1
-                        (aname, anumb, oldresname, chain, \
-                         x, y, z) = mainchain_Hs[resnumb].pop()
-                        new_pdb += new_pdb_line(counter, aname, resname, resnumb, x, y, z)
+                        (aname, anumb, oldresname, chain, x, y, z) = mainchain_Hs[
+                            resnumb
+                        ].pop()
+                        new_pdb += new_pdb_line(
+                            counter, aname, resname, resnumb, x, y, z
+                        )
                     del mainchain_Hs[resnumb]
             else:
                 new_pdb += line
 
-        with open(outputname, 'w') as f_new:
+        with open(outputname, "w") as f_new:
             f_new.write(new_pdb)
 
     def getTitrationCurve(self):
@@ -832,16 +878,19 @@ class Titration:
             raise StopIteration
 
     def getParameters(self):
-        """Get the parameters used in the calculations
-        """
-        return '{}\n{}\n{}'.format(Config.pypka_params.__str__(),
-                                   Config.delphi_params.__str__(),
-                                   Config.mc_params.__str__())
+        """Get the parameters used in the calculations"""
+        return "{}\n{}\n{}".format(
+            Config.pypka_params.__str__(),
+            Config.delphi_params.__str__(),
+            Config.mc_params.__str__(),
+        )
 
     def getParametersDict(self):
-        return (Config.pypka_params.__dict__,
-                Config.delphi_params.__dict__,
-                Config.mc_params.__dict__)
+        return (
+            Config.pypka_params.__dict__,
+            Config.delphi_params.__dict__,
+            Config.mc_params.__dict__,
+        )
 
     def getSiteInteractions(self):
         Config.loadParams(self.__parameters)
@@ -850,35 +899,37 @@ class Titration:
             Config.parallel_params.all_sites,
             Config.parallel_params.npossible_states,
             Config.parallel_params.interactions_look,
-            Config.parallel_params.interactions
+            Config.parallel_params.interactions,
         )
 
     def __getitem__(self, chain):
         return self.molecules[chain]
 
     def __str__(self):
-        output = 'Chain  Site   Name      pK'
+        output = "Chain  Site   Name      pK"
         sites = self.get_all_sites()
 
         for chain in sites.keys():
             for site in sites[chain]:
                 pk = site.pK
                 if pk:
-                    pk = '{:.2f}'.format(round(pk, 2))
+                    pk = "{:.2f}".format(round(pk, 2))
                 else:
-                    pk = 'Not In Range'
-                #site = convertTermini(site)
-                output += '\n{0:>4} {1:>6}    {2:3}    {3:>5}'.format(chain,
-                                                                     site.getResNumber(),
-                                                                     site.res_name, pk)
+                    pk = "Not In Range"
+                # site = convertTermini(site)
+                output += "\n{0:>4} {1:>6}    {2:3}    {3:>5}".format(
+                    chain, site.getResNumber(), site.res_name, pk
+                )
         return output
+
 
 def CLI():
     # Read command line arguments
     sites, parameters, debug = check_cli_args()
 
     Titration(parameters, sites=sites, debug=debug)
-    print('CLI exited successfully')
+    print("CLI exited successfully")
+
 
 if __name__ == "__main__":
     CLI()

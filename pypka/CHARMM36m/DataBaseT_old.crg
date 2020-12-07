@@ -1,73 +1,75 @@
 !crg file
-!aminoacids from charmm36m
+!aminoacids from 54a7
 atom__resnumbc_charge_
- HT2  NT0       0.340
- HT3  NT0       0.340
-  CA  NT0       0.190
-  HA  NT0       0.090
-   N  NT1      -0.960
- HT1  NT1       0.340
- HT2  NT1       0.000
- HT3  NT1       0.340
-  CA  NT1       0.190
-  HA  NT1       0.090
-   N  NT2      -0.960
- HT1  NT2       0.340
- HT2  NT2       0.340
- HT3  NT2       0.000
-  CA  NT2       0.190
-  HA  NT2       0.090
-   N  NT3      -0.300
- HT1  NT3       0.330
- HT2  NT3       0.330
- HT3  NT3       0.330
-  CA  NT3       0.210
-  HA  NT3       0.100
-  CT  CT0       0.720
- OT1  CT0      -0.550
+N     NT0      -0.960
+HT1   NT0       0.000
+HT2   NT0       0.340
+HT3   NT0       0.340
+CA    NT0       0.190
+HA    NT0       0.090
+N     NT1      -0.960
+HT1   NT1       0.340
+HT2   NT1       0.000
+HT3   NT1       0.340
+CA    NT1       0.190
+HA    NT1       0.090
+N     NT2      -0.960
+HT1   NT2       0.340
+HT2   NT2       0.340
+HT3   NT2       0.000
+CA    NT2       0.190
+HA    NT2       0.090
+N     NT3      -0.300
+HT1   NT3       0.330
+HT2   NT3       0.330
+HT3   NT3       0.330
+CA    NT3       0.210
+HA    NT3       0.100
+CT    CT0       0.720
+OT1   CT0      -0.550
 HT11  CT0       0.440
 HT12  CT0       0.000
- OT2  CT0      -0.610
+OT2   CT0      -0.610
 HT21  CT0       0.000
 HT22  CT0       0.000
-  CT  CT1       0.720
- OT1  CT1      -0.550
+CT    CT1       0.720
+OT1   CT1      -0.550
 HT11  CT1       0.000
 HT12  CT1       0.000
- OT2  CT1      -0.610
+OT2   CT1      -0.610
 HT21  CT1       0.440
 HT22  CT1       0.000
-  CT  CT2       0.720
- OT1  CT2      -0.550
+CT    CT2       0.720
+OT1   CT2      -0.550
 HT11  CT2       0.000
 HT12  CT2       0.440
- OT2  CT2      -0.610
+OT2   CT2      -0.610
 HT21  CT2       0.000
 HT22  CT2       0.000
-  CT  CT3       0.720
- OT1  CT3      -0.550
+CT    CT3       0.720
+OT1   CT3      -0.550
 HT11  CT3       0.000
 HT12  CT3       0.000
- OT2  CT3      -0.610
+OT2   CT3      -0.610
 HT21  CT3       0.000
 HT22  CT3       0.440
-  CT  CT4       0.340
- OT1  CT4      -0.670
+CT    CT4       0.340
+OT1   CT4      -0.670
 HT11  CT4       0.000
 HT12  CT4       0.000
- OT2  CT4      -0.670
+OT2   CT4      -0.670
 HT21  CT4       0.000
 HT22  CT4       0.000
-   N  ALA      -0.470
-  HN  ALA       0.310
-  CA  ALA       0.070
-  HA  ALA       0.090
-  CB  ALA      -0.270
- HB1  ALA       0.090
- HB2  ALA       0.090
- HB3  ALA       0.090
-   C  ALA       0.510
-   O  ALA      -0.510
+N     ALA      -0.470
+HN    ALA       0.310
+CA    ALA       0.070
+HA    ALA       0.090
+CB    ALA      -0.270
+HB1   ALA       0.090
+HB2   ALA       0.090
+HB3   ALA       0.090
+C     ALA       0.510
+O     ALA      -0.510
    N  ARG      -0.470
   HN  ARG       0.310
   CA  ARG       0.070
@@ -859,31 +861,31 @@ HH32  ACE       0.090
 HH33  ACE       0.090
    C  ACE       0.510
    O  ACE      -0.510
-  H1  FMO       0.135
-  H2  FMO       0.135
-  H3  FMO       0.135
-  H4  FMO       0.135
-  H7  FMO       0.135
-  H8  FMO       0.135
-  H9  FMO       0.135
- H10  FMO       0.135
- H21  FMO       0.090
- HF1  FMO       0.220
- HF2  FMO       0.220
-  C1  FMO      -0.110
-  C2  FMO      -0.110
-  C3  FMO      -0.110
-  C4  FMO      -0.110
-  C5  FMO      -0.100
-  C6  FMO      -0.100
-  C7  FMO      -0.110
-  C8  FMO      -0.110
-  C9  FMO      -0.110
- C10  FMO      -0.110
- C11  FMO      -0.050
- C12  FMO       0.150
- C13  FMO      -0.050
- CF1  FMO       0.240
-  CT  FMO       0.950
- OF1  FMO      -0.920
- OF2  FMO      -0.850
+  H1  FMO X.XXX
+  H2  FMO X.XXX
+  H3  FMO X.XXX
+  H4  FMO X.XXX
+  H7  FMO X.XXX
+  H8  FMO X.XXX
+  H9  FMO X.XXX
+ H10  FMO X.XXX
+ H21  FMO X.XXX
+ HF1  FMO X.XXX
+ HF2  FMO X.XXX
+  C1  FMO X.XXX
+  C2  FMO X.XXX
+  C3  FMO X.XXX
+  C4  FMO X.XXX
+  C5  FMO X.XXX
+  C6  FMO X.XXX
+  C7  FMO X.XXX
+  C8  FMO X.XXX
+  C9  FMO X.XXX
+ C10  FMO X.XXX
+ C11  FMO X.XXX
+ C12  FMO X.XXX
+ C13  FMO X.XXX
+ CF1  FMO X.XXX
+  CT  FMO X.XXX
+ OF1  FMO X.XXX
+ OF2  FMO X.XXX

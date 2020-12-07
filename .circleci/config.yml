@@ -2,7 +2,7 @@ sshversion: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.8
 
     steps:
       - checkout
@@ -15,19 +15,19 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu xenial partner">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ xenial main restricted">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu focal partner">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal main restricted">> /etc/apt/sources.list'
+            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse">> /etc/apt/sources.list'
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
             sudo apt update
             sudo apt install gawk libgfortran4 python2
-            python3.6 -m pip install --user pytest numpy coverage psutil
+            python3.8 -m pip install --user pytest numpy coverage psutil
 
       - save_cache:
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python3.6/site-packages"
+            - "/usr/local/lib/python3.8/site-packages"
             - "/home/circleci/.local/share/virtualenvs/"
           key: v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
 
@@ -36,4 +36,4 @@ jobs:
           command: |
             set -e
             cd pypka/tests/
-            python3.6 -m pytest -s test.py
+            python3.8 -m pytest -s test.py

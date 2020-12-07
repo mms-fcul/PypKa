@@ -2595,3 +2595,33 @@ SEP1	HT	0.34	0.2245	H
 SEP1	C	0.34	2.0000	C
 SEP1	O	-0.67	1.7000	O
 DUM	DUM	0.00	0.000000	DUM
+
+# FMOC - Alexander van Teijlingen 07-12-2020
+FMO     C1    0.01  0.01    C1
+FMO     H1    0.01  0.01    H1
+FMO     C2    0.01  0.01    C2
+FMO     H2    0.01  0.01    H2
+FMO     C3    0.01  0.01    C3
+FMO     H3    0.01  0.01    H3
+FMO     C4    0.01  0.01    C4
+FMO     H4    0.01  0.01    H4
+FMO     C5    0.01  0.01    C5
+FMO     C6    0.01  0.01    C6
+FMO     C7    0.01  0.01    C7
+FMO     H7    0.01  0.01    H7
+FMO     C8    0.01  0.01    C8
+FMO     H8    0.01  0.01    H8
+FMO     C9    0.01  0.01    C9
+FMO     H9    0.01  0.01    H9
+FMO     C10   0.01  0.01    C10
+FMO     H10   0.01  0.01    H10
+FMO     C11   0.01  0.01    C11
+FMO     C12   0.01  0.01    C12
+FMO     H21   0.01  0.01    H21
+FMO     C13   0.01  0.01    C13
+FMO     CF1   0.01  0.01    CF1
+FMO     HF1   0.01  0.01    HF1
+FMO     HF2   0.01  0.01    HF2
+FMO     OF1   0.01  0.01    OF1
+FMO     CT    0.01  0.01    CT
+FMO     OF2   0.01  0.01    OF2
