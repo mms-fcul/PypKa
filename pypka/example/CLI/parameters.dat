@@ -8,10 +8,6 @@ pbc_dimensions= 2
 ncpus         = 2
 output        = pKas.out
 
-f_dat = cona
-
-cona = siiiim
-
 convergence = 3
 bndcon = 1
 

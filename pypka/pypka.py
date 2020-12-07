@@ -1,12 +1,9 @@
 #! /usr/bin/python3
 
-"""
-A python API and CLI to perform pKa calculations on peptides,
-proteins or lipid bilayers.
-"""
+"""A python API and CLI to perform pKa calculations on peptides, proteins or lipid bilayers."""
 
 from config import Config
-from constants import *
+from constants import KBOLTZ, MAXNPKHALFS, PKAPLACEHOLDER, TERMINAL_OFFSET
 from checksites import (
     identify_tit_sites,
     check_sites_integrity,
@@ -15,7 +12,7 @@ from checksites import (
 )
 from cli import check_cli_args
 from cleaning import inputPDBCheck, cleanPDB
-from formats import convertTermini, gro2pdb, pdb2gro, read_pdb_line, new_pdb_line
+from formats import gro2pdb, read_pdb_line, new_pdb_line
 from molecule import Molecule
 from concurrency import (
     startPoolProcesses,
@@ -49,9 +46,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
 
     Returns:
         A dict mapping all titrable sites found in the pdb file
-
     """
-
     parameters = {
         "structure": pdb,
         "ncpus": 1,
@@ -85,6 +80,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
 
 
 class Titration:
+
     """Main PypKa class
 
     Attributes:
@@ -101,7 +97,6 @@ class Titration:
                                     Defaults to 'all' which will titrate all titrable residues.
             debug (boolean, optional): debug mode switch. Defaults to False.
         """
-
         self.molecules = {}
         self.__parameters = Config.storeParams(self, log.Log(), debug, parameters)
         self.pKas = {}
@@ -135,7 +130,7 @@ class Titration:
 
     def preprocessing(self, sites):
         def create_tit_sites(chains_res, TMPpdb=False):
-            for chain, molecule in self.molecules.items():
+            for _, molecule in self.molecules.items():
                 molecule.deleteAllSites()
             check_sites_integrity(self.molecules, chains_res, useTMPpdb=TMPpdb)
 
@@ -168,7 +163,7 @@ class Titration:
             # If the titrable residues are defined
             if not automatic_sites:
                 clean_pdb = Config.pypka_params["clean_pdb"]
-                chains_length, chains_res = inputPDBCheck(f_in, sites, clean_pdb)
+                _, chains_res = inputPDBCheck(f_in, sites, clean_pdb)
 
                 for chain, molecule in self.molecules.items():
                     molecule.loadSites(chains_res[chain])
@@ -305,9 +300,11 @@ class Titration:
 
     def iterAllSitesTautomers(self):
         """Generator that iterates through all Tautomer instances.
+
         The iteration is sorted by site and within each site the first
         to be yielded is the reference tautomer and then the rest of
-        the tautomers by order"""
+        the tautomers by order
+        """
         for molecule in self.molecules.values():
             for site in molecule.sites_order:
                 yield site.ref_tautomer
@@ -315,7 +312,7 @@ class Titration:
                     yield tautomer
 
     def calcpKint(self, unpacked_results):
-        """Calculation the pKint of all tautomers"""
+        """Calculation the pKint of all tautomers."""
         i = -1
         if Config.debug:
             print("############ results ############")
@@ -328,7 +325,7 @@ class Titration:
             result = unpacked_results[core_index][job_index]
 
             tautname = result[0]
-            tautresnumb = result[1]
+            # tautresnumb = result[1]
 
             esolvationM = result[2]
             sitpotM = result[3]
@@ -384,15 +381,16 @@ class Titration:
 
     def calcSiteInteractionsParallel(self):
         """Calculates the pairwise interaction energies
-        and writes them in a formatted .dat file
+
         Interactions are calculated using a pool of processes
+        and written in a formatted .dat file
 
         Args:
           ncpus (int): number of cpus to be used
         """
 
         def writeDatHeader(sites):
-            """Writes pKint energies in .dat file header"""
+            """Writes pKint energies in .dat file header."""
             to_write = "{0}\n".format(len(sites))
             for site in sites:
                 to_write += "{0:3s}-{1:<7}{2:>2}  P  *\n".format(
@@ -510,7 +508,7 @@ class Titration:
         def resize_list_of_lists(listn, maxsize, filler=None):
             for i in listn:
                 diff = maxsize - len(i)
-                for ii in range(diff):
+                for _ in range(diff):
                     i.append(filler)
 
         def calcpKhalfs(pH, nsites, avgs, pmean, pKs, mcsteps, dpH):
@@ -729,7 +727,7 @@ class Titration:
         def getProtomerResname(pdb_content, site, pH, ff_protomers):
             resnumb = site.getResNumber()
             resname = site.getName()
-            new_state, new_state_prob = site.getMostProbTaut(pH)
+            new_state, _ = site.getMostProbTaut(pH)
             new_state_i = new_state - 1
             for ff_resname, protomers in ff_protomers[resname].items():
                 if new_state_i in protomers.keys():
@@ -832,9 +830,7 @@ class Titration:
                     termini_site = molecule.sites[resnumb]
                     resnumb -= TERMINAL_OFFSET
                     if resnumb in molecule.sites.keys():
-                        ter_resname, ter_new_state, resname, ter_removeHs = new_states[
-                            resnumb
-                        ]
+                        _, ter_new_state, resname, ter_removeHs = new_states[resnumb]
                     else:
                         resname = termini_site.termini_resname
 
@@ -877,15 +873,17 @@ class Titration:
         else:
             raise StopIteration
 
-    def getParameters(self):
-        """Get the parameters used in the calculations"""
+    @staticmethod
+    def getParameters():
+        """Get the parameters used in the calculations."""
         return "{}\n{}\n{}".format(
             Config.pypka_params.__str__(),
             Config.delphi_params.__str__(),
             Config.mc_params.__str__(),
         )
 
-    def getParametersDict(self):
+    @staticmethod
+    def getParametersDict():
         return (
             Config.pypka_params.__dict__,
             Config.delphi_params.__dict__,

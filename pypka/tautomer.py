@@ -3,16 +3,18 @@ import time
 import log
 from copy import copy
 from formats import new_pdb_line
-from constants import *
+from constants import LOG10, KBOLTZ
 
 
 class Tautomer(object):
     """Tautomers share the same site and atoms
+
     Tautomers have different charge sets for the same atoms
     """
 
     def __init__(self, name, site, molecule):
         """
+
         Args:
             name (str): name of the Tautomer
             site (Site): belonging site
@@ -51,6 +53,7 @@ class Tautomer(object):
     # Set Methods
     def loadChargeSet(self, res_name, ref_tautomer):
         """Reads .st file related to Tautomer with residue name res_name
+
         Stores charge set related to both the Tautomer and the
         Reference Tautomer
 
@@ -155,7 +158,8 @@ class Tautomer(object):
             box_y,
         )
 
-    def putInsideBox(self, point, box_x, box_y):
+    @staticmethod
+    def putInsideBox(point, box_x, box_y):
         if point[0] < 0:
             point[0] += box_x
         elif point[0] >= box_x:
@@ -167,10 +171,9 @@ class Tautomer(object):
         return point
 
     def setDetailsFromWholeMolecule(self):
-        """Set DelPhi parameters to run a calculation of a whole molecule
-        (all sites neutral, except one)"""
+        """Set DelPhi parameters to run a calculation of a whole molecule (all sites neutral, except one)."""
         (
-            molecule,
+            _,
             delphimol,
             p_atpos,
             p_rad3,
@@ -181,8 +184,8 @@ class Tautomer(object):
         if Config.delphi_params["pbc_dim"] == 2:
             (
                 box,
-                half_box_xy,
-                site_center,
+                _,
+                _,
                 offset_x,
                 offset_y,
                 offset_z,
@@ -334,8 +337,7 @@ class Tautomer(object):
         return delphimol, acent
 
     def setDetailsFromTautomer(self):
-        """Set DelPhi parameters to run a calculation
-        of a single site tautomer"""
+        """Set DelPhi parameters to run a calculation of a single site tautomer."""
         (
             molecule,
             delphimol,
@@ -348,7 +350,7 @@ class Tautomer(object):
 
         if Config.delphi_params["pbc_dim"] == 2:
             (
-                box,
+                _,
                 half_box_xy,
                 site_center,
                 offset_x,
@@ -412,7 +414,8 @@ class Tautomer(object):
 
         return delphimol, acent
 
-    def add_pbc(self, x, y, z, box, radius, charge, inf):
+    @staticmethod
+    def add_pbc(x, y, z, box, radius, charge, inf):
         def pdb_y(y, cutoff_y, box, new_atoms, x_new, z_new, radius, charge, inf):
             if y < cutoff_y:
                 y_new = box + y
@@ -475,7 +478,8 @@ class Tautomer(object):
 
     # Calculation Methods
     def CalcPotentialTautomer(self):
-        """Run DelPhi simulation of single site tautomer
+        """
+        Run DelPhi simulation of single site tautomer
 
         Ensures:
             self.esolvation (float): tautomer solvation energy
@@ -485,7 +489,7 @@ class Tautomer(object):
             t0 = time.process_time()
             print((self.name))
             print((self.charge_set))
-        molecule = self.molecule
+        _ = self.molecule
 
         delphimol, acent = self.setDetailsFromTautomer()
 
@@ -531,7 +535,8 @@ class Tautomer(object):
         return self.esolvation, self.p_sitpot[:]
 
     def CalcPotentialTitratingMolecule(self):
-        """Run DelPhi simulation of the site tautomer
+        """
+        Run DelPhi simulation of the site tautomer
         within the whole molecule
 
         Ensures:
@@ -637,7 +642,7 @@ class Tautomer(object):
             filename = "{0}_{1}.frc".format(self.name, self.site.res_number)
             with open(filename, "w") as f:
                 text = ""
-                for atom_name, atom_id, atom_position in molecule.iterAtoms():
+                for _, atom_id, atom_position in molecule.iterAtoms():
                     text += "{0} {1} {2} " "{3} {4} {5} {6}\n".format(
                         atinf[atom_position].value,
                         round(p_chrgv4[atom_position], 3),
@@ -659,10 +664,10 @@ class Tautomer(object):
         return self.esolvation, self.p_sitpot[:]
 
     def calcBackEnergy(self):
-        """Calculates background energy contribution"""
+        """Calculates background energy contribution."""
         if Config.debug:
             print((self.name, "background energy start"))
-        molecule = self.molecule
+        _ = self.molecule
         delphimol = Config.delphi_params["delphimol"]
         text = ""
         distance = -999999
@@ -707,7 +712,7 @@ class Tautomer(object):
             print("e_back finished")
 
     def calcpKint(self):
-        """Calculates the pKint of the tautomer"""
+        """Calculates the pKint of the tautomer."""
         ref_taut = self.site.ref_tautomer
 
         dG_solvationM = ref_taut.esolvationM - self.esolvationM
@@ -737,8 +742,8 @@ class Tautomer(object):
         self.dg = dg
 
     def calcInteractionWith(self, tautomer2, site_atom_list):
-        """Calculates the interaction energy
-        between self tautomer and tautomer2
+        """
+        Calculates the interaction energy between self tautomer and tautomer2
 
         Args:
             tautomer2 (Tautomer)

@@ -9,7 +9,10 @@ LOG*
 *.prm
 P_*.pdb
 *.pyc
+.nfs*
 
+.vscode/
+pypka/.vscode/
 build/
 .eggs/
 pypKa.egg-info/

@@ -1,18 +1,17 @@
-from config import Config
-from constants import *
-from formats import read_pdb_line, read_gro_line, new_pdb_line
-from copy import copy
+from constants import TITRABLETAUTOMERS, TERMINAL_OFFSET
+from formats import read_gro_line
 from titsite import Titsite as Site
 from tautomer import Tautomer
-from concurrency import startPoolProcesses, runInteractionCalcs, runMCCalcs
+from concurrency import runInteractionCalcs
+
 
 class Molecule:
-    """Molecule with more than one titrable sites
-    """
+    """Molecule with more than one titrable sites"""
+
     def __init__(self, chain, sites):
         """
-
         ### DEPRECATED 26/11/2019 ###
+        #TODO: update docstring
 
         # DelPhi Parameters
         self.delphi_refparams (list): input DelPhi parameters
@@ -47,7 +46,7 @@ class Molecule:
         self.input_sites = sites
         self.chain = chain
 
-        self.delphi_refparams = ''
+        self.delphi_refparams = ""
         self.sites = {}
         self.sites_order = []
 
@@ -58,7 +57,7 @@ class Molecule:
 
         self.InputPQRoffSet = []
         self.box = []
-        self.dat_to_write = ''
+        self.dat_to_write = ""
 
         self.correct_names = {}
         self.correct_atoms = {}
@@ -94,36 +93,43 @@ class Molecule:
 
     def getArrayPosition(self, atom_id):
         """Returns the index of the atom in DelPhi position array
-        Disclamer: used only in testing"""
+
+        Disclamer: used only in testing
+        """
         return self.atoms_array_position[atom_id]
 
     def getAtomsList(self):
         """Returns a list of atoms details
-        (id, instance, atom index in DelPhi data structures)
-        sorted by atom id number"""
+
+        Atoms details = (id, instance, atom index in DelPhi data structures)
+        sorted by atom id number
+        """
         atom_list = []
         for atom in sorted(self.atoms.keys()):
-            atom_list.append((self.atoms[atom], atom,
-                              self.atoms_array_position[atom]))
+            atom_list.append((self.atoms[atom], atom, self.atoms_array_position[atom]))
         return atom_list
 
     def getTautomerInstance(self, tautname, site_resnum):
         """Return the tautomer instance named tautname
-        existent in the site of the residue number site_resnum"""
+
+        Tautomer instance must exist in the site of the residue number site_resnum
+        """
         site = self.sites[site_resnum]
         if tautname in list(site.tautomers.keys()):
             return site.tautomers[tautname]
         elif tautname == site.ref_tautomer.name:
             return site.ref_tautomer
-        raise Exception('Something is very wrong!!!')
+        raise Exception("Something is very wrong!!!")
 
     def getNAtoms(self):
-        """Return number of atoms of the Site"""
+        """Return number of atoms of the Site."""
         return self.natoms
 
     def getTautNAtoms(self, taut_name):
         """Return number of atoms of the tautomer named taut_name
-        Disclamer: it was used for testing"""
+
+        Disclamer: it was used for testing
+        """
         for site in list(self.sites.values()):
             for tautomer in site.getTautomers():
                 if tautomer.name == taut_name:
@@ -137,15 +143,12 @@ class Molecule:
 
     # Iter Methods
     def iterAtoms(self):
-        """Generator that iterates through all atoms details (name, id,
-        position) in the Site"""
+        """Generator that iterates through all atoms details (name, id, position) in the Site."""
         for atom in sorted(self.atoms.keys()):
-            yield (self.atoms[atom], atom,
-                   self.atoms_array_position[atom])
+            yield (self.atoms[atom], atom, self.atoms_array_position[atom])
 
     def iterNonRefSitesTautomers(self):
-        """Generator that iterates through all Tautomer instances except
-        the reference ones"""
+        """Generator that iterates through all Tautomer instances except the reference ones."""
         for site in self.sites_order:
             for tautomer in sorted(site.tautomers.values()):
                 yield tautomer
@@ -156,7 +159,7 @@ class Molecule:
 
     # Printing Methods
     def printAllSites(self):
-        """Prints all Site names"""
+        """Prints all Site names."""
         for site in self.sites_order:
             print((site.getName()))
 
@@ -175,7 +178,8 @@ class Molecule:
 
         return sID
 
-    def addTautomers(self, sID, ntautomers, resname, termini_resname=None):
+    @staticmethod
+    def addTautomers(sID, ntautomers, resname, termini_resname=None):
         rootname = resname[0:2]
         sID.res_name = resname
         if termini_resname:
@@ -191,7 +195,7 @@ class Molecule:
         ctr = None
         nsites = len(self.sites_order)
         for i, site in enumerate(self.sites_order):
-            if site.res_name == 'CTR' and i != nsites - 1:
+            if site.res_name == "CTR" and i != nsites - 1:
                 ctr = site
                 continue
             new_list.append(site)
@@ -211,7 +215,7 @@ class Molecule:
                         if res[:-1] == resname[:-1]:
                             ntauts = TITRABLETAUTOMERS[res]
                             return ntauts, res
-            raise Exception('{0}_{1} is not a titrable residue'.format(resname, resnum))
+            raise Exception("{0}_{1} is not a titrable residue".format(resname, resnum))
 
         for site_number, site_name in sites.items():
             if site_name == "NTR":
@@ -219,13 +223,13 @@ class Molecule:
                 self.NTR = resnum
                 resnum += TERMINAL_OFFSET
                 res_ntauts = 3
-                res_name = 'NTR'
+                res_name = "NTR"
             elif site_name == "CTR":
                 resnum = int(site_number)
                 self.CTR = resnum
                 resnum += TERMINAL_OFFSET
                 res_ntauts = 4
-                res_name = 'CTR'
+                res_name = "CTR"
             else:
                 resnum = int(site_number)
                 res_ntauts, res_name = siteHasNTautomers(resnum)
@@ -238,7 +242,6 @@ class Molecule:
         self.addReferenceTautomers()
         self.addTautomersChargeSets()
 
-
     def addReferenceTautomers(self):
         for site in list(self.sites.values()):
             site.addReferenceTautomer()
@@ -248,7 +251,8 @@ class Molecule:
             # reads .st files
             site.addChargeSets()
 
-    def readIndexFile(self, f_ndx):
+    @staticmethod
+    def readIndexFile(f_ndx):
         protein_trigger = False
         protein_atoms = []
         with open(f_ndx) as f:
@@ -263,18 +267,18 @@ class Molecule:
     def deleteAllSites(self):
         for site in list(self.sites.values()):
             site.tautomers = {}
-            site.ref_tautomer = ''
+            site.ref_tautomer = ""
         self.sites = {}
         self.sites_order = []
 
     def correct_site_numb(self, numb):
-        if numb == 'NTR':
+        if numb == "NTR":
             numb = self.NTR + TERMINAL_OFFSET
-        elif numb == 'CTR':
+        elif numb == "CTR":
             numb = self.CTR + TERMINAL_OFFSET
         if isinstance(numb, str):
             try:
                 numb = int(numb)
             except ValueError:
-                raise Exception('Unknown site')
+                raise Exception("Unknown site")
         return numb

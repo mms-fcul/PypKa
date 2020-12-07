@@ -55,6 +55,7 @@ The X.XXX placeholder marks the atom as a new addition.
 
 .. code-block:: text
    :caption: DataBaseT_old.crg and DataBaseT_old.siz
+
    H1  FMO X.XXX
    H2  FMO X.XXX
    H3  FMO X.XXX
