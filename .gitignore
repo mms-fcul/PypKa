@@ -8,11 +8,11 @@ LOG*
 *eback.xvg
 *.prm
 P_*.pdb
-*.pyc
 .nfs*
 TMP.pdb
 clean*.pdb
 
+__pycache__
 .vscode/
 pypka/.vscode/
 build/

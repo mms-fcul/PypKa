@@ -36,4 +36,4 @@ jobs:
           command: |
             set -e
             cd pypka/tests/
-            python3.8 -m pytest -s test.py
+            python3.8 -m pytest test.py
