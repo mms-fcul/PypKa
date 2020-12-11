@@ -188,6 +188,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
 
     CYS_bridges = {}
     with open("LOG_pdb2pqr") as f:
+        trigger_error = ""
         for line in f:
             if "patched with CYX" in line:
                 parts = line.split("patched")[0].replace("PATCH INFO: ", "").split()
@@ -198,6 +199,17 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
                 cys_res_numb = int(parts[-1])
                 if cys_res_numb not in CYS_bridges[chain]:
                     CYS_bridges[chain].append(cys_res_numb)
+            if (
+                "error" in line.lower()
+                and "Error parsing line: invalid literal for int() with base 10"
+                not in line
+            ):
+                trigger_error += line
+        if trigger_error:
+            raise Exception(
+                "Found errors while parsing the input structure to PDB2PQR:\n"
+                + trigger_error
+            )
 
     for chain, molecule in molecules.items():
         if chain in CYS_bridges:
@@ -339,7 +351,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
 
     script_dir = Config.pypka_params["script_dir"]
     os.system(
-        "{}/addHtaut_{} cleaned.pqr {} > {} 2> {}".format(
+        "{}/addHtaut cleaned.pqr {} {} > {} 2> {}".format(
             script_dir,
             Config.pypka_params["ff_family"],
             sites_addHtaut,

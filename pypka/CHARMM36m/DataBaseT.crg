@@ -23,6 +23,12 @@ atom__resnumbc_charge_
  HT3  NT3       0.330
   CA  NT3       0.210
   HA  NT3       0.100
+   N  NTR      -0.300
+ HT1  NTR       0.330
+ HT2  NTR       0.330
+ HT3  NTR       0.330
+  CA  NTR       0.210
+  HA  NTR       0.100
   CT  CT0       0.720
  OT1  CT0      -0.550
 HT11  CT0       0.440
@@ -58,6 +64,13 @@ HT12  CT4       0.000
  OT2  CT4      -0.670
 HT21  CT4       0.000
 HT22  CT4       0.000
+  CT  CTR       0.340
+ OT1  CTR      -0.670
+HT11  CTR       0.000
+HT12  CTR       0.000
+ OT2  CTR      -0.670
+HT21  CTR       0.000
+HT22  CTR       0.000
    N  ALA      -0.470
   HN  ALA       0.310
   CA  ALA       0.070
@@ -101,7 +114,11 @@ HH22  ARG       0.460
  HB2  ASP       0.090
   CG  ASP       0.620
  OD1  ASP      -0.760
+HD11  ASP       0.000
+HD12  ASP       0.000
  OD2  ASP      -0.760
+HD21  ASP       0.000
+HD22  ASP       0.000
    C  ASP       0.510
    O  ASP      -0.510
    N  AS0      -0.470
@@ -198,6 +215,7 @@ HD21  ASN       0.320
 HD22  ASN       0.300
    C  ASN       0.510
    O  ASN      -0.510
+   C  CYS       0.510
    N  CYS      -0.470
   HN  CYS       0.310
   CA  CYS       0.070
@@ -206,6 +224,9 @@ HD22  ASN       0.300
  HB1  CYS       0.090
  HB2  CYS       0.090
   SG  CYS      -0.230
+ HG1  CYS       0.160
+ HG2  CYS       0.000
+ HG3  CYS       0.000
    C  CYS       0.510
    O  CYS      -0.510
    N  CY0      -0.470
@@ -274,7 +295,11 @@ HD22  ASN       0.300
  HG2  GLU       0.090
   CD  GLU       0.620
  OE1  GLU      -0.760
+HE11  GLU       0.000
+HE12  GLU       0.000
  OE2  GLU      -0.760
+HE21  GLU       0.000
+HE22  GLU       0.000
    C  GLU       0.510
    O  GLU      -0.510
    N  GL0      -0.470
@@ -448,6 +473,24 @@ HE22  GLN       0.300
  HE1  HSP       0.180
    C  HSP       0.510
    O  HSP      -0.510
+   N  HIS      -0.470
+  HN  HIS       0.310
+  CA  HIS       0.070
+  HA  HIS       0.090
+  CB  HIS      -0.050
+ HB1  HIS       0.090
+ HB2  HIS       0.090
+ CD2  HIS       0.190
+ HD2  HIS       0.130
+  CG  HIS       0.190
+ NE2  HIS      -0.510
+ HE2  HIS       0.440
+ ND1  HIS      -0.510
+ HD1  HIS       0.440
+ CE1  HIS       0.320
+ HE1  HIS       0.180
+   C  HIS       0.510
+   O  HIS      -0.510
    N  HI0      -0.470
   HN  HI0       0.310
   CA  HI0       0.070
@@ -764,7 +807,8 @@ HG23  THR       0.090
  HE1  TYR       0.115
   CZ  TYR       0.110
   OH  TYR      -0.540
-  HH  TYR       0.430
+ HH1  TYR       0.000
+ HH2  TYR       0.000
  CD2  TYR      -0.115
  HD2  TYR       0.115
  CE2  TYR      -0.115

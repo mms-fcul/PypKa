@@ -37,8 +37,8 @@
 
 BEGIN{
   cmd = "addHtaut" ;
-  usage = "Usage: "cmd" PQR_FILE SITES_FILE" ;
-  if (ARGC != 3) error("Wrong number of arguments.\n" usage) ;
+  usage = "Usage: "cmd" PQR_FILE FF SITES_FILE" ;
+  if (ARGC != 4) error("Wrong number of arguments.\n" usage) ;
   filecheck(pqr_file = ARGV[1]) ;
   pi = atan2(0,-1) ;
 
@@ -49,7 +49,9 @@ BEGIN{
   #  else tit[$1] = substr($2,1,3) ;  # this may not be totally general...
   #}
 
-  tit_input = ARGV[2]
+  forcefield = ARGV[2]
+
+  tit_input = ARGV[3]
   split(tit_input,tit_array,",")
   for (i in tit_array)
   {
@@ -71,15 +73,21 @@ BEGIN{
   while (getline < pqr_file)
   {
     nline++ ;
-    if (nline != 1 && $6 != resnumb) process_residue() ;
-    if (NF != 11) error("Wrong number of fields ("NF") in pqr line "nline) ;
+    if (nline != 1 && int(substr($0,23,4)) != resnumb) process_residue() ;
+    # if (NF != 11) warning("Wrong number of fields ("NF") in pqr line "nline) ;
     resname = $4 ;
-    resnumb = $6 ;
-    chain = $5
+    resnumb = int(substr($0,23,4)) ;
+    chain = substr($0,22,1) ;
     atm = $3 ;
-    for (k = 1 ; k <= 3 ; k++) r[atm,k] = $(6+k) ;
+
+    r[atm,1] = substr($0,31,8);
+    r[atm,2] = substr($0,39,8);
+    r[atm,3] = substr($0,47,8);
+
     line[atm] = $0 ;
-    print_pqr_line($2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ;
+
+    print_pqr_line($2, atm, resname, chain, resnumb, r[atm,1], r[atm,2], r[atm,3], substr($0,55,8), substr($0,63,8)) ;
+
     # the next 2nd condition may not be totally general...
     if (tit[chain][resnumb] != "" && tit[chain][resnumb] != substr(resname,1,3))
     {
@@ -168,7 +176,7 @@ function process_phenyl(stype)
   for (k = 1 ; k <= 3 ; k++)
     rH[k] = r[h1[stype],k] - 2 * dot(rOH,rb) / dot(rb,rb) * rb[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h2[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h2[stype], f[4], chain, resnumb, rH[1], rH[2], rH[3], f[9], f[10]) ;
 }
 
 function process_alcohol(stype)
@@ -190,11 +198,11 @@ function process_alcohol(stype)
   # Compute and write h2:
   for (k = 1 ; k <= 3 ; k++) rH[k] = r[h1[stype],k] - 1.5 * rc[k] + ru[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h2[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h2[stype], f[4], chain, resnumb, rH[1], rH[2], rH[3], f[9], f[10]) ;
   # Compute and write h3:
   for (k = 1 ; k <= 3 ; k++) rH[k] = r[h1[stype],k] - 1.5 * rc[k] - ru[k] ;
   split(line[h1[stype]], f) ;
-  print_pqr_line(0, h3[stype], f[4], chain, f[6], rH[1], rH[2], rH[3], f[9], f[10]) ;
+  print_pqr_line(0, h3[stype], f[4], chain, resnumb, rH[1], rH[2], rH[3], f[9], f[10]) ;
 }
 
 function process_water(stype)
@@ -221,7 +229,7 @@ function process_water(stype)
   rOH1[3] = distOH * cos(phi) ;
   for (k = 1 ; k <= 3 ; k++) rH1[k] = r[o[stype],k] + rOH1[k] ;
   split(line[o[stype]], f) ;
-  print_pqr_line(0, h1[stype], f[4], chain, f[6],
+  print_pqr_line(0, h1[stype], f[4], chain, resnumb,
 		 rH1[1], rH1[2], rH1[3], chargeH, radiusH) ;
   # Compute random orientation for h2:
   theta = rand() * 2 * pi ;
@@ -234,7 +242,7 @@ function process_water(stype)
   for (k = 1 ; k <= 3 ; k++) ra[k] = distOH * sin(angHOH) * ru[k] / norm(ru) ;
   for (k = 1 ; k <= 3 ; k++) rb[k] = rOH1[k] * cos(angHOH) ;
   for (k = 1 ; k <= 3 ; k++) rH2[k] = r[o[stype],k] + ra[k] + rb[k] ;
-  print_pqr_line(0, h2[stype], f[4], f[6],
+  print_pqr_line(0, h2[stype], f[4], resnumb,
 		 rH2[1], rH2[2], rH2[3], chargeH, radiusH) ;
   # Compute and write h3:
   for (k = 1 ; k <= 3 ; k++) rOH2[k] = rH2[k] - r[o[stype],k] ;
@@ -244,17 +252,17 @@ function process_water(stype)
   for (k = 1 ; k <= 3 ; k++)
     ru[k] = 0.5 * sqrt(3) * norm(rc) * ra[k] / norm(ra) ;
   for (k = 1 ; k <= 3 ; k++) rH3[k] = rH1[k] - 1.5 * rc[k] + ru[k] ;
-  print_pqr_line(0, h3[stype], f[4], chain, f[6],
+  print_pqr_line(0, h3[stype], f[4], chain, resnumb,
 		 rH3[1], rH3[2], rH3[3], chargeH, radiusH) ;
   # Compute and write h4:
   for (k = 1 ; k <= 3 ; k++) rH4[k] = rH1[k] - 1.5 * rc[k] - ru[k] ;
-  print_pqr_line(0, h4[stype], f[4], chain, f[6],
+  print_pqr_line(0, h4[stype], f[4], chain, resnumb,
 		 rH4[1], rH4[2], rH4[3], chargeH, radiusH) ;
 }
 
 function print_pqr_line(atnu,atna,resna,chain,resnu,x,y,z,charge,rad)
 {
-  printf ("ATOM  %5d %-4s %-4s%1s%4s     %7.3f %7.3f %7.3f %6.3f %6.3f\n",  \
+  printf ("ATOM  %5d %-4s %-4s%1s%4s    %8.3f%8.3f%8.3f%8.3f%8.3f\n",  \
           atnu, atna, resna, chain, resnu, x, y, z, charge, rad) ;
 }
 
@@ -289,10 +297,19 @@ function define_sites()
   o1["GLU"] = "OE1" ;  o2["GLU"] = "OE2"  ; c["GLU"] = "CD" ;
   h1["GLU"] = "HE11" ; h2["GLU"] = "HE21" ;
   h3["GLU"] = "HE12" ; h4["GLU"] = "HE22" ;
-  # C-terminus:
-  o1["CTR"] = "O1" ;   o2["CTR"] = "O2"   ; c["CTR"] = "C" ;
-  h1["CTR"] = "HO11" ; h2["CTR"] = "HO21" ;
-  h3["CTR"] = "HO12" ; h4["CTR"] = "HO22" ;
+  if (forcefield == "GROMOS") {
+    # C-terminus:
+    o1["CTR"] = "O1" ;   o2["CTR"] = "O2"   ; c["CTR"] = "C" ;
+    h1["CTR"] = "HO11" ; h2["CTR"] = "HO21" ;
+    h3["CTR"] = "HO12" ; h4["CTR"] = "HO22" ;
+  } ;
+  if (forcefield == "CHARMM") {
+    # C-terminus:
+    o1["CTR"] = "OT1" ;  o2["CTR"] = "OT2"   ; c["CTR"] = "C" ;
+    h1["CTR"] = "HT11" ; h2["CTR"] = "HT21" ;
+    h3["CTR"] = "HT12" ; h4["CTR"] = "HT22" ;
+  } ;
+
   # Propionate A:
   o1["PRA"] = "O1A" ;  o2["PRA"] = "O2A"  ; c["PRA"] = "CGA" ;
   h1["PRA"] = "HO1A" ; h2["PRA"] = "HO2A" ;

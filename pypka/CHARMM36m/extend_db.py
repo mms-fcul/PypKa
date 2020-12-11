@@ -134,27 +134,23 @@ for i in range(4):
     rules[f"TH{i}"] = db_res["THR"]
     for ii in range(4):
         rules[f"TH{i}"][f"HG{ii}"] = db_res["THR"]["HG1"]
-# rules["HIS"] = db_res["HI2"]
-# rules["HI0"] = db_res["HI2"]
-# rules["HI1"] = db_res["HI2"]
-# rules["HI2"] = db_res["HSP"]
 
-# db_res["LYS"] = db_res["LY3"]
-# db_res["LY0"] = db_res["LY3"]
-# db_res["LY1"] = db_res["LY3"]
-# db_res["LY2"] = db_res["LY3"]
+rules["HIS"] = db_res["HI2"]
+rules["ASP"] = db_res["AS4"]
+rules["LYS"] = db_res["LY3"]
+rules["GLU"] = db_res["GL4"]
+rules["TYR"] = db_res["TY2"]
+rules["CYS"] = db_res["CY3"]
 
-# db_res["GLU"] = db_res["GL4"]
-# db_res["GL0"] = db_res["GL4"]
-# db_res["GL1"] = db_res["GL4"]
-# db_res["GL2"] = db_res["GL4"]
-# db_res["GL3"] = db_res["GL4"]
-
-# db_res["ASP"] = db_res["AS4"]
-# db_res["AS0"] = db_res["AS4"]
-# db_res["AS1"] = db_res["AS4"]
-# db_res["AS2"] = db_res["AS4"]
-# db_res["AS3"] = db_res["AS4"]
+rules_crg = {}
+# rules_crg["NTR"] = db_charges["NT3"]
+# rules_crg["CTR"] = db_charges["CT4"]
+rules_crg["HIS"] = db_charges["HI2"]
+rules_crg["ASP"] = db_charges["AS4"]
+rules_crg["LYS"] = db_charges["LY3"]
+rules_crg["GLU"] = db_charges["GL4"]
+rules_crg["TYR"] = db_charges["TY2"]
+rules_crg["CYS"] = db_charges["CY3"]
 
 sigma, epsilon = db_lj[water_atype.lower()]
 water_radius = radius_from_lennard(sigma, epsilon, rt=rt, water=True)
@@ -204,9 +200,11 @@ with open(old_crg_db) as f:
         if resname in db_charges and aname in db_charges[resname]:
             charge = db_charges[resname][aname]
             if cols[2] != "X.XXX" and float(cols[2]) != charge:
-                print("ERROR", aname, resname, charge, cols)
+                print("ERROR CRG", aname, resname, charge, cols)
         elif resname[:2] in ("CT", "NT"):
             charge = float(cols[2])
+        elif resname in rules_crg and aname in rules_crg[resname]:
+            charge = rules_crg[resname][aname]
         else:
             print(aname, resname, "ignored on CRG")
             continue

@@ -10,6 +10,8 @@ LOG*
 P_*.pdb
 *.pyc
 .nfs*
+TMP.pdb
+clean*.pdb
 
 .vscode/
 pypka/.vscode/

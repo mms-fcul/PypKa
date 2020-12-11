@@ -14,7 +14,7 @@ bndcon = 1
 pH = 7
 pHstep = 0.3
 
-structure_output = structure.pdb, 7
+structure_output = structure.pdb, 7, amber
 
 lipid_definition = cholesterol:CHL
 lipid_definition = POPC:POP

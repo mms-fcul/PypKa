@@ -6,7 +6,7 @@ from pypka.tests.builder.check_diffs import compareFiles
 
 sys.path.insert(1, "../")
 
-ncpus = 4
+ncpus = 32
 
 # run coverage.sh to generate coverage
 
