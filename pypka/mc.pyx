@@ -1,12 +1,9 @@
-#!python
 # cython: language_level=3
 # cython: boundscheck=False
 # cython: cdivision=True
 # cython: wraparound=False
 
 import numpy as np
-cimport numpy as np
-cimport cython
 from libc.stdio cimport printf, fflush, stdout
 
 cdef int mcsteps, eqsteps, MAXNPKHALFS, MAXDELTA, seed

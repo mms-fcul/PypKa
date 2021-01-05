@@ -87,8 +87,13 @@ def compareFiles(f1, f2):
                         break
                 if WarningTrigger:
                     print(
-                        "{0}{1} {2}: {3} != {4} {dist3D(p1, p2)}".format(
-                            resnew[atom][0], resid, atom, p1, resnew[atom][1:]
+                        "{0}{1} {2}: {3} != {4} {5}".format(
+                            resnew[atom][0],
+                            resid,
+                            atom,
+                            p1,
+                            resnew[atom][1:],
+                            dist3D(p1, p2),
                         )
                     )
 
