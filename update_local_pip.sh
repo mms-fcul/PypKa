@@ -1,5 +1,10 @@
+# Build new whell
+rm -rf build pypKa.egg-info
 python3 setup.py sdist bdist_wheel
-latest_wheel=`ls -t dist/pypka*.whl | head -n 1`
-pip3 install --upgrade $latest_wheel --user
+latest_wheel=`ls -t dist/pypKa*.whl | head -n 1`
 
-#python3 -m twine upload dist/pypka-0.0.6*
+# Upload to Pypi
+python3 -m twine upload dist/pypKa-1.4.0*
+
+# Local install
+#pip3 install --upgrade $latest_wheel --user

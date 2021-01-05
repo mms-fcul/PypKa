@@ -1,14 +1,16 @@
-global-exclude __pycache__ .vscode .circleci
-global-exclude *.py[co] *.out .nfs*
-exclude .gitignore
-
 include LICENSE README.md
-include mc*.so addHtaut
-recursive-include G54A7
-recursive-include CHARMM36m
-recursive-include pdb2pqr
-recursive-include delphi4py
+global-include *.so addHtaut
 
-recursive-exclude pypka/tests *
-recursive-exclude pypka/docs *
+graft pypka/G54A7
+graft pypka/CHARMM36m
+graft pypka/pdb2pqr
+graft pypka/delphi4py
 
+prune pypka/tests/
+prune pypka/docs/
+prune pypka/scripts/
+prune __pycache__
+
+global-exclude .vscode .circleci
+global-exclude *.out .nfs*
+exclude .gitignore
