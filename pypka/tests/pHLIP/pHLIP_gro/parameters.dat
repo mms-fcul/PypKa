@@ -4,7 +4,7 @@ epsin           = 2
 ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
-ncpus           = 32
+ncpus           = -1
 pH              = 0,11
 sites_A         = 769N, 770, 771, 782, 793, 799, 801, 802, 804C
 

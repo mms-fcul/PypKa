@@ -3,7 +3,7 @@ global-exclude *.py[co] *.out .nfs*
 exclude .gitignore
 
 include LICENSE README.md
-include mc*.so addHtaut*
+include mc*.so addHtaut
 recursive-include G54A7
 recursive-include CHARMM36m
 recursive-include pdb2pqr

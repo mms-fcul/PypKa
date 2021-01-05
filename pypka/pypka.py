@@ -639,7 +639,7 @@ class Titration:
         pKas = pKs
 
         text_pks = ""
-        text_prots = "#pH       total"
+        text_prots = "#pH       "
         c = -1
         for i in pKas:
             c += 1

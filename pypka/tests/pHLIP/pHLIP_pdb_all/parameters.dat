@@ -4,7 +4,7 @@ epsin           = 2
 ionicstr        = 0.1
 pbc_dimensions  = 2
 temp            = 310
-ncpus           = 32
+ncpus           = -1
 pH              = -10,25
 sites           = all
 

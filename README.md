@@ -26,6 +26,8 @@ doi = {10.1021/acs.jcim.0c00718}
 
 ## Installation & Dependencies
 
+PypKa should be installed in a Linux-based system. In Windows please use the [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
 * python2.6>= & python3.5>=
 * libgfortran4
 * gawk

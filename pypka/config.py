@@ -246,7 +246,7 @@ class PypKaConfig(ParametersDict):
         self.ffinput = "GROMOS"
         self.clean_pdb = True
         self.keep_ions = False
-        self.ser_thr_titration = False
+        self.ser_thr_titration = True
 
         self.cutoff = -1
         self.slice = 0.05

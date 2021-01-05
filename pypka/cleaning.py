@@ -350,6 +350,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
     # log.redirectErr("start", logfile)
 
     script_dir = Config.pypka_params["script_dir"]
+
     os.system(
         "{}/addHtaut cleaned.pqr {} {} > {} 2> {}".format(
             script_dir,

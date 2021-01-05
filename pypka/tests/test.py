@@ -41,9 +41,9 @@ def checkOutput(filename, results_lines):
 
 
 def checkStructureOutput(filename):
-    problems = compareFiles(f"builder/{filename}", filename)
+    problems = compareFiles("builder/{0}".format(filename), filename)
     if problems:
-        raise Exception(f"Problems found with {filename}")
+        raise Exception("Problems found with {0}".format(filename))
     else:
         os.remove(filename)
 
