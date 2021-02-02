@@ -885,9 +885,9 @@ class Titration:
     @staticmethod
     def getParametersDict():
         return (
-            Config.pypka_params.__dict__,
-            Config.delphi_params.__dict__,
-            Config.mc_params.__dict__,
+            Config.pypka_params.get_clean_params(),
+            Config.delphi_params.get_clean_params(),
+            Config.mc_params.get_clean_params(),
         )
 
     def getSiteInteractions(self):
