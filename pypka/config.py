@@ -177,6 +177,10 @@ class ParametersDict:
         return item in self.__dict__
 
     def __str__(self):
+        self_dict = self.get_clean_params()        
+        return "# {} Parameters\n{}\n".format(self.name, pformat(self_dict))
+    
+    def get_clean_params(self):
         self_dict = {}
         for key, value in self.__dict__.items():
             if key not in self.not_to_print and key not in (
@@ -185,7 +189,7 @@ class ParametersDict:
                 "log",
             ):
                 self_dict[key] = value
-        return "# {} Parameters\n{}\n".format(self.name, pformat(self_dict))
+        return self_dict
 
 
 class PypKaConfig(ParametersDict):
