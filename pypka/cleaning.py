@@ -116,7 +116,7 @@ def inputPDBCheck(filename, sites, clean_pdb):
     return chains_length, chains_res
 
 
-def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
+def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     """"""
     pdb_filename = Config.pypka_params["f_in"]
     pdb2pqr_path = Config.pypka_params["pdb2pqr"]
@@ -140,6 +140,32 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr):
             logfile,
         )
     )
+
+    if automatic_sites:
+        with open(inputpqr) as f:
+            for line in f:
+                if "ATOM " == line[0:5]:
+                    (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(
+                        line
+                    )
+
+                    if (
+                        "CTR" not in chains_res
+                        and aname
+                        in (
+                            "CT",
+                            "OT",
+                            "OT1",
+                            "OT2",
+                            "O1",
+                            "O2",
+                            "OXT",
+                        )
+                        and chain in chains_res
+                        and str(resnumb) not in chains_res[chain]
+                    ):
+                        chains_res[chain][str(resnumb)] = "CTR"
+                        molecules[chain].CTR = resnumb
 
     if Config.pypka_params["f_structure_out"]:
         ff_out = Config.pypka_params["ff_structure_out"]

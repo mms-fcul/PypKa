@@ -193,7 +193,9 @@ class Titration:
                 #        tau_ref_name = sites[chain][site].getRefTautomerName()
                 #        site_numb_n_ref[chain][site] = tau_ref_name
 
-                cleanPDB(self.molecules, chains_res, inputpqr, outputpqr)
+                cleanPDB(
+                    self.molecules, chains_res, inputpqr, outputpqr, automatic_sites
+                )
                 create_tit_sites(chains_res, TMPpdb=True)
                 f_in = "TMP.pdb"
         else:
