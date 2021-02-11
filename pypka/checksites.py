@@ -511,7 +511,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                     resnumb, resname, aname = correct_res_names(
                         molecule, resnumb, resname, aname
                     )
-
+                
                 new_pdb_content += new_pdb_line(
                     aposition, aname, resname, resnumb, x, y, z
                 )

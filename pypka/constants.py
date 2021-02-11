@@ -30,27 +30,29 @@ TITRABLETAUTOMERS = {
 
 PROTEIN_RESIDUES = (
     "ALA",
-    "VAL",
-    "ILE",
-    "LEU",
-    "MET",
-    "PHE",
-    "TYR",
-    "TRP",
+    "CYS",
     "ASP",
     "GLU",
-    "ARG",
+    "PHE",
+    "GLY",
     "HIS",
+    "ILE",
     "LYS",
+    "LEU",
+    "MET",
+    "ASN",
+    "PRO",
+    "GLN",
+    "ARG",
     "SER",
     "THR",
-    "ASN",
-    "GLN",
-    "CYS",
-    "PRO",
+    "VAL",
+    "TRP",
+    "TYR",
     "NTR",
     "CTR",
 )
+
 
 TITRABLERESIDUES = list(TITRABLETAUTOMERS.keys())
 REGULARTITRATINGRES = list(TITRABLETAUTOMERS.keys())
