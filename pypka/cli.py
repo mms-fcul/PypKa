@@ -3,6 +3,8 @@ import os
 import config
 import log
 from copy import copy
+from _version import __version__
+
 
 def read_settings(filename):
     """Reads the settings file.
@@ -16,58 +18,61 @@ def read_settings(filename):
     All parameter names not recognizable are reported as a warning.
     """
     parameters = {}
-    parameters['lipid_definition'] = {}
+    parameters["lipid_definition"] = {}
     with open(filename) as f:
         nline = 0
         for line in f:
             nline += 1
             line = line.strip()
-            if line and line[0] != '#':
-                no_comments = line.split('#')[0]
-                parts = no_comments.split('=')
+            if line and line[0] != "#":
+                no_comments = line.split("#")[0]
+                parts = no_comments.split("=")
                 param_name = parts[0].strip()
-                param_value = '='.join(parts[1:]).strip()
-                if 'lipid_definition' in param_name:
-                    parts = param_value.split(':')
+                param_value = "=".join(parts[1:]).strip()
+                if "lipid_definition" in param_name:
+                    parts = param_value.split(":")
                     old_name = parts[0]
                     new_name = parts[1]
-                    parameters['lipid_definition'][old_name] = new_name
-                elif (len(parts) != 2 or
-                      not param_name or
-                      not param_value):
-                    raise IOError('Incorrect format in line {0} of file {1}: '
-                                  '\n{1}#{0}: {2}'.format(nline, filename, line))
+                    parameters["lipid_definition"][old_name] = new_name
+                elif len(parts) != 2 or not param_name or not param_value:
+                    raise IOError(
+                        "Incorrect format in line {0} of file {1}: "
+                        "\n{1}#{0}: {2}".format(nline, filename, line)
+                    )
                 else:
                     parameters[param_name] = param_value
     # Search for all titrable sites in different chains
     sites = {}
     for param_name in parameters:
-        if 'site' in param_name:
-            if '_' in param_name:
-                chain = param_name.split('_')[1]
+        if "site" in param_name:
+            if "_" in param_name:
+                chain = param_name.split("_")[1]
             else:
-                chain = ' '
+                chain = " "
             sites_str = parameters[param_name]
-            chain_sites = sites_str.split(', ')
+            chain_sites = sites_str.split(", ")
             sites[chain] = chain_sites
 
-    if ' ' in sites and sites[' '] == ['all']:
+    if " " in sites and sites[" "] == ["all"]:
         if len(sites) != 1:
             raise Exception(
-                    '"sites" parameter is incorrectly defined.\n '
-                    'Incompatible parameters: "sites" and the multi-chain nomenclature "sites_X" where X is the chain'
-                    'Please choose one of the two ways to define titratble sites.\n'
-                    'Automatic Example: sites = all\n'
-                    'Residues NTR, 1, 5 and 8 in chain A Example: sites_A = 1N, 1, 5, 8')
-        sites = 'all'
+                '"sites" parameter is incorrectly defined.\n '
+                'Incompatible parameters: "sites" and the multi-chain nomenclature "sites_X" where X is the chain'
+                "Please choose one of the two ways to define titratble sites.\n"
+                "Automatic Example: sites = all\n"
+                "Residues NTR, 1, 5 and 8 in chain A Example: sites_A = 1N, 1, 5, 8"
+            )
+        sites = "all"
 
     return sites, parameters
+
 
 def check_cli_args():
     """Gets the CLI arguments and interprets them"""
 
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter, description="""
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="""
 PypKa
 A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism
 
@@ -77,21 +82,28 @@ PypKa is distributed under a LGPL-3.0, however delphi4py depends on DelPhi which
 To use DelPhi the user is required to download the DelPhi license https://honiglab.c2b2.columbia.edu/software/cgi-bin/software.pl?input=DelPhi
 
 Example:
-python3 pypka.py params.dat --debug""")
+python3 pypka.py params.dat --debug""",
+    )
 
     # Mandatory Arguments
-    parser.add_argument('settings', help=' settings file name',
-                        default="settings.dat", action='store')
+    parser.add_argument(
+        "settings", help=" settings file name", default="settings.dat", action="store"
+    )
 
     # Optional Arguments
-    parser.add_argument('--debug', help='activation of the debug mode '
-                        'to print extra information', action='store_true')
+    parser.add_argument(
+        "--debug",
+        help="activation of the debug mode " "to print extra information",
+        action="store_true",
+    )
+
+    parser.add_argument("--version", action="version", version=__version__)
 
     args = parser.parse_args()
 
     # Apply some criteria to input arguments
     if not os.path.isfile(args.settings):
-        raise IOError('File {0} does not exist.'.format(args.settings))
+        raise IOError("File {0} does not exist.".format(args.settings))
 
     # Read Settings File
     sites, parameters = read_settings(args.settings)

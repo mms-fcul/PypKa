@@ -28,13 +28,6 @@ from delphi4py.delphi4py import DelPhi4py
 import numpy as np
 import os
 
-__author__ = "Pedro Reis"
-__version__ = "0.4"
-
-__email__ = "pdreis@fc.ul.pt"
-__status__ = "Development"
-
-
 def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     """Gets the all titrable sites from the pdb
 
