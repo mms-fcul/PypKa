@@ -466,7 +466,7 @@ def removeMembrane(pdbfile):
     nomembrane_text = ""
     with open(pdbfile) as f:
         for line in f:
-            if "ATOM " == line[0:5]:
+            if line.startswith("ATOM"):
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
                 if chain == " ":
@@ -477,8 +477,8 @@ def removeMembrane(pdbfile):
                         anumb, aname, resname, resnumb, x, y, z, chain=chain
                     )
 
-            else:
-                nomembrane_text += line
+            # else:
+            #    nomembrane_text += line
     with open("tmp.tmp", "w") as f_new:
         f_new.write(nomembrane_text)
     os.rename("tmp.tmp", "input_clean.pdb")
