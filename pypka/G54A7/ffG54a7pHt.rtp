@@ -478,48 +478,49 @@
    CA    CB    CG   OD2     gd_40   
    CB    CG   OD2   HD2     gd_12   
 
-[ CYS ]
- [ atoms ]
-    N     N    -0.31000     0
-    H     H     0.31000     0
-   CA   CH1     0.00000     1
-   CB   CH2    -0.10000     2
-   SG     S    -0.40000     2
-    C     C       0.450     3
-    O     O      -0.450     3
- [ bonds ]
-    N     H    gb_2    
-    N    CA    gb_21   
-   CA    CB    gb_27   
-   CA     C    gb_27   
-   CB    SG    gb_32   
-    C     O    gb_5    
-    C    +N    gb_10   
- [ angles ]
-;  ai    aj    ak   gromos type
-   -C     N     H     ga_32   
-   -C     N    CA     ga_31   
-    H     N    CA     ga_18   
-    N    CA    CB     ga_13   
-    N    CA     C     ga_13   
-   CB    CA     C     ga_13   
-   CA    CB    SG     ga_16   
-   CA     C     O     ga_30   
-   CA     C    +N     ga_19   
-    O     C    +N     ga_33   
- [ impropers ]
-;  ai    aj    ak    al   gromos type
-    N    -C    CA     H     gi_1    
-   CA     N     C    CB     gi_2    
-    C    CA    +N     O     gi_1    
- [ dihedrals ]
-;  ai    aj    ak    al   gromos type
-  -CA    -C     N    CA     gd_14   
-   -C     N    CA     C     gd_42 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
-   -C     N    CA     C     gd_43 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
-    N    CA    CB    SG     gd_34   
-    N    CA     C    +N     gd_44 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
-    N    CA     C    +N     gd_45 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
+;[ CYS ]
+; [ atoms ]
+;    N     N    -0.31000     0
+;    H     H     0.31000     0
+;   CA   CH1     0.00000     1
+;   CB   CH2    -0.10000     2
+;   SG     S    -0.40000     2
+;    C     C       0.450     3
+;    O     O      -0.450     3
+; [ bonds ]
+;    N     H    gb_2    
+;    N    CA    gb_21   
+;   CA    CB    gb_27   
+;   CA     C    gb_27   
+;   CB    SG    gb_32   
+;    C     O    gb_5    
+;    C    +N    gb_10   
+; [ angles ]
+;;  ai    aj    ak   gromos type
+;   -C     N     H     ga_32   
+;   -C     N    CA     ga_31   
+;    H     N    CA     ga_18   
+;    N    CA    CB     ga_13   
+;    N    CA     C     ga_13   
+;   CB    CA     C     ga_13   
+;   CA    CB    SG     ga_16   
+;   CA     C     O     ga_30   
+;   CA     C    +N     ga_19   
+;    O     C    +N     ga_33   
+; [ impropers ]
+;;  ai    aj    ak    al   gromos type
+;    N    -C    CA     H     gi_1    
+;   CA     N     C    CB     gi_2    
+;    C    CA    +N     O     gi_1    
+; [ dihedrals ]
+;;  ai    aj    ak    al   gromos type
+;  -CA    -C     N    CA     gd_14   
+;   -C     N    CA     C     gd_42 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
+;   -C     N    CA     C     gd_43 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
+;    N    CA    CB    SG     gd_34   
+;    N    CA     C    +N     gd_44 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
+;    N    CA     C    +N     gd_45 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
+
 [ CYSH ]
  [ atoms ]
     N     N    -0.31000     0
@@ -1580,7 +1581,7 @@
    CG    CD    CE    NZ     gd_34   
    CD    CE    NZ   HZ1     gd_29   
 
-[ LYSH ]
+[ LYS ] ; LYSH
  [ atoms ]
     N     N    -0.31000     0
     H     H     0.31000     0
@@ -1913,6 +1914,60 @@
     N    CA     C    +N     gd_45 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
    CA    CB    OG    HG     gd_23   
 
+[ SE0 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH2     0.26600     2
+   OG    OA    -0.67400     2
+  HG1     H     0.40800     2
+  HG2     H     0.00000     2
+  HG3     H     0.00000     2
+    C     C       0.450     3
+    O     O      -0.450     3
+
+[ SE1 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH2     0.26600     2
+   OG    OA    -0.67400     2
+  HG1     H     0.00000     2
+  HG2     H     0.40800     2
+  HG3     H     0.00000     2
+    C     C       0.450     3
+    O     O      -0.450     3
+
+
+[ SE2 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH2     0.26600     2
+   OG    OA    -0.67400     2
+  HG1     H     0.00000     2
+  HG2     H     0.00000     2
+  HG3     H     0.40800     2
+    C     C       0.450     3
+    O     O      -0.450     3
+
+
+[ SE3 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH2     0.10000     2
+   OG    OA    -1.10000     2
+  HG1     H     0.00000     2
+  HG2     H     0.00000     2
+  HG3     H     0.00000     2
+    C     C       0.450     3
+    O     O      -0.450     3
+
 [ THR ]
  [ atoms ]
     N     N    -0.31000     0
@@ -1963,7 +2018,63 @@
     N    CA    CB   OG1     gd_34   
     N    CA     C    +N     gd_44 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
     N    CA     C    +N     gd_45 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
-   CA    CB   OG1   HG1     gd_23   
+   CA    CB   OG1   HG1     gd_23  
+
+[ TH0 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH1     0.26600     2
+  OG1    OA    -0.67400     2
+  HG1     H     0.40800     2
+  HG2     H     0.00000     2
+  HG3     H     0.00000     2    
+  CG2   CH3     0.00000     3
+    C     C       0.450     4
+    O     O      -0.450     4 
+
+[ TH1 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH1     0.26600     2
+  OG1    OA    -0.67400     2
+  HG1     H     0.00000     2
+  HG2     H     0.40800     2
+  HG3     H     0.00000     2    
+  CG2   CH3     0.00000     3
+    C     C       0.450     4
+    O     O      -0.450     4 
+
+[ TH2 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH1     0.26600     2
+  OG1    OA    -0.67400     2
+  HG1     H     0.00000     2
+  HG2     H     0.00000     2
+  HG3     H     0.40800     2    
+  CG2   CH3     0.00000     3
+    C     C       0.450     4
+    O     O      -0.450     4 
+
+[ TH3 ]
+ [ atoms ]
+    N     N    -0.31000     0
+    H     H     0.31000     0
+   CA   CH1     0.00000     1
+   CB   CH1     0.10000     2
+  OG1    OA    -1.10000     2
+  HG1     H     0.00000     2
+  HG2     H     0.00000     2
+  HG3     H     0.00000     2    
+  CG2   CH3     0.00000     3
+    C     C       0.450     4
+    O     O      -0.450     4 
 
 [ TRP ]
  [ atoms ]
@@ -2578,16 +2689,17 @@
    -C     N    CA     C     gd_43 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
     N    CA     C    +N     gd_44 ;backbone dihedral, changed by Ying Xue Sep 29. 2009  
     N    CA     C    +N     gd_45 ;backbone dihedral, changed by Ying Xue Sep 29. 2009
-[ DADE ]
+
+[ DAD ] ; DADE
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N9    NR    -0.20000     3
    C4     C     0.20000     3
    N3    NR    -0.54000     4
@@ -2602,20 +2714,20 @@
    N7    NR    -0.54000     7
    C8     C     0.44000     7
    H8    HC     0.10000     7
-  C2*  CH2R     0.00000     8
-  C3*   CH1       0.000     8
-  O3*    OA      -0.360     9
+  C2'  CH2R     0.00000     8
+  C3'   CH1       0.000     8
+  O3'    OA      -0.360     9
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N9    gb_22   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N9    gb_22   
+  C1'   C2'    gb_26   
    N9    C4    gb_10   
    N9    C8    gb_10   
    C4    N3    gb_12   
@@ -2631,15 +2743,15 @@
    C5    N7    gb_10   
    N7    C8    gb_10   
    C8    H8    gb_3    
-  C2*   C3*    gb_26   
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   C3'    gb_26   
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    N3
-  C1*    C5
-  C1*    N7
-  C1*    H8
+  C1'    N3
+  C1'    C5
+  C1'    N7
+  C1'    H8
    N9    C2
    N9    C6
    C4    H2
@@ -2660,23 +2772,23 @@
    C5    H8
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N9     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N9   C1*   C2*     ga_9    
-  C1*    N9    C4     ga_37   
-  C1*    N9    C8     ga_37   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N9     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N9   C1'   C2'     ga_9    
+  C1'    N9    C4     ga_37   
+  C1'    N9    C8     ga_37   
    C4    N9    C8     ga_7    
    N9    C4    N3     ga_39   
    N9    C4    C5     ga_7    
@@ -2699,14 +2811,14 @@
    N9    C8    N7     ga_7    
    N9    C8    H8     ga_36   
    N7    C8    H8     ga_36   
-  C1*   C2*   C3*     ga_8    
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   C3'     ga_8    
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-  C1*    C4    C8    N9     gi_1    
+  C1'    C4    C8    N9     gi_1    
    N9    C4    C5    N7     gi_1    
    C4    N9    N3    C5     gi_1    
    C4    N9    C8    N7     gi_1    
@@ -2724,44 +2836,44 @@
    C5    N7    C8    N9     gi_1    
    C8    N9    C4    C5     gi_1    
    C8    N9    N7    H8     gi_1    
-  C2*   O4*    N9   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N9   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N9    C4     gd_16   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N9    C4     gd_16   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
    C5    C6    N6   H61     gd_14   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ DGUA ]
+[ DGU ] ; DGUA
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N9    NR    -0.20000     3
    C4     C     0.20000     3
    N3    NR    -0.54000     4
@@ -2777,20 +2889,20 @@
    N7    NR    -0.54000     8
    C8     C     0.44000     8
    H8    HC     0.10000     8
-  C2*  CH2R     0.00000     9
-  C3*   CH1       0.000     9
-  O3*    OA      -0.360    10
+  C2'  CH2R     0.00000     9
+  C3'   CH1       0.000     9
+  O3'    OA      -0.360    10
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N9    gb_22   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N9    gb_22   
+  C1'   C2'    gb_26   
    N9    C4    gb_10   
    N9    C8    gb_10   
    C4    N3    gb_12   
@@ -2807,15 +2919,15 @@
    C5    N7    gb_10   
    N7    C8    gb_10   
    C8    H8    gb_3    
-  C2*   C3*    gb_26   
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   C3'    gb_26   
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    N3
-  C1*    C5
-  C1*    N7
-  C1*    H8
+  C1'    N3
+  C1'    C5
+  C1'    N7
+  C1'    H8
    N9    C2
    N9    C6
    C4    N2
@@ -2838,23 +2950,23 @@
    C5    H8
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N9     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N9   C1*   C2*     ga_9    
-  C1*    N9    C4     ga_37   
-  C1*    N9    C8     ga_37   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N9     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N9   C1'   C2'     ga_9    
+  C1'    N9    C4     ga_37   
+  C1'    N9    C8     ga_37   
    C4    N9    C8     ga_7    
    N9    C4    N3     ga_39   
    N9    C4    C5     ga_7    
@@ -2879,14 +2991,14 @@
    N9    C8    N7     ga_7    
    N9    C8    H8     ga_36   
    N7    C8    H8     ga_36   
-  C1*   C2*   C3*     ga_8    
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   C3'     ga_8    
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-  C1*    C4    C8    N9     gi_1    
+  C1'    C4    C8    N9     gi_1    
    N9    C4    C5    N7     gi_1    
    C4    N9    N3    C5     gi_1    
    C4    N9    C8    N7     gi_1    
@@ -2905,44 +3017,44 @@
    C5    N7    C8    N9     gi_1    
    C8    N9    C4    C5     gi_1    
    C8    N9    N7    H8     gi_1    
-  C2*   O4*    N9   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N9   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N9    C4     gd_16   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N9    C4     gd_16   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
    N3    C2    N2   H21     gd_14   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ DCYT ]
+[ DCY ] ; DCYT
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N1    NR    -0.20000     3
    C6     C     0.10000     3
    H6    HC     0.10000     3
@@ -2955,20 +3067,20 @@
   H42     H     0.41500     6
    C5     C    -0.10000     7
    H5    HC     0.10000     7
-  C2*  CH2R     0.00000     8
-  C3*   CH1       0.000     8
-  O3*    OA      -0.360     9
+  C2'  CH2R     0.00000     8
+  C3'   CH1       0.000     8
+  O3'    OA      -0.360     9
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N1    gb_23   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N1    gb_23   
+  C1'   C2'    gb_26   
    N1    C6    gb_17   
    N1    C2    gb_17   
    C6    H6    gb_3    
@@ -2981,15 +3093,15 @@
    N4   H41    gb_2    
    N4   H42    gb_2    
    C5    H5    gb_3    
-  C2*   C3*    gb_26   
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   C3'    gb_26   
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    H6
-  C1*    O2
-  C1*    N3
-  C1*    C5
+  C1'    H6
+  C1'    O2
+  C1'    N3
+  C1'    C5
    N1    C4
    N1    H5
    C6    O2
@@ -3005,23 +3117,23 @@
    N4    H5
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N1     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N1   C1*   C2*     ga_8    
-  C1*    N1    C6     ga_27   
-  C1*    N1    C2     ga_27   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N1     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N1   C1'   C2'     ga_8    
+  C1'    N1    C6     ga_27   
+  C1'    N1    C2     ga_27   
    C6    N1    C2     ga_27   
    N1    C6    H6     ga_25   
    N1    C6    C5     ga_27   
@@ -3039,14 +3151,14 @@
    C6    C5    C4     ga_27   
    C6    C5    H5     ga_25   
    C4    C5    H5     ga_25   
-  C1*   C2*   C3*     ga_8    
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   C3'     ga_8    
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-   N1    C6    C2   C1*     gi_1    
+   N1    C6    C2   C1'     gi_1    
    N1    C6    C5    C4     gi_1    
    N1    C2    N3    C4     gi_1    
    C6    N1    C2    N3     gi_1    
@@ -3058,44 +3170,44 @@
    N4    N3    C5    C4     gi_1    
    N4   H41   H42    C4     gi_1    
    C5    C6    C4    H5     gi_1    
-  C2*   O4*    N1   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N1   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N1    C2     gd_16   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N1    C2     gd_16   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
    N3    C4    N4   H41     gd_14   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ DTHY ]
+[ DTH ] ; DTHY
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N1    NR    -0.20000     3
    C6     C     0.10000     3
    H6    HC     0.10000     3
@@ -3107,20 +3219,20 @@
    O4     O    -0.45000     6
    C5     C     0.00000     7
   C5M   CH3     0.00000     7
-  C2*  CH2R     0.00000     8
-  C3*   CH1       0.000     8
-  O3*    OA      -0.360     9
+  C2'  CH2R     0.00000     8
+  C3'   CH1       0.000     8
+  O3'    OA      -0.360     9
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N1    gb_23   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N1    gb_23   
+  C1'   C2'    gb_26   
    N1    C6    gb_17   
    N1    C2    gb_17   
    C6    H6    gb_3    
@@ -3132,15 +3244,15 @@
    C4    O4    gb_5    
    C4    C5    gb_16   
    C5   C5M    gb_27   
-  C2*   C3*    gb_26   
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   C3'    gb_26   
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    H6
-  C1*    O2
-  C1*    N3
-  C1*    C5
+  C1'    H6
+  C1'    O2
+  C1'    N3
+  C1'    C5
    N1    H3
    N1    C4
    N1   C5M
@@ -3160,23 +3272,23 @@
    O4   C5M
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N1     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N1   C1*   C2*     ga_8    
-  C1*    N1    C6     ga_27   
-  C1*    N1    C2     ga_27   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N1     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N1   C1'   C2'     ga_8    
+  C1'    N1    C6     ga_27   
+  C1'    N1    C2     ga_27   
    C6    N1    C2     ga_27   
    N1    C6    H6     ga_25   
    N1    C6    C5     ga_27   
@@ -3193,14 +3305,14 @@
    C6    C5    C4     ga_27   
    C6    C5   C5M     ga_27   
    C4    C5   C5M     ga_27   
-  C1*   C2*   C3*     ga_8    
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   C3'     ga_8    
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-   N1    C6    C2   C1*     gi_1    
+   N1    C6    C2   C1'     gi_1    
    N1    C6    C5    C4     gi_1    
    N1    C2    N3    C4     gi_1    
    C6    N1    C2    N3     gi_1    
@@ -3212,43 +3324,43 @@
    H3    C2    C4    N3     gi_1    
    O4    N3    C5    C4     gi_1    
    C5    C6    C4   C5M     gi_1    
-  C2*   O4*    N1   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N1   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N1    C2     gd_16   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  C4*   C3*   O3*    +P     gd_29   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N1    C2     gd_16   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ ADE ]
+[ RAD ] ; ADE
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N9    NR    -0.20000     3
    C4     C     0.20000     3
    N3    NR    -0.54000     4
@@ -3263,22 +3375,22 @@
    N7    NR    -0.54000     7
    C8     C     0.44000     7
    H8    HC     0.10000     7
-  C2*   CH1     0.15000     8
-  O2*    OA    -0.54800     8
-  H2*     H     0.39800     8
-  C3*   CH1       0.000     9
-  O3*    OA      -0.360    10
+  C2'   CH1     0.15000     8
+  O2'    OA    -0.54800     8
+  H2'     H     0.39800     8
+  C3'   CH1       0.000     9
+  O3'    OA      -0.360    10
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N9    gb_22   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N9    gb_22   
+  C1'   C2'    gb_26   
    N9    C4    gb_10   
    N9    C8    gb_10   
    C4    N3    gb_12   
@@ -3294,17 +3406,17 @@
    C5    N7    gb_10   
    N7    C8    gb_10   
    C8    H8    gb_3    
-  C2*   O2*    gb_20   
-  C2*   C3*    gb_26   
-  O2*   H2*    gb_1    
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   O2'    gb_20   
+  C2'   C3'    gb_26   
+  O2'   H2'    gb_1    
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    N3
-  C1*    C5
-  C1*    N7
-  C1*    H8
+  C1'    N3
+  C1'    C5
+  C1'    N7
+  C1'    H8
    N9    C2
    N9    C6
    C4    H2
@@ -3325,23 +3437,23 @@
    C5    H8
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N9     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N9   C1*   C2*     ga_9    
-  C1*    N9    C4     ga_37   
-  C1*    N9    C8     ga_37   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N9     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N9   C1'   C2'     ga_9    
+  C1'    N9    C4     ga_37   
+  C1'    N9    C8     ga_37   
    C4    N9    C8     ga_7    
    N9    C4    N3     ga_39   
    N9    C4    C5     ga_7    
@@ -3364,17 +3476,17 @@
    N9    C8    N7     ga_7    
    N9    C8    H8     ga_36   
    N7    C8    H8     ga_36   
-  C1*   C2*   O2*     ga_9    
-  C1*   C2*   C3*     ga_8    
-  O2*   C2*   C3*     ga_9    
-  C2*   O2*   H2*     ga_12   
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   O2'     ga_9    
+  C1'   C2'   C3'     ga_8    
+  O2'   C2'   C3'     ga_9    
+  C2'   O2'   H2'     ga_12   
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-  C1*    C4    C8    N9     gi_1    
+  C1'    C4    C8    N9     gi_1    
    N9    C4    C5    N7     gi_1    
    C4    N9    N3    C5     gi_1    
    C4    N9    C8    N7     gi_1    
@@ -3392,50 +3504,50 @@
    C5    N7    C8    N9     gi_1    
    C8    N9    C4    C5     gi_1    
    C8    N9    N7    H8     gi_1    
-  C2*   O4*    N9   C1*     gi_2    
-  C2*   O2*   C3*   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N9   C1'     gi_2    
+  C2'   O2'   C3'   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N9    C4     gd_16   
-  O4*   C1*   C2*   O2*     gd_18   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
-   N9   C1*   C2*   O2*     gd_17   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N9    C4     gd_16   
+  O4'   C1'   C2'   O2'     gd_18   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
+   N9   C1'   C2'   O2'     gd_17   
    C5    C6    N6   H61     gd_14   
-  C1*   C2*   O2*   H2*     gd_23   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  O2*   C2*   C3*   C4*     gd_17   
-  O2*   C2*   C3*   O3*     gd_18   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   O2'   H2'     gd_23   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  O2'   C2'   C3'   C4'     gd_17   
+  O2'   C2'   C3'   O3'     gd_18   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ GUA ]
+[ RGU ] ; GUA
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N9    NR    -0.20000     3
    C4     C     0.20000     3
    N3    NR    -0.54000     4
@@ -3451,22 +3563,22 @@
    N7    NR    -0.54000     8
    C8     C     0.44000     8
    H8    HC     0.10000     8
-  C2*   CH1     0.15000     9
-  O2*    OA    -0.54800     9
-  H2*     H     0.39800     9
-  C3*   CH1       0.000    10
-  O3*    OA      -0.360    11
+  C2'   CH1     0.15000     9
+  O2'    OA    -0.54800     9
+  H2'     H     0.39800     9
+  C3'   CH1       0.000    10
+  O3'    OA      -0.360    11
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N9    gb_22   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N9    gb_22   
+  C1'   C2'    gb_26   
    N9    C4    gb_10   
    N9    C8    gb_10   
    C4    N3    gb_12   
@@ -3483,17 +3595,17 @@
    C5    N7    gb_10   
    N7    C8    gb_10   
    C8    H8    gb_3    
-  C2*   O2*    gb_20   
-  C2*   C3*    gb_26   
-  O2*   H2*    gb_1    
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   O2'    gb_20   
+  C2'   C3'    gb_26   
+  O2'   H2'    gb_1    
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    N3
-  C1*    C5
-  C1*    N7
-  C1*    H8
+  C1'    N3
+  C1'    C5
+  C1'    N7
+  C1'    H8
    N9    C2
    N9    C6
    C4    N2
@@ -3516,23 +3628,23 @@
    C5    H8
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N9     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N9   C1*   C2*     ga_9    
-  C1*    N9    C4     ga_37   
-  C1*    N9    C8     ga_37   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N9     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N9   C1'   C2'     ga_9    
+  C1'    N9    C4     ga_37   
+  C1'    N9    C8     ga_37   
    C4    N9    C8     ga_7    
    N9    C4    N3     ga_39   
    N9    C4    C5     ga_7    
@@ -3557,17 +3669,17 @@
    N9    C8    N7     ga_7    
    N9    C8    H8     ga_36   
    N7    C8    H8     ga_36   
-  C1*   C2*   O2*     ga_9    
-  C1*   C2*   C3*     ga_8    
-  O2*   C2*   C3*     ga_9    
-  C2*   O2*   H2*     ga_12   
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   O2'     ga_9    
+  C1'   C2'   C3'     ga_8    
+  O2'   C2'   C3'     ga_9    
+  C2'   O2'   H2'     ga_12   
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-  C1*    C4    C8    N9     gi_1    
+  C1'    C4    C8    N9     gi_1    
    N9    C4    C5    N7     gi_1    
    C4    N9    N3    C5     gi_1    
    C4    N9    C8    N7     gi_1    
@@ -3586,50 +3698,50 @@
    C5    N7    C8    N9     gi_1    
    C8    N9    C4    C5     gi_1    
    C8    N9    N7    H8     gi_1    
-  C2*   O4*    N9   C1*     gi_2    
-  C2*   O2*   C3*   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N9   C1'     gi_2    
+  C2'   O2'   C3'   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N9    C4     gd_16   
-  O4*   C1*   C2*   O2*     gd_18   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
-   N9   C1*   C2*   O2*     gd_17   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N9    C4     gd_16   
+  O4'   C1'   C2'   O2'     gd_18   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
+   N9   C1'   C2'   O2'     gd_17   
    N3    C2    N2   H21     gd_14   
-  C1*   C2*   O2*   H2*     gd_23   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  O2*   C2*   C3*   C4*     gd_17   
-  O2*   C2*   C3*   O3*     gd_18   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   O2'   H2'     gd_23   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  O2'   C2'   C3'   C4'     gd_17   
+  O2'   C2'   C3'   O3'     gd_18   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ CYT ]
+[ RCY ] ; CYT
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N1    NR    -0.20000     3
    C6     C     0.10000     3
    H6    HC     0.10000     3
@@ -3642,22 +3754,22 @@
   H42     H     0.41500     6
    C5     C    -0.10000     7
    H5    HC     0.10000     7
-  C2*   CH1     0.15000     8
-  O2*    OA    -0.54800     8
-  H2*     H     0.39800     8
-  C3*   CH1       0.000     9
-  O3*    OA      -0.360    10
+  C2'   CH1     0.15000     8
+  O2'    OA    -0.54800     8
+  H2'     H     0.39800     8
+  C3'   CH1       0.000     9
+  O3'    OA      -0.360    10
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N1    gb_23   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N1    gb_23   
+  C1'   C2'    gb_26   
    N1    C6    gb_17   
    N1    C2    gb_17   
    C6    H6    gb_3    
@@ -3670,17 +3782,17 @@
    N4   H41    gb_2    
    N4   H42    gb_2    
    C5    H5    gb_3    
-  C2*   O2*    gb_20   
-  C2*   C3*    gb_26   
-  O2*   H2*    gb_1    
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   O2'    gb_20   
+  C2'   C3'    gb_26   
+  O2'   H2'    gb_1    
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    H6
-  C1*    O2
-  C1*    N3
-  C1*    C5
+  C1'    H6
+  C1'    O2
+  C1'    N3
+  C1'    C5
    N1    C4
    N1    H5
    C6    O2
@@ -3696,23 +3808,23 @@
    N4    H5
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N1     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N1   C1*   C2*     ga_8    
-  C1*    N1    C6     ga_27   
-  C1*    N1    C2     ga_27   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N1     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N1   C1'   C2'     ga_8    
+  C1'    N1    C6     ga_27   
+  C1'    N1    C2     ga_27   
    C6    N1    C2     ga_27   
    N1    C6    H6     ga_25   
    N1    C6    C5     ga_27   
@@ -3730,17 +3842,17 @@
    C6    C5    C4     ga_27   
    C6    C5    H5     ga_25   
    C4    C5    H5     ga_25   
-  C1*   C2*   O2*     ga_9    
-  C1*   C2*   C3*     ga_8    
-  O2*   C2*   C3*     ga_9    
-  C2*   O2*   H2*     ga_12   
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   O2'     ga_9    
+  C1'   C2'   C3'     ga_8    
+  O2'   C2'   C3'     ga_9    
+  C2'   O2'   H2'     ga_12   
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-   N1    C6    C2   C1*     gi_1    
+   N1    C6    C2   C1'     gi_1    
    N1    C6    C5    C4     gi_1    
    N1    C2    N3    C4     gi_1    
    C6    N1    C2    N3     gi_1    
@@ -3752,50 +3864,50 @@
    N4    N3    C5    C4     gi_1    
    N4   H41   H42    C4     gi_1    
    C5    C6    C4    H5     gi_1    
-  C2*   O4*    N1   C1*     gi_2    
-  C2*   O2*   C3*   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N1   C1'     gi_2    
+  C2'   O2'   C3'   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N1    C2     gd_16   
-  O4*   C1*   C2*   O2*     gd_18   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
-   N1   C1*   C2*   O2*     gd_17   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N1    C2     gd_16   
+  O4'   C1'   C2'   O2'     gd_18   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
+   N1   C1'   C2'   O2'     gd_17   
    N3    C4    N4   H41     gd_14   
-  C1*   C2*   O2*   H2*     gd_23   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  O2*   C2*   C3*   C4*     gd_17   
-  O2*   C2*   C3*   O3*     gd_18   
-  C4*   C3*   O3*    +P     gd_29   
+  C1'   C2'   O2'   H2'     gd_23   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  O2'   C2'   C3'   C4'     gd_17   
+  O2'   C2'   C3'   O3'     gd_18   
+  C4'   C3'   O3'    +P     gd_29   
 
-[ URA ]
+[ RUR ] ; URA
  [ atoms ]
     P     P     0.99000     0
   O1P    OM    -0.63500     0
   O2P    OM    -0.63500     0
-  O5*    OA    -0.36000     0
-  C5*   CH2     0.00000     1
-  C4*   CH1     0.16000     2
-  O4*    OA    -0.36000     2
-  C1*   CH1     0.20000     2
+  O5'    OA    -0.36000     0
+  C5'   CH2     0.00000     1
+  C4'   CH1     0.16000     2
+  O4'    OA    -0.36000     2
+  C1'   CH1     0.20000     2
    N1    NR    -0.20000     3
    C6     C     0.10000     3
    H6    HC     0.10000     3
@@ -3807,22 +3919,22 @@
    O4     O    -0.45000     6
    C5     C    -0.10000     7
    H5    HC     0.10000     7
-  C2*   CH1     0.15000     8
-  O2*    OA    -0.54800     8
-  H2*     H     0.39800     8
-  C3*   CH1       0.000     9
-  O3*    OA      -0.360    10
+  C2'   CH1     0.15000     8
+  O2'    OA    -0.54800     8
+  H2'     H     0.39800     8
+  C3'   CH1       0.000     9
+  O3'    OA      -0.360    10
  [ bonds ]
     P   O1P    gb_24   
     P   O2P    gb_24   
-    P   O5*    gb_28   
-  O5*   C5*    gb_20   
-  C5*   C4*    gb_26   
-  C4*   O4*    gb_20   
-  C4*   C3*    gb_26   
-  O4*   C1*    gb_20   
-  C1*    N1    gb_23   
-  C1*   C2*    gb_26   
+    P   O5'    gb_28   
+  O5'   C5'    gb_20   
+  C5'   C4'    gb_26   
+  C4'   O4'    gb_20   
+  C4'   C3'    gb_26   
+  O4'   C1'    gb_20   
+  C1'    N1    gb_23   
+  C1'   C2'    gb_26   
    N1    C6    gb_17   
    N1    C2    gb_17   
    C6    H6    gb_3    
@@ -3834,17 +3946,17 @@
    C4    O4    gb_5    
    C4    C5    gb_16   
    C5    H5    gb_3    
-  C2*   O2*    gb_20   
-  C2*   C3*    gb_26   
-  O2*   H2*    gb_1    
-  C3*   O3*    gb_20   
-  O3*    +P    gb_28   
+  C2'   O2'    gb_20   
+  C2'   C3'    gb_26   
+  O2'   H2'    gb_1    
+  C3'   O3'    gb_20   
+  O3'    +P    gb_28   
  [ exclusions ]
 ;  ai    aj
-  C1*    H6
-  C1*    O2
-  C1*    N3
-  C1*    C5
+  C1'    H6
+  C1'    O2
+  C1'    N3
+  C1'    C5
    N1    H3
    N1    C4
    N1    H5
@@ -3862,27 +3974,27 @@
    H3    O4
    H3    C5
    O4    H5
-   H5  -O3*
-  O2*   O3*
+   H5  -O3'
+  O2'   O3'
  [ angles ]
 ;  ai    aj    ak   gromos type
- -O3*     P   O1P     ga_14   
- -O3*     P   O2P     ga_14   
- -O3*     P   O5*     ga_5    
+ -O3'     P   O1P     ga_14   
+ -O3'     P   O2P     ga_14   
+ -O3'     P   O5'     ga_5    
   O1P     P   O2P     ga_29   
-  O1P     P   O5*     ga_14   
-  O2P     P   O5*     ga_14   
-    P   O5*   C5*     ga_26   
-  O5*   C5*   C4*     ga_9    
-  C5*   C4*   O4*     ga_9    
-  C5*   C4*   C3*     ga_8    
-  O4*   C4*   C3*     ga_9    
-  C4*   O4*   C1*     ga_10   
-  O4*   C1*    N1     ga_9    
-  O4*   C1*   C2*     ga_9    
-   N1   C1*   C2*     ga_8    
-  C1*    N1    C6     ga_27   
-  C1*    N1    C2     ga_27   
+  O1P     P   O5'     ga_14   
+  O2P     P   O5'     ga_14   
+    P   O5'   C5'     ga_26   
+  O5'   C5'   C4'     ga_9    
+  C5'   C4'   O4'     ga_9    
+  C5'   C4'   C3'     ga_8    
+  O4'   C4'   C3'     ga_9    
+  C4'   O4'   C1'     ga_10   
+  O4'   C1'    N1     ga_9    
+  O4'   C1'   C2'     ga_9    
+   N1   C1'   C2'     ga_8    
+  C1'    N1    C6     ga_27   
+  C1'    N1    C2     ga_27   
    C6    N1    C2     ga_27   
    N1    C6    H6     ga_25   
    N1    C6    C5     ga_27   
@@ -3899,17 +4011,17 @@
    C6    C5    C4     ga_27   
    C6    C5    H5     ga_25   
    C4    C5    H5     ga_25   
-  C1*   C2*   O2*     ga_9    
-  C1*   C2*   C3*     ga_8    
-  O2*   C2*   C3*     ga_9    
-  C2*   O2*   H2*     ga_12   
-  C4*   C3*   C2*     ga_8    
-  C4*   C3*   O3*     ga_9    
-  C2*   C3*   O3*     ga_9    
-  C3*   O3*    +P     ga_26   
+  C1'   C2'   O2'     ga_9    
+  C1'   C2'   C3'     ga_8    
+  O2'   C2'   C3'     ga_9    
+  C2'   O2'   H2'     ga_12   
+  C4'   C3'   C2'     ga_8    
+  C4'   C3'   O3'     ga_9    
+  C2'   C3'   O3'     ga_9    
+  C3'   O3'    +P     ga_26   
  [ impropers ]
 ;  ai    aj    ak    al   gromos type
-   N1    C6    C2   C1*     gi_1    
+   N1    C6    C2   C1'     gi_1    
    N1    C6    C5    C4     gi_1    
    N1    C2    N3    C4     gi_1    
    C6    N1    C2    N3     gi_1    
@@ -3921,38 +4033,38 @@
    H3    C2    C4    N3     gi_1    
    O4    N3    C5    C4     gi_1    
    C5    C6    C4    H5     gi_1    
-  C2*   O4*    N1   C1*     gi_2    
-  C2*   O2*   C3*   C1*     gi_2    
-  C3*   C5*   O4*   C4*     gi_2    
-  C3*   C2*   O3*   C4*     gi_2    
+  C2'   O4'    N1   C1'     gi_2    
+  C2'   O2'   C3'   C1'     gi_2    
+  C3'   C5'   O4'   C4'     gi_2    
+  C3'   C2'   O3'   C4'     gi_2    
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
- -C3*  -O3*     P   O5*     gd_20   
- -C3*  -O3*     P   O5*     gd_27   
- -O3*     P   O5*   C5*     gd_20   
- -O3*     P   O5*   C5*     gd_27   
-    P   O5*   C5*   C4*     gd_7    
-  O5*   C5*   C4*   O4*     gd_8    
-  O5*   C5*   C4*   O4*     gd_25   
-  O5*   C5*   C4*   C3*     gd_17   
-  O5*   C5*   C4*   C3*     gd_34   
-  C3*   C4*   O4*   C1*     gd_29   
-  C5*   C4*   C3*   C2*     gd_34   
-  C5*   C4*   C3*   O3*     gd_17   
-  O4*   C4*   C3*   C2*     gd_17   
-  O4*   C4*   C3*   O3*     gd_18   
-  C4*   O4*   C1*   C2*     gd_29   
-  O4*   C1*    N1    C2     gd_16   
-  O4*   C1*   C2*   O2*     gd_18   
-  O4*   C1*   C2*   C3*     gd_17   
-  O4*   C1*   C2*   C3*     gd_34   
-   N1   C1*   C2*   O2*     gd_17   
-  C1*   C2*   O2*   H2*     gd_23   
-  C1*   C2*   C3*   C4*     gd_34   
-  C1*   C2*   C3*   O3*     gd_17   
-  O2*   C2*   C3*   C4*     gd_17   
-  O2*   C2*   C3*   O3*     gd_18   
-  C4*   C3*   O3*    +P     gd_29   
+ -C3'  -O3'     P   O5'     gd_20   
+ -C3'  -O3'     P   O5'     gd_27   
+ -O3'     P   O5'   C5'     gd_20   
+ -O3'     P   O5'   C5'     gd_27   
+    P   O5'   C5'   C4'     gd_7    
+  O5'   C5'   C4'   O4'     gd_8    
+  O5'   C5'   C4'   O4'     gd_25   
+  O5'   C5'   C4'   C3'     gd_17   
+  O5'   C5'   C4'   C3'     gd_34   
+  C3'   C4'   O4'   C1'     gd_29   
+  C5'   C4'   C3'   C2'     gd_34   
+  C5'   C4'   C3'   O3'     gd_17   
+  O4'   C4'   C3'   C2'     gd_17   
+  O4'   C4'   C3'   O3'     gd_18   
+  C4'   O4'   C1'   C2'     gd_29   
+  O4'   C1'    N1    C2     gd_16   
+  O4'   C1'   C2'   O2'     gd_18   
+  O4'   C1'   C2'   C3'     gd_17   
+  O4'   C1'   C2'   C3'     gd_34   
+   N1   C1'   C2'   O2'     gd_17   
+  C1'   C2'   O2'   H2'     gd_23   
+  C1'   C2'   C3'   C4'     gd_34   
+  C1'   C2'   C3'   O3'     gd_17   
+  O2'   C2'   C3'   C4'     gd_17   
+  O2'   C2'   C3'   O3'     gd_18   
+  C4'   C3'   O3'    +P     gd_29   
 
 [ FMNO ]
  [ atoms ]
@@ -10876,7 +10988,7 @@ AO3PB   APG AO3PG AH3PG     gd_22
 
 [ NA+ ]
  [ atoms ]
-   NA   NA+     1.00000     0
+   NA+   NA+     1.00000     0   
  [ bonds ]
  [ angles ]
 ;  ai    aj    ak   gromos type
@@ -10885,9 +10997,10 @@ AO3PB   APG AO3PG AH3PG     gd_22
  [ dihedrals ]
 ;  ai    aj    ak    al   gromos type
 
+
 [ CL- ]
  [ atoms ]
-   CL   CL-    -1.00000     0
+   CL-  CL-    -1.00000     0
  [ bonds ]
  [ angles ]
 ;  ai    aj    ak   gromos type
@@ -24684,3 +24797,37 @@ CLCl2 CLCl4    gb_52
   C20  H10
   C27  H10
   H13  H10
+
+[ CHO ] ; - adapted from ATB entry M81X
+ [ atoms ]
+     H3'  H       0.450 0
+      O3  OAlc   -0.710 0
+      C3  C       0.230 0
+      H3  HC      0.040 0
+      C1  CH2     0.080 0
+      C2  CH2    -0.080 0
+      C4  CH2    -0.010 0
+      C5  C      -0.030 0
+      C6  C      -0.040 0
+      H6  HC      0.080 0
+     C10  C       0.000 0
+     C19  CH3     0.000 0
+      C9  CH1     0.000 0
+     C11  CH2     0.000 0
+     C12  CH2     0.000 0
+     C13  C       0.000 0
+     C18  CH3     0.000 0
+     C17  CH1     0.000 0
+     C20  CH1     0.000 0
+     C22  CH2     0.000 0
+     C23  CH2     0.000 0
+     C24  CH2     0.000 0
+     C25  CH1     0.000 0
+     C27  CH3     0.000 0
+     C26  CH3     0.000 0
+     C21  CH3     0.000 0
+     C16  CH2     0.000 0
+     C15  CH2     0.000 0
+     C14  CH1     0.000 0
+      C8  CH1     0.000 0
+      C7  CH2     0.000 0

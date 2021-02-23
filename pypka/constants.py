@@ -9,6 +9,27 @@ LOG10 = 2.302585092994046
 LIPIDS = {"cholesterol": "CHO", "POPC": "POP"}  # to edit
 LIPID_RESIDUES = ["DMX", "POX", "PJ2", "PJ1", "PJ0", "CHL"]  # allowed residue names
 
+DNA_RESIDUES = {
+    "DA": "DAD",
+    "DC": "DCY",
+    "DT": "DTH",
+    "DG": "DGU",
+}
+
+PDB_RNA_RESIDUES = {
+    "A": "RA",
+    "C": "RC",
+    "U": "RU",
+    "G": "RG",
+}
+
+RNA_RESIDUES = {
+    "RA": "RAD",
+    "RC": "RCY",
+    "RU": "RUR",
+    "RG": "RGU",
+}
+
 # Ions
 IONS = ["CL-", "NA+"]
 

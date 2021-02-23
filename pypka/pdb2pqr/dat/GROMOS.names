@@ -26,9 +26,7 @@
   <residue>
     <name>HS([PDE])$</name>
     <useresname>HIS</useresname>
-
   </residue>
-
   <residue>
     <name>C(...)$</name>
     <useresname>$group</useresname>
@@ -98,15 +96,16 @@
   </residue>
   <residue>
     <name>CYS</name>
+    <useresname>CY0</useresname>
     <atom>
         <name>HG</name>
         <useatomname>HG1</useatomname>
     </atom>
-  </residue>
-  
+  </residue>    
+
   <residue>
     <name>[RD]A[35]?$</name>
-    <useresname>ADE</useresname>
+    <useresname>DAD</useresname>
     <atom>
       <name>OP1</name>
       <useatomname>O1P</useatomname>
@@ -118,7 +117,7 @@
   </residue>
   <residue>
     <name>[RD]C[35]?$</name>
-    <useresname>CYT</useresname>
+    <useresname>DCY</useresname>
     <atom>
       <name>OP1</name>
       <useatomname>O1P</useatomname>
@@ -130,19 +129,20 @@
   </residue>
   <residue>
     <name>[RD]G[35]?$</name>
-    <useresname>GUA</useresname>
+    <useresname>DGU</useresname>
     <atom>
       <name>OP1</name>
       <useatomname>O1P</useatomname>
-    </atom>       
+    </atom>
     <atom>
       <name>OP2</name>
       <useatomname>O2P</useatomname>
     </atom>
-  </residue>
+  </residue>  
+
   <residue>
     <name>DT[35]?$</name>
-    <useresname>THY</useresname>
+    <useresname>DTH</useresname>
     <atom>
       <name>OP1</name>
       <useatomname>O1P</useatomname>
@@ -151,26 +151,25 @@
       <name>OP2</name>
       <useatomname>O2P</useatomname>
     </atom>
-  </residue>
-  <residue>
-    <name>DT[35]?$</name>
     <atom>
       <name>C7</name>
       <useatomname>C5M</useatomname>
     </atom>
-    <atom>
-      <name>H71</name>
-      <useatomname>H51</useatomname>
-    </atom>
-    <atom>
-      <name>H72</name>
-      <useatomname>H52</useatomname>
-    </atom>
-    <atom>
-      <name>H73</name>
-      <useatomname>H53</useatomname>
-    </atom>
   </residue>
+
+  <residue>
+    <name>RU[35]?$</name>
+    <useresname>RUR</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom> 
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>    
+  </residue>
+
   
 </patches>
 

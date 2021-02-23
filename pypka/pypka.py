@@ -28,6 +28,7 @@ from delphi4py.delphi4py import DelPhi4py
 import numpy as np
 import os
 
+
 def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     """Gets the all titrable sites from the pdb
 

@@ -16,6 +16,18 @@
     </atom>
   </residue>
   <residue>
+    <name>CYX</name>
+    <useresname>CYS</useresname>
+  </residue>
+    <residue>
+    <name>HI([PDE])$</name>
+    <useresname>HIS</useresname>
+  </residue>
+  <residue>
+    <name>HS([PDE])$</name>
+    <useresname>HIS</useresname>
+  </residue>
+  <residue>
     <name>C(...)$</name>
     <useresname>$group</useresname>
   </residue>
@@ -83,35 +95,82 @@
     </atom>
   </residue>
   <residue>
-    <name>CYX</name>
-    <useresname>CYS</useresname>
+    <name>CYS</name>
+    <useresname>CY0</useresname>
+    <atom>
+        <name>HG</name>
+        <useatomname>HG1</useatomname>
+    </atom>
+  </residue>    
+
+  <residue>
+    <name>RA[35]?$</name>
+    <useresname>DAD</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
   </residue>
   <residue>
-    <name>HIS</name>
-    <useresname>HIS</useresname>
+    <name>RC[35]?$</name>
+    <useresname>DCY</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
   </residue>
   <residue>
-    <name>HID</name>
-    <useresname>HIS</useresname>
-  </residue>
+    <name>RG[35]?$</name>
+    <useresname>DGU</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>  
+
   <residue>
-    <name>HIE</name>
-    <useresname>HIS</useresname>
+    <name>DT[35]?$</name>
+    <useresname>DTH</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom> 
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+    <atom>
+      <name>C7</name>
+      <useatomname>C5M</useatomname>
+    </atom>
   </residue>
+
   <residue>
-    <name>HIP</name>
-    <useresname>HIS</useresname>
+    <name>RU[35]?$</name>
+    <useresname>RUR</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom> 
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>    
   </residue>
-  <residue>
-    <name>HSD</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HSE</name>
-    <useresname>HIS</useresname>
-  </residue>
-  <residue>
-    <name>HSP</name>
-    <useresname>HIS</useresname>
-  </residue>
+
+  
 </patches>
+
+

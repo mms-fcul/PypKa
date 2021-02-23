@@ -223,6 +223,8 @@ class PypKaConfig(ParametersDict):
         self.pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(self.file_dir)
         self.userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
         self.usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
+        self.userff_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.DAT".format(self.file_dir)
+        self.usernames_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.names".format(self.file_dir)
 
         # File Naming
         self.f_in = None

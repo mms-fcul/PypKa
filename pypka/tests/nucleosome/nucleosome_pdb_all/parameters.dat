@@ -9,3 +9,4 @@ sites_A         = all
 keep_ions       = yes
 
 output = pKas.out
+structure_output = a.pdb, 7, amber

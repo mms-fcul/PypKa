@@ -236,6 +236,7 @@ def correct_names(resnumb, resname, aname, titrating_sites, NTR_numb, CTR_numb):
         "HSP": "HI2",
         "ARGN": "AR0",
         "ASPH": "AS0",
+        "CYS1": "CYS",
         "CYS2": "CYS",
         "CYSH": "CY0",
         "GLUH": "GL0",
