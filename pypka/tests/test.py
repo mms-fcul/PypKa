@@ -11,9 +11,11 @@ ncpus = -1
 # run coverage.sh to generate coverage
 
 
-def runTest(path, ncpus, results):
+def runTest(path, ncpus, results, delete_extra=""):
     os.system(
-        "rm -f {0}/*out {0}/clean*pqr {0}/TMP.gro {0}/delphi_in_*pdb".format(path)
+        "rm -f {0}/*out {0}/clean*pqr {0}/TMP.gro {0}/delphi_in_*pdb {1}".format(
+            path, delete_extra
+        )
     )
     results_lines = results.split("\n")[1:-1]
     # "python3 -m coverage erase; "
@@ -46,6 +48,17 @@ def checkStructureOutput(filename):
         raise Exception("Problems found with {0}".format(filename))
     else:
         os.remove(filename)
+
+
+def check_file_diff(f1, f2):
+
+    with open(f1) as f:
+        content1 = f.read()
+
+    with open(f2) as f:
+        content2 = f.read()
+
+    assert content1 == content2
 
 
 def checkAPIResult(pKa, results):
@@ -325,58 +338,62 @@ class TestCLI(object):
         runTest(path, ncpus, results)
 
     def test_cli_nucleosome_pdb_all(self):
-        path = "nucleosome/nucleosome_pdb_all"
+        path = "nucleic_acids/nucleosome"
         results = """
-1 NTR 7.9102792089080936   A
-3 THR None                 A
-4 LYS 10.267165886263717   A
-6 THR None                 A
-9 LYS 8.480606189063163    A
-10 SER None                 A
-11 THR None                 A
-14 LYS 10.047128499641062   A
-18 LYS 7.6130990709226385   A
-22 THR None                 A
-23 LYS 9.65591128599535     A
-27 LYS 10.815630063337752   A
-28 SER None                 A
-32 THR None                 A
-36 LYS 10.399894883057401   A
-37 LYS 11.233363745777847   A
-39 HIS 8.619268022445405    A
-41 TYR 13.726377743058022   A
-45 THR None                 A
-50 GLU 3.106308871458759    A
-54 TYR 10.833033756336054   A
-56 LYS 10.445953029985322   A
-57 SER None                 A
-58 THR None                 A
-59 GLU 2.9794357102751263   A
-64 LYS 10.735102455928883   A
-73 GLU 3.4264437098969474   A
-77 ASP 4.562091925190896    A
-79 LYS 10.863593240969463   A
-80 THR None                 A
-81 ASP 2.6490912330719887   A
-86 SER None                 A
-87 SER None                 A
-94 GLU 2.3747476022211003   A
-96 SER None                 A
-97 GLU 0.28146845694799666  A
-99 TYR 12.746631349675132   A
-105 GLU 4.356553851907255    A
-106 ASP 2.832642725598527    A
-107 THR None                 A
-110 CYS 13.39808074743912    A
-113 HIS 3.324563499356736    A
-115 LYS 10.40338258857041    A
-118 THR None                 A
-122 LYS 8.970832585680961    A
-123 ASP None                 A
-133 GLU 0.726581670756428    A
-135 CTR 3.224140186915888    A
+1 NTR 9.189724382638616    A
+4 LYS 10.318058252427184   A
+9 LYS 8.413024233705876    A
+14 LYS 10.187375962864543   A
+18 LYS 7.836933797909408    A
+23 LYS 9.685264765422453    A
+27 LYS 10.48775419193721    A
+36 LYS 10.308033923034834   A
+37 LYS 10.201180692209746   A
+39 HIS 6.135722229945781    A
+41 TYR 9.245076801890509    A
+50 GLU 2.607285466040596    A
+54 TYR 10.42479042961928    A
+56 LYS 10.321385265478597   A
+59 GLU 2.4567940354147253   A
+64 LYS 9.999453522539955    A
+73 GLU 3.560929696504034    A
+77 ASP 4.62020624303233     A
+79 LYS 10.673193776123073   A
+81 ASP 2.242447157106334    A
+94 GLU 4.89061127700685     A
+97 GLU 1.5794541347257711   A
+99 TYR 13.09163800968489    A
+105 GLU 4.697366553094833    A
+106 ASP 3.2938242668701623   A
+110 CYS 10.885418159667479   A
+113 HIS 6.689373344486268    A
+115 LYS 10.516852808498253   A
+122 LYS 10.044322818009617   A
+123 ASP 0.1261840913839939   A
+133 GLU 1.8462956429705415   A
+135 CTR 3.471648476661097    A
 """
-        runTest(path, ncpus, results)
+        runTest(path, ncpus, results, delete_extra="nucleosome_4.pdb")
+        check_file_diff("builder/nucleosome_4.pdb", f"{path}/nucleosome_4.pdb")
+
+    def test_cli_crispr_pdb_all(self):
+        path = "nucleic_acids/crispr"
+        results = """
+3 NTR 8.005239278383925    B
+3 LYS 11.142589338019919   B
+4 LYS 10.640888208269525   B
+5 TYR 9.671807437301815    B
+10 ASP 3.879042759106106    B
+23 ASP 3.3729027636391056   B
+24 GLU 3.8071811109808062   B
+25 TYR 9.92113539726605     B
+26 LYS 11.204305457779094   B
+30 LYS 11.640715174833089   B
+31 CTR 3.8620041827655878   B
+31 LYS 12.08578953064685    B
+"""
+        runTest(path, ncpus, results, delete_extra="crispr_10.pdb")
+        check_file_diff("builder/crispr_10.pdb", f"{path}/crispr_10.pdb")
 
 
 class TestAPI(object):

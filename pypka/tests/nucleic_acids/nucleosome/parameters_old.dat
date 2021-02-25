@@ -1,0 +1,11 @@
+### mandatory ###
+structure       = nucleosome.pdb
+gsize           = 81
+epsin           = 10
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+sites_A         = all
+keep_ions       = yes
+
+output = pKas.out

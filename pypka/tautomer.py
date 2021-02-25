@@ -200,13 +200,15 @@ class Tautomer(object):
 
         for atom_position in range(delphimol.natoms):
             aID = atom_position + 1
-            aname = str(atinf[atom_position].value.split()[0])
-            resname = str(atinf[atom_position].value.split()[1])
-            resnumb = int(atinf[atom_position].value.split()[2])
+            atinf_str = atinf[atom_position].value.decode("ascii")
+            aname = atinf_str[:5].strip()
+            resname = atinf_str[6:10].strip()
+            chain = atinf_str[10:11].strip()
+            resnumb = int(atinf_str[11:].strip())
             x = float(p_atpos[atom_position][0])
             y = float(p_atpos[atom_position][1])
             z = float(p_atpos[atom_position][2])
-            pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z)
+            pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=chain)
 
             if atom_position in lookup_atoms_keys:
                 atom_id, atom_name = Config.delphi_params.lookup_atoms[atom_position]
@@ -286,9 +288,13 @@ class Tautomer(object):
         pdb_text = ""
         for i in range(natoms):
             aID = i + 1
-            aname = delphimol.atinf[i].value.split()[0].decode("utf-8")
-            resname = delphimol.atinf[i].value.split()[1].decode("utf-8")
-            resnumb = int(delphimol.atinf[i].value.split()[2])
+
+            atinf_str = delphimol.atinf[i].value.decode("ascii")
+            aname = atinf_str[:5].strip()
+            resname = atinf_str[6:10].strip()
+            chain = atinf_str[10:11].strip()
+            resnumb = int(atinf_str[11:].strip())
+
             if "-" in aname[0]:
                 aname = aname[1:]
                 resname = "PBC"
@@ -296,7 +302,7 @@ class Tautomer(object):
             x = float(delphimol.p_atpos[i][0])
             y = float(delphimol.p_atpos[i][1])
             z = float(delphimol.p_atpos[i][2])
-            pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z)
+            pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=chain)
 
         box = Config.pypka_params.box
         if Config.debug:
@@ -384,20 +390,18 @@ class Tautomer(object):
                 # p_rad3[site_atom_position] = round(p_rad3[site_atom_position], 3)
 
                 aID = int(site_atom_position)
-                aname = atinf[site_atom_position].value.split()[0].decode("ascii")
-                resname = atinf[site_atom_position].value.split()[1].decode("ascii")
-                resnumb = int(atinf[site_atom_position].value.split()[2])
+
+                atinf_str = atinf[site_atom_position].value.decode("ascii")
+                aname = atinf_str[:5].strip()
+                resname = atinf_str[6:10].strip()
+                chain = atinf_str[10:11].strip()
+                resnumb = int(atinf_str[11:].strip())
+
                 x = round(p_atpos[site_atom_position][0], 3)
                 y = round(p_atpos[site_atom_position][1], 3)
                 z = round(p_atpos[site_atom_position][2], 3)
                 pdb_text += new_pdb_line(
-                    aID,
-                    aname,
-                    resname,
-                    resnumb,
-                    x,
-                    y,
-                    z,
+                    aID, aname, resname, resnumb, x, y, z, chain=chain
                 )
 
         delphimol.changeStructureSize(

@@ -60,9 +60,14 @@ def read_settings(filename):
                 'Incompatible parameters: "sites" and the multi-chain nomenclature "sites_X" where X is the chain'
                 "Please choose one of the two ways to define titratble sites.\n"
                 "Automatic Example: sites = all\n"
-                "Residues NTR, 1, 5 and 8 in chain A Example: sites_A = 1N, 1, 5, 8"
+                "Residues NTR, 1, 5 and 8 in chain A \nExample: sites_A = 1N, 1, 5, 8"
             )
         sites = "all"
+
+    if not sites:
+        raise Exception(
+            'Missing mandatory "sites" parameter\nTitratate all sites: sites = all\nTitrate all sites only from chain A: sites_A = all'
+        )
 
     return sites, parameters
 

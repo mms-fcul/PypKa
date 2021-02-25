@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 """A python API and CLI to perform pKa calculations on peptides, proteins or lipid bilayers."""
 
 from config import Config
@@ -12,7 +10,7 @@ from checksites import (
 )
 from cli import check_cli_args
 from cleaning import inputPDBCheck, cleanPDB
-from formats import gro2pdb, read_pdb_line, new_pdb_line
+from formats import gro2pdb, read_pdb_line, new_pdb_line, read_pqr_line
 from molecule import Molecule
 from concurrency import (
     startPoolProcesses,
@@ -731,6 +729,7 @@ class Titration:
                     remove_hs = protomers[new_state_i]
 
                     state_prob, taut_prob = site.getTautProb(new_state, pH)
+                    average_prot = site.getTitrationCurve()[pH]
 
                     if state_prob < 0.75:
                         warn = (
@@ -745,10 +744,15 @@ class Titration:
                         print(warn)
                     rounded_sprob = round(state_prob, 2)
                     rounded_tprob = round(taut_prob, 2)
+                    rounded_avgprot = round(average_prot, 2)
                     remark_line = (
-                        "{0: <5}{1: <10}{2: ^7}"
-                        "{3: >1.2f}{4: ^13}{5: >1.2f}".format(
-                            resname, resnumb, "", rounded_sprob, "", rounded_tprob
+                        "{0: <5}{1: <6}    {2: >1.2f}         "
+                        "{3: >1.2f}         {4: >1.2f}".format(
+                            resname,
+                            resnumb,
+                            rounded_avgprot,
+                            rounded_sprob,
+                            rounded_tprob,
                         )
                     )
 
@@ -765,7 +769,7 @@ class Titration:
 
         pdb_content = (
             "REMARK     Protonation states assigned according to PypKa\n"
-            "REMARK     Residue    Prot State Prob    Tautomer Prob\n"
+            "REMARK     Residue    Avg Prot   State Prob    Taut Prob\n"
         )
 
         sites = self.get_all_sites(get_list=True)
@@ -819,8 +823,10 @@ class Titration:
                         and aname in gromos2amber[oldresname][new_state]
                     ):
                         aname = gromos2amber[oldresname][new_state][aname]
-                else:
+                elif anumb in other_atoms:
                     molecule = other_atoms[anumb]
+                else:
+                    continue
 
                 if resnumb > TERMINAL_OFFSET:
                     termini_site = molecule.sites[resnumb]
@@ -835,19 +841,65 @@ class Titration:
                     resname = "CYX"
 
                 counter += 1
-                new_pdb += new_pdb_line(counter, aname, resname, resnumb, x, y, z)
-                if resnumb in mainchain_Hs:
-                    while len(mainchain_Hs[resnumb]) > 0:
+                new_pdb += new_pdb_line(
+                    counter, aname, resname, resnumb, x, y, z, chain=chain
+                )
+
+                if chain in mainchain_Hs and resnumb in mainchain_Hs[chain]:
+                    while len(mainchain_Hs[chain][resnumb]) > 0:
                         counter += 1
                         (aname, anumb, oldresname, chain, x, y, z) = mainchain_Hs[
-                            resnumb
-                        ].pop()
+                            chain
+                        ][resnumb].pop()
                         new_pdb += new_pdb_line(
-                            counter, aname, resname, resnumb, x, y, z
+                            counter, aname, resname, resnumb, x, y, z, chain=chain
                         )
-                    del mainchain_Hs[resnumb]
-            else:
+                    del mainchain_Hs[chain][resnumb]
+            elif not line.startswith("ENDMDL"):
                 new_pdb += line
+
+        outputpqr = "leftovers.pqr"
+        logfile = "LOG_pdb2pqr_nontitrating"
+
+        if ff_out == "gromos_cph":
+            ff_out = "GROMOS"
+
+        os.system(
+            "python2 {0} {1} {2} --ff {3} --ffout {4} "
+            "--drop-water -v --chain > {5} 2>&1 ".format(
+                Config.pypka_params["pdb2pqr"],
+                Config.pypka_params["pdb2pqr_inputfile"],
+                outputpqr,
+                ff_out,
+                ff_out,
+                logfile,
+            )
+        )
+        with open(outputpqr) as f:
+            for line in f:
+                if line.startswith("ATOM "):
+                    (
+                        aname,
+                        anumb,
+                        resname,
+                        chain,
+                        resnumb,
+                        x,
+                        y,
+                        z,
+                        charge,
+                        radius,
+                    ) = read_pqr_line(line)
+
+                    if chain not in mainchain_Hs:
+                        counter += 1
+                        new_pdb += new_pdb_line(
+                            counter, aname, resname, resnumb, x, y, z, chain=chain
+                        )
+
+        to_remove = (logfile, outputpqr, Config.pypka_params["pdb2pqr_inputfile"])
+        for f in to_remove:
+            os.remove(f)
 
         with open(outputname, "w") as f_new:
             f_new.write(new_pdb)

@@ -1,0 +1,10 @@
+structure = 4lzt.pdb
+sites = all
+epsin = 15
+ionicstr = 0.1
+pbc_dimensions = 0
+ncpus = 4
+output = pKas.out
+titration_output = titration.out
+pH = 1
+structure_output = amber7_.pdb, 1, AMBER

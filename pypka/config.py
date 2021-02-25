@@ -220,11 +220,14 @@ class PypKaConfig(ParametersDict):
         # Paths
         self.file_dir = os.path.dirname(os.path.abspath(__file__))
         self.script_dir = os.path.dirname(__file__)
+
+        #PDB2PQR
         self.pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(self.file_dir)
         self.userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
         self.usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
         self.userff_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.DAT".format(self.file_dir)
         self.usernames_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.names".format(self.file_dir)
+        self.pdb2pqr_inputfile = "input_clean.pdb"
 
         # File Naming
         self.f_in = None

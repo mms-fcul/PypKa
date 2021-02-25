@@ -3,7 +3,9 @@ from constants import TERMINAL_OFFSET, TITRABLETAUTOMERS, PROTEIN_RESIDUES
 
 
 def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=" "):
-    pdb_format = "ATOM  {:5d} {:4s} {:4s}{:1s}{:4d}    {:8.3f}{:8.3f}{:8.3f}\n"
+    pdb_format = (
+        "ATOM  {:5d} {:4s} {:4s}{:1s}{:4d}    {:8.3f}{:8.3f}{:8.3f}\n"
+    )
     return pdb_format.format(aID, aname, resname, chain, resnumb, x, y, z)
 
 

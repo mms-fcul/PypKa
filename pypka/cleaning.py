@@ -119,10 +119,13 @@ def inputPDBCheck(filename, sites, clean_pdb):
 def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     pdb_filename = Config.pypka_params["f_in"]
-    pdb2pqr_path = Config.pypka_params["pdb2pqr"]
-    inputpdbfile = "input_clean.pdb"
 
-    rna_file = remove_membrane_n_rna(pdb_filename, inputpdbfile)
+    remove_membrane_n_rna(pdb_filename, Config.pypka_params["pdb2pqr_inputfile"])
+    if " " in molecules.keys():
+        molecules["_"] = molecules[" "]
+        del molecules[" "]
+        chains_res["_"] = chains_res[" "]
+        del chains_res[" "]
 
     logfile = "LOG_pdb2pqr"
 
@@ -133,8 +136,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     os.system(
         "python2 {0} {1} {2} --ff {3} --ffout {4} "
         "--drop-water -v --chain > {5} 2>&1 ".format(
-            pdb2pqr_path,
-            inputpdbfile,
+            Config.pypka_params["pdb2pqr"],
+            Config.pypka_params["pdb2pqr_inputfile"],
             inputpqr,
             Config.pypka_params["ffinput"],
             Config.pypka_params["ff_family"],
@@ -147,18 +150,18 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     if automatic_sites:
         chains_res = identify_cter(inputpqr, molecules, chains_res)
 
-    if rna_file:
-        os.system(
-            "python2 {0} {1} {2} --userff {3} --usernames {4} "
-            "--drop-water -v --chain > {5} 2>&1 ".format(
-                pdb2pqr_path,
-                rna_file,
-                rna_inputpqr,
-                Config.pypka_params["userff_rna"],
-                Config.pypka_params["usernames_rna"],
-                logfile_rna,
-            )
-        )
+    # if rna_file:
+    #    os.system(
+    #        "python2 {0} {1} {2} --userff {3} --usernames {4} "
+    #        "--drop-water -v --chain > {5} 2>&1 ".format(
+    #            Config.pypka_params["pdb2pqr"],
+    #            rna_file,
+    #            rna_inputpqr,
+    #            Config.pypka_params["userff_rna"],
+    #            Config.pypka_params["usernames_rna"],
+    #            logfile_rna,
+    #        )
+    #    )
 
     if Config.pypka_params["f_structure_out"]:
         ff_out = Config.pypka_params["ff_structure_out"]
@@ -167,7 +170,10 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         os.system(
             "python2 {0} {1} Hs.pqr --ff {3} --ffout {3} "
             "--drop-water -v --chain >> {2} 2>&1 ".format(
-                pdb2pqr_path, inputpdbfile, logfile, ff_out
+                Config.pypka_params["pdb2pqr"],
+                Config.pypka_params["pdb2pqr_inputfile"],
+                logfile,
+                ff_out,
             )
         )
 
@@ -189,16 +195,27 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                     ) = read_pqr_line(line)
 
                     if (
-                        resnumb in chains_res["A"]
+                        # resname in RNA_RESIDUES
+                        # or resname in DNA_RESIDUES
+                        # or resname in ("DT3", "RA5")
+                        chain
+                        not in chains_res
+                    ):
+                        continue
+                    elif (
+                        chain in chains_res
+                        and resnumb in chains_res[chain]
                         and resname in AMBER_Hs
                         and aname in AMBER_Hs[resname]
                         and aname not in AMBER_mainchain_Hs
                     ):
                         continue
                     elif aname[0] == "H" and aname not in ("H1", "H2", "H3"):
-                        if not resnumb in mainchain_Hs:
-                            mainchain_Hs[resnumb] = []
-                        mainchain_Hs[resnumb].append(
+                        if not chain in mainchain_Hs:
+                            mainchain_Hs[chain] = {}
+                        if not resnumb in mainchain_Hs[chain]:
+                            mainchain_Hs[chain][resnumb] = []
+                        mainchain_Hs[chain][resnumb].append(
                             (aname, anumb, resname, chain, x, y, z)
                         )
 
@@ -210,14 +227,14 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     chains = list(molecules.keys())
 
     with open(inputpqr) as f:
-        DNA_RESIDUES_NEW = DNA_RESIDUES.values()
+        NUCLEIC_ACIDS = list(DNA_RESIDUES.values()) + list(RNA_RESIDUES.values())
         for line in f:
             if "ATOM" in line[:4]:
                 (
                     aname,
                     anumb,
                     resname,
-                    original_chain,
+                    chain,
                     resnumb,
                     x,
                     y,
@@ -225,11 +242,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                     charge,
                     radius,
                 ) = read_pqr_line(line)
-
-                if original_chain == "_":
-                    chain = " "
-                else:
-                    chain = original_chain
 
                 termini_trigger = False
                 if chain in chains:
@@ -272,13 +284,13 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                     z,
                     charge,
                     radius,
-                    chain=original_chain,
+                    chain=chain,
                 )
                 if chain in molecules:
                     new_pdb_text += new_line
                 elif (
                     aname not in ("O1", "O2", "OT1", "OT2", "H1", "H2", "H3")
-                    or resname in DNA_RESIDUES_NEW
+                    or resname in NUCLEIC_ACIDS
                 ):
                     if resname in ("SER", "THR") and aname == "HG1":
                         aname = "HG"
@@ -303,7 +315,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         while resnumb < resnumb_max:
             resnumb += resnumb_old
         removed_pdb_text += new_pqr_line(
-            anumb, aname, resname, resnumb, x, y, z, charge, radius
+            anumb, aname, resname, resnumb, x, y, z, charge, radius, chain=chain
         )
         resnumb_max = resnumb
     #            if ntr_trigger and :
@@ -358,8 +370,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         f_new.write(content + removed_pdb_text)
 
     rna_pqr = None
-    if rna_file:
-        rna_pqr = rna_inputpqr
+    # if rna_file:
+    #    rna_pqr = rna_inputpqr
     final_pdb = "TMP.pdb"
     write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_pqr)
 
@@ -381,13 +393,18 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         "clean.pqr",
         "cleaned.pqr",
         "cleaned_tau.pqr",
-        "input_clean.pdb",
         "removed.pqr",
         "Hs.pqr",
     )
     for filename in tmpfiles:
         if not Config.debug and os.path.isfile(filename):
             os.remove(filename)
+    if (
+        not Config.debug
+        and os.path.isfile(filename)
+        and not Config.pypka_params.structure_output
+    ):
+        os.remove(Config.pypka_params["pdb2pqr_inputfile"])
 
 
 def get_cys_bridges(f_pdb2pqr_log, molecules):
@@ -398,7 +415,7 @@ def get_cys_bridges(f_pdb2pqr_log, molecules):
             if "patched with CYX" in line:
                 parts = line.split("patched")[0].replace("PATCH INFO: ", "").split()
                 resname, chain, resnumb = parts
-                chain = chain.replace("_", " ")
+                # chain = chain.replace("_", " ")
                 if not chain in CYS_bridges:
                     CYS_bridges[chain] = []
                 cys_res_numb = int(parts[-1])
@@ -449,8 +466,8 @@ def identify_cter(inputpqr, molecules, chains_res):
 
 def remove_membrane_n_rna(pdbfile, outfile):
     protein_lines = ""
-    rna_lines = ""
-    to_remove = LIPID_RESIDUES + list(PDB_RNA_RESIDUES.keys())
+    # rna_lines = ""
+    to_remove = LIPID_RESIDUES
     with open(pdbfile) as f:
         for line in f:
             if line.startswith("ATOM"):
@@ -460,25 +477,27 @@ def remove_membrane_n_rna(pdbfile, outfile):
                     chain = "_"  # workaround to deal with pdb2pqr
 
                 if resname not in to_remove:
+                    if resname in PDB_RNA_RESIDUES:
+                        resname = PDB_RNA_RESIDUES[resname]
                     protein_lines += new_pdb_line(
                         anumb, aname, resname, resnumb, x, y, z, chain=chain
                     )
-                elif resname in PDB_RNA_RESIDUES:
-                    resname = PDB_RNA_RESIDUES[resname]
-                    rna_lines += new_pdb_line(
-                        anumb, aname, resname, resnumb, x, y, z, chain=chain
-                    )
+                # elif resname in PDB_RNA_RESIDUES:
+                #    resname = PDB_RNA_RESIDUES[resname]
+                #    protein_lines += new_pdb_line(
+                #        anumb, aname, resname, resnumb, x, y, z, chain=chain
+                #    )
 
     with open(outfile, "w") as f_new:
         f_new.write(protein_lines)
 
-    rna_fname = None
-    if rna_lines:
-        rna_fname = "tmp_rna.pdb"
-        with open(rna_fname, "w") as f_new:
-            f_new.write(rna_lines)
+    # rna_fname = None
+    # if rna_lines:
+    #    rna_fname = "tmp_rna.pdb"
+    #    with open(rna_fname, "w") as f_new:
+    #        f_new.write(rna_lines)
 
-    return rna_fname
+    return  # rna_fname
 
 
 def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
@@ -497,8 +516,8 @@ def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
             radius,
         ) = read_pqr_line(line)
 
-        if chain == "_":
-            chain = " "
+        # if chain == "_":
+        #    chain = " "
 
         if resname in RNA_RESIDUES:
             resname = RNA_RESIDUES[resname]
