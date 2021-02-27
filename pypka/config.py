@@ -1,9 +1,11 @@
 import os
-from constants import *
-from psutil import cpu_count
-from pprint import pformat
-from numpy import arange
 from copy import copy
+from pprint import pformat
+
+from numpy import arange
+from psutil import cpu_count
+
+from constants import *
 
 
 class Config:
@@ -177,9 +179,9 @@ class ParametersDict:
         return item in self.__dict__
 
     def __str__(self):
-        self_dict = self.get_clean_params()        
+        self_dict = self.get_clean_params()
         return "# {} Parameters\n{}\n".format(self.name, pformat(self_dict))
-    
+
     def get_clean_params(self):
         self_dict = {}
         for key, value in self.__dict__.items():
@@ -221,12 +223,14 @@ class PypKaConfig(ParametersDict):
         self.file_dir = os.path.dirname(os.path.abspath(__file__))
         self.script_dir = os.path.dirname(__file__)
 
-        #PDB2PQR
-        self.pdb2pqr = "{0}/pdb2pqr/pdb2pqr.py".format(self.file_dir)
-        self.userff = "{0}/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
-        self.usernames = "{0}/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
-        self.userff_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.DAT".format(self.file_dir)
-        self.usernames_rna = "{0}/pdb2pqr/dat/GROMOS_RNA.names".format(self.file_dir)
+        # PDB2PQR
+        self.pdb2pqr = "{0}/clean/pdb2pqr/pdb2pqr.py".format(self.file_dir)
+        self.userff = "{0}/clean/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
+        self.usernames = "{0}/clean/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
+        self.userff_rna = "{0}/clean/pdb2pqr/dat/GROMOS_RNA.DAT".format(self.file_dir)
+        self.usernames_rna = "{0}/clean/pdb2pqr/dat/GROMOS_RNA.names".format(
+            self.file_dir
+        )
         self.pdb2pqr_inputfile = "input_clean.pdb"
 
         # File Naming

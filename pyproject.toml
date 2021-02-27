@@ -1,0 +1,26 @@
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+/pypka/clean/pdb2pqr
+/pypka/_version.py
+setup.py
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist=py35,py36,py37,py38,py39
+changedir=./tests/
+
+[testenv]
+deps=
+    pytest
+commands=
+    py{35,36,37,38,39}: pytest test.py
+"""

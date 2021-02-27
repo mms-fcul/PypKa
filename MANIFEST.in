@@ -1,4 +1,6 @@
-include LICENSE README.md 
+include LICENSE 
+include README.md
+include CONTRIBUTING.rst
 global-include *.so addHtaut
 
 graft pypka/G54A7
@@ -6,11 +8,13 @@ graft pypka/CHARMM36m
 graft pypka/pdb2pqr
 graft pypka/delphi4py
 
-prune pypka/tests/
-prune pypka/docs/
-prune pypka/scripts/
-prune __pycache__
-
 global-exclude .vscode .circleci
-global-exclude *.out .nfs*
+global-exclude *.out .nfs* P_*.pdb *frc *.profl *eback.xvg *.prm clean*.pdb *sh
 exclude .gitignore
+
+recursive-enclude tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+

@@ -7,11 +7,6 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
-            - v1-dependencies-
-
       - run:
           name: install dependencies
           command: |
@@ -23,17 +18,9 @@ jobs:
             sudo apt install gawk libgfortran4 python2
             python3.8 -m pip install --user pytest numpy coverage psutil
 
-      - save_cache:
-          paths:
-            - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.8/site-packages"
-            - "/home/circleci/.local/share/virtualenvs/"
-          key: v1-dependencies-{{ checksum "/home/circleci/project/Pipfile.lock" }}
-
       - run:
           name: run tests
           command: |
             set -e
-            cd pypka/tests/
+            cd ./tests/
             python3.8 -m pytest test.py

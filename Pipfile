@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+recommonmark = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+psutil = "*"
+flake8 = "*"
+mypy = "*"
+bump2version = "*"
+numpy = "*"
+pytest = "*"
+coverage = "*"
+pytest-cov = "*"
+isort = "*"
+tox = "*"
+black = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

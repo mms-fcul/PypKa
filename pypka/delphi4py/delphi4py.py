@@ -1,9 +1,8 @@
-#from readFiles import readFiles as readF
-#from rundelphi import rundelphi as DelPhi
+# from readFiles import readFiles as readF
+# from rundelphi import rundelphi as DelPhi
 from .readFiles import readFiles as readF
 from .rundelphi import rundelphi as DelPhi
-from ctypes import (c_int, c_double, c_float,
-                    c_char, addressof, memmove, sizeof)
+from ctypes import c_int, c_double, c_float, c_char, addressof, memmove, sizeof
 import os
 import sys
 
@@ -13,41 +12,63 @@ import sys
 
 
 class DelPhi4py(object):
-    """
-    """
-    def __init__(self, in_crg, in_siz, in_pdb, igrid, scale,
-                 precision, perfil=0, epsin=2, epsout=80,
-                 conc=0, ibctyp=2, res2=0, nlit=0, radprb=1.4,
-                 relfac=0.0, relpar=0.0, nonit=0, fcrg=False,
-                 pbx=False, pby=False, pbz=False, isurftype=-1,
-                 parallel=False, debug=False, outputfile=None):
+    """"""
+
+    def __init__(
+        self,
+        in_crg,
+        in_siz,
+        in_pdb,
+        igrid,
+        scale,
+        precision,
+        perfil=0,
+        epsin=2,
+        epsout=80,
+        conc=0,
+        ibctyp=2,
+        res2=0,
+        nlit=0,
+        radprb=1.4,
+        relfac=0.0,
+        relpar=0.0,
+        nonit=0,
+        fcrg=False,
+        pbx=False,
+        pby=False,
+        pbz=False,
+        isurftype=-1,
+        parallel=False,
+        debug=False,
+        outputfile=None,
+    ):
         # TODO #
         # extend number of input parameters to include all/most
         # DelPhi input parameters
         #######################################################
-        self.igrid        = int(igrid)
-        self.scale        = float(scale)
-        self.scale_prefocus  = float(scale)
+        self.igrid = int(igrid)
+        self.scale = float(scale)
+        self.scale_prefocus = float(scale)
 
         self.perfil = int(perfil)
 
-        self.repsin  = float(epsin)
+        self.repsin = float(epsin)
         self.repsout = float(epsout)
-        self.conc    = float(conc)
-        self.ibctyp  = int(ibctyp)
-        self.res2    = float(res2)
-        self.nlit    = int(nlit)
+        self.conc = float(conc)
+        self.ibctyp = int(ibctyp)
+        self.res2 = float(res2)
+        self.nlit = int(nlit)
 
         self.in_crg = str(in_crg)
         self.in_siz = str(in_siz)
         self.in_pdb = str(in_pdb)
 
-        self.acent  = []
+        self.acent = []
         self.natoms = int(self.get_total_atoms())
 
         self.radprb = float(radprb)
-        self.energy = ['s', 'c']
-        self.site   = ['a', 'q', 'p']
+        self.energy = ["s", "c"]
+        self.site = ["a", "q", "p"]
         self.in_crg_len = len(self.in_crg)
         self.in_siz_len = len(self.in_siz)
         self.in_pdb_len = len(self.in_pdb)
@@ -56,26 +77,27 @@ class DelPhi4py(object):
 
         self.relfac = float(relfac)
         self.relpar = float(relpar)
-        self.nonit  = int(nonit)
-        self.fcrg   = bool(fcrg)
-        self.pbx    = bool(pbx)
-        self.pby    = bool(pby)
-        self.pbz    = bool(pbz)
+        self.nonit = int(nonit)
+        self.fcrg = bool(fcrg)
+        self.pbx = bool(pbx)
+        self.pby = bool(pby)
+        self.pbz = bool(pbz)
 
         self.precision = str(precision)
         self.isurftype = int(isurftype)
-        self.parallel  = bool(parallel)
+        self.parallel = bool(parallel)
 
         self.debug = bool(debug)
 
-        if self.precision == 'double':
+        if self.precision == "double":
             self.float_type = c_double
-        elif self.precision == 'single':
+        elif self.precision == "single":
             self.float_type = c_float
         else:
-            raise IOError('Unknown precision definition {0}. '
-                          'It should be either "double" or "single"'
-                          .format(self.precision))
+            raise IOError(
+                "Unknown precision definition {0}. "
+                'It should be either "double" or "single"'.format(self.precision)
+            )
 
         # -1 NanoShaper off
         # 0 connolly surface
@@ -85,9 +107,12 @@ class DelPhi4py(object):
         # 4 msms
         # only tested -1 and 0
         if self.isurftype not in (0, -1):
-            raise IOError('Unknown precision definition {0}. '
-                          'It should be either 0 to activate or -1 to deactivate'
-                          .format(self.isurftype))
+            raise IOError(
+                "Unknown precision definition {0}. "
+                "It should be either 0 to activate or -1 to deactivate".format(
+                    self.isurftype
+                )
+            )
 
         # TODO #
         # check other input parameters
@@ -109,7 +134,7 @@ class DelPhi4py(object):
         c = 0
         with open(self.in_pdb) as f:
             for line in f:
-                if line.startswith('ATOM '):
+                if line.startswith("ATOM "):
                     c += 1
         return c
 
@@ -118,38 +143,39 @@ class DelPhi4py(object):
         # internal DelPhi DataStructures
         # defined as c_type arrays and
         # passed to DelPhi as pointers
-        self.atpos   = self.float_type * 3 * self.natoms
-        self.p_atpos    = self.atpos()
+        self.atpos = self.float_type * 3 * self.natoms
+        self.p_atpos = self.atpos()
         self.i_atpos = addressof(self.p_atpos)
 
-        self.rad3   = self.float_type * self.natoms
-        self.p_rad3    = self.rad3()
+        self.rad3 = self.float_type * self.natoms
+        self.p_rad3 = self.rad3()
         self.i_rad3 = addressof(self.p_rad3)
 
-        self.chrgv4   = self.float_type * self.natoms
-        self.p_chrgv4    = self.chrgv4()
+        self.chrgv4 = self.float_type * self.natoms
+        self.p_chrgv4 = self.chrgv4()
         self.i_chrgv4 = addressof(self.p_chrgv4)
 
-        self.atinf   = (c_char * 15  * self.natoms)()
+        self.atinf = (c_char * 15 * self.natoms)()
         self.i_atinf = addressof(self.atinf)
 
         self.nmedia = 1
         self.nobject = 1
         self.len_medeps = self.nmedia + self.nobject
-        self.medeps  = self.float_type * self.len_medeps
-        self.p_medeps    = self.medeps()
+        self.medeps = self.float_type * self.len_medeps
+        self.p_medeps = self.medeps()
         self.i_medeps = addressof(self.p_medeps)
 
-        self.len_iatmed  = self.natoms + 1
-        self.iatmed   = c_int * self.len_iatmed
-        self.p_iatmed    = self.iatmed()
+        self.len_iatmed = self.natoms + 1
+        self.iatmed = c_int * self.len_iatmed
+        self.p_iatmed = self.iatmed()
         self.i_iatmmed = addressof(self.p_iatmed)
 
-        self.dataobject   = (c_char * 96 * self.nobject * 2)()
+        self.dataobject = (c_char * 96 * self.nobject * 2)()
         self.i_dataobject = addressof(self.dataobject)
 
-    def changeStructureSize(self, p_atpos, p_rad3, p_chrgv4,
-                            atinf, p_iatmed, extra_atoms=None, natoms=None):
+    def changeStructureSize(
+        self, p_atpos, p_rad3, p_chrgv4, atinf, p_iatmed, extra_atoms=None, natoms=None
+    ):
 
         if not extra_atoms:
             extra_atoms = []
@@ -157,43 +183,47 @@ class DelPhi4py(object):
         if not natoms:
             natoms = self.natoms
 
-        self.natoms  = natoms + len(extra_atoms)
+        self.natoms = natoms + len(extra_atoms)
 
-        self.atpos   = self.float_type * 3 * self.natoms
+        self.atpos = self.float_type * 3 * self.natoms
         self.p_atpos = self.atpos()
         self.i_atpos = addressof(self.p_atpos)
-        memmove(self.i_atpos, addressof(p_atpos), sizeof(self.float_type) * 3 * self.natoms)
+        memmove(
+            self.i_atpos, addressof(p_atpos), sizeof(self.float_type) * 3 * self.natoms
+        )
 
-        self.rad3   = self.float_type * self.natoms
+        self.rad3 = self.float_type * self.natoms
         self.p_rad3 = self.rad3()
         self.i_rad3 = addressof(self.p_rad3)
         memmove(self.i_rad3, addressof(p_rad3), sizeof(self.float_type) * self.natoms)
 
-        self.chrgv4   = self.float_type * self.natoms
+        self.chrgv4 = self.float_type * self.natoms
         self.p_chrgv4 = self.chrgv4()
         self.i_chrgv4 = addressof(self.p_chrgv4)
-        memmove(self.i_chrgv4, addressof(p_chrgv4), sizeof(self.float_type) * self.natoms)
+        memmove(
+            self.i_chrgv4, addressof(p_chrgv4), sizeof(self.float_type) * self.natoms
+        )
 
-        self.atinf   = (c_char * 15  * self.natoms)()
+        self.atinf = (c_char * 15 * self.natoms)()
         self.i_atinf = addressof(self.atinf)
         memmove(self.i_atinf, addressof(atinf), sizeof(c_char) * 15 * self.natoms)
 
-        self.len_iatmed  = self.natoms + 1
-        self.iatmed   = c_int * self.len_iatmed
-        self.p_iatmed    = self.iatmed()
+        self.len_iatmed = self.natoms + 1
+        self.iatmed = c_int * self.len_iatmed
+        self.p_iatmed = self.iatmed()
         self.i_iatmmed = addressof(self.p_iatmed)
         memmove(self.i_iatmmed, addressof(p_iatmed), sizeof(c_int) * self.len_iatmed)
 
         atom_index = natoms - 1
         for atom in extra_atoms:
             atom_index += 1
-            self.p_atpos[atom_index][0]  = atom[0]
-            self.p_atpos[atom_index][1]  = atom[1]
-            self.p_atpos[atom_index][2]  = atom[2]
-            self.p_rad3[atom_index]      = atom[3]
-            self.p_chrgv4[atom_index]    = atom[4]
+            self.p_atpos[atom_index][0] = atom[0]
+            self.p_atpos[atom_index][1] = atom[1]
+            self.p_atpos[atom_index][2] = atom[2]
+            self.p_rad3[atom_index] = atom[3]
+            self.p_chrgv4[atom_index] = atom[4]
             self.atinf[atom_index].value = atom[5]
-            self.p_iatmed[atom_index + 1]      = 1
+            self.p_iatmed[atom_index + 1] = 1
 
         return self.natoms
 
@@ -212,37 +242,71 @@ class DelPhi4py(object):
     def get_iatmed(self):
         return self.p_iatmed
 
-    def readFiles(self, outputfile='/dev/null'):
+    def readFiles(self, outputfile="/dev/null"):
         """ """
 
-        self.rmaxdim = readF.delphi(self.igrid, self.scale,
-                                    self.repsin, self.repsout,
-                                    self.acent, self.in_pdb,
-                                    self.in_crg, self.in_siz,
-                                    self.natoms, self.nobject,
-                                    self.i_atpos, self.i_rad3,
-                                    self.i_chrgv4, self.i_atinf,
-                                    self.i_medeps, self.i_iatmmed,
-                                    self.i_dataobject,
-                                    self.rmaxdim, outputfile)
+        self.rmaxdim = readF.delphi(
+            self.igrid,
+            self.scale,
+            self.repsin,
+            self.repsout,
+            self.acent,
+            self.in_pdb,
+            self.in_crg,
+            self.in_siz,
+            self.natoms,
+            self.nobject,
+            self.i_atpos,
+            self.i_rad3,
+            self.i_chrgv4,
+            self.i_atinf,
+            self.i_medeps,
+            self.i_iatmmed,
+            self.i_dataobject,
+            self.rmaxdim,
+            outputfile,
+        )
 
         if self.debug:
-            print('    x        y        z     radius  charge       atinf')
+            print("    x        y        z     radius  charge       atinf")
             for i in range(self.natoms):
-                print(('{0:8.3f} {1:8.3f} {2:8.3f} {3:7.3f} {4:7.3f} {5}'
-                       .format(self.p_atpos[i][0], self.p_atpos[i][1],
-                               self.p_atpos[i][2], self.p_rad3[i],
-                               self.p_chrgv4[i],   self.atinf[i].value)))
+                print(
+                    (
+                        "{0:8.3f} {1:8.3f} {2:8.3f} {3:7.3f} {4:7.3f} {5}".format(
+                            self.p_atpos[i][0],
+                            self.p_atpos[i][1],
+                            self.p_atpos[i][2],
+                            self.p_rad3[i],
+                            self.p_chrgv4[i],
+                            self.atinf[i].value,
+                        )
+                    )
+                )
 
-    def runDelPhi(self, scale=None, nonit=None, nlit=None,
-                  relpar=None, relfac=None, nlit_prefocus=None,
-                  scale_prefocus=None, acent=None, pbx=None, pby=None,
-                  nonit_focus=None, relfac_focus=None,
-                  relpar_focus=None, pbx_focus=None, pby_focus=None,
-                  focusing=False, ibctyp=None, debug=False, filename=None,
-                  outputfile='/dev/null'):
-        """
-        """
+    def runDelPhi(
+        self,
+        scale=None,
+        nonit=None,
+        nlit=None,
+        relpar=None,
+        relfac=None,
+        nlit_prefocus=None,
+        scale_prefocus=None,
+        acent=None,
+        pbx=None,
+        pby=None,
+        nonit_focus=None,
+        relfac_focus=None,
+        relpar_focus=None,
+        pbx_focus=None,
+        pby_focus=None,
+        focusing=False,
+        ibctyp=None,
+        debug=False,
+        filename=None,
+        outputfile="/dev/null",
+    ):
+        """"""
         if scale != None:
             self.scale = scale
         if acent != None:
@@ -263,7 +327,7 @@ class DelPhi4py(object):
             self.ibctyp = ibctyp
 
         if scale_prefocus:
-            scale  = float(scale_prefocus)
+            scale = float(scale_prefocus)
             scale_prefocus = scale
             self.scale_prefocus = scale
             ibctyp = self.ibctyp
@@ -273,26 +337,25 @@ class DelPhi4py(object):
             else:
                 nlit = self.nlit
 
-            in_frc  = 'self'
+            in_frc = "self"
             out_phi = True
 
-            nonit  = self.nonit
+            nonit = self.nonit
             relfac = self.relfac
             relpar = self.relpar
-            pbx    = self.pbx
-            pby    = self.pby
+            pbx = self.pbx
+            pby = self.pby
 
-
-            self.sitpot   = self.float_type * self.natoms
+            self.sitpot = self.float_type * self.natoms
             self.p_sitpot = self.sitpot()
             self.i_sitpot = addressof(self.p_sitpot)
 
             self.p_sitpot_list = []
 
             self.len_phimap = self.igrid * self.igrid * self.igrid
-            self.phimap4    = c_float * self.len_phimap
-            self.p_phimap4  = self.phimap4()
-            self.i_phimap4  = addressof(self.p_phimap4)
+            self.phimap4 = c_float * self.len_phimap
+            self.p_phimap4 = self.phimap4()
+            self.i_phimap4 = addressof(self.p_phimap4)
 
             focusing = True
 
@@ -302,42 +365,42 @@ class DelPhi4py(object):
             ibctyp = 3
             nlit = self.nlit
 
-            in_frc   = 'self'
-            out_phi   = False
+            in_frc = "self"
+            out_phi = False
 
             focusing = False
             if outputfile:
-                outputfile += '_focusing'
+                outputfile += "_focusing"
 
-            nonit  = nonit_focus
+            nonit = nonit_focus
             relfac = relfac_focus
             relpar = relpar_focus
-            pbx    = pbx_focus
-            pby    = pby_focus
+            pbx = pbx_focus
+            pby = pby_focus
 
         else:
-            scale  = self.scale
+            scale = self.scale
             ibctyp = self.ibctyp
-            nlit   = self.nlit
+            nlit = self.nlit
             scale_prefocus = self.scale_prefocus
 
-            in_frc  = ''
+            in_frc = ""
             out_phi = False
 
-            nonit  = self.nonit
+            nonit = self.nonit
             relfac = self.relfac
             relpar = self.relpar
-            pbx    = self.pbx
-            pby    = self.pby
+            pbx = self.pbx
+            pby = self.pby
 
-            self.sitpot    = self.float_type * self.natoms
-            self.p_sitpot  = self.sitpot()
-            self.i_sitpot  = addressof(self.p_sitpot)
+            self.sitpot = self.float_type * self.natoms
+            self.p_sitpot = self.sitpot()
+            self.i_sitpot = addressof(self.p_sitpot)
 
             self.len_phimap = 0
-            self.phimap4    = c_float * self.len_phimap
-            self.p_phimap4  = self.phimap4()
-            self.i_phimap4  = addressof(self.p_phimap4)
+            self.phimap4 = c_float * self.len_phimap
+            self.p_phimap4 = self.phimap4()
+            self.i_phimap4 = addressof(self.p_phimap4)
 
             self.p_sitpot_list = []
 
@@ -345,49 +408,69 @@ class DelPhi4py(object):
             output = self.__str__()
             print(output)
             if filename:
-                with open(filename, 'a') as f_new:
+                with open(filename, "a") as f_new:
                     f_new.write(output)
 
-        self.esolvation = DelPhi.delphi(self.igrid, scale,
-                                        self.repsin, self.repsout,
-                                        self.radprb, self.conc,
-                                        ibctyp, self.res2, nlit,
-                                        self.acent, self.energy,
-                                        self.site, nonit, relfac,
-                                        relpar, pbx, pby, in_frc,
-                                        self.natoms, self.nmedia,
-                                        self.nobject, self.i_atpos,
-                                        self.i_rad3, self.i_chrgv4,
-                                        self.i_atinf,
-                                        self.i_medeps,
-                                        self.i_iatmmed,
-                                        self.i_dataobject,
-                                        self.i_phimap4,
-                                        scale_prefocus, out_phi,
-                                        self.i_sitpot,
-                                        self.esolvation,
-                                        self.isurftype,
-                                        self.parallel, outputfile)
+        self.esolvation = DelPhi.delphi(
+            self.igrid,
+            scale,
+            self.repsin,
+            self.repsout,
+            self.radprb,
+            self.conc,
+            ibctyp,
+            self.res2,
+            nlit,
+            self.acent,
+            self.energy,
+            self.site,
+            nonit,
+            relfac,
+            relpar,
+            pbx,
+            pby,
+            in_frc,
+            self.natoms,
+            self.nmedia,
+            self.nobject,
+            self.i_atpos,
+            self.i_rad3,
+            self.i_chrgv4,
+            self.i_atinf,
+            self.i_medeps,
+            self.i_iatmmed,
+            self.i_dataobject,
+            self.i_phimap4,
+            scale_prefocus,
+            out_phi,
+            self.i_sitpot,
+            self.esolvation,
+            self.isurftype,
+            self.parallel,
+            outputfile,
+        )
         self.saveSitePotential()
 
         if focusing:
-            self.runDelPhi(focusing=True, nonit_focus=nonit_focus,
-                           relfac_focus=relfac_focus,
-                           relpar_focus=relpar_focus,
-                           pbx_focus=pbx_focus, pby_focus=pby_focus,
-                           outputfile=outputfile)
+            self.runDelPhi(
+                focusing=True,
+                nonit_focus=nonit_focus,
+                relfac_focus=relfac_focus,
+                relpar_focus=relpar_focus,
+                pbx_focus=pbx_focus,
+                pby_focus=pby_focus,
+                outputfile=outputfile,
+            )
 
     def getSolvation(self):
         return self.esolvation
 
     def getSitePotential(self):
-        """Returns site potential as a python list
-        """
+        """Returns site potential as a python list"""
         return self.p_sitpot_list
 
     def saveSitePotential(self):
-        """
-        """
+        """"""
         p_sitpot_list = []
         # if focus is being done update new values
         if len(self.p_sitpot_list) > 0:
@@ -446,12 +529,38 @@ class DelPhi4py(object):
         parallel   = {}
         debug      = {}
 
-        """.format(self.igrid, self.scale, self.perfil, self.repsin,
-        self.repsout, self.conc, self.ibctyp, self.res2, self.nlit,
-        self.acent, self.natoms, self.in_crg, self.in_siz,
-        self.in_pdb, self.radprb, self.energy, self.site,
-        self.in_crg_len, self.in_siz_len, self.in_pdb_len,
-        self.relfac, self.relpar, self.nonit, self.fcrg, self.pbx,
-        self.pby, self.pbz, self.precision, self.float_type,
-        self.isurftype, self.parallel, self.debug)
+        """.format(
+            self.igrid,
+            self.scale,
+            self.perfil,
+            self.repsin,
+            self.repsout,
+            self.conc,
+            self.ibctyp,
+            self.res2,
+            self.nlit,
+            self.acent,
+            self.natoms,
+            self.in_crg,
+            self.in_siz,
+            self.in_pdb,
+            self.radprb,
+            self.energy,
+            self.site,
+            self.in_crg_len,
+            self.in_siz_len,
+            self.in_pdb_len,
+            self.relfac,
+            self.relpar,
+            self.nonit,
+            self.fcrg,
+            self.pbx,
+            self.pby,
+            self.pbz,
+            self.precision,
+            self.float_type,
+            self.isurftype,
+            self.parallel,
+            self.debug,
+        )
         return out

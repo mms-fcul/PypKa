@@ -1,8 +1,8 @@
-from constants import TITRABLETAUTOMERS, TERMINAL_OFFSET
-from formats import read_gro_line
-from titsite import Titsite as Site
-from tautomer import Tautomer
+from clean.formats import read_gro_line
 from concurrency import runInteractionCalcs
+from constants import TERMINAL_OFFSET, TITRABLETAUTOMERS
+from tautomer import Tautomer
+from titsite import Titsite as Site
 
 
 class Molecule:
