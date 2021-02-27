@@ -1,9 +1,10 @@
-from config import Config
 import time
-import log
 from copy import copy
-from formats import new_pdb_line
-from constants import LOG10, KBOLTZ
+
+import log
+from clean.formats import new_pdb_line
+from config import Config
+from constants import KBOLTZ, LOG10
 
 
 class Tautomer(object):

@@ -1,0 +1,56 @@
+<?xml version='1.0'?>
+<patches>
+  <residue>
+    <name>RA[35]?$</name>
+    <useresname>RAD</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>RC[35]?$</name>
+    <useresname>RCY</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>RG[35]?$</name>
+    <useresname>RGU</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom>
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>
+  </residue>  
+
+  <residue>
+    <name>RU[35]?$</name>
+    <useresname>RUR</useresname>
+    <atom>
+      <name>OP1</name>
+      <useatomname>O1P</useatomname>
+    </atom> 
+    <atom>
+      <name>OP2</name>
+      <useatomname>O2P</useatomname>
+    </atom>    
+  </residue>
+
+  
+</patches>
+
+

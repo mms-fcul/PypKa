@@ -42,9 +42,23 @@ A docker image is also [available](https://hub.docker.com/r/pedrishi/pypka).
   apt install gawk gcc gfortran libgfortran4 python2
 ```
 
+## Contributing
+
+Contributions are encouraged, and they are greatly appreciated!
+
+You can contribute in many ways:
+
+* Report Bugs
+* Fix Bugs
+* Implement Features
+* Write Documentation
+* Submit Feedback
+
+For more info check [CONTRIBUTING](./CONTRIBUTING.rst)
+
 ## License
 
-  pypka is distributed under a LGPL-3.0, however delphi4py depends on
+  pypka is distributed under a [LGPL-3.0](./LICENSE), however delphi4py depends on
   DelPhi which is proprietary. To use DelPhi the user is required to
   download the DelPhi license
   [here](https://honiglab.c2b2.columbia.edu/software/cgi-bin/software.pl?input=DelPhi)

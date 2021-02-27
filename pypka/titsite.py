@@ -1,10 +1,11 @@
-from tautomer import Tautomer
 from config import Config
 from constants import KBOLTZ, TERMINAL_OFFSET
+from tautomer import Tautomer
 
 
 class Titsite:
     """Titrable Site with more than one Tautomer"""
+
     def __init__(self, res_number, molecule):
         """
         Args:
@@ -37,13 +38,13 @@ class Titsite:
         """
         self.molecule = molecule
         self.res_number = res_number
-        self.res_name = ''
-        self.termini_resname = ''
+        self.res_name = ""
+        self.termini_resname = ""
         self.atoms = {}
         self.tautomers = {}
-        self.ref_tautomer = ''
+        self.ref_tautomer = ""
         self.center = []
-        self.type = ''
+        self.type = ""
         self.pK = None
 
         self.most_prob_states = {}
@@ -85,8 +86,7 @@ class Titsite:
         """Stores the charge set of each existing tautomer
         for the present Site"""
         for tautomer in list(self.tautomers.values()):
-            tautomer.loadChargeSet(self.res_name,
-                                   self.ref_tautomer)
+            tautomer.loadChargeSet(self.res_name, self.ref_tautomer)
 
     def addAtom(self, aname, anumb):
         """
@@ -101,9 +101,11 @@ class Titsite:
         y = center[1]
         z = center[2]
         if boxsize:
-            if Config.delphi_params['pbc_dim'] != 2:
-                raise Exception('ERROR: The original center is only '
-                                'needed for 2-dimensional calculation')
+            if Config.delphi_params["pbc_dim"] != 2:
+                raise Exception(
+                    "ERROR: The original center is only "
+                    "needed for 2-dimensional calculation"
+                )
             self.center_original = [x, y, z]
             x = boxsize / 2
             y = boxsize / 2
@@ -147,16 +149,18 @@ class Titsite:
         return self.type
 
     def getRefProtState(self):
-        if self.type == 'c':
+        if self.type == "c":
             reftau_prot_state = 1
-        elif self.type == 'a':
+        elif self.type == "a":
             reftau_prot_state = -1
         return reftau_prot_state
 
     def getCenterOriginal(self):
-        if Config.delphi_params['pbc_dim'] != 2:
-            raise Exception('ERROR: The original center is only '
-                            'needed for 2-dimensional calculation')
+        if Config.delphi_params["pbc_dim"] != 2:
+            raise Exception(
+                "ERROR: The original center is only "
+                "needed for 2-dimensional calculation"
+            )
         return self.center_original
 
     def getCenterH(self):
@@ -203,7 +207,7 @@ class Titsite:
             selected pH value
         """
         if not self.pK:
-            return 'pk Not In Range'
+            return "pk Not In Range"
         average_prot = 10 ** (self.pK - pH) / (1 + 10 ** (self.pK - pH))
         return average_prot
 
@@ -229,16 +233,16 @@ class Titsite:
             The second element is a float of the average protonation of the site
 
         """
-        state = 'undefined'
+        state = "undefined"
         average_prot = self.getAverageProt(pH)
 
         if isinstance(average_prot, str):
             return state, average_prot
 
         if average_prot > 0.9:
-            state = 'protonated'
+            state = "protonated"
         elif average_prot < 0.1:
-            state = 'deprotonated'
+            state = "deprotonated"
 
         return state, average_prot
 
@@ -254,7 +258,6 @@ class Titsite:
 
     def getTautsProb(self, pH):
         return self.states_prob[pH]
-
 
     # Iter Methods
     def iterTautomers(self):
@@ -285,6 +288,7 @@ class Titsite:
           to_write (str): site interaction energies formatted
         to be written in .dat file
         """
+
         def convertIntoDatFormat(tau1, tau2, interaction):
             """Returns a .dat format interaction line
 
@@ -298,11 +302,11 @@ class Titsite:
             """
             site1_index = all_sites.index(tau1.site)
             tau1_index = tau1.name[-1]
-            tau1_dat = '{0:>3} {1:>2}'.format(site1_index, tau1_index)
+            tau1_dat = "{0:>3} {1:>2}".format(site1_index, tau1_index)
             site2_index = all_sites.index(tau2.site)
             tau2_index = tau2.name[-1]
-            tau2_dat = '{0:>3} {1:>2}'.format(site2_index, tau2_index)
-            line = '{0}   {1}   {2:13.6e}\n'.format(tau1_dat, tau2_dat, interaction)
+            tau2_dat = "{0:>3} {1:>2}".format(site2_index, tau2_index)
+            line = "{0}   {1}   {2:13.6e}\n".format(tau1_dat, tau2_dat, interaction)
             return line
 
         site1 = self
@@ -312,7 +316,7 @@ class Titsite:
 
         interactions_look = Config.parallel_params.interactions_look
 
-        temperature = Config.pypka_params['temp']
+        temperature = Config.pypka_params["temp"]
         interactions = []
         for pair in pairs:
             site1 = pair[0]
@@ -322,8 +326,7 @@ class Titsite:
             for taut1 in ordered_tautomers_site1:
                 site_atom_list = taut1.site.getAtomNumbersList()
                 for taut2 in ordered_tautomers_site2:
-                    interaction = taut1.calcInteractionWith(taut2,
-                                                            site_atom_list)
+                    interaction = taut1.calcInteractionWith(taut2, site_atom_list)
 
                     gg = interaction / (KBOLTZ * temperature)
 
@@ -334,27 +337,29 @@ class Titsite:
                     state2 = int(taut2.name[-1])
 
                     if Config.debug:
-                        print((nsite1, nsite2, state1, state2,
-                               taut1.name, taut2.name, gg))
+                        print(
+                            (nsite1, nsite2, state1, state2, taut1.name, taut2.name, gg)
+                        )
                     site1i = interactions_look[nsite1][state1]
                     site2i = interactions_look[nsite2][state2]
 
                     datf = convertIntoDatFormat(taut1, taut2, interaction)
                     interactions.append((site1i, site2i, gg, datf))
 
-
         return interactions
 
     # Print Methods
     def __str__(self):
-        tautomers = ' '.join(sorted(self.tautomers.keys()))
+        tautomers = " ".join(sorted(self.tautomers.keys()))
         natoms = len(self.atoms)
         center = [round(i, 2) for i in self.center]
-        out = 'Site Number -> {0:5}   '\
-              'Tautomers -> {1:30}  '\
-              'Reference -> {2:5} '\
-              'NAtoms -> {3:6} '\
-              'Center -> {4}'.format(self.res_number, tautomers,
-                                     self.ref_tautomer.getName(),
-                                     natoms, center)
+        out = (
+            "Site Number -> {0:5}   "
+            "Tautomers -> {1:30}  "
+            "Reference -> {2:5} "
+            "NAtoms -> {3:6} "
+            "Center -> {4}".format(
+                self.res_number, tautomers, self.ref_tautomer.getName(), natoms, center
+            )
+        )
         return out

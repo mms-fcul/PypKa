@@ -1,9 +1,10 @@
 import argparse
 import os
+from copy import copy
+
 import config
 import log
-from copy import copy
-from _version import __version__
+from __init__ import __version__
 
 
 def read_settings(filename):
