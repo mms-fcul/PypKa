@@ -286,7 +286,7 @@ class Titsite:
 
         Ensures:
           to_write (str): site interaction energies formatted
-        to be written in .dat file
+          to be written in .dat file
         """
 
         def convertIntoDatFormat(tau1, tau2, interaction):
