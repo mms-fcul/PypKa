@@ -1,7 +1,7 @@
 Main Methods
 =================================
 
-.. py:function:: pypka.getTitrableSites(pdb)
+.. py:function:: getTitrableSites(pdb)
 
 	Gets the all titrable sites from the pdb
 
@@ -12,7 +12,7 @@ Main Methods
    :rtype: list
 
 
-.. py:class:: pypka.Titration
+.. py:class:: Titration
 
 	Main pypka class
 

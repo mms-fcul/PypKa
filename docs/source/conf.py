@@ -13,7 +13,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../../pypka/"))
-import pypka
+from _version import __version__ as pypka_version
 
 # -- Project information -----------------------------------------------------
 
@@ -62,9 +62,9 @@ master_doc = "index"
 # the built documents.
 #
 # The short X.Y version.
-version = pypka.__version__
+version = pypka_version
 # The full version, including alpha/beta/rc tags.
-release = pypka.__version__
+release = pypka_version
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
