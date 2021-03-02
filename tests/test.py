@@ -394,6 +394,129 @@ class TestCLI(object):
         runTest(path, ncpus, results, delete_extra="crispr_10.pdb")
         check_file_diff("builder/crispr_10.pdb", f"{path}/crispr_10.pdb")
 
+    def test_cli_isoelectric_point_P00698(self):
+        path = "isoletric_point/P00698"
+        results = """
+1 NTR 7.436243954862977    A
+1 LYS 10.38343658298011    A
+7 GLU 3.270669540958661    A
+13 LYS 11.185447421177328   A
+15 HIS 5.721977625405991    A
+18 ASP 3.1467348396556263   A
+20 TYR 10.234760852612425   A
+23 TYR 9.62216181031512     A
+24 SER None                 A
+33 LYS 9.066692907995618    A
+35 GLU 4.760520208857088    A
+36 SER None                 A
+40 THR None                 A
+43 THR None                 A
+47 THR None                 A
+48 ASP 2.0749896184192314   A
+50 SER None                 A
+51 THR None                 A
+52 ASP 2.837970294910756    A
+53 TYR 11.216992599478031   A
+60 SER None                 A
+66 ASP 2.621881674928465    A
+69 THR None                 A
+72 SER None                 A
+81 SER None                 A
+85 SER None                 A
+86 SER None                 A
+87 ASP 2.5711121711871336   A
+89 THR None                 A
+91 SER None                 A
+96 LYS 11.164805773721078   A
+97 LYS 11.096740732123468   A
+100 SER None                 A
+101 ASP 3.749534008581276    A
+116 LYS 10.104388635210553   A
+118 THR None                 A
+119 ASP 2.70851766088339     A
+129 CTR 1.9159387844979447   A
+
+Predicted Isoelectric Point: 11.337484705471072
+        """
+        runTest(path, ncpus, results)
+
+    def test_cli_isoelectric_point_P00921(self):
+        path = "isoletric_point/P00921"
+        results = """    
+2 NTR None                 A
+3 HIS 6.9526728209531985   A
+4 HIS None                 A
+7 TYR None                 A
+9 LYS None                 A
+10 HIS 6.36920164389817     A
+14 GLU None                 A
+15 HIS 6.070748761775274    A
+17 HIS None                 A
+18 LYS None                 A
+19 ASP None                 A
+26 GLU None                 A
+32 ASP None                 A
+34 ASP None                 A
+36 LYS None                 A
+41 ASP None                 A
+45 LYS None                 A
+51 TYR None                 A
+53 GLU None                 A
+64 HIS None                 A
+69 GLU None                 A
+70 TYR None                 A
+71 ASP None                 A
+72 ASP None                 A
+75 ASP None                 A
+76 LYS None                 A
+80 LYS None                 A
+81 ASP None                 A
+88 TYR None                 A
+94 HIS None                 A
+96 HIS None                 A
+101 ASP None                 A
+102 ASP None                 A
+106 GLU None                 A
+107 HIS None                 A
+110 ASP None                 A
+112 LYS None                 A
+113 LYS None                 A
+114 TYR None                 A
+117 GLU None                 A
+119 HIS None                 A
+122 HIS None                 A
+126 LYS None                 A
+127 TYR None                 A
+129 ASP None                 A
+138 ASP None                 A
+148 LYS None                 A
+151 ASP None                 A
+158 LYS None                 A
+161 ASP None                 A
+164 ASP None                 A
+167 LYS None                 A
+169 LYS None                 A
+171 LYS None                 A
+174 ASP None                 A
+179 ASP None                 A
+189 ASP None                 A
+190 TYR None                 A
+193 TYR None                 A
+204 GLU None                 A
+212 LYS None                 A
+213 GLU None                 A
+224 LYS None                 A
+233 GLU None                 A
+235 GLU None                 A
+237 GLU None                 A
+251 LYS None                 A
+260 CTR None                 A
+260 LYS None                 A
+
+Predicted Isoelectric Point: 6.528696803645706
+"""
+        runTest(path, ncpus, results)
+
 
 class TestAPI(object):
     def test_api_ktp_gro(self):

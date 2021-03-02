@@ -1,18 +1,20 @@
 *~
-#*
 *xtc
 *.gz
+
+*.nfs*
+*.sh
+
+input_clean.pdb
+clean*.pdb
+*.pqr
+TMP.pdb
 LOG*
 *frc
 *.profl
 *eback.xvg
 *.prm
 P_*.pdb
-*.nfs*
-TMP.pdb
-clean*.pdb
-*.pqr
-*.sh
 
 pypka/build/
 .pytest_cache/

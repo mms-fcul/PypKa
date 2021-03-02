@@ -30,18 +30,8 @@ def inputPDBCheck(filename, sites, clean_pdb):
         raise Exception("Input file must be either a pdb or a gro.")
 
     chains_length = {}
-    chains_res = {}
-
-    for chain in sites.keys():
-        chains_res[chain] = {}
-        for site in sites[chain]:
-            if site[-1] == "C":
-                resnumb = site[:-1]
-                chains_res[chain][resnumb] = "CTR"
-            elif site[-1] == "N":
-                resnumb = site[:-1]
-                chains_res[chain][resnumb] = "NTR"
-
+    chains_res = {chain: {} for chain in sites.keys()}
+    chains = []
     if filetype == "pdb" and not clean_pdb:
         new_gro_header = "CREATED within PyPka\n"
         new_gro_body = ""
@@ -62,6 +52,8 @@ def inputPDBCheck(filename, sites, clean_pdb):
                     (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(
                         line
                     )
+                    if chain not in chains:
+                        chains.append(chain)
                     atom_number += 1
                     if not clean_pdb:
                         if (
@@ -113,6 +105,57 @@ def inputPDBCheck(filename, sites, clean_pdb):
 
     chains_length[last_chain] = chain_length
     # chains_res[chain] = done[chain]
+
+    # tmp_chains_res is an ugly hack so that test cases hold
+    # TODO: remove tmp_chains_res and update tests
+    tmp_chains_res = {}
+    for chain in sites.keys():
+        if chain not in chains:
+            continue
+
+        tmp_chains_res[chain] = {}
+        for site in sites[chain]:
+            if site[-1] == "C":
+                resnumb = site[:-1]
+                tmp_chains_res[chain][resnumb] = "CTR"
+            elif site[-1] == "N":
+                resnumb = site[:-1]
+                tmp_chains_res[chain][resnumb] = "NTR"
+        chains_res[chain] = {**tmp_chains_res[chain], **chains_res[chain]}
+
+    skipped_sites = {}
+    for chain, resnumbs in sites.items():
+        if chain not in chains_res:
+            skipped_sites[chain] = resnumbs
+            continue
+        for resnumb in resnumbs:
+            skipped = False
+            if resnumb[-1] in "NC":
+                termini = "NTR" if resnumb[-1] == "N" else "CTR"
+                resnumb = resnumb[:-1]
+                if (
+                    resnumb not in chains_res[chain]
+                    or chains_res[chain][resnumb] != termini
+                ):
+                    print(
+                        "{1} in chain '{0}' not found or not titratable.".format(
+                            chain, termini
+                        )
+                    )
+            else:
+                resnumb = int(resnumb)
+                if resnumb not in chains_res[chain].keys():
+                    print(
+                        "Residue #{1} in chain '{0}' not found or not titratable.".format(
+                            chain, resnumb
+                        )
+                    )
+
+    nsites = sum([len(res) for res in chains_res.values()])
+    if not nsites:
+        raise Exception(
+            "No titrable residues found. Please check the residue number and chain."
+        )
 
     return chains_length, chains_res
 
@@ -245,6 +288,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                 ) = read_pqr_line(line)
 
                 termini_trigger = False
+
                 if chain in chains:
                     molecule = molecules[chain]
                     NTR_numb = molecule.NTR
@@ -350,20 +394,24 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ",":
         sites_addHtaut = sites_addHtaut[:-1]
 
-    logfile = "LOG_addHtaut"
-    script_dir = Config.pypka_params["script_dir"]
+    if len(sites_addHtaut.strip()) == 0:
+        os.system("cp cleaned.pqr {}".format(outputpqr))
 
-    os.system(
-        "{}/addHtaut cleaned.pqr {} {} > {} 2> {}".format(
-            script_dir,
-            Config.pypka_params["ff_family"],
-            sites_addHtaut,
-            outputpqr,
-            logfile,
+    else:
+        logfile = "LOG_addHtaut"
+        script_dir = Config.pypka_params["script_dir"]
+
+        os.system(
+            "{}/addHtaut cleaned.pqr {} {} > {} 2> {}".format(
+                script_dir,
+                Config.pypka_params["ff_family"],
+                sites_addHtaut,
+                outputpqr,
+                logfile,
+            )
         )
-    )
 
-    log.checkDelPhiErrors(logfile, "addHtaut")
+        log.checkDelPhiErrors(logfile, "addHtaut")
 
     with open(outputpqr) as f:
         content = f.read()
@@ -402,7 +450,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
             os.remove(filename)
     if (
         not Config.debug
-        and os.path.isfile(filename)
+        and os.path.isfile(Config.pypka_params["pdb2pqr_inputfile"])
         and not Config.pypka_params.structure_output
     ):
         os.remove(Config.pypka_params["pdb2pqr_inputfile"])

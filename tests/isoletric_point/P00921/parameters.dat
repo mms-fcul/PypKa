@@ -1,0 +1,10 @@
+structure       = 6SKV.pdb
+epsin           = 15
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+sites           =  all
+isoelectric_point = yes
+output = pKas.out
+ser_thr_titration = no
+pH = 6, 7

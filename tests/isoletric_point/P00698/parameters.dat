@@ -1,0 +1,8 @@
+structure       = 4LZT.pdb
+epsin           = 15
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+sites           = all
+isoelectric_point = yes
+output = pKas.out

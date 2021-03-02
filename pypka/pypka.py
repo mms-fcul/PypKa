@@ -47,8 +47,11 @@ class Titration:
             debug (boolean, optional): debug mode switch. Defaults to False.
         """
         self.molecules = {}
-        self.__parameters = Config.storeParams(self, log.Log(), debug, parameters)
+        self.__parameters = Config.storeParams(
+            self, log.Log(), debug, parameters, sites
+        )
         self.pKas = {}
+        self.isoelectric_point = None
 
         print("Start Preprocessing")
         self.preprocessing(sites)
@@ -155,7 +158,7 @@ class Titration:
             )
 
         f_out = "delphi_in_stmod.pdb"
-        make_delphi_inputfile(f_in, f_out, self.molecules)
+        self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
         if not Config.debug and os.path.isfile("TMP.pdb"):
             os.remove("TMP.pdb")
 
@@ -651,13 +654,6 @@ class Titration:
                 site.tit_curve[pH] = tit_curve[pH][sitenumb]
                 site.states_prob[pH] = state_distribution[pH][sitenumb]
 
-        if Config.pypka_params["f_out"]:
-            with open(Config.pypka_params["f_out"], "w") as f:
-                f.write(text_pks)
-        if Config.pypka_params["f_prot_out"]:
-            with open(Config.pypka_params["f_prot_out"], "w") as f:
-                f.write(text_prots)
-
         # self.tit_curve = tit_curve
         # self.pH_values = sorted(tit_curve.keys())
         # self.final_states = final_states
@@ -675,8 +671,75 @@ class Titration:
             sites[c].setpK(pK)
             # self.pKas[chain][site] = pK
 
+        if Config.pypka_params["isoelectric_point"]:
+            isoelectric_point = self.getIsoelectricPoint()
+            text_pks += "\nPredicted Isoelectric Point: {0}\n".format(isoelectric_point)
+
+        if Config.pypka_params["f_out"]:
+            with open(Config.pypka_params["f_out"], "w") as f:
+                f.write(text_pks)
+        if Config.pypka_params["f_prot_out"]:
+            with open(Config.pypka_params["f_prot_out"], "w") as f:
+                f.write(text_prots)
+
     def getTitrationCurve(self):
         return self.tit_curve
+
+    def getChargeCurve(self):
+        if Config.pypka_params["sites"] != "all":
+            warn_message = "The titration curve weighted by charges can only be calculated when titrating all sites."
+            raise Exception(warn_message)
+
+        sites = self.get_all_sites(get_list=True)
+        nsites = len(sites)
+        total_anionic_titres = 0
+        for site in sites:
+            if site.type == "a":
+                total_anionic_titres += 1
+
+        total_arg_charge = 0
+        for chain, aas in self.sequence.items():
+            for resnumb, resname in aas.items():
+                # print(resnumb, resname)
+                if resname == "ARG":
+                    total_arg_charge += 1
+
+        titration_curve = {}
+        for pH, prot in self.tit_curve.items():
+            prot = prot * nsites
+            charge = prot - total_anionic_titres + total_arg_charge
+            titration_curve[pH] = charge
+        return titration_curve
+
+    def getIsoelectricPoint(self):
+        def calc_isoelectric_point():
+            # anionic_aas = ("ASP", "GLU", "CYS", "TYR", "CTR")
+            # cationic_aas = ("LYS", "ARG", "HIS", "NTR")
+
+            titration_curve = [(pH, prot) for pH, prot in self.getChargeCurve().items()]
+            i = 0
+            pH, prot = titration_curve[i]
+            while prot > 0.0 and i < len(titration_curve) - 1:
+                i += 1
+                pH, prot = titration_curve[i]
+
+            if i == 0 or i == len(titration_curve) - 1:
+                warn_message = (
+                    "Not enough points to interpolate the Isoelectric Point\n"
+                    "Lowest pH value: {0}\t"
+                    "Charge: {1}".format(pH, round(prot, 2))
+                )
+                print(warn_message)
+            else:
+                last_pH, last_prot = titration_curve[i - 1]
+
+                self.isoelectric_point = pH - (prot * (last_pH - pH)) / (
+                    last_prot - prot
+                )
+
+        if not self.isoelectric_point:
+            calc_isoelectric_point()
+        return self.isoelectric_point
 
     def __iter__(self):
         self.itersites = self.get_all_sites(get_list=True)
@@ -737,6 +800,12 @@ class Titration:
                 output += "\n{0:>4} {1:>6}    {2:3}    {3:>5}".format(
                     chain, site.getResNumber(), site.res_name, pk
                 )
+
+        if self.isoelectric_point:
+            output += "\n\nPredicted Isoelectric Point: {0}\n".format(
+                self.isoelectric_point
+            )
+
         return output
 
 

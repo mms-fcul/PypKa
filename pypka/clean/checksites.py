@@ -10,7 +10,7 @@ from .formats import new_pdb_line, read_gro_line, read_pdb_line
 
 
 def identify_tit_sites(molecules, instanciate_sites=True):
-    def SitesFileLine(resnumb, resname):
+    def SitesFileLine(chain, resnumb, resname):
         for res in REGULARTITRATINGRES:
             if res[0:2] == resname[0:2]:
                 resname = res
@@ -25,19 +25,20 @@ def identify_tit_sites(molecules, instanciate_sites=True):
         for i in range(ntautomers):
             text += "{0}tau{1} ".format(resname, i + 1)
 
-        if res in ("NTR", "CTR"):
+        if resname in ("NTR", "CTR"):
+            chain_res[chain][str(resnumb)] = resname
             resnumb += TERMINAL_OFFSET
+        else:
+            chain_res[chain][resnumb] = resname
 
         if instanciate_sites:
             instanciate_site(resnumb, resname, ntautomers)
+
         return text + "\n"
 
     def instanciate_site(resnumb, resname, ntautomers):
         sID = molecule.addSite(resnumb)
         molecule.addTautomers(sID, ntautomers, resname)
-
-    def add2chain(chain, chain_res, resnumb, resname):
-        chain_res[chain][resnumb] = resname
 
     sites_file = ""
     sites = {chain: [] for chain in molecules.keys()}
@@ -67,8 +68,8 @@ def identify_tit_sites(molecules, instanciate_sites=True):
                     if resname in PROTEIN_RESIDUES or resname in TITRABLERESIDUES:
                         if resnumb not in chain_sites:
                             if not chain_res[chain]:
-                                sites_file += SitesFileLine(resnumb, "NTR")
-                                add2chain(chain, chain_res, str(resnumb), "NTR")
+                                sites_file += SitesFileLine(chain, resnumb, "NTR")
+                                # add2chain(chain, chain_res, str(resnumb), "NTR")
                                 if instanciate_sites:
                                     molecule.NTR = resnumb
 
@@ -85,8 +86,8 @@ def identify_tit_sites(molecules, instanciate_sites=True):
                                     and resname in ("SER", "THR")
                                 ):
                                     continue
-                                sites_file += SitesFileLine(resnumb, resname)
-                                add2chain(chain, chain_res, resnumb, resname)
+                                sites_file += SitesFileLine(chain, resnumb, resname)
+                                # add2chain(chain, chain_res, resnumb, resname)
 
                         if "CTR" not in sites and aname in (
                             "CT",
@@ -97,8 +98,8 @@ def identify_tit_sites(molecules, instanciate_sites=True):
                             "O2",
                             "OXT",
                         ):
-                            sites_file += SitesFileLine(resnumb, "CTR")
-                            add2chain(chain, chain_res, str(resnumb), "CTR")
+                            sites_file += SitesFileLine(chain, resnumb, "CTR")
+                            # add2chain(chain, chain_res, str(resnumb), "CTR")
                             if instanciate_sites:
                                 molecule.CTR = resnumb
 
@@ -107,10 +108,9 @@ def identify_tit_sites(molecules, instanciate_sites=True):
         and aname in ("CT", "OT", "OT1", "OT2", "O1", "O2", "OXT")
         and molecule.sites == "all"
     ):
-        sites_file += SitesFileLine(last_res, "CTR")
-        add2chain(last_chain, chain_res, str(last_res), "CTR")
+        sites_file += SitesFileLine(chain, last_res, "CTR")
+        # add2chain(last_chain, chain_res, str(last_res), "CTR")
         if instanciate_sites:
-            molecule = molecules[chain]
             molecule.CTR = resnumb
 
     if not chain_res and instanciate_sites:
@@ -466,6 +466,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
     site_Hs = {}
     max_box = [0.0, 0.0, 0.0]
     aposition = -1
+    sequence = {}
     with open(f_in) as f:
         for line in f:
             if line.startswith("ATOM"):
@@ -473,6 +474,11 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
                 max_box = getMaxCoords([x, y, z], max_box)
+
+                if chain not in sequence:
+                    sequence[chain] = {}
+                if resnumb not in sequence[chain]:
+                    sequence[chain][resnumb] = resname
 
                 if chain in molecules:
                     molecule = molecules[chain]
@@ -584,6 +590,8 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                 hz /= nHs
                 Hcenter = (hx, hy, hz)
                 molecule.sites[site].addCenterH(Hcenter)
+
+    return sequence
 
 
 def get_chains_from_file(f_in):

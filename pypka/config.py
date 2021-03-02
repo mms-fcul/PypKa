@@ -10,11 +10,11 @@ from constants import *
 
 class Config:
     @classmethod
-    def storeParams(cls, titration_obj, log, debug, parameters):
+    def storeParams(cls, titration_obj, log, debug, parameters, sites):
         cls.log = log
         cls.debug = debug
         cls.titration = titration_obj
-        cls.pypka_params = PypKaConfig(log)
+        cls.pypka_params = PypKaConfig(sites, log)
         cls.delphi_params = DelPhiConfig(log)
         cls.mc_params = MCConfig(log)
         cls.parallel_params = ParallelConfig()
@@ -79,6 +79,12 @@ class Config:
             cls.pypka_params.set_structure_output(
                 cls.mc_params["pHmin"], cls.mc_params["pHmax"]
             )
+
+        if cls.pypka_params["isoelectric_point"] and cls.pypka_params["sites"] != "all":
+            warn_message = (
+                "The isoelectric point can only be calculated when titrating all sites."
+            )
+            raise Exception(warn_message)
 
         if cls.delphi_params["pbc_dim"] == 2:
             cls.delphi_params.set_nonlinear_params(cls.pypka_params, parameters)
@@ -197,7 +203,7 @@ class ParametersDict:
 class PypKaConfig(ParametersDict):
     """Configuration parameters"""
 
-    def __init__(self, log):
+    def __init__(self, sites, log):
         super().__init__(log)
 
         self.name = "PypKa"
@@ -211,6 +217,7 @@ class PypKaConfig(ParametersDict):
             "box",
         ]
 
+        self.sites = sites
         self.tmpsites = {}
         self.pid = os.getpid()
         self.debug = False
@@ -245,6 +252,7 @@ class PypKaConfig(ParametersDict):
         self.f_structure_out_pH = None
         self.ff_structure_out = None
         self.save_pdb = None
+        self.isoelectric_point = None
 
         # Force Field
         self.f_crg = None
@@ -283,6 +291,7 @@ class PypKaConfig(ParametersDict):
             "f_structure_out_pH": float,
             "ff_structure_out": str,
             "structure_output": str,
+            "isoelectric_point": bool,
             "ffID": str,
             "ff_family": str,
             "ffinput": str,

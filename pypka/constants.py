@@ -83,7 +83,14 @@ for res in REGULARTITRATINGRES:
     for i in range(ntautomers + 1):
         TITRABLERESIDUES.append(res[0:2] + str(i))
 
-MANDATORY_PARAMS = ["structure", "epsin", "ionicstr", "pbc_dimensions", "ncpus"]
+MANDATORY_PARAMS = [
+    "structure",
+    "epsin",
+    "ionicstr",
+    "pbc_dimensions",
+    "ncpus",
+    "sites",
+]
 
 IGNORED_PARAMS = [
     "tmpsites",
