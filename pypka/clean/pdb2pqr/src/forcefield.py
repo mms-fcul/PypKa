@@ -273,17 +273,13 @@ class Forcefield:
 
         # Now parse the XML file, associating with FF objects -
         # This is not necessary (if canonical names match ff names)
- 
-
         defpath = getNamesFile(ff)
-        if defpath != "":
-        
+        if defpath != "":            
             handler = ForcefieldHandler(self.map, definition.map)
-            sax.make_parser()
-
+            sax.make_parser()            
             if usernames != None:
                 namesfile = usernames
-                sax.parseString(namesfile.read(), handler)
+                sax.parseString(namesfile.read(), handler)                
             else:
                 namesfile = open(defpath)
                 sax.parseString(namesfile.read(), handler)
@@ -383,8 +379,6 @@ class Forcefield:
         """
         charge = None
         radius = None
-
-        #print self.map.keys()
 
         if resname in self.map:
             resid = self.map[resname]

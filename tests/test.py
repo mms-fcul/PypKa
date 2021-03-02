@@ -5,7 +5,7 @@ import sys
 from .builder.check_diffs import compareFiles
 
 sys.path.insert(1, "../")
-from pypka.pypka import Titration
+from pypka import Titration
 
 ncpus = -1
 
@@ -22,7 +22,7 @@ def runTest(path, ncpus, results, delete_extra=""):
     sb.Popen(
         "cd {0}; "
         "sed -i 's/ncpus .*/ncpus           = {1}/' parameters.dat; "
-        "python3 ../../../pypka/pypka.py parameters.dat;"
+        "python3 ../../../pypka/__main__.py parameters.dat;"
         "rm -f *-*.pdb *.profl *.prm *.xvg *.frc *.crg cent "
         "contributions interactions.dat pkint tmp.sites".format(path, ncpus),
         shell=True,
@@ -517,6 +517,227 @@ Predicted Isoelectric Point: 6.528696803645706
 """
         runTest(path, ncpus, results)
 
+    def test_cli_proteins_2A25(self):
+        path = "proteins/2A25"
+        results = """
+126 TYR 10.098011676580745   A
+127 SER None                 A
+128 CYS 12.482018561484919   A
+130 CYS 11.494419051404346   A
+134 SER None                 A
+135 CYS 8.748730472535566    A
+136 LYS 10.48507993867718    A
+140 SER None                 A
+142 ASP 3.4184905980010165   A
+147 HIS 5.303316661200394    A
+150 HIS 6.001450138291333    A
+152 HIS 4.514518909600259    A
+153 LYS 10.731265301777668   A
+154 SER None                 A
+156 THR None                 A
+157 THR None                 A
+161 GLU 4.111811478157238    A
+162 ASP 3.107573956380595    A
+168 THR None                 A
+169 ASP 3.8422890048587366   A
+177 ASP 5.102473498233215    A
+183 SER None                 A
+184 CYS 11.578526853252647   A
+188 HIS 6.605217900398844    A
+194 GLU 5.5565424748735674   A
+195 LYS 11.20974523427757    A
+214 THR None                 A
+216 LYS 10.35628958773197    A
+219 GLU 3.8965649304737213   A
+223 TYR 11.754048723897911   A
+226 GLU 3.6358084181272132   A
+230 HIS 6.274154674360508    A
+235 THR None                 A
+237 GLU 4.242028277853261    A
+239 THR None                 A
+242 SER None                 A
+244 HIS 6.086237822248795    A
+245 GLU 4.073873949934569    A
+249 THR None                 A
+254 SER None                 A
+255 ASP 3.3012508394895903   A
+256 CYS 13.259905381431105   A
+260 ASP 3.3551277624309392   A
+261 THR None                 A
+262 SER None                 A
+269 GLU 4.332567084078712    A
+278 THR None                 A
+280 SER None                 A
+282 CTR 3.137268188302425    A
+282 CYS 10.441979429808733   A
+59 NTR 7.640076928505893    B
+59 LYS 11.248239751242004   B
+67 CTR 3.124341781263022    B
+"""
+        runTest(path, ncpus, results)
+
+    def test_cli_proteins_4A60(self):
+        path = "proteins/4A60"
+        results = """
+-9 NTR 7.469081336238199    A
+-7 THR None                 A
+-6 GLU 3.30028880866426     A
+-3 TYR 9.663368821020182    A
+0 SER None                 A
+3 GLU 4.391259703067299    A
+8 THR None                 A
+10 LYS 10.668427252346392   A
+13 SER None                 A
+14 SER None                 A
+15 GLU 4.113518927621972    A
+18 GLU 3.393629148019927    A
+19 ASP 3.3952060310500647   A
+20 TYR 13.400726190916146   A
+22 LYS 10.587554806681887   A
+23 GLU 4.166726112258306    A
+38 LYS 10.604896474538332   A
+40 THR None                 A
+42 THR None                 A
+44 SER None                 A
+46 ASP 3.5814576918993524   A
+48 LYS 10.551811942647316   A
+51 THR None                 A
+54 THR None                 A
+55 GLU 3.9517168554054547   A
+56 SER None                 A
+57 SER None                 A
+60 ASP 1.9627320811744386   A
+61 THR None                 A
+62 LYS 10.474231284632936   A
+64 SER None                 A
+66 LYS 10.698242405317393   A
+69 GLU 3.790949851826194    A
+70 GLU 3.965377855887522    A
+72 ASP 2.3844213594409776   A
+73 GLU 1.7597915806851012   A
+74 THR None                 A
+75 THR None                 A
+77 ASP 1.0748239786785472   A
+80 LYS 10.584316060021923   A
+82 LYS 11.756319579674468   A
+83 SER None                 A
+84 THR None                 A
+86 THR None                 A
+88 GLU 4.062438981868898    A
+91 SER None                 A
+94 HIS 5.3611310915303      A
+97 LYS 11.144764397905758   A
+101 LYS 10.389757328030639   A
+102 GLU 3.695859810911345    A
+103 THR None                 A
+104 THR None                 A
+106 LYS 10.85503817491885    A
+108 LYS 10.54367650587953    A
+111 ASP 3.599820110870443    A
+112 GLU 4.283998646820027    A
+113 LYS 11.49138842312459    A
+117 GLU 3.1609913635365587   A
+118 CYS 10.448528923424321   A
+119 LYS 10.210060404082483   A
+125 SER None                 A
+126 THR None                 A
+129 TYR 9.756175027262813    A
+130 GLU 4.113634640175931    A
+131 CTR 2.6923277480358756   A
+131 LYS 11.507075386341429   A
+"""
+        runTest(path, ncpus, results)
+
+    def test_cli_proteins_4ZKS(self):
+        path = "proteins/4ZKS"
+        results = """
+16 NTR 9.23928505662462     U
+20 GLU 4.38228311888218     U
+25 GLU 3.782990949885394    U
+34 TYR None                 U
+37 HIS 5.629973263099086    U
+40 TYR None                 U
+57 HIS 8.392267007112894    U
+61 LYS 10.678644629540797   U
+62 LYS 10.618236222185953   U
+63 ASP 3.214734617856248    U
+64 TYR None                 U
+67 TYR 9.448220139433953    U
+80 GLU None                 U
+82 LYS 10.757791366998704   U
+84 GLU 3.4286659877800405   U
+86 GLU 3.6077133915604738   U
+91 HIS None                 U
+92 LYS 10.517617691298364   U
+93 ASP None                 U
+94 TYR None                 U
+97 ASP None                 U
+99 HIS 5.6042581121549      U
+100 HIS 6.099540681560902    U
+102 ASP None                 U
+107 LYS None                 U
+127 TYR 9.711431040661031    U
+129 ASP None                 U
+137 GLU 4.777609352212308    U
+143 LYS 10.508000440189281   U
+144 GLU 3.363119020237827    U
+148 ASP None                 U
+149 TYR 9.674413294167714    U
+151 TYR None                 U
+153 GLU None                 U
+156 LYS None                 U
+161 LYS 10.641892314426865   U
+165 HIS 5.387996043352939    U
+167 GLU 3.962214516321894    U
+171 TYR 10.752989426465877   U
+172 TYR None                 U
+175 GLU 6.217700258397933    U
+179 LYS 10.775038670937725   U
+185 ASP None                 U
+187 LYS None                 U
+189 ASP None                 U
+194 ASP None                 U
+223 LYS 10.489607364928702   U
+224 LYS 10.503778058454653   U
+228 TYR None                 U
+233 HIS 5.741668086072787    U
+241 HIS 5.9355692642227424   U
+243 CTR None                 U
+243 LYS 10.668766757398743   U
+1 NTR 6.9081767146692705   P
+7 GLU None                 P
+9 HIS 6.561248557877195    P
+12 CTR 3.191509821293515    P
+"""
+        runTest(path, ncpus, results)
+
+    def test_cli_proteins_5J6W(self):
+        path = "proteins/5J6W"
+        results = """
+1 NTR 6.970007685858021    A
+1 LYS 10.40120113865167    A
+15 LYS 10.682987974098058   A
+19 CTR 3.2598815614268695   A
+19 LYS 10.667911153119093   A
+"""
+        runTest(path, ncpus, results)
+
+    def test_cli_proteins_1S5M(self):
+        path = "proteins/1S5M"
+        results = """
+1 NTR 7.385571353343865    A
+1 SER None                 A
+"""
+        runTest(path, ncpus, results)
+
+    def test_cli_proteins_4NU1(self):
+        path = "proteins/4NU1"
+        results = """
+383 CTR 2.963029176201373    A
+383 NTR 7.371109691614323    B
+"""
+        runTest(path, ncpus, results)
+
 
 class TestAPI(object):
     def test_api_ktp_gro(self):
@@ -524,9 +745,9 @@ class TestAPI(object):
             "rm -f LOG* *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint"
         )
         results = """
-NTR 2001 7.932515230635335 ('undefined', 0.8954064318344567)
+NTR 5001 7.932515230635335 ('undefined', 0.8954064318344567)
 TYR 1 9.884779718110096 ('protonated', 0.9986978698182121)
-CTR 2002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
+CTR 5002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
         """
         results = results.split("\n")[1:-1]
         parameters = {
@@ -560,9 +781,9 @@ CTR 2002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
             "rm -f *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint"
         )
         results = """
-NTR 2001 7.934819040827242 ('undefined', 0.8959021976401332)
+NTR 5001 7.934819040827242 ('undefined', 0.8959021976401332)
 TYR 1 9.78114442380826 ('protonated', 0.9983475157921265)
-CTR 2002 3.010253456221198 ('deprotonated', 0.00010237855405755827)
+CTR 5002 3.010253456221198 ('deprotonated', 0.00010237855405755827)
         """
         results = results.split("\n")[1:-1]
         parameters = {
@@ -586,6 +807,7 @@ CTR 2002 3.010253456221198 ('deprotonated', 0.00010237855405755827)
             "relfac": 0.0,
             "output": "pKas.out",
             "clean_pdb": True,
+            "remove_hs": False,
         }
         sites = "all"
         pKa = Titration(parameters, sites=sites)
@@ -598,9 +820,9 @@ CTR 2002 3.010253456221198 ('deprotonated', 0.00010237855405755827)
             "cent contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-NTR 2001 7.932515230635335 ('undefined', 0.8954064318344567)
+NTR 5001 7.932515230635335 ('undefined', 0.8954064318344567)
 TYR 1 9.884779718110096 ('protonated', 0.9986978698182121)
-CTR 2002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
+CTR 5002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
         """
         results = results.split("\n")[1:-1]
         parameters = {
@@ -636,8 +858,8 @@ CTR 2002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-NTR 2001 7.931056701030927 ('undefined', 0.8950914882162796)
-CTR 2002 3.0073796144818266 ('deprotonated', 0.00010170339324314826)
+NTR 5001 7.931056701030927 ('undefined', 0.8950914882162796)
+CTR 5002 3.0073796144818266 ('deprotonated', 0.00010170339324314826)
         """
         results = results.split("\n")[1:-1]
         parameters = {
@@ -661,6 +883,7 @@ CTR 2002 3.0073796144818266 ('deprotonated', 0.00010170339324314826)
             "relfac": 0.0,
             "output": "pKas.out",
             "clean_pdb": True,
+            "remove_hs": False,
         }
         sites = {" ": ("1N", "2C")}
         pKa = Titration(parameters, sites=sites)
@@ -673,8 +896,8 @@ CTR 2002 3.0073796144818266 ('deprotonated', 0.00010170339324314826)
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-NTR 2001 8.199054937290231 ('protonated', 0.9405274528487423)
-CTR 2002 3.099830508474576 ('deprotonated', 0.00012582758427877238)
+NTR 5001 8.199054937290231 ('protonated', 0.9405274528487423)
+CTR 5002 3.099830508474576 ('deprotonated', 0.00012582758427877238)
         """
         results = results.split("\n")[1:-1]
         parameters = {

@@ -1,0 +1,7 @@
+structure       = 1s5m.pdb
+epsin           = 15
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+sites_A         = 1N, 1
+output = pKas.out

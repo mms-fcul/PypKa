@@ -23,3 +23,5 @@ cutoff = -1
 output = pKas.out
 titration_output = protonation.out
 relfac = 0.0
+
+remove_hs = no

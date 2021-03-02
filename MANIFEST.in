@@ -3,18 +3,17 @@ include README.md
 include CONTRIBUTING.rst
 global-include *.so addHtaut
 
-graft pypka/G54A7
-graft pypka/CHARMM36m
-graft pypka/pdb2pqr
-graft pypka/delphi4py
+recursive-include pypka/G54A7 * 
+recursive-include pypka/CHARMM36m * 
+recursive-include pypka/delphi4py * 
+recursive-include pypka/clean * 
 
-global-exclude .vscode .circleci
-global-exclude *.out .nfs* P_*.pdb *frc *.profl *eback.xvg *.prm clean*.pdb *sh
-exclude .gitignore
+global-exclude .vscode .circleci .gitignore
+global-exclude *.out .nfs* P_*.pdb *frc *crg *.profl *eback.xvg *.prm clean*.pdb *sh *-???.pdb
 
-recursive-enclude tests *
+recursive-exclude tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
-recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include docs *.rst *.md conf.py Makefile make.bat *.jpg *.png *.gif
 

@@ -30,3 +30,5 @@ pbx    = yes
 pby    = yes
 
 precision = single
+
+remove_hs = no

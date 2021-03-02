@@ -25,3 +25,4 @@ titration_output = protonation.out
 pHstep = 0.5
 relfac = 0.0
 
+remove_hs = no

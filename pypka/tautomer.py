@@ -504,8 +504,8 @@ class Tautomer(object):
             ibctyp = Config.delphi_params["bndcon"]
 
         filename = "{0}_{1}.prm".format(self.name, self.site.res_number)
-        logfile = "LOG_runDelPhi_{0}_{1}_modelcompound".format(
-            self.name, self.site.res_number
+        logfile = "LOG_runDelPhi_{0}_{1}_{2}_modelcompound".format(
+            self.name, self.site.res_number, self.molecule.chain
         )
         if Config.debug:
             print(("started", self.name, self.site.res_number, "modelcompound"))
@@ -568,8 +568,8 @@ class Tautomer(object):
             #           p_atpos[atom_position][0], p_atpos[atom_position][1], p_atpos[atom_position][2])
 
         filename = "{0}_{1}.prm".format(self.name, self.site.res_number)
-        logfile = "LOG_runDelPhi_{0}_{1}_wholeprotein".format(
-            self.name, self.site.res_number
+        logfile = "LOG_runDelPhi_{0}_{1}_{2}_wholeprotein".format(
+            self.name, self.site.res_number, self.molecule.chain
         )
 
         if Config.debug:

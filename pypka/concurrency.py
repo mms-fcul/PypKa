@@ -160,11 +160,13 @@ def runDelPhiSims(job_list):
     results = []
     for tau_number in job_list:
         time1 = time()
-        tauname, sitenum, esolvM, sitpotM, esolvS, sitpotS = calcPotential(tau_number)
+        tauname, sitenum, chain, esolvM, sitpotM, esolvS, sitpotS = calcPotential(
+            tau_number
+        )
         results.append([tauname, sitenum, esolvM, sitpotM, esolvS, sitpotS])
         time2 = time()
 
-        message = "PB Runs: {:3} {:<10}".format(tauname, sitenum)
+        message = "PB Runs: {:1} {:3} {:<10} ".format(chain, tauname, sitenum)
 
         printTimeLeft(time1, time2, message)
 
@@ -207,6 +209,7 @@ def calcPotential(taut):
     return (
         taut.name,
         taut.getSiteResNumber(),
+        taut.molecule.chain,
         e_solvationM,
         sitpotM,
         e_solvationS,

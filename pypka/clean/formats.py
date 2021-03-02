@@ -282,9 +282,3 @@ def readPBPFile(f_dat):
                 param = parts[0].split()[-1]
                 value = parts[1].replace('"', "").replace("'", "")
                 config.params[param] = value.strip()
-
-
-def convertTermini(site_numb):
-    if site_numb >= TERMINAL_OFFSET:
-        return site_numb - TERMINAL_OFFSET
-    return site_numb

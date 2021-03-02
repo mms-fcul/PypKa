@@ -1,6 +1,6 @@
 import sys
 
-sys.path.insert(1, "../../pypka")
+sys.path.insert(1, "../../")
 
 from pypka import Titration
 

@@ -170,7 +170,7 @@ class Titsite:
         return self.center
 
     def getResNumber(self):
-        if self.res_number > TERMINAL_OFFSET:
+        if self.res_name in ("NTR", "CTR"):
             return self.res_number - TERMINAL_OFFSET
         return self.res_number
 

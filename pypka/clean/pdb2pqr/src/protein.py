@@ -219,6 +219,9 @@ class Protein:
                 currentchainID = atom.chainID
                 text.append("TER\n")
 
+            if not atom.resName:
+                continue
+
             if pdbfile == True:
                 text.append("%s\n" % atom.getPDBString())
             else:

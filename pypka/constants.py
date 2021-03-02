@@ -34,7 +34,7 @@ RNA_RESIDUES = {
 IONS = ["CL-", "NA+"]
 
 # Tautomers and residues
-TERMINAL_OFFSET = 2000
+TERMINAL_OFFSET = 5000
 
 TITRABLETAUTOMERS = {
     "LYS": 3,

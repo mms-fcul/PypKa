@@ -50,15 +50,11 @@ __author__ = "Todd Dolinsky, Nathan Baker, Jens Nielsen, Paul Czodrowski, Jan Je
 
 import sys, os
 from main import mainCommand
-from main_cgi import mainCGI
+#from main_cgi import mainCGI
 from src.aconf import *
 
 __version__ = PDB2PQR_VERSION
 
 if __name__ == "__main__":
     """ Determine if called from command line or CGI """
-
-    if not os.environ.has_key("REQUEST_METHOD"):
-        mainCommand(sys.argv)
-    else:
-        mainCGI()
+    mainCommand(sys.argv)

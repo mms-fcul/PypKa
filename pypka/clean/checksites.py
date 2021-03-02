@@ -5,8 +5,8 @@ from copy import copy
 from config import Config
 from constants import *
 
-from .ffconverter import main_chains
-from .formats import new_pdb_line, read_gro_line, read_pdb_line
+from ffconverter import main_chains
+from formats import new_pdb_line, read_gro_line, read_pdb_line
 
 
 def identify_tit_sites(molecules, instanciate_sites=True):
@@ -43,6 +43,7 @@ def identify_tit_sites(molecules, instanciate_sites=True):
     sites_file = ""
     sites = {chain: [] for chain in molecules.keys()}
     chain_res = {chain: {} for chain in molecules.keys()}
+    skip_NTR = {chain: False for chain in molecules.keys()}
     last_res = None
     with open(Config.pypka_params["f_in"]) as f:
         nline = 0
@@ -52,11 +53,10 @@ def identify_tit_sites(molecules, instanciate_sites=True):
             nline += 1
             if "ATOM " == line[0:5]:
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
-
-                if line[26] != " ":
+                insertion_code = line[26].strip()
+                if insertion_code:
                     continue
-                # if chain == ' ':
-                #    chain = 'A'
+
                 last_res = resnumb
                 last_chain = chain
                 chain_sites = []
@@ -67,7 +67,10 @@ def identify_tit_sites(molecules, instanciate_sites=True):
 
                     if resname in PROTEIN_RESIDUES or resname in TITRABLERESIDUES:
                         if resnumb not in chain_sites:
-                            if not chain_res[chain]:
+                            if not chain_res[chain] and not skip_NTR[chain]:
+                                if resname == "PRO":
+                                    skip_NTR[chain] = True
+                                    continue
                                 sites_file += SitesFileLine(chain, resnumb, "NTR")
                                 # add2chain(chain, chain_res, str(resnumb), "NTR")
                                 if instanciate_sites:
@@ -237,7 +240,9 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
     cur_atoms = []
     prev_resnumb = None
     prev_resname = None
+    prev_chain = None
     last_chain = None
+    chain = None
     with open(filename) as f:
         nline = 0
         f_lines = f.readlines()
@@ -245,8 +250,6 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
         for line in f_lines:
             resname = None
             nline += 1
-
-            chain = None
 
             if "ATOM " == line[0:5]:
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
@@ -257,7 +260,6 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                     molecule = molecules[last_chain]
                     sites = chains_res[last_chain]
                     last_molecule = molecule
-                    last_chain = chain
 
                 if nline == maxnlines:
                     cur_atoms.append(aname)
@@ -266,13 +268,14 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 resnumb += 1
 
             if (
-                prev_resnumb != resnumb or nline == maxnlines
+                prev_resnumb != resnumb or nline == maxnlines or chain != last_chain
             ) and prev_resnumb is not None:
+
                 if nline == maxnlines:
                     prev_resnumb = copy(resnumb)
                     resnumb = "None"
 
-                if chain in molecules:
+                if last_chain in molecules:
                     if (
                         prev_resname in TITRABLERESIDUES
                         or (prev_resnumb == molecule.NTR or resnumb == molecule.NTR)
@@ -282,8 +285,12 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                             check_site(prev_resname, cur_atoms, ter="NTR")
                             prev_resnumb = None
                         # Dealing with the last residue and CTR
-                        elif prev_resnumb == molecule.CTR and resnumb != molecule.CTR:
+                        elif (
+                            prev_resnumb == molecule.CTR and resnumb != molecule.CTR
+                        ) or (prev_resnumb == molecule.CTR and chain != last_chain):
                             check_site(prev_resname, cur_atoms, ter="CTR")
+                            prev_resnumb = None
+                            last_chain = None
                         # Dealing with the previous residue
                         elif (
                             prev_resnumb is not None
@@ -312,6 +319,7 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 cur_atoms = [aname]
                 prev_resnumb = resnumb
                 prev_resname = resname
+                last_chain = chain
             elif resnumb is not None:
                 cur_atoms.append(aname)
                 if prev_resname in ("NTR", "CTR") and prev_resname != resname:

@@ -1,0 +1,9 @@
+structure       = 4NU1.pdb
+epsin           = 15
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+#sites = all
+sites_A         = 383C
+sites_B         = 383N
+output = pKas.out

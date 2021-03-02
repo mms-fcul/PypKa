@@ -11,7 +11,7 @@ in the `4lzt.pdb structure <https://files.rcsb.org/download/4LZT.pdb>`_ download
 
 .. code-block:: python
    
-   from pypka.pypka import Titration
+   from pypka import Titration
    
    params = {
     'structure'     : '4lzt.pdb',    

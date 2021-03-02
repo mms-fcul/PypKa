@@ -2,8 +2,8 @@ import argparse
 import os
 from copy import copy
 
-import config
-import log
+import config, log
+from main import Titration
 from __init__ import __version__
 
 
@@ -115,3 +115,11 @@ python3 pypka.py params.dat --debug""",
     sites, parameters = read_settings(args.settings)
 
     return sites, parameters, args.debug
+
+
+def CLI():
+    # Read command line arguments
+    sites, parameters, debug = check_cli_args()
+
+    Titration(parameters, sites=sites, debug=debug)
+    print("CLI exited successfully")

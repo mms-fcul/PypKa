@@ -28,6 +28,21 @@
     <useresname>HIS</useresname>
   </residue>
   <residue>
+    <name>ILE</name>
+    <atom>
+        <name>CD1</name>
+        <useatomname>CD</useatomname>
+    </atom>
+  </residue>
+  <residue>
+    <name>CYS</name>
+    <useresname>CY0</useresname>
+    <atom>
+        <name>HG</name>
+        <useatomname>HG1</useatomname>
+    </atom>
+  </residue>
+    <residue>
     <name>C(...)$</name>
     <useresname>$group</useresname>
   </residue>
@@ -85,21 +100,6 @@
     <atom>
       <name>HT3</name>
       <useatomname>H3</useatomname>
-    </atom>
-  </residue>
-  <residue>
-    <name>ILE</name>
-    <atom>
-        <name>CD1</name>
-        <useatomname>CD</useatomname>
-    </atom>
-  </residue>
-  <residue>
-    <name>CYS</name>
-    <useresname>CY0</useresname>
-    <atom>
-        <name>HG</name>
-        <useatomname>HG1</useatomname>
     </atom>
   </residue>    
 

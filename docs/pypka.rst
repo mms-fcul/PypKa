@@ -7,7 +7,9 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pypka.clean
    pypka.delphi4py
+   pypka.mc
 
 Submodules
 ----------
@@ -52,18 +54,18 @@ pypka.log module
    :undoc-members:
    :show-inheritance:
 
-pypka.molecule module
----------------------
+pypka.main module
+-----------------
 
-.. automodule:: pypka.molecule
+.. automodule:: pypka.main
    :members:
    :undoc-members:
    :show-inheritance:
 
-pypka.pypka module
-------------------
+pypka.molecule module
+---------------------
 
-.. automodule:: pypka.pypka
+.. automodule:: pypka.molecule
    :members:
    :undoc-members:
    :show-inheritance:

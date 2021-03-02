@@ -1,12 +1,12 @@
 import os
 
-from clean.ffconverter import (
+from ffconverter import (
     AMBER_protomers,
     GROMOS_protomers,
     gromos2amber,
     mainchain_Hs,
 )
-from clean.formats import new_pdb_line, read_pdb_line, read_pqr_line
+from formats import new_pdb_line, read_pdb_line, read_pqr_line
 from config import Config
 from constants import *
 

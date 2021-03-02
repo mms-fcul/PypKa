@@ -1,12 +1,13 @@
 import os
 from copy import copy
+import subprocess
 
 import log
 from config import Config
 from constants import *
 
-from .ffconverter import *
-from .formats import (
+from ffconverter import *
+from formats import (
     correct_names,
     new_gro_line,
     new_pdb_line,
@@ -46,7 +47,7 @@ def inputPDBCheck(filename, sites, clean_pdb):
             nline += 1
             atom_line = False
             if filetype == "pdb":
-                if "ATOM " == line[0:5]:
+                if line.startswith("ATOM "):
                     atom_line = True
                     chain_length += 1
                     (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(
@@ -65,7 +66,7 @@ def inputPDBCheck(filename, sites, clean_pdb):
                         new_gro_body += new_gro_line(
                             anumb, aname, resname, resnumb, x / 10.0, y / 10, z / 10
                         )
-                elif "CRYST1" in line:
+                elif line.startswith("CRYST1"):
                     tmp = line.split()[1:4]
                     box = (float(tmp[0]), float(tmp[1]), float(tmp[2]))
                     new_gro_footer = "{0:10.5f}{1:10.5f}{2:10.5f}\n".format(
@@ -177,6 +178,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     logfile_rna = "LOG_pdb2pqr_rna"
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
+    # CYS will be turned into CY0
+    # All HIS will become fully protonated
     os.system(
         "python2 {0} {1} {2} --ff {3} --ffout {4} "
         "--drop-water -v --chain > {5} 2>&1 ".format(
@@ -193,19 +196,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     if automatic_sites:
         chains_res = identify_cter(inputpqr, molecules, chains_res)
-
-    # if rna_file:
-    #    os.system(
-    #        "python2 {0} {1} {2} --userff {3} --usernames {4} "
-    #        "--drop-water -v --chain > {5} 2>&1 ".format(
-    #            Config.pypka_params["pdb2pqr"],
-    #            rna_file,
-    #            rna_inputpqr,
-    #            Config.pypka_params["userff_rna"],
-    #            Config.pypka_params["usernames_rna"],
-    #            logfile_rna,
-    #        )
-    #    )
 
     if Config.pypka_params["f_structure_out"]:
         ff_out = Config.pypka_params["ff_structure_out"]
@@ -238,13 +228,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                         radius,
                     ) = read_pqr_line(line)
 
-                    if (
-                        # resname in RNA_RESIDUES
-                        # or resname in DNA_RESIDUES
-                        # or resname in ("DT3", "RA5")
-                        chain
-                        not in chains_res
-                    ):
+                    if chain not in chains_res:
                         continue
                     elif (
                         chain in chains_res
@@ -387,7 +371,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                 chain in CYS_bridges and res in CYS_bridges[chain]
             ):
                 continue
-            sites_addHtaut += "{0}-{1}-{2},".format(
+            sites_addHtaut += "{0}--{1}--{2},".format(
                 res, chains_res[chain][res], chain.replace(" ", "_")
             )
 
@@ -399,19 +383,30 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     else:
         logfile = "LOG_addHtaut"
-        script_dir = Config.pypka_params["script_dir"]
+        script_dir = os.path.dirname(os.path.abspath(__file__))
 
-        os.system(
-            "{}/addHtaut cleaned.pqr {} {} > {} 2> {}".format(
+        # TODO rewrite addHtaut as python module
+        try:
+            cmd = "{}/addHtaut cleaned.pqr {} {} > {}".format(
                 script_dir,
                 Config.pypka_params["ff_family"],
                 sites_addHtaut,
                 outputpqr,
                 logfile,
             )
-        )
-
-        log.checkDelPhiErrors(logfile, "addHtaut")
+            addhtaut_run = subprocess.run(
+                cmd,
+                shell=True,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        except subprocess.CalledProcessError as e:
+            raise Exception(
+                "addHtaut did not run successfully\nMessage: {}".format(
+                    e.stderr.decode("ascii")
+                )
+            )
 
     with open(outputpqr) as f:
         content = f.read()
@@ -491,7 +486,7 @@ def get_cys_bridges(f_pdb2pqr_log, molecules):
 def identify_cter(inputpqr, molecules, chains_res):
     with open(inputpqr) as f:
         for line in f:
-            if "ATOM " == line[0:5]:
+            if line.startswith("ATOM "):
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
                 if (
                     "CTR" not in chains_res
@@ -507,9 +502,12 @@ def identify_cter(inputpqr, molecules, chains_res):
                     )
                     and chain in chains_res
                     and str(resnumb) not in chains_res[chain]
+                    and resname in [*TITRABLERESIDUES, *PROTEIN_RESIDUES]
                 ):
                     chains_res[chain][str(resnumb)] = "CTR"
                     molecules[chain].CTR = resnumb
+                    sID = molecules[chain].addSite(resnumb + TERMINAL_OFFSET)
+                    molecules[chain].addTautomers(sID, TITRABLETAUTOMERS["CTR"], "CTR")
     return chains_res
 
 
@@ -524,6 +522,11 @@ def remove_membrane_n_rna(pdbfile, outfile):
 
                 if chain == " ":
                     chain = "_"  # workaround to deal with pdb2pqr
+                insertion_code = line[26].strip()
+                if insertion_code:
+                    continue
+                if aname[0] == "H" and Config.pypka_params["remove_hs"]:
+                    continue
 
                 if resname not in to_remove:
                     if resname in PDB_RNA_RESIDUES:
@@ -536,6 +539,9 @@ def remove_membrane_n_rna(pdbfile, outfile):
                 #    protein_lines += new_pdb_line(
                 #        anumb, aname, resname, resnumb, x, y, z, chain=chain
                 #    )
+
+            elif line.startswith("ENDMDL"):
+                break
 
     with open(outfile, "w") as f_new:
         f_new.write(protein_lines)

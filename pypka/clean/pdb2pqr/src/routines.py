@@ -135,17 +135,32 @@ class Routines:
             else:
                 resname = residue.name
 
+            residue.blockname = None
             for atom in residue.getAtoms():
-                rname, aname = forcefield.getNames(resname, atom.name)
+                rname, aname = forcefield.getNames(resname, atom.name)                
+
                 if resname not in ['LIG', 'WAT', 'ACE', 'NME'] and rname != None:
                     try:
-                        if (residue.isNterm or residue.isCterm) and rname != residue.name:
-                            rname = residue.name
+                        if residue.isNterm and residue.name == 'PRO' and rname == 'NT3' and aname in ('H1', 'H2'):
+                            rname = 'DELETE'
+                            aname = None
+
+                        elif (residue.isNterm or residue.isCterm) and rname != residue.name:                            
+                            if residue.blockname:
+                                rname = residue.blockname
+                            elif rname == 'CY0':
+                                residue.blockname = rname
+                            else:
+                                rname = residue.name
                     except AttributeError:
                         pass
                 if aname != None and rname != None:
                     atom.resName = rname
                     atom.name = aname
+                elif rname == 'DELETE':
+                    atom.resName = None
+                    atom.name = None
+                
 
         self.write("Done.\n")
 
@@ -175,6 +190,7 @@ class Routines:
             for atom in residue.getAtoms():
                 atomname = atom.get("name")
                 charge, radius = forcefield.getParams(resname, atomname)
+
                 if charge != None and radius != None:
                     atom.set("ffcharge", charge)
                     atom.set("radius", radius)
@@ -416,7 +432,7 @@ class Routines:
         if isinstance(res0, Amino):
             res0.set("isNterm", 1)
             if isinstance(res0, PRO):
-                self.applyPatch("NEUTRAL-NTERM", res0)
+                self.applyPatch("NEUTRAL-NTERM", res0) # MODIFIED
             elif neutraln:
                 self.applyPatch("NEUTRAL-NTERM", res0)
             else:
@@ -832,7 +848,7 @@ class Routines:
                     residue.createAtom(atomname, newcoords)
                     count += 1
                 else:
-                    self.write("Couldn't rebuild %s in %s!\n" % (atomname, residue), 1)
+                    self.write("Couldn't rebuild %s in %s!\n" % (atomname, residue), 1)            
 
         self.write(" Added %i hydrogen atoms.\n" % count)
         

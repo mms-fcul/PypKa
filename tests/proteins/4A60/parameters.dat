@@ -1,0 +1,7 @@
+structure       = 4A60.pdb
+epsin           = 15
+ionicstr        = 0.1
+pbc_dimensions  = 0
+ncpus           = -1
+sites           = all
+output = pKas.out
