@@ -2,11 +2,10 @@
 line-length = 88
 target-version = ['py37']
 include = '\.pyi?$'
-exclude = '''
-/pypka/clean/pdb2pqr
-/pypka/_version.py
-setup.py
-'''
+exclude = '''(
+  _version.py
+| clean/pdb2pqr/
+)'''
 
 [tool.isort]
 profile = "black"
@@ -24,3 +23,31 @@ deps=
 commands=
     py{35,36,37,38,39}: pytest test.py
 """
+[tool.poetry]
+name = "pypka"
+version = "2.1.1"
+description = "A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism"
+authors = ["Pedro Reis <pdreis@fc.ul.pt>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+psutil = "*"
+numpy = "*"
+
+[tool.poetry.dev-dependencies]
+recommonmark = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+flake8 = "*"
+mypy = "*"
+bump2version = "*"
+pytest = "*"
+coverage = "*"
+pytest-cov = "*"
+isort = "*"
+tox = "*"
+black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

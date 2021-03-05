@@ -159,6 +159,7 @@ class Titration:
 
         f_out = "delphi_in_stmod.pdb"
         self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
+
         if not Config.debug and os.path.isfile("TMP.pdb"):
             os.remove("TMP.pdb")
 
@@ -845,7 +846,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
         "epsin": 15,
         "ser_thr_titration": ser_thr_titration,
     }
-    Config.storeParams("", log.Log(), debug, parameters)
+    Config.storeParams("", log.Log(), debug, parameters, "all")
 
     chains = get_chains_from_file(pdb)
     sites = {chain: "all" for chain in chains}

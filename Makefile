@@ -59,11 +59,11 @@ format:
 	black pypka
 
 test: ## run tests quickly with the default Python
-	cd tests && pytest test.py
+	cd tests && python3 -m pytest test.py
 
 coverage: ## check code coverage quickly with the default Python
-	cd tests && pytest --cov=../pypka test.py
-	cd tests && coverage report -m
+	cd tests && python3 -m pytest --cov=../pypka test.py
+	cd tests && python3 -m coverage report -m
 	cd tests && coverage html
 	$(BROWSER) htmlcov/index.html
 

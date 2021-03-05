@@ -16,6 +16,8 @@ LOG*
 *.prm
 P_*.pdb
 
+poetry.lock
+
 pypka/build/
 .pytest_cache/
 dist/

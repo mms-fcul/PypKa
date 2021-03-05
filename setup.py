@@ -6,5 +6,5 @@ setup(
     packages=["pypka"],
     include_package_data=True,
     setup_requires=["setuptools_scm"],
-    version='2.0.1',
+    version='2.1.1',
 )

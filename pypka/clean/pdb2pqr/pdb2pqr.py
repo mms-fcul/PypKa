@@ -50,7 +50,8 @@ __author__ = "Todd Dolinsky, Nathan Baker, Jens Nielsen, Paul Czodrowski, Jan Je
 
 import sys, os
 from main import mainCommand
-#from main_cgi import mainCGI
+
+# from main_cgi import mainCGI
 from src.aconf import *
 
 __version__ = PDB2PQR_VERSION

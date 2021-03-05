@@ -513,8 +513,8 @@ def identify_cter(inputpqr, molecules, chains_res):
 
 def remove_membrane_n_rna(pdbfile, outfile):
     protein_lines = ""
-    # rna_lines = ""
-    to_remove = LIPID_RESIDUES
+    to_remove = LIPID_RESIDUES + list(Config.pypka_params.LIPIDS.values())
+
     with open(pdbfile) as f:
         for line in f:
             if line.startswith("ATOM"):
@@ -534,11 +534,6 @@ def remove_membrane_n_rna(pdbfile, outfile):
                     protein_lines += new_pdb_line(
                         anumb, aname, resname, resnumb, x, y, z, chain=chain
                     )
-                # elif resname in PDB_RNA_RESIDUES:
-                #    resname = PDB_RNA_RESIDUES[resname]
-                #    protein_lines += new_pdb_line(
-                #        anumb, aname, resname, resnumb, x, y, z, chain=chain
-                #    )
 
             elif line.startswith("ENDMDL"):
                 break

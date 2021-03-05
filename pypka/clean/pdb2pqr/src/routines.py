@@ -137,7 +137,9 @@ class Routines:
 
             residue.blockname = None
             for atom in residue.getAtoms():
-                rname, aname = forcefield.getNames(resname, atom.name)                
+                rname, aname = forcefield.getNames(resname, atom.name)
+
+                print(residue.name, atom.name, rname, aname)
 
                 if resname not in ['LIG', 'WAT', 'ACE', 'NME'] and rname != None:
                     try:
@@ -154,13 +156,16 @@ class Routines:
                                 rname = residue.name
                     except AttributeError:
                         pass
+                else:
+                    rname = 'DELETE'
+
                 if aname != None and rname != None:
                     atom.resName = rname
                     atom.name = aname
                 elif rname == 'DELETE':
                     atom.resName = None
                     atom.name = None
-                
+
 
         self.write("Done.\n")
 

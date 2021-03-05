@@ -171,6 +171,39 @@ class Tautomer(object):
             point[1] -= box_y
         return point
 
+    @staticmethod
+    def read_atom_details(atinf, atom_position):
+        atinf_str = atinf[atom_position].value.decode("ascii")
+        aname = atinf_str[:5].strip()
+        resname = atinf_str[6:10].strip()
+        chain = atinf_str[10:11].strip()
+        resnumb = int(atinf_str[11:].strip())
+        return aname, resname, chain, resnumb
+
+    @staticmethod
+    def read_atom_positions(p_atpos, atom_position):
+        x = float(p_atpos[atom_position][0])
+        y = float(p_atpos[atom_position][1])
+        z = float(p_atpos[atom_position][2])
+        return x, y, z
+
+    @staticmethod
+    def regular_delphi_run(delphimol, acent, filename, logfile, ibctyp=None):
+        delphimol.runDelPhi(
+            scale=Config.delphi_params["scaleM"],
+            nonit=0,
+            nlit=500,
+            relpar=0,
+            relfac=0,
+            acent=acent,
+            pbx=False,
+            pby=False,
+            ibctyp=ibctyp,
+            debug=Config.debug,
+            filename=filename,
+            outputfile=logfile,
+        )
+
     def setDetailsFromWholeMolecule(self):
         """Set DelPhi parameters to run a calculation of a whole molecule (all sites neutral, except one)."""
         (
@@ -201,14 +234,12 @@ class Tautomer(object):
 
         for atom_position in range(delphimol.natoms):
             aID = atom_position + 1
-            atinf_str = atinf[atom_position].value.decode("ascii")
-            aname = atinf_str[:5].strip()
-            resname = atinf_str[6:10].strip()
-            chain = atinf_str[10:11].strip()
-            resnumb = int(atinf_str[11:].strip())
-            x = float(p_atpos[atom_position][0])
-            y = float(p_atpos[atom_position][1])
-            z = float(p_atpos[atom_position][2])
+
+            aname, resname, chain, resnumb = self.read_atom_details(
+                atinf, atom_position
+            )
+            x, y, z = self.read_atom_positions(p_atpos, atom_position)
+
             pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=chain)
 
             if atom_position in lookup_atoms_keys:
@@ -290,19 +321,13 @@ class Tautomer(object):
         for i in range(natoms):
             aID = i + 1
 
-            atinf_str = delphimol.atinf[i].value.decode("ascii")
-            aname = atinf_str[:5].strip()
-            resname = atinf_str[6:10].strip()
-            chain = atinf_str[10:11].strip()
-            resnumb = int(atinf_str[11:].strip())
+            aname, resname, chain, resnumb = self.read_atom_details(delphimol.atinf, i)
+            x, y, z = self.read_atom_positions(delphimol.p_atpos, i)
 
             if "-" in aname[0]:
                 aname = aname[1:]
                 resname = "PBC"
                 resnumb = -666
-            x = float(delphimol.p_atpos[i][0])
-            y = float(delphimol.p_atpos[i][1])
-            z = float(delphimol.p_atpos[i][2])
             pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=chain)
 
         box = Config.pypka_params.box
@@ -392,15 +417,11 @@ class Tautomer(object):
 
                 aID = int(site_atom_position)
 
-                atinf_str = atinf[site_atom_position].value.decode("ascii")
-                aname = atinf_str[:5].strip()
-                resname = atinf_str[6:10].strip()
-                chain = atinf_str[10:11].strip()
-                resnumb = int(atinf_str[11:].strip())
+                aname, resname, chain, resnumb = self.read_atom_details(
+                    atinf, site_atom_position
+                )
+                x, y, z = self.read_atom_positions(p_atpos, site_atom_position)
 
-                x = round(p_atpos[site_atom_position][0], 3)
-                y = round(p_atpos[site_atom_position][1], 3)
-                z = round(p_atpos[site_atom_position][2], 3)
                 pdb_text += new_pdb_line(
                     aID, aname, resname, resnumb, x, y, z, chain=chain
                 )
@@ -510,20 +531,8 @@ class Tautomer(object):
         if Config.debug:
             print(("started", self.name, self.site.res_number, "modelcompound"))
 
-        delphimol.runDelPhi(
-            scale=Config.delphi_params["scaleM"],
-            nonit=0,
-            nlit=500,
-            relpar=0,
-            relfac=0,
-            acent=acent,
-            pbx=False,
-            pby=False,
-            debug=Config.debug,
-            filename=filename,
-            ibctyp=ibctyp,
-            outputfile=logfile,
-        )
+        self.regular_delphi_run(delphimol, acent, filename, logfile, ibctyp=ibctyp)
+
         if Config.debug:
             print(("ended", self.name, self.site.res_number, "modelcompound"))
 
@@ -621,19 +630,7 @@ class Tautomer(object):
                 outputfile=logfile,
             )
         else:
-            delphimol.runDelPhi(
-                scale=Config.delphi_params["scaleM"],
-                nonit=0,
-                nlit=500,
-                relpar=0,
-                relfac=0,
-                acent=acent,
-                pbx=False,
-                pby=False,
-                debug=Config.debug,
-                filename=filename,
-                outputfile=logfile,
-            )
+            self.regular_delphi_run(delphimol, acent, filename, logfile)
 
         if Config.debug:
             print(("ended", self.name, self.site.res_number, "wholeprotein"))

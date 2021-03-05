@@ -3,8 +3,6 @@
 from .readFiles import readFiles as readF
 from .rundelphi import rundelphi as DelPhi
 from ctypes import c_int, c_double, c_float, c_char, addressof, memmove, sizeof
-import os
-import sys
 
 # if using parallel version don't forget to set system-wide variables
 # export OMP_NUM_THREADS=8
@@ -326,6 +324,19 @@ class DelPhi4py(object):
         if ibctyp != None:
             self.ibctyp = ibctyp
 
+        if scale_prefocus or not focusing:
+            nonit = self.nonit
+            relfac = self.relfac
+            relpar = self.relpar
+            pbx = self.pbx
+            pby = self.pby
+
+            self.sitpot = self.float_type * self.natoms
+            self.p_sitpot = self.sitpot()
+            self.i_sitpot = addressof(self.p_sitpot)
+
+            self.p_sitpot_list = []
+
         if scale_prefocus:
             scale = float(scale_prefocus)
             scale_prefocus = scale
@@ -339,18 +350,6 @@ class DelPhi4py(object):
 
             in_frc = "self"
             out_phi = True
-
-            nonit = self.nonit
-            relfac = self.relfac
-            relpar = self.relpar
-            pbx = self.pbx
-            pby = self.pby
-
-            self.sitpot = self.float_type * self.natoms
-            self.p_sitpot = self.sitpot()
-            self.i_sitpot = addressof(self.p_sitpot)
-
-            self.p_sitpot_list = []
 
             self.len_phimap = self.igrid * self.igrid * self.igrid
             self.phimap4 = c_float * self.len_phimap
@@ -387,22 +386,10 @@ class DelPhi4py(object):
             in_frc = ""
             out_phi = False
 
-            nonit = self.nonit
-            relfac = self.relfac
-            relpar = self.relpar
-            pbx = self.pbx
-            pby = self.pby
-
-            self.sitpot = self.float_type * self.natoms
-            self.p_sitpot = self.sitpot()
-            self.i_sitpot = addressof(self.p_sitpot)
-
             self.len_phimap = 0
             self.phimap4 = c_float * self.len_phimap
             self.p_phimap4 = self.phimap4()
             self.i_phimap4 = addressof(self.p_phimap4)
-
-            self.p_sitpot_list = []
 
         if self.debug or debug:
             output = self.__str__()

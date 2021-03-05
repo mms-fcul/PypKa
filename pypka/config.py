@@ -354,6 +354,15 @@ class PypKaConfig(ParametersDict):
         else:
             raise Exception("Forcefield {0} not supported".format(ffID))
 
+        if not os.path.isfile(self["f_crg"]):
+            raise Exception(
+                "DelPhi charges database file {} does not exist.".format(self["f_crg"])
+            )
+        elif not os.path.isfile(self["f_siz"]):
+            raise Exception(
+                "DelPhi radii database file {} does not exist.".format(self["f_siz"])
+            )
+
     def define_lipids(self, lipids):
         for lipid in lipids:
             resname = lipids[lipid]
