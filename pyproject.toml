@@ -25,9 +25,19 @@ commands=
 """
 [tool.poetry]
 name = "pypka"
-version = "2.1.1"
+version = "2.1.2"
 description = "A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism"
 authors = ["Pedro Reis <pdreis@fc.ul.pt>"]
+license = "LGPLv3"
+readme = "README.md"
+homepage = "https://pypka.org"
+repository = "https://github.com/mms-fcul/PypKa"
+documentation = "https://pypka.readthedocs.io/en/latest/"
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering"
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"

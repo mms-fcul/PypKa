@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 100
+exclude = 
+	.git,
+	__pycache__,
+	docs,
+	tests,
+	build,
+	dist,
+	pypka/clean/pdb2pqr
+max-complexity = 10

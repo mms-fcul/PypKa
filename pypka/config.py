@@ -266,6 +266,7 @@ class PypKaConfig(ParametersDict):
         # Preprocessing parameters
         self.ffinput = "GROMOS"
         self.clean_pdb = True
+        self.pdb2pqr_h_opt = True
         self.remove_hs = True
         self.keep_ions = False
         self.ser_thr_titration = True
@@ -299,6 +300,7 @@ class PypKaConfig(ParametersDict):
             "cutoff": float,
             "slice": float,
             "clean_pdb": bool,
+            "pdb2pqr_h_opt": bool,
             "remove_hs": bool,
             "keep_ions": bool,
             "ser_thr_titration": bool,

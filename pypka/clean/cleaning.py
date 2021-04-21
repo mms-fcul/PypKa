@@ -182,13 +182,14 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     # All HIS will become fully protonated
     os.system(
         "python2 {0} {1} {2} --ff {3} --ffout {4} "
-        "--drop-water -v --chain > {5} 2>&1 ".format(
+        "--drop-water -v --chain {6} > {5} 2>&1 ".format(
             Config.pypka_params["pdb2pqr"],
             Config.pypka_params["pdb2pqr_inputfile"],
             inputpqr,
             Config.pypka_params["ffinput"],
             Config.pypka_params["ff_family"],
             logfile,
+            "" if Config.pypka_params["pdb2pqr_h_opt"] else "--noopt",
         )
     )
 

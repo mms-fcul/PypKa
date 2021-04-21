@@ -5,7 +5,7 @@ from copy import copy
 from config import Config
 from constants import *
 
-from ffconverter import main_chains
+from ffconverter import main_chains, CHARMM_protomers
 from formats import new_pdb_line, read_gro_line, read_pdb_line
 
 
@@ -64,6 +64,11 @@ def identify_tit_sites(molecules, instanciate_sites=True):
                 if chain in molecules.keys():
                     molecule = molecules[chain]
                     chain_sites = chain_res[chain]
+
+                    if Config.pypka_params["ffinput"] == "CHARMM":
+                        for can_res, charmm_res in CHARMM_protomers.items():
+                            if resname in charmm_res:
+                                resname = can_res
 
                     if resname in PROTEIN_RESIDUES or resname in TITRABLERESIDUES:
                         if resnumb not in chain_sites:
