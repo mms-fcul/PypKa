@@ -97,6 +97,9 @@ def inputPDBCheck(filename, sites, clean_pdb):
                     and resnumb not in chains_res[chain]
                     and str(resnumb) in sites[chain]
                 ):
+                    if Config.pypka_params["ffinput"] == "CHARMM":
+                        if resname in ("HSD", "HSE", "HSP"):
+                            resname = "HIS"
                     chains_res[chain][resnumb] = resname
 
     # if filetype == 'pdb' and not clean_pdb:
@@ -285,6 +288,11 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                         resnumb, resname, aname, sites_numbs, NTR_numb, CTR_numb
                     )
                     resnumb_max = resnumb
+
+                    #if resname == "CY0":
+                    #    resname = "CYS"
+                    #    if aname == "HG1":
+                    #        continue
 
                     if resnumb in (NTR_numb, CTR_numb):
                         termini_trigger = True
@@ -529,6 +537,10 @@ def remove_membrane_n_rna(pdbfile, outfile):
                 if aname[0] == "H" and Config.pypka_params["remove_hs"]:
                     continue
 
+                if Config.pypka_params["ffinput"] == "CHARMM":
+                    if resname in ("HSD", "HSE"):
+                        resname = "HSP"
+
                 if resname not in to_remove:
                     if resname in PDB_RNA_RESIDUES:
                         resname = PDB_RNA_RESIDUES[resname]
@@ -630,7 +642,7 @@ def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=F
                     if resname in LIPID_RESIDUES:
                         last_anumb += 1
                         new_file_body += new_pdb_line(
-                            last_anumb, aname, resname, resnumb, x, y, z, chain=chain
+                            last_anumb, aname, resname, resnumb, x, y, z, chain=" "
                         )
 
                     if resname in list(Config.pypka_params.LIPIDS.values()):
@@ -648,7 +660,7 @@ def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=F
                                 x,
                                 y,
                                 z,
-                                chain=chain,
+                                chain=" ",
                             )
                 if keep_ions and aname in IONS and resname == aname:
                     last_anumb += 1

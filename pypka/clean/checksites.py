@@ -375,7 +375,7 @@ def check_integrity(resname, res_atoms, ter=False, site=True):
 
     if ter:
         st = "{0}/{1}/sts/{2}tau1.st".format(
-            Config.pypka_params["script_dir"], Config.pypka_params["ffID"], ter
+            Config.pypka_params["ffs_dir"], Config.pypka_params["ffID"], ter
         )
         res_atoms_st = read_anames(st)
         res_atoms, integrity_ter = pop_atoms(res_atoms_st, res_atoms)
@@ -399,7 +399,7 @@ def check_integrity(resname, res_atoms, ter=False, site=True):
             print(("i", integrity))
         if integrity is not False:
             filename = "{0}/{1}/sts/{2}tau1.st".format(
-                Config.pypka_params["script_dir"], Config.pypka_params["ffID"], resname
+                Config.pypka_params["ffs_dir"], Config.pypka_params["ffID"], resname
             )
             res_atoms_st = read_anames(filename)
             res_atoms, integrity = pop_atoms(res_atoms_st, res_atoms)
@@ -541,7 +541,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                 parts = line.split()
                 box = [float(i) for i in parts[1:4]]
 
-    if box == [0.1, 0.1, 0.1]:
+    if box == [1.0, 1.0, 1.0]:
         box = max_box
 
     if Config.pypka_params["box"]:

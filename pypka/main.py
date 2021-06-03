@@ -149,7 +149,16 @@ class Titration:
                 cleanPDB(
                     self.molecules, chains_res, inputpqr, outputpqr, automatic_sites
                 )
+                # print(len(self.get_all_sites()["A"]), len(chains_res["A"]))
+                # for i in self.get_all_sites()["A"]:
+                #    # if i.res_number not in (chains_res["A"]):
+                #    print(i.res_name, i.res_number)
+
                 create_tit_sites(chains_res, TMPpdb=True)
+                # for i in self.get_all_sites()["A"]:
+                #    print(i.res_name, i.res_number)
+                # print(len(self.get_all_sites()["A"]))
+                # exit()
                 f_in = "TMP.pdb"
         else:
             f_format = Config.pypka_params["f_in_extension"]

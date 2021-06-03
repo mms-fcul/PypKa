@@ -96,7 +96,6 @@ IGNORED_PARAMS = [
     "tmpsites",
     "pid",
     "file_dir",
-    "script_dir",
     "pdb2pqr",
     "userff",
     "usernames",

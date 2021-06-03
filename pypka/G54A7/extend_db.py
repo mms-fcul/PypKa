@@ -17,6 +17,21 @@ old_crg_db = "DataBaseT_old.crg"  # NTR and CTR charges are copied from here
 ignore_list = ()
 
 ### MAIN ###
+
+# when adding new titratable residues please include them here
+sizes = {
+    "HI2": ("HI0", "HI1"),
+    "AS4": ("AS0", "AS1", "AS2", "AS3"),
+    "LY3": ("LY0", "LY1", "LY2"),
+    "GL4": ("GL0", "GL1", "GL2", "GL3"),
+    "TY2": ("TY0", "TY1"),
+    "CY2": ("CY0", "CY1"),
+    "GD4": ("GD0", "GD1", "GD2", "GD3"),
+    "PA4": ("PA0", "PA1", "PA2", "PA3"),
+    "AR4": ("AR0", "AR1", "AR2", "AR3"),
+    "PJ2": ("PJ0", "PJ1"),
+}
+
 rules = {
     "NTR": {
         "N": "nl",
@@ -139,6 +154,11 @@ rules["LYS"] = db_res["LY3"]
 rules["GLU"] = db_res["GL4"]
 rules["TYR"] = db_res["TY2"]
 rules["CYS"] = db_res["CYS2"]
+rules["ARG"] = db_res["AR4"]
+
+for ref, taus in sizes.items():
+    for tau in taus:
+        db_res[tau] = db_res[ref]
 
 # rules_crg["NTR"] = db_charges["NT3"]
 # rules_crg["CTR"] = db_charges["CT4"]
@@ -148,6 +168,7 @@ rules_crg["LYS"] = db_charges["LY3"]
 rules_crg["GLU"] = db_charges["GL4"]
 rules_crg["TYR"] = db_charges["TY2"]
 rules_crg["CYS"] = db_charges["CYS2"]
+rules_crg["ARG"] = db_charges["AR4"]
 
 # c6, c12 = db_lj[water_atype.lower()]
 # water_radius = radius_from_lennard(c6, c12, rt=rt, water=True)
@@ -177,7 +198,7 @@ with open(old_siz_db) as f:
         sigma, epsilon = db_lj[atype]
 
         radius = radius_from_lennard(sigma, epsilon, rt=rt)
-        out = f"{aname:>4}  {resname:3} {radius:6.3f}\n"
+        out = f"{aname:<4}  {resname:3} {radius:6.3f}\n"
 
         new_siz += out
 
@@ -211,7 +232,7 @@ with open(old_crg_db) as f:
             print(aname, resname, "ignored on CRG")
             continue
 
-        out = f"{aname:>4}  {resname:8} {charge:6.3f}\n"
+        out = f"{aname:<4}  {resname:8} {charge:6.3f}\n"
 
         new_crg += out
 

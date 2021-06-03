@@ -51,7 +51,7 @@ def read_settings(filename):
             else:
                 chain = " "
             sites_str = parameters[param_name]
-            chain_sites = sites_str.split(", ")
+            chain_sites = [i.strip() for i in sites_str.split(",")]
             sites[chain] = chain_sites
 
     if " " in sites and sites[" "] == ["all"]:

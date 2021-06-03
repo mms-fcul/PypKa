@@ -63,7 +63,7 @@ class Tautomer(object):
         """
         tau_number = int(self.name[-1]) + 1
         fname = "{0}/{1}/sts/{2}tau{3}.st".format(
-            Config.pypka_params["script_dir"],
+            Config.pypka_params["ffs_dir"],
             Config.pypka_params["ffID"],
             res_name,
             tau_number,
@@ -228,6 +228,7 @@ class Tautomer(object):
             ) = self.getCenteringDetails()
         pdb_text = ""
         crg = "!crg file created by gen_files.awk\n" "atom__resnumbc_charge_\n"
+        siz = "!siz file created by gen_files.awk\n" "atom__res_radius_\n"
         new_atoms = []
 
         lookup_atoms_keys = Config.delphi_params.lookup_atoms.keys()
@@ -261,17 +262,9 @@ class Tautomer(object):
                 aname, resname, round(abs(p_chrgv4[atom_position]), 3), signal
             )
 
-            # for atom_name, atom_id, atom_position in molecule.iterAtoms():
-            #    aID = atom_position + 1
-            #    aname = str(atinf[atom_position].value.split()[0])
-            #    resname = str(atinf[atom_position].value.split()[1])
-            #    resnumb = int(atinf[atom_position].value.split()[2])
-            #    x = float(p_atpos[atom_position][0])
-            #    y = float(p_atpos[atom_position][1])
-            #    z = float(p_atpos[atom_position][2])
-            #    pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z)
-
-            #    print(pdb_text)
+            siz += "{0:<6}{1:<4} {2:0<5} \n".format(
+                aname, resname, round(abs(p_rad3[atom_position]), 3)
+            )
 
             # TODO: quick fix, should be done only once per site
             if Config.delphi_params["pbc_dim"] == 2:
@@ -365,6 +358,10 @@ class Tautomer(object):
                 "P_{1}-{0}.crg".format(self.name, self.site.res_number), "w"
             ) as f_new:
                 f_new.write(crg)
+            with open(
+                "P_{1}-{0}.siz".format(self.name, self.site.res_number), "w"
+            ) as f_new:
+                f_new.write(siz)
 
         return delphimol, acent
 

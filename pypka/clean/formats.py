@@ -84,9 +84,6 @@ def gro2pdb(f_in, f_out, save_box=False):
 
                 x, y, z = x * 10, y * 10, z * 10
 
-                if resname[-1] == "X" and Config.pypka_params.CpHMD_mode:
-                    resname = resname[:-1] + "0"
-
                 new_pdb_content += new_pdb_line(
                     anumb, aname, resname, resnumb, x, y, z, chain="A"
                 )

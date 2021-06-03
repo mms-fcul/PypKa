@@ -228,7 +228,7 @@ class PypKaConfig(ParametersDict):
 
         # Paths
         self.file_dir = os.path.dirname(os.path.abspath(__file__))
-        self.script_dir = os.path.dirname(__file__)
+        self.ffs_dir = os.path.dirname(__file__)
 
         # PDB2PQR
         self.pdb2pqr = "{0}/clean/pdb2pqr/pdb2pqr.py".format(self.file_dir)
@@ -309,6 +309,7 @@ class PypKaConfig(ParametersDict):
             "box": list,
             "CpHMD_mode": bool,
             "save_pdb": str,
+            "ffs_dir": str,
         }
 
     def set_structure_extension(self):
@@ -342,7 +343,7 @@ class PypKaConfig(ParametersDict):
             self["ncpus"] = 1
 
     def set_radii_charges_paths(self):
-        file_path = os.path.join(self["script_dir"], self["ffID"])
+        file_path = os.path.join(self["ffs_dir"], self["ffID"])
         if not self["f_crg"]:
             self["f_crg"] = "{}/DataBaseT.crg".format(file_path)
         if not self["f_siz"]:
@@ -396,17 +397,17 @@ class PypKaConfig(ParametersDict):
             self.log.raise_input_param_error("structure_output", message, "")
 
     def readTermini(self):
-        script_dir = self["script_dir"]
+        ffs_dir = self["ffs_dir"]
         ffID = self["ffID"]
         NTR_atoms = []
-        ntr_fname = "{}/{}/sts/NTRtau1.st".format(script_dir, ffID)
+        ntr_fname = "{}/{}/sts/NTRtau1.st".format(ffs_dir, ffID)
         with open(ntr_fname) as f:
             for line in f:
                 parts = line.split()
                 if len(parts) > 1:
                     NTR_atoms.append(parts[1].strip())
         CTR_atoms = []
-        ctr_fname = "{}/{}/sts/CTRtau1.st".format(script_dir, ffID)
+        ctr_fname = "{}/{}/sts/CTRtau1.st".format(ffs_dir, ffID)
         with open(ctr_fname) as f:
             for line in f:
                 parts = line.split()

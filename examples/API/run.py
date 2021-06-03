@@ -5,6 +5,7 @@ sys.path.insert(1, "../../")
 from pypka import Titration
 
 parameters = {
+    # "ffs_dir": "/home/pedror/MMS@FCUL/pypka/pypka/",
     "structure": "lyso.pdb",
     "convergence": 0.1,
     "pH": "0,14",
