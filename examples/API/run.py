@@ -26,7 +26,7 @@ parameters = {
 
 sites = {"A": ["1N", 1, 7, 15, 18, 35, 48, 52, 66, 87, 101, 119, "129C"]}
 
-pKa = Titration(parameters, sites=sites)
+pKa = Titration(parameters, sites=sites)  # , debug=True)
 # exit()
 
 # Run each step separately

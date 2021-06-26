@@ -242,7 +242,6 @@ class DelPhi4py(object):
 
     def readFiles(self, outputfile="/dev/null"):
         """ """
-
         self.rmaxdim = readF.delphi(
             self.igrid,
             self.scale,

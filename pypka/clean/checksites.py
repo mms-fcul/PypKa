@@ -146,6 +146,8 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
 
     def check_site(prev_resname, cur_atoms, ter=None):
         def correctResName(resname):
+            if resname in PROTEIN_RESIDUES:
+                return resname
             for res in REGULARTITRATINGRES:
                 if res[0:2] == resname[0:2]:
                     return res
@@ -432,8 +434,8 @@ def make_delphi_inputfile(f_in, f_out, molecules):
         elif resnumb == ctr_res and aname in Config.pypka_params["CTR_atoms"]:
             resname = "CTR"
             resnumb += TERMINAL_OFFSET
-            if aname == "C":
-                aname = "CT"
+            # if aname == "C":
+            #    aname = "CT"
         return resnumb, resname, aname
 
     def correct_res_names(molecule, resnumb, resname, aname):

@@ -289,7 +289,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                     )
                     resnumb_max = resnumb
 
-                    #if resname == "CY0":
+                    # if resname == "CY0":
                     #    resname = "CYS"
                     #    if aname == "HG1":
                     #        continue
@@ -297,6 +297,10 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
                     if resnumb in (NTR_numb, CTR_numb):
                         termini_trigger = True
 
+                if resname == "CYS":
+                    change_atoms = {"1CB": "CB", "1SG": "SG"}
+                    if aname in change_atoms.keys():
+                        aname = change_atoms[aname]
                 if (
                     aname in ("O1", "O2", "OT1", "OT2", "H1", "H2", "H3")
                     and not termini_trigger

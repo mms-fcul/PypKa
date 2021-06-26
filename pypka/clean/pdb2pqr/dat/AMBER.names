@@ -40,14 +40,14 @@
        <name>NCYS</name>
        <atom>
           <name>HG</name>
-          <useatomname>HSG</useatomname>
+          <useatomname>HG</useatomname>
        </atom>
    </residue>
    <residue>
        <name>CCYS</name> 
        <atom>
           <name>HG</name>
-          <useatomname>HSG</useatomname>
+          <useatomname>HG</useatomname>
        </atom>
    </residue>
    <residue>

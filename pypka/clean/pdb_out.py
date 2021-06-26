@@ -15,13 +15,12 @@ def write_output_structure(sites, molecules, delphi_input_content):
     def getProtomerResname(pdb_content, site, pH, ff_protomers):
         resnumb = site.getResNumber()
         resname = site.getName()
-        new_state, _ = site.getMostProbTaut(pH)
+        new_state, (state_prob, taut_prob) = site.getMostProbTaut(pH)
         new_state_i = new_state - 1
         for ff_resname, protomers in ff_protomers[resname].items():
             if new_state_i in protomers.keys():
                 new_resname = ff_resname
                 remove_hs = protomers[new_state_i]
-                state_prob, taut_prob = site.getTautProb(new_state, pH)
                 average_prot = site.getTitrationCurve()[pH]
                 if state_prob < 0.75:
                     warn = (
@@ -71,7 +70,7 @@ def write_output_structure(sites, molecules, delphi_input_content):
             new_resname = site.termini_resname
         if chain not in new_states:
             new_states[chain] = {}
-        new_states[resnumb] = (resname, new_state, new_resname, remove_hs)
+        new_states[chain][resnumb] = (resname, new_state, new_resname, remove_hs)
     new_pdb = pdb_content
     counter = 0
     tit_atoms = {}
@@ -82,12 +81,24 @@ def write_output_structure(sites, molecules, delphi_input_content):
                 tit_atoms[atom_numb] = molecule
             else:
                 other_atoms[atom_numb] = molecule
+
+    in_delphi_pdb = {}
     for line in delphi_input_content:
         if line.startswith("ATOM "):
             (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+            if chain not in in_delphi_pdb:
+                in_delphi_pdb[chain] = {}
+            if resnumb not in in_delphi_pdb[chain]:
+                in_delphi_pdb[chain][resnumb] = []
+            in_delphi_pdb[chain][resnumb].append(aname)
+
+    for line in delphi_input_content:
+        if line.startswith("ATOM "):
+            (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+
             if anumb in tit_atoms.keys():
                 molecule = tit_atoms[anumb]
-                (oldresname, new_state, resname, removeHs) = new_states[resnumb]
+                (oldresname, new_state, resname, removeHs) = new_states[chain][resnumb]
                 if aname in removeHs:
                     continue
                 if (
@@ -105,7 +116,7 @@ def write_output_structure(sites, molecules, delphi_input_content):
                 termini_site = molecule.sites[resnumb]
                 resnumb -= TERMINAL_OFFSET
                 if resnumb in molecule.sites.keys():
-                    _, ter_new_state, resname, ter_removeHs = new_states[resnumb]
+                    _, ter_new_state, resname, ter_removeHs = new_states[chain][resnumb]
                 else:
                     resname = termini_site.termini_resname
                 # print(new_pdb_line(anumb, aname, resname, resnumb, x, y, z).strip())
@@ -121,9 +132,10 @@ def write_output_structure(sites, molecules, delphi_input_content):
                     (aname, anumb, oldresname, chain, x, y, z) = mainchain_Hs[chain][
                         resnumb
                     ].pop()
-                    new_pdb += new_pdb_line(
-                        counter, aname, resname, resnumb, x, y, z, chain=chain
-                    )
+                    if aname not in in_delphi_pdb[chain][resnumb]:
+                        new_pdb += new_pdb_line(
+                            counter, aname, resname, resnumb, x, y, z, chain=chain
+                        )
                 del mainchain_Hs[chain][resnumb]
         elif not line.startswith("ENDMDL"):
             new_pdb += line

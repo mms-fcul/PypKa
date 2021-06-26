@@ -62,9 +62,8 @@ class Tautomer(object):
                        TYRtau2.st has charge set of TY1 and reference TY2
         """
         tau_number = int(self.name[-1]) + 1
-        fname = "{0}/{1}/sts/{2}tau{3}.st".format(
-            Config.pypka_params["ffs_dir"],
-            Config.pypka_params["ffID"],
+        fname = "{0}/{1}tau{2}.st".format(
+            Config.pypka_params["sts_path"],
             res_name,
             tau_number,
         )
@@ -77,8 +76,8 @@ class Tautomer(object):
                 cols = line.split()
                 if nline > 1:
                     atom_name = cols[1]
-                    if atom_name == "C" and res_name == "CTR":
-                        atom_name = "CT"
+                    # if atom_name == "C" and res_name == "CTR":
+                    #    atom_name = "CT"
                     # elif atom_name in ('O1', 'O2') and res_name == 'CTR':
                     #    atom_name = atom_name[0] + 'T' + atom_name[1]
                     charge_set1[atom_name] = float(cols[-2])

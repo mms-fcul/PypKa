@@ -11,8 +11,8 @@ water_atype = "OW"
 
 f_nonbonded = "ffG54a7pHtnb.itp"
 f_rtp = "ffG54a7pHt.rtp"
-old_siz_db = "DataBaseT_old.siz"
-old_crg_db = "DataBaseT_old.crg"  # NTR and CTR charges are copied from here
+old_siz_db = "DataBaseT_template.siz"
+old_crg_db = "DataBaseT_template.crg"  # NTR and CTR charges are copied from here
 
 ignore_list = ()
 
@@ -43,7 +43,7 @@ rules = {
         "O": "o",
     },
     "CTR": {
-        "CT": "c",
+        "C": "c",
         "O1": "om",
         "O2": "om",
         "HO11": "h",

@@ -259,6 +259,7 @@ class PypKaConfig(ParametersDict):
         self.f_siz = None
         self.ffID = "G54A7"
         self.ff_family = "GROMOS"
+        self.sts = "sts"
         self.NTR_atoms = None
         self.CTR_atoms = None
         self.LIPIDS = {}
@@ -310,6 +311,7 @@ class PypKaConfig(ParametersDict):
             "CpHMD_mode": bool,
             "save_pdb": str,
             "ffs_dir": str,
+            "sts": str,
         }
 
     def set_structure_extension(self):
@@ -352,6 +354,7 @@ class PypKaConfig(ParametersDict):
         ffID = Config.pypka_params["ffID"].lower()
         if "charmm36m" in ffID:
             self["ff_family"] = "CHARMM"
+            self["ffinput"] = "CHARMM"
         elif "g54a7" in ffID:
             self["ff_family"] = "GROMOS"
         else:
@@ -397,17 +400,17 @@ class PypKaConfig(ParametersDict):
             self.log.raise_input_param_error("structure_output", message, "")
 
     def readTermini(self):
-        ffs_dir = self["ffs_dir"]
-        ffID = self["ffID"]
+        self.sts_path = "{0}/{1}/{2}/".format(self.ffs_dir, self.ffID, self.sts)
+
         NTR_atoms = []
-        ntr_fname = "{}/{}/sts/NTRtau1.st".format(ffs_dir, ffID)
+        ntr_fname = "{}/NTRtau1.st".format(self.sts_path)
         with open(ntr_fname) as f:
             for line in f:
                 parts = line.split()
                 if len(parts) > 1:
                     NTR_atoms.append(parts[1].strip())
         CTR_atoms = []
-        ctr_fname = "{}/{}/sts/CTRtau1.st".format(ffs_dir, ffID)
+        ctr_fname = "{}/CTRtau1.st".format(self.sts_path)
         with open(ctr_fname) as f:
             for line in f:
                 parts = line.split()

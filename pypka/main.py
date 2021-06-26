@@ -2,8 +2,6 @@
 
 import os
 
-import numpy as np
-
 import log
 from _version import __version__
 from clean.checksites import (
@@ -22,9 +20,10 @@ from concurrency import (
     startPoolProcesses,
 )
 from config import Config
-from constants import KBOLTZ, MAXNPKHALFS, PKAPLACEHOLDER, TERMINAL_OFFSET
+from constants import KBOLTZ
 from delphi4py.delphi4py import DelPhi4py
 from molecule import Molecule
+from mc.run_mc import MonteCarlo
 
 
 class Titration:
@@ -470,216 +469,18 @@ class Titration:
         self.calcpKint(results)
 
     def run_mc(self):
-        def resize_list_of_lists(listn, maxsize, filler=None):
-            for i in listn:
-                diff = maxsize - len(i)
-                for _ in range(diff):
-                    i.append(filler)
-
-        def calcpKhalfs(pH, nsites, avgs, pmean, pKs, mcsteps, dpH):
-            totalP = 0.0
-            means = []
-            for site in range(nsites):
-                mean = avgs[site] / float(mcsteps)
-                means.append(mean)
-                totalP += mean
-
-                p = pmean[site]
-
-                if p > 0.5 and mean <= 0.5 or p < 0.5 and mean >= 0.5:
-                    pKhalf = pH - dpH * (mean - 0.5) / (mean - p)
-                    for i in range(MAXNPKHALFS):
-                        if pKs[site][i] == PKAPLACEHOLDER:
-                            pKs[site][i] = pKhalf
-                            break
-
-                elif p > 1.5 and mean <= 1.5 or p < 1.5 and mean >= 1.5:
-                    pKhalf = pH - dpH * (mean - 1.5) / (mean - p)
-                    for i in range(MAXNPKHALFS):
-                        if pKs[site][i] == PKAPLACEHOLDER:
-                            pKs[site][i] = pKhalf
-                            break
-
-                pmean[site] = mean
-            totalP /= nsites
-            return totalP, pKs, pmean, means
-
         Config.loadParams(self.__parameters)
 
         print("\nStart MC", end="\r")
 
         sites = self.get_all_sites(get_list=True)
-        nsites = len(sites)
-        # possible_states     = [[] for _ in sites]
-        possible_states_g = [[] for _ in sites]
-        possible_states_occ = [[] for _ in sites]
 
-        temperature = float(Config.pypka_params["temp"])
-        isite = -1
-        for site in sites:
-            isite += 1
-            itaut = 0
-            for tautomer in site.iterOrderedTautomersWithoutRef():
-                dg = tautomer.dg / (KBOLTZ * temperature)
-                possible_states_g[isite].append(dg)
-                # possible_states[isite].append(itaut)
-                if site.type == "c":
-                    prot_state = 0
-                elif site.type == "a":
-                    prot_state = 1
-
-                possible_states_occ[isite].append(prot_state)
-                itaut += 1
-
-            if site.type == "c":
-                prot_state = 1
-            elif site.type == "a":
-                prot_state = 0
-            possible_states_occ[isite].append(prot_state)
-            possible_states_g[isite].append(0.0)
-
-        maxstates = max(Config.parallel_params.npossible_states)
-        interactions_look = Config.parallel_params.interactions_look
-        # resize_list_of_lists(possible_states, maxstates)
-        resize_list_of_lists(possible_states_g, maxstates)
-        resize_list_of_lists(possible_states_occ, maxstates, filler=-500)
-        resize_list_of_lists(interactions_look, maxstates, filler=-500)
-
-        params = Config.mc_params
-        pHmin, pHmax = params["pHmin"], params["pHmax"]
-        dpH = params["pHstep"]
-        pHsteps = int(round(1 + (pHmax - pHmin) / dpH, 0))
-
-        Config.parallel_params.possible_states_g = possible_states_g
-        Config.parallel_params.possible_states_occ = possible_states_occ
-
-        ncpus = min(Config.pypka_params["ncpus"], nsites)
-        results = startPoolProcesses(
-            runMCCalcs,
-            list(range(pHsteps)),
-            ncpus,
-            assign="ordered",
-            merged_results=True,
+        mc = MonteCarlo(sites)
+        text_pks, text_prots, self.tit_curve = (
+            mc.text_pks,
+            mc.text_prots,
+            mc.total_tit_curve,
         )
-
-        print("\rMC Runs Ended{:>80}\n".format(""))
-
-        counts_all = []
-        avgs_all = []
-        cur_states = []
-
-        for i in results:
-            avgs_all.append(i[0])
-            counts_all.append(i[1])
-            cur_states.append(i[3])
-
-        pKs = np.array(
-            [[PKAPLACEHOLDER for ii in range(MAXNPKHALFS)] for i in range(nsites)]
-        )
-        mcsteps = params["mcsteps"]
-        pmeans = avgs_all[0] / float(mcsteps)
-
-        tit_curve = {}
-        tit_curve[pHmin] = {}
-        tit_curve[pHmin]["total"] = sum(avgs_all[0]) / mcsteps / nsites
-        for i, mean in enumerate(avgs_all[0]):
-            site = sites[i]
-            sitenumber = site.res_number
-            tit_curve[pHmin][sitenumber] = mean / mcsteps
-
-        sites = Config.parallel_params.all_sites
-
-        for pHstep in range(1, pHsteps):
-            pH = pHmin + pHstep * dpH
-            totalP, pKs, pmeans, means = calcpKhalfs(
-                pH, nsites, avgs_all[pHstep], pmeans, pKs, mcsteps, dpH
-            )
-            tit_curve[pH] = {}
-            tit_curve[pH]["total"] = totalP
-            for i, mean in enumerate(means):
-                site = sites[i]
-                sitenumber = site.res_number
-                tit_curve[pH][sitenumber] = mean
-
-        pKas = pKs
-
-        text_pks = ""
-        text_prots = "#pH       "
-        c = -1
-        for i in pKas:
-            c += 1
-            site = sites[c]
-            chain = site.molecule.chain
-            sitename = site.getName()
-            resnumb = site.getResNumber()
-            if sitename in ("NTR", "CTR"):
-                text_prots += "     {0:3}".format(sitename)
-            else:
-                text_prots += "{0:5d}{1:3s}".format(resnumb, sitename)
-            text_pks += "{0:5} {1:3} {2:20} {3:3}\n".format(
-                resnumb, sitename, str(i[0]), chain
-            )
-
-        final_states = {}
-        state_distribution = {}
-        most_prob_states = {}
-        self.tit_curve = {}
-        for pHstep in range(pHsteps):
-            pH = pHmin + pHstep * dpH
-            text_prots += "\n{pH:5.2f}".format(pH=pH)
-
-            self.tit_curve[pH] = tit_curve[pH]["total"]
-
-            final_states[pH] = {}
-            state_distribution[pH] = {}
-            most_prob_states[pH] = {}
-            for c, site in enumerate(sites):
-                sitename = site.getName()
-                sitenumb = site.res_number
-                mean = tit_curve[pH][sitenumb]
-                final_states[pH][sitenumb] = cur_states[pHstep][c]
-                state_distribution[pH][sitenumb] = list(counts_all[pHstep][c] / mcsteps)
-
-                ntauts = site.getNTautomers()
-                ref_i = ntauts
-                prot_state = site.getRefProtState()
-                if (mean > 0.5 and prot_state == 1) or (
-                    mean <= 0.5 and prot_state == -1
-                ):
-                    state_i = ref_i
-                else:
-                    max_prob = max(state_distribution[pH][sitenumb][:ref_i])
-                    state_i = state_distribution[pH][sitenumb].index(max_prob)
-
-                most_prob_state = state_i + 1
-                most_prob_states[pH][sitenumb] = most_prob_state
-
-                if mean != PKAPLACEHOLDER:
-                    text_prots += "\t{mean:7.4f}".format(mean=mean)
-                else:
-                    text_prots += "\t-"
-
-                site.most_prob_states[pH] = most_prob_state
-                site.final_states[pH] = final_states[pH][sitenumb]
-                site.tit_curve[pH] = tit_curve[pH][sitenumb]
-                site.states_prob[pH] = state_distribution[pH][sitenumb]
-
-        # self.tit_curve = tit_curve
-        # self.pH_values = sorted(tit_curve.keys())
-        # self.final_states = final_states
-        # self.state_prob = state_distribution
-        # self.most_prob_states = most_prob_states
-
-        c = -1
-        for i in pKas:
-            c += 1
-            # site = sites[c].res_number
-            # chain = sites[c].molecule.chain
-            # if chain not in self.pKas.keys():
-            #    self.pKas[chain] = {}
-            pK = i[0]
-            sites[c].setpK(pK)
-            # self.pKas[chain][site] = pK
 
         if Config.pypka_params["isoelectric_point"]:
             self.getIsoelectricPoint()
@@ -814,16 +615,19 @@ class Titration:
     def __getitem__(self, chain):
         return self.molecules[chain]
 
-    def __str__(self):
-        output = "Chain  Site   Name      pK"
+    def __str__(self, format="print"):
+        if format == "print":
+            output = "Chain  Site   Name      pK"
+        elif format == "file":
+            output = ""
         sites = self.get_all_sites()
 
         for chain in sites.keys():
             for site in sites[chain]:
                 pk = site.pK
-                if pk:
+                if pk and format == "print":
                     pk = "{:.2f}".format(round(pk, 2))
-                else:
+                elif not pk:
                     pk = "Not In Range"
                 output += "\n{0:>4} {1:>6}    {2:3}    {3:>5}".format(
                     chain, site.getResNumber(), site.res_name, pk
