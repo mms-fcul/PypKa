@@ -257,7 +257,8 @@ class Titsite:
         return most_prob_taut, self.getTautProb(most_prob_taut, pH)
 
     def getTautsProb(self, pH):
-        return self.states_prob[pH]
+        ntauts = len(self.tautomers)+1
+        return self.states_prob[pH][:ntauts]
 
     # Iter Methods
     def iterTautomers(self):

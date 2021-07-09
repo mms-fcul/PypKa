@@ -1,5 +1,5 @@
 from config import Config
-from constants import PROTEIN_RESIDUES, TERMINAL_OFFSET, TITRABLETAUTOMERS
+from constants import PROTEIN_RESIDUES, TITRABLETAUTOMERS
 
 
 def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=" "):
@@ -66,7 +66,6 @@ def gro2pdb(f_in, f_out, save_box=False):
         natoms_left = 0
         natoms = 0
         lines = f.read().splitlines()
-        penul_line = lines[-2]
         last_line = lines[-1]
         box = [float(i) * 10 for i in last_line.split()[:3]]
         if save_box:
@@ -98,7 +97,7 @@ def pdb2gro(
     filename_in,
     filename_out,
     chains_res,
-    box=[],
+    box=None,
     pqr=False,
     renumber_res=False,
     fix_termini=True,
@@ -127,18 +126,17 @@ def pdb2gro(
             elif pqr:
                 (
                     aname,
-                    anumb,
+                    _,
                     resname,
                     chain,
                     resnumb,
                     x,
                     y,
                     z,
-                    charge,
-                    radius,
+                    *_,
                 ) = read_pqr_line(line)
             else:
-                (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+                (aname, _, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
             aposition += 1
 
             chains_sites_numbs = []
@@ -177,7 +175,7 @@ def pdb2gro(
             prev_resnumb = resnumb
 
     header += "{0}\n".format(aposition)
-    if box == []:
+    if not box:
         footer = "{0:10.5f}{1:10.5f}{2:10.5f}\n".format(
             pdb_box[0] / 10.0, pdb_box[1] / 10.0, pdb_box[2] / 10.0
         )
@@ -193,27 +191,22 @@ def pdb2gro(
     return aposition
 
 
+def change_aname(aname, restype):
+    not_correct_names = list(restype.keys())
+    for not_corrected in not_correct_names:
+        if aname == not_corrected:
+            aname = restype[not_corrected]
+    return aname
+
+
+def change_resname(resname):
+    for tit_res in TITRABLETAUTOMERS.keys():
+        if tit_res[:2] == resname[:2]:
+            return tit_res
+    return resname
+
+
 def correct_names(resnumb, resname, aname, titrating_sites, NTR_numb, CTR_numb):
-    def change_aname(aname, restype, mode="regular"):
-        if mode == "titrating":
-            not_correct_names = list(correct_atoms_sites_table[restype].keys())
-        else:
-            not_correct_names = list(correct_atoms_table[restype].keys())
-        for not_corrected in not_correct_names:
-            if aname == not_corrected:
-                if mode == "titrating":
-                    aname = correct_atoms_sites_table[restype][not_corrected]
-                else:
-                    aname = correct_atoms_table[restype][not_corrected]
-
-        return aname
-
-    def change_resname(resname):
-        for tit_res in TITRABLETAUTOMERS.keys():
-            if tit_res[:2] == resname[:2]:
-                return tit_res
-        return resname
-
     # no longer used as it is done by pdb2pqr
     correct_atoms_table = {
         "CTR": {"O": "O1", "OXT": "O2"},
@@ -250,14 +243,14 @@ def correct_names(resnumb, resname, aname, titrating_sites, NTR_numb, CTR_numb):
 
     if resnumb == CTR_numb:
         restype = "CTR"
-        aname = change_aname(aname, restype)
+        aname = change_aname(aname, correct_atoms_table[restype])
 
     if resnumb == NTR_numb:
         restype = "NTR"
-        aname = change_aname(aname, restype)
+        aname = change_aname(aname, correct_atoms_table[restype])
 
     if resname in list(correct_atoms_table.keys()):
-        aname = change_aname(aname, resname)
+        aname = change_aname(aname, correct_atoms_table[resname])
 
     if resname in list(correct_residues_table.keys()):
         resname = correct_residues_table[resname]
@@ -266,16 +259,6 @@ def correct_names(resnumb, resname, aname, titrating_sites, NTR_numb, CTR_numb):
         if resname not in PROTEIN_RESIDUES:
             resname = change_resname(resname)
         if resname in list(correct_atoms_sites_table.keys()):
-            aname = change_aname(aname, resname, mode="titrating")
+            aname = change_aname(aname, correct_atoms_sites_table[resname])
 
     return aname, resname
-
-
-def readPBPFile(f_dat):
-    with open(f_dat) as f:
-        for line in f:
-            if line[0] != "#" and len(line) > 1:
-                parts = line.strip().split("=")
-                param = parts[0].split()[-1]
-                value = parts[1].replace('"', "").replace("'", "")
-                config.params[param] = value.strip()

@@ -9,6 +9,7 @@ from clean.checksites import (
     get_chains_from_file,
     identify_tit_sites,
     make_delphi_inputfile,
+    fix_fixed_sites
 )
 from clean.cleaning import cleanPDB, inputPDBCheck
 from clean.formats import gro2pdb
@@ -35,7 +36,7 @@ class Titration:
         molecules (dict): titrating molecules ordered by chain
     """
 
-    def __init__(self, parameters, sites="all", debug=False, run="all"):
+    def __init__(self, parameters, sites="all", fixed_sites=None, debug=False, run="all"):
         """Runs the pKa prediction
 
         Args:
@@ -53,7 +54,7 @@ class Titration:
         self.isoelectric_point_limit = None
 
         print("Start Preprocessing")
-        self.preprocessing(sites)
+        self.preprocessing(sites, fixed_sites)
         self.processDelPhiParams()
 
         if run == "preprocess":
@@ -80,11 +81,18 @@ class Titration:
 
         print("API exited successfully")
 
-    def preprocessing(self, sites):
+    def preprocessing(self, sites, fixed_sites):
         def create_tit_sites(chains_res, TMPpdb=False):
             for _, molecule in self.molecules.items():
                 molecule.deleteAllSites()
             check_sites_integrity(self.molecules, chains_res, useTMPpdb=TMPpdb)
+
+        if fixed_sites:
+            for chain, fixed_sites_info in fixed_sites.items():
+                if chain not in sites:
+                    sites[chain] = []
+                for sitenumb in fixed_sites_info.keys():
+                    sites[chain].append(sitenumb)
 
         if Config.pypka_params["f_in_extension"] == "gro":
             groname = Config.pypka_params["f_in"]
@@ -167,6 +175,9 @@ class Titration:
 
         f_out = "delphi_in_stmod.pdb"
         self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
+
+        if fixed_sites:
+            fix_fixed_sites(self.molecules, fixed_sites, f_out)
 
         if not Config.debug and os.path.isfile("TMP.pdb"):
             os.remove("TMP.pdb")

@@ -1,14 +1,13 @@
 import argparse
 import os
-from copy import copy
 
-import config, log
 from main import Titration
 from __init__ import __version__
 
 
 def read_settings(filename):
-    """Reads the settings file.
+    """
+    Reads the settings file.
 
     This file should have the following format:
       - commented lines should being with a '#'
@@ -75,7 +74,6 @@ def read_settings(filename):
 
 def check_cli_args():
     """Gets the CLI arguments and interprets them"""
-
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="""
