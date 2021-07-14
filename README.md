@@ -1,4 +1,4 @@
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb) [![CircleCI](https://circleci.com/gh/mms-fcul/PypKa.svg?style=svg)](https://circleci.com/gh/mms-fcul/PypKa) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/59a058e4bf0846f18d9d1f6b16a4a0e5)](https://www.codacy.com/gh/mms-fcul/PypKa/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mms-fcul/PypKa&amp;utm_campaign=Badge_Grade) [![Documentation Status](https://readthedocs.org/projects/pypka/badge/?version=latest)](https://pypka.readthedocs.io/en/latest/?badge=latest)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/examples/notebook/pypka.ipynb) [![CircleCI](https://circleci.com/gh/mms-fcul/PypKa.svg?style=svg)](https://circleci.com/gh/mms-fcul/PypKa) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/59a058e4bf0846f18d9d1f6b16a4a0e5)](https://www.codacy.com/gh/mms-fcul/PypKa/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mms-fcul/PypKa&amp;utm_campaign=Badge_Grade) [![Documentation Status](https://readthedocs.org/projects/pypka/badge/?version=latest)](https://pypka.readthedocs.io/en/latest/?badge=latest)
 
 [![PyPI version](https://badge.fury.io/py/pypka.svg)](https://badge.fury.io/py/pypka)  [![PyPI - Downloads](https://img.shields.io/pypi/dm/pypKa)](https://badge.fury.io/py/pypKa)
 
@@ -29,7 +29,6 @@ doi = {10.1021/acs.jcim.0c00718}
 ## Installation & Dependencies
 
 PypKa should be installed in a Linux-based system. In Windows please use the [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-A docker image is also [available](https://hub.docker.com/r/pedrishi/pypka).
 
 * python2.6>= & python3.5>=
 * libgfortran4
@@ -41,6 +40,15 @@ A docker image is also [available](https://hub.docker.com/r/pedrishi/pypka).
   python3 -m pip install pypka
   apt install gawk gcc gfortran libgfortran4 python2
 ```
+
+A docker image is also [available](https://hub.docker.com/r/pedrishi/pypka). 
+A simple way of using it would be to build the image from the [Dockerfile](./Dockerfile) and running it on a local directory which contains the cli parameters file and input structure.
+```bash
+docker build -t pypka/latest -f Dockerfile .
+docker run -v ${PWD}:/home/ -w /home -t pypka:latest python3.9 -m pypka <PARAMETERS_FILE>
+```
+
+Functioning working examples of the API, CLI, docker and notebook can be found under /examples.
 
 ## Contributing
 

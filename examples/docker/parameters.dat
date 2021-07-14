@@ -1,0 +1,7 @@
+structure     = lyso.pdb
+sites         = all
+epsin         = 15
+ionicstr      = 0.1
+pbc_dimensions= 2
+ncpus         = -1
+output        = pKas.out
