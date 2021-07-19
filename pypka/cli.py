@@ -1,8 +1,8 @@
 import argparse
 import os
 
-from main import Titration
-from __init__ import __version__
+from pypka.main import Titration
+from pypka.__init__ import __version__
 
 
 def read_settings(filename):

@@ -2,12 +2,11 @@ import os
 from copy import copy
 import subprocess
 
-import log
-from config import Config
-from constants import *
+from pypka.config import Config
+from pypka.constants import *
 
-from ffconverter import *
-from formats import (
+from pypka.clean.ffconverter import *
+from pypka.clean.formats import (
     correct_names,
     new_gro_line,
     new_pdb_line,

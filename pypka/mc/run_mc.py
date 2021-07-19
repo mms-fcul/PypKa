@@ -1,7 +1,7 @@
 import numpy as np
-from config import Config
-from concurrency import runMCCalcs, startPoolProcesses
-from constants import KBOLTZ, PKAPLACEHOLDER, MAXNPKHALFS
+from pypka.config import Config
+from pypka.concurrency import runMCCalcs, startPoolProcesses
+from pypka.constants import KBOLTZ, PKAPLACEHOLDER, MAXNPKHALFS
 
 
 def calcpKhalfs(pH, nsites, avgs, pmean, pKs, dpH):

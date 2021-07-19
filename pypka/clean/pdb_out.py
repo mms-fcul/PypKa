@@ -1,14 +1,14 @@
 import os
 
-from ffconverter import (
+from pypka.clean.ffconverter import (
     AMBER_protomers,
     GROMOS_protomers,
     gromos2amber,
     mainchain_Hs,
 )
-from formats import new_pdb_line, read_pdb_line, read_pqr_line
-from config import Config
-from constants import *
+from pypka.clean.formats import new_pdb_line, read_pdb_line, read_pqr_line
+from pypka.config import Config
+from pypka.constants import *
 
 
 def write_output_structure(sites, molecules, delphi_input_content):
@@ -132,7 +132,10 @@ def write_output_structure(sites, molecules, delphi_input_content):
                     (aname, anumb, oldresname, chain, x, y, z) = mainchain_Hs[chain][
                         resnumb
                     ].pop()
-                    if aname not in in_delphi_pdb[chain][resnumb]:
+                    if (
+                        resnumb not in in_delphi_pdb[chain]
+                        or aname not in in_delphi_pdb[chain][resnumb]
+                    ):
                         new_pdb += new_pdb_line(
                             counter, aname, resname, resnumb, x, y, z, chain=chain
                         )

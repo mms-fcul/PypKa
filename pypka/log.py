@@ -1,7 +1,7 @@
 import os
 import sys
 
-from config import Config
+from pypka.config import Config
 
 
 class Log:

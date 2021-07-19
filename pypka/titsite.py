@@ -1,6 +1,6 @@
-from config import Config
-from constants import KBOLTZ, TERMINAL_OFFSET
-from tautomer import Tautomer
+from pypka.config import Config
+from pypka.constants import KBOLTZ, TERMINAL_OFFSET
+from pypka.tautomer import Tautomer
 
 
 class Titsite:
@@ -257,7 +257,7 @@ class Titsite:
         return most_prob_taut, self.getTautProb(most_prob_taut, pH)
 
     def getTautsProb(self, pH):
-        ntauts = len(self.tautomers)+1
+        ntauts = len(self.tautomers) + 1
         return self.states_prob[pH][:ntauts]
 
     # Iter Methods

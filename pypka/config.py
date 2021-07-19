@@ -5,7 +5,7 @@ from pprint import pformat
 from numpy import arange
 from psutil import cpu_count
 
-from constants import *
+from pypka.constants import *
 
 
 class Config:

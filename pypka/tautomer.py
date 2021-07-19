@@ -1,10 +1,10 @@
 import time
 from copy import copy
 
-import log
-from clean.formats import new_pdb_line
-from config import Config
-from constants import KBOLTZ, LOG10
+from pypka.log import checkDelPhiErrors
+from pypka.clean.formats import new_pdb_line
+from pypka.config import Config
+from pypka.constants import KBOLTZ, LOG10
 
 
 class Tautomer(object):
@@ -532,7 +532,7 @@ class Tautomer(object):
         if Config.debug:
             print(("ended", self.name, self.site.res_number, "modelcompound"))
 
-        log.checkDelPhiErrors(logfile, "runDelPhi")
+        checkDelPhiErrors(logfile, "runDelPhi")
 
         self.esolvation = delphimol.getSolvation()
         self.p_sitpot = delphimol.getSitePotential()
@@ -608,7 +608,7 @@ class Tautomer(object):
                 scale_prefocus=Config.delphi_params["scaleP"],
                 scale=Config.delphi_params["scaleM"],
                 nlit_prefocus=Config.delphi_params["nlit"],
-                nonit=0,
+                nonit=Config.delphi_params["nonit"],
                 nlit=500,
                 acent=acent,
                 nonit_focus=0,
@@ -631,7 +631,7 @@ class Tautomer(object):
         if Config.debug:
             print(("ended", self.name, self.site.res_number, "wholeprotein"))
 
-        log.checkDelPhiErrors(logfile, "runDelPhi")
+        checkDelPhiErrors(logfile, "runDelPhi")
 
         self.esolvation = delphimol.getSolvation()
         self.p_sitpot = delphimol.getSitePotential()
@@ -683,7 +683,7 @@ class Tautomer(object):
             if atom_id == None or atom_id not in self.site.getAtomNumbersList():
                 if cutoff != -1:
                     distance = self.distance_to(delphimol.p_atpos[atom_position])
-                if cutoff != -1 or distance <= cutoff2:
+                if distance <= cutoff2:
                     point_energy = (
                         delphimol.p_chrgv4[atom_position] * self.sitpotM[atom_position]
                     )

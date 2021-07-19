@@ -1,5 +1,5 @@
-from config import Config
-from constants import PROTEIN_RESIDUES, TITRABLETAUTOMERS
+from pypka.config import Config
+from pypka.constants import PROTEIN_RESIDUES, TITRABLETAUTOMERS
 
 
 def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=" "):

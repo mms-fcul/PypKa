@@ -3,8 +3,8 @@ from multiprocessing import Manager, Pool, Value
 from sys import stdout
 from time import time
 
-from config import Config
-from mc.mc import MCrun
+from pypka.config import Config
+from pypka.mc.mc import MCrun
 
 
 def configRefresh(configs, pb_time, njobs):

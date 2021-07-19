@@ -1,8 +1,8 @@
-from clean.formats import read_gro_line
-from concurrency import runInteractionCalcs
-from constants import TERMINAL_OFFSET, TITRABLETAUTOMERS
-from tautomer import Tautomer
-from titsite import Titsite as Site
+from pypka.clean.formats import read_gro_line
+from pypka.concurrency import runInteractionCalcs
+from pypka.constants import TERMINAL_OFFSET, TITRABLETAUTOMERS
+from pypka.tautomer import Tautomer
+from pypka.titsite import Titsite as Site
 
 
 class Molecule:

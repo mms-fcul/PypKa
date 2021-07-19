@@ -2,29 +2,29 @@
 
 import os
 
-import log
-from _version import __version__
-from clean.checksites import (
+from pypka.log import Log, checkDelPhiErrors
+from pypka._version import __version__
+from pypka.clean.checksites import (
     check_sites_integrity,
     get_chains_from_file,
     identify_tit_sites,
     make_delphi_inputfile,
-    fix_fixed_sites
+    fix_fixed_sites,
 )
-from clean.cleaning import cleanPDB, inputPDBCheck
-from clean.formats import gro2pdb
-from clean.pdb_out import write_output_structure
-from concurrency import (
+from pypka.clean.cleaning import cleanPDB, inputPDBCheck
+from pypka.clean.formats import gro2pdb
+from pypka.clean.pdb_out import write_output_structure
+from pypka.concurrency import (
     runDelPhiSims,
     runInteractionCalcs,
     runMCCalcs,
     startPoolProcesses,
 )
-from config import Config
-from constants import KBOLTZ
-from delphi4py.delphi4py import DelPhi4py
-from molecule import Molecule
-from mc.run_mc import MonteCarlo
+from pypka.config import Config
+from pypka.constants import KBOLTZ
+from pypka.delphi4py.delphi4py import DelPhi4py
+from pypka.molecule import Molecule
+from pypka.mc.run_mc import MonteCarlo
 
 
 class Titration:
@@ -36,7 +36,9 @@ class Titration:
         molecules (dict): titrating molecules ordered by chain
     """
 
-    def __init__(self, parameters, sites="all", fixed_sites=None, debug=False, run="all"):
+    def __init__(
+        self, parameters, sites="all", fixed_sites=None, debug=False, run="all"
+    ):
         """Runs the pKa prediction
 
         Args:
@@ -46,9 +48,7 @@ class Titration:
             debug (boolean, optional): debug mode switch. Defaults to False.
         """
         self.molecules = {}
-        self.__parameters = Config.storeParams(
-            self, log.Log(), debug, parameters, sites
-        )
+        self.__parameters = Config.storeParams(self, Log(), debug, parameters, sites)
         self.pKas = {}
         self.isoelectric_point = None
         self.isoelectric_point_limit = None
@@ -255,7 +255,7 @@ class Titration:
         if not Config.debug:
             os.remove("delphi_in_stmod.pdb")
 
-        log.checkDelPhiErrors(logfile, "readFiles")
+        checkDelPhiErrors(logfile, "readFiles")
 
         lookup_atoms = {}
         for molecule in Config.titration.molecules.values():
@@ -670,7 +670,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
         "epsin": 15,
         "ser_thr_titration": ser_thr_titration,
     }
-    Config.storeParams("", log.Log(), debug, parameters, "all")
+    Config.storeParams("", Log(), debug, parameters, "all")
 
     chains = get_chains_from_file(pdb)
     sites = {chain: "all" for chain in chains}

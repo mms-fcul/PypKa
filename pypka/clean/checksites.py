@@ -2,11 +2,11 @@
 """
 from copy import copy
 
-from config import Config
-from constants import *
+from pypka.config import Config
+from pypka.constants import *
 
-from ffconverter import main_chains, CHARMM_protomers
-from formats import new_pdb_line, read_gro_line, read_pdb_line
+from pypka.clean.ffconverter import main_chains, CHARMM_protomers
+from pypka.clean.formats import new_pdb_line, read_gro_line, read_pdb_line
 
 
 def identify_tit_sites(molecules, instanciate_sites=True):
@@ -608,38 +608,40 @@ def make_delphi_inputfile(f_in, f_out, molecules):
 
     return sequence
 
+
 def fix_fixed_sites(molecules, fixed_sites, fname):
     for chain in fixed_sites:
         for site, state in list(fixed_sites[chain].items()):
-            if isinstance(site, str) and site[-1] in 'NC':
+            if isinstance(site, str) and site[-1] in "NC":
                 del fixed_sites[chain][site]
                 site = int(site[:-1]) + TERMINAL_OFFSET
                 fixed_sites[chain][site] = state
-    
+
     for molecule in molecules.values():
         chain = molecule.chain
         for sitenumb, site in list(molecule.sites.items()):
             if sitenumb in fixed_sites[chain]:
                 del molecule.sites[sitenumb]
-                site_i = molecule.sites_order.index(site) 
+                site_i = molecule.sites_order.index(site)
                 del molecule.sites_order[site_i]
 
-    
-    new_pdb_content = ''
+    new_pdb_content = ""
     with open(fname) as f:
         for line in f:
-            if line.startswith('ATOM '):
+            if line.startswith("ATOM "):
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
                 if resnumb in fixed_sites[chain]:
-                    resname = '{}{}'.format(resname[:-1], str(fixed_sites[chain][resnumb]))
+                    resname = "{}{}".format(
+                        resname[:-1], str(fixed_sites[chain][resnumb])
+                    )
                 new_pdb_content += new_pdb_line(
                     anumb, aname, resname, resnumb, x, y, z, chain=chain
                 )
             else:
                 new_pdb_content += line
-    with open(fname, 'w') as f:
+    with open(fname, "w") as f:
         f.write(new_pdb_content)
-        
+
 
 def get_chains_from_file(f_in):
     chain_list = []
