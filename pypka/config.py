@@ -76,9 +76,7 @@ class Config:
         cls.mc_params.set_pH_values(parameters)
 
         if cls.pypka_params["structure_output"]:
-            cls.pypka_params.set_structure_output(
-                cls.mc_params["pHmin"], cls.mc_params["pHmax"]
-            )
+            cls.pypka_params.set_structure_output(cls.mc_params["pH_values"])
 
         if cls.pypka_params["isoelectric_point"] and cls.pypka_params["sites"] != "all":
             warn_message = (
@@ -374,8 +372,7 @@ class PypKaConfig(ParametersDict):
             resname = lipids[lipid]
             self.LIPIDS[lipid] = resname
 
-    def set_structure_output(self, pHmin, pHmax):
-        error_raise = False
+    def set_structure_output(self, pH_values):
         structure_output = self["structure_output"].split(",")
         msg = (
             'CLI Example: "structure_output": ("structure.pdb", 7, "amber")\n '
@@ -395,9 +392,10 @@ class PypKaConfig(ParametersDict):
         self["f_structure_out_pH"] = pH
         self["ff_structure_out"] = ff_out
 
-        if pH < pHmin or pH > pHmax:
-            message = "in range [pHmin, pHmax]."
-            self.log.raise_input_param_error("structure_output", message, "")
+        if pH not in pH_values:
+            raise Exception(
+                "pH value specified in structure_output ({pH}) must be compatible with pH values being calculated ({pH_values})."
+            )
 
     def readTermini(self):
         self.sts_path = "{0}/{1}/{2}/".format(self.ffs_dir, self.ffID, self.sts)
@@ -602,11 +600,14 @@ class MCConfig(ParametersDict):
                 )
             if diff % self.pHstep != 0:
                 self.pHmax += self.pHstep
-            self.pH_values = arange(self.pHmin, self.pHmax + 0.001, self.pHstep)
+
+            pH_values = arange(self.pHmin, self.pHmax + 0.001, self.pHstep).tolist()
+            ndecimals = str(self.pHstep)[::-1].find(".")
+            self.pH_values = [round(pH, ndecimals + 1) for pH in pH_values]
             self.pHmax = float(self.pH_values[-1])
         elif len(pH_parts) == 1:
             pH = self.check_param_type("pH", pH, float)
-            self.pH_values = pH
+            self.pH_values = [pH]
             self.pHmin = pH
             self.pHmax = pH
         else:

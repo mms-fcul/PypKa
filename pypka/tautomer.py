@@ -669,8 +669,8 @@ class Tautomer(object):
         delphimol = Config.delphi_params["delphimol"]
         text = ""
         distance = -999999
-        cutoff = copy(Config.pypka_params["cutoff"])
-        cutoff2 = (cutoff) ** 2
+        cutoff = Config.pypka_params["cutoff"] * 10
+        cutoff_sq = (cutoff) ** 2
         point_energy = -1
 
         lookup_atoms_keys = Config.delphi_params.lookup_atoms.keys()
@@ -681,25 +681,27 @@ class Tautomer(object):
                 atom_id, atom_name = Config.delphi_params.lookup_atoms[atom_position]
 
             if atom_id == None or atom_id not in self.site.getAtomNumbersList():
-                if cutoff != -1:
+                if cutoff != -10:  # -1 is off times 10 from the conversion
                     distance = self.distance_to(delphimol.p_atpos[atom_position])
-                if distance <= cutoff2:
-                    point_energy = (
-                        delphimol.p_chrgv4[atom_position] * self.sitpotM[atom_position]
+                    if distance > cutoff_sq:
+                        continue
+
+                point_energy = (
+                    delphimol.p_chrgv4[atom_position] * self.sitpotM[atom_position]
+                )
+                self.e_back += point_energy
+                if Config.debug:
+                    text += "{} {} {} {} " "{} {} {} {} {}\n".format(
+                        atom_position,
+                        atom_name,
+                        atom_id,
+                        point_energy,
+                        delphimol.p_chrgv4[atom_position],
+                        self.sitpotM[atom_position],
+                        delphimol.p_atpos[atom_position][:],
+                        distance,
+                        cutoff2,
                     )
-                    self.e_back += point_energy
-                    if Config.debug:
-                        text += "{} {} {} {} " "{} {} {} {} {}\n".format(
-                            atom_position,
-                            atom_name,
-                            atom_id,
-                            point_energy,
-                            delphimol.p_chrgv4[atom_position],
-                            self.sitpotM[atom_position],
-                            delphimol.p_atpos[atom_position][:],
-                            distance,
-                            cutoff2,
-                        )
 
         if Config.debug:
             filename = "{0}_{1}_eback.xvg".format(self.name, self.site.res_number)

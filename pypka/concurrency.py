@@ -241,13 +241,10 @@ def runInteractionCalcs(job_list):
     return results
 
 
-def parallelMCrun(pHstep):
+def parallelMCrun(i):
     params = Config.mc_params
     parallel_params = Config.parallel_params
-
-    pHmin = params["pHmin"]
-    dpH = params["pHstep"]
-    pH = pHmin + pHstep * dpH
+    pH = params.pH_values[i]
 
     sites = Config.parallel_params.all_sites
     nsites = len(sites)

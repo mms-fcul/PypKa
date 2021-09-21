@@ -37,7 +37,7 @@ def checkOutput(filename, results_lines):
             c += 1
             line = line.strip()
             print(line)
-            assert line == results_lines[c]
+            assert line == results_lines[c].strip()
     assert c + 1 == len(results_lines)
 
 
@@ -129,10 +129,10 @@ class TestCLI(object):
         path = "lyso/lyso_gro"
         results = """
 1 NTR 7.668774975293259    A
-18 ASP 3.2083443047169387   A
-35 GLU 4.6773087182961435   A
-48 ASP 3.017856790123458    A
-66 ASP 3.312043638451601    A
+18 ASP 3.208344304716938    A
+35 GLU 4.677308718296143    A
+48 ASP 3.017856790123457    A
+66 ASP 3.3120436384516005   A
 129 CTR 2.056                A
         """
         runTest(path, ncpus, results)
@@ -140,10 +140,10 @@ class TestCLI(object):
     def test_cli_lyso_pdb_sites(self):
         path = "lyso/lyso_pdb_sites"
         results = """
-1 NTR 7.5351439903431645
-18 ASP 3.255433112350178
-35 GLU 4.619474578486473
-48 ASP 2.3134230246724226
+1 NTR 7.535143990343163
+18 ASP 3.2554331123501776
+35 GLU 4.619474578486472
+48 ASP 2.313423024672422
 66 ASP 1.891644424338385
 129 CTR 2.00831923042665
         """
@@ -302,46 +302,46 @@ class TestCLI(object):
     def test_cli_lyso_multichain_sites(self):
         path = "lyso/lyso_multichain_sites"
         results = """
-1 NTR 7.242283991665559    A
-1 ASP 3.115283494887798    B
-35 GLU 4.622119696447052    C
-35 ASP 2.3149351529666955   D
-66 ASP 1.8855224015144685   D
-1 CTR 2.395771670190275    D
+    1 NTR 7.242283991665559    A  
+    1 ASP 3.115283494887797    B  
+   35 GLU 4.622119696447051    C  
+   35 ASP 2.314935152966695    D  
+   66 ASP 1.8855224015144685   D  
+    1 CTR 2.3957716701902747   D
         """
         runTest(path, ncpus, results)
 
     def test_cli_pHLIP_gro(self):
         path = "pHLIP/pHLIP_gro"
         results = """
-769 NTR 10.792369232976968   A
+769 NTR 10.809909308908642   A
 770 CYS None                 A
-771 GLU 4.010003260890415    A
+771 GLU 4.010693080721711    A
 782 ASP None                 A
 793 ASP None                 A
-799 ASP 2.0326332157953524   A
-801 ASP 1.0540321754278101   A
-802 GLU 4.079350871731009    A
-804 CTR 3.5223596867999754   A
+799 ASP 2.0325970005050396   A
+801 ASP 1.038801379054068    A
+802 GLU 4.124791182626394    A
+804 CTR 3.543877365540363    A
         """
         runTest(path, ncpus, results)
 
     def test_cli_pHLIP_pdb_all(self):
         path = "pHLIP/pHLIP_pdb_all"
         results = """
-769 NTR 11.23426435877262
-770 CYS 24.30125978205222
-771 GLU 4.017264339389327
-776 TYR 18.59752245862884
-780 TYR 24.40040678638754
+769 NTR 11.234137974163346
+770 CYS 24.296543354078075
+771 GLU 4.015179252479023
+776 TYR 18.595372225793035
+780 TYR 24.399890927119483
 782 ASP None
 786 THR None
 787 THR None
-793 ASP 22.780211657381866
-799 ASP 0.48126431060228975
-801 ASP 1.5060378425314513
-802 GLU 3.9599154489122252
-804 CTR 4.475875871985698
+793 ASP 22.778483296053107
+799 ASP 0.48049158811597664
+801 ASP 1.5057450374588557
+802 GLU 3.961777777777778
+804 CTR 4.477023346303502
 804 THR None
         """
         runTest(path, ncpus, results)
@@ -760,7 +760,7 @@ TYR 1 9.884779718110096 ('protonated', 0.9986978698182121)
 CTR 5002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
         """
         parameters = {
-            "structure": "ktp/ktp_gro/ktp.gro",  # MANDATORY
+            "structure": "ktp/ktp_gro/ktp.gro",
             "epsin": 2,
             "ionicstr": 0.1,
             "pbc_dimensions": 0,

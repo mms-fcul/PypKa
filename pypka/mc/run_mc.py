@@ -81,20 +81,17 @@ class MonteCarlo:
 
     def run(self):
         params = Config.mc_params
-        self.pHmin, self.pHmax = params["pHmin"], params["pHmax"]
         self.dpH = params["pHstep"]
-        self.pHsteps = int(round(1 + (self.pHmax - self.pHmin) / self.dpH, 0))
+        self.pH_values = params.pH_values
 
         ncpus = min(Config.pypka_params["ncpus"], self.nsites)
         results = startPoolProcesses(
             runMCCalcs,
-            list(range(self.pHsteps)),
+            self.pH_values,
             ncpus,
             assign="ordered",
             merged_results=True,
         )
-
-        print("\rMC Runs Ended{:>80}\n".format(""))
 
         self.counts_all = []
         self.avgs_all = []
@@ -113,8 +110,7 @@ class MonteCarlo:
         )
 
         self.total_tit_curve = {}
-        for pHstep in range(self.pHsteps):
-            pH = self.pHmin + pHstep * self.dpH
+        for pHstep, pH in enumerate(self.pH_values):
             ph_avgs_prots = self.avgs_all[pHstep] / mcsteps
             self.total_tit_curve[pH] = sum(ph_avgs_prots) / self.nsites
 
@@ -151,8 +147,7 @@ class MonteCarlo:
     def get_tit_states(self):
         mcsteps = Config.mc_params["mcsteps"]
 
-        for pHstep in range(self.pHsteps):
-            pH = self.pHmin + pHstep * self.dpH
+        for pHstep, pH in enumerate(self.pH_values):
             self.text_prots += "\n{pH:5.2f}".format(pH=pH)
 
             ph_avgs_prots = self.avgs_all[pHstep] / mcsteps

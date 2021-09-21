@@ -66,10 +66,10 @@ class Titration:
         if run == "PB":
             return
 
-        # Calculates sites interaction energies and write .dat file
+        print("Calculating site-site interactions")
         self.calcSiteInteractionsParallel()
 
-        #  Monte Carlo sampling
+        print("Start MC", end="\r")
         self.run_mc()
 
         if Config.pypka_params["f_structure_out"]:
@@ -477,12 +477,11 @@ class Titration:
         print("\rPB Runs Ended{:>80}".format(""))
 
         # Calculates the pKint of all tautomers
+        print("Calculating intrinsic pK values")
         self.calcpKint(results)
 
     def run_mc(self):
         Config.loadParams(self.__parameters)
-
-        print("\nStart MC", end="\r")
 
         sites = self.get_all_sites(get_list=True)
 
@@ -492,6 +491,7 @@ class Titration:
             mc.text_prots,
             mc.total_tit_curve,
         )
+        print("\rMC Runs Ended{:>80}\n".format(""))
 
         if Config.pypka_params["isoelectric_point"]:
             self.getIsoelectricPoint()
