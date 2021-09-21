@@ -2,22 +2,17 @@ sshversion: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.8
+      - image: ubuntu:focal
 
     steps:
-      - checkout
-
       - run:
           name: install dependencies
           command: |
-            sudo sh -c 'echo "deb http://archive.canonical.com/ubuntu focal partner">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal main restricted">> /etc/apt/sources.list'
-            sudo sh -c 'echo "deb http://pt.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse">> /etc/apt/sources.list'
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
-            sudo apt update
-            sudo apt install gawk libgfortran4 python2
+            apt update
+            apt upgrade -y
+            apt install -y git python3.8 gawk libgfortran4 python2 python3-pip
             python3.8 -m pip install --user pytest numpy coverage psutil
-
+      - checkout
       - run:
           name: run tests
           command: |
