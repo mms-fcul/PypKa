@@ -1,6 +1,5 @@
 import os
 from copy import copy
-import subprocess
 
 from pypka.config import Config
 from pypka.constants import *
@@ -11,11 +10,11 @@ from pypka.clean.formats import (
     new_gro_line,
     new_pdb_line,
     new_pqr_line,
-    pdb2gro,
     read_gro_line,
     read_pdb_line,
     read_pqr_line,
 )
+from pypka.clean.utils import add_tautomers, rinse_pdb
 
 
 def inputPDBCheck(filename, sites, clean_pdb):
@@ -176,23 +175,16 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     logfile = "LOG_pdb2pqr"
 
-    rna_inputpqr = "clean_rna.pqr"
-    logfile_rna = "LOG_pdb2pqr_rna"
-
     # CTR O1/O2 will be deleted and a O/OXT will be added
     # CYS will be turned into CY0
     # All HIS will become fully protonated
-    os.system(
-        "python2 {0} {1} {2} --ff {3} --ffout {4} "
-        "--drop-water -v --chain {6} > {5} 2>&1 ".format(
-            Config.pypka_params["pdb2pqr"],
-            Config.pypka_params["pdb2pqr_inputfile"],
-            inputpqr,
-            Config.pypka_params["ffinput"],
-            Config.pypka_params["ff_family"],
-            logfile,
-            "" if Config.pypka_params["pdb2pqr_h_opt"] else "--noopt",
-        )
+    rinse_pdb(
+        Config.pypka_params["pdb2pqr_inputfile"],
+        inputpqr,
+        Config.pypka_params["ffinput"],
+        Config.pypka_params["ff_family"],
+        logfile=logfile,
+        hopt=Config.pypka_params["pdb2pqr_h_opt"],
     )
 
     CYS_bridges = get_cys_bridges(logfile, molecules)
@@ -204,14 +196,12 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         ff_out = Config.pypka_params["ff_structure_out"]
         if ff_out == "gromos_cph":
             ff_out = "gromos"
-        os.system(
-            "python2 {0} {1} Hs.pqr --ff {3} --ffout {3} "
-            "--drop-water -v --chain >> {2} 2>&1 ".format(
-                Config.pypka_params["pdb2pqr"],
-                Config.pypka_params["pdb2pqr_inputfile"],
-                logfile,
-                ff_out,
-            )
+        rinse_pdb(
+            Config.pypka_params["pdb2pqr_inputfile"],
+            "Hs.pqr",
+            ff_out,
+            ff_out,
+            logfile=logfile,
         )
 
     if Config.pypka_params["f_structure_out"]:
@@ -392,33 +382,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     if len(sites_addHtaut.strip()) == 0:
         os.system("cp cleaned.pqr {}".format(outputpqr))
-
     else:
-        logfile = "LOG_addHtaut"
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # TODO rewrite addHtaut as python module
-        try:
-            cmd = "{}/addHtaut cleaned.pqr {} {} > {}".format(
-                script_dir,
-                Config.pypka_params["ff_family"],
-                sites_addHtaut,
-                outputpqr,
-                logfile,
-            )
-            addhtaut_run = subprocess.run(
-                cmd,
-                shell=True,
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-        except subprocess.CalledProcessError as e:
-            raise Exception(
-                "addHtaut did not run successfully\nMessage: {}".format(
-                    e.stderr.decode("ascii")
-                )
-            )
+        add_tautomers(sites_addHtaut, Config.pypka_params["ff_family"], outputpqr)
 
     with open(outputpqr) as f:
         content = f.read()

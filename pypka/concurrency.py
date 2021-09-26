@@ -110,19 +110,19 @@ def startPoolProcesses(
         for i, job in enumerate(jobs):
             print("ncore {}: njobs = {}".format(i, len(job)))
 
-    pool = Pool(
+    with Pool(
         processes=ncpus,
         initializer=configRefresh,
         initargs=(Config.parallel_params, pb_time, njobs),
-    )
-    for job in jobs:
-        result = pool.apply_async(targetFunction, args=(job,))
-        results.append(result)
-        # Easier debug of the loop but fails afterwards
-        # targetFunction(job)
+    ) as pool:
+        for job in jobs:
+            result = pool.apply_async(targetFunction, args=(job,))
+            results.append(result)
+            # Easier debug of the loop but fails afterwards
+            # targetFunction(job)
 
-    pool.close()
-    pool.join()
+        pool.close()
+        pool.join()
     # print('exit')
     # exit()
 

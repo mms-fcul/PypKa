@@ -700,7 +700,7 @@ class Tautomer(object):
                         self.sitpotM[atom_position],
                         delphimol.p_atpos[atom_position][:],
                         distance,
-                        cutoff2,
+                        cutoff_sq,
                     )
 
         if Config.debug:

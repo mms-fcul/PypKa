@@ -62,10 +62,10 @@ test: ## run tests quickly with the default Python
 	cd tests && python3 -m pytest test.py
 
 coverage: ## check code coverage quickly with the default Python
-	cd tests && python3 -m pytest --cov=../pypka test.py
-	cd tests && python3 -m coverage report -m
-	cd tests && coverage html
-	$(BROWSER) htmlcov/index.html
+	cd tests && coverage run -m pytest test.py
+	cd tests && coverage report -m --include=/*/pypka/pypka/*
+	cd tests && coverage html --include=*/pypka/pypka/* -d html_coverage
+	$(BROWSER) html_coverage/index.html
 
 report-coverage:
 	cd tests && bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml

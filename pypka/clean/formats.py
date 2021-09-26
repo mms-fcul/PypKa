@@ -1,5 +1,10 @@
 from pypka.config import Config
 from pypka.constants import PROTEIN_RESIDUES, TITRABLETAUTOMERS
+from pypka.clean.ffconverter import (
+    clean_atoms_table,
+    clean_atoms_sites_table,
+    clean_residues_table,
+)
 
 
 def new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=" "):
@@ -93,104 +98,6 @@ def gro2pdb(f_in, f_out, save_box=False):
         f_new.write(new_pdb_content)
 
 
-def pdb2gro(
-    filename_in,
-    filename_out,
-    chains_res,
-    box=None,
-    pqr=False,
-    renumber_res=False,
-    fix_termini=True,
-):
-    """
-    Returns
-      - aposition (int) of last atom id in filename_out
-    """
-    NTR_atoms = Config.pypka_params["NTR_atoms"]
-    CTR_atoms = Config.pypka_params["CTR_atoms"]
-
-    header = "CREATED within PyPka\n"
-    new_pdb_text = ""
-    aposition = 0
-    rposition = 1
-    prev_resnumb = None
-
-    with open(filename_in) as f:
-        for line in f:
-            if "CRYST1" in line[:6]:
-                parts = line.split()
-                pdb_box = [float(parts[1]), float(parts[2]), float(parts[3])]
-                continue
-            elif "ATOM" != line[:4]:
-                continue
-            elif pqr:
-                (
-                    aname,
-                    _,
-                    resname,
-                    chain,
-                    resnumb,
-                    x,
-                    y,
-                    z,
-                    *_,
-                ) = read_pqr_line(line)
-            else:
-                (aname, _, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
-            aposition += 1
-
-            chains_sites_numbs = []
-            if chain in chains_res:
-                chains_sites_numbs = chains_res[chain]
-                for site_numb, site_name in chains_sites_numbs.items():
-                    if site_name == "NTR":
-                        NTR_numb = int(site_numb)
-                    elif site_name == "CTR":
-                        CTR_numb = int(site_numb)
-
-            if fix_termini and resnumb in chains_sites_numbs:
-                if (resnumb == NTR_numb and aname in NTR_atoms) or (
-                    resnumb == CTR_numb and aname in CTR_atoms
-                ):
-                    site_numb = resnumb
-                    resname = chains_res[chain][site_numb]
-
-            elif (
-                resname == "HIS"
-                and aname == "HD1"
-                and resnumb not in chains_sites_numbs
-            ):
-                aposition -= 1
-                continue
-
-            if prev_resnumb and prev_resnumb != resnumb:
-                rposition += 1
-
-            x /= 10.0
-            y /= 10.0
-            z /= 10.0
-            if not renumber_res:
-                rposition = resnumb
-            new_pdb_text += new_gro_line(aposition, aname, resname, rposition, x, y, z)
-            prev_resnumb = resnumb
-
-    header += "{0}\n".format(aposition)
-    if not box:
-        footer = "{0:10.5f}{1:10.5f}{2:10.5f}\n".format(
-            pdb_box[0] / 10.0, pdb_box[1] / 10.0, pdb_box[2] / 10.0
-        )
-    else:
-        footer = "{0:10.5f}{1:10.5f}{2:10.5f}\n".format(
-            box[0] / 10.0, box[1] / 10.0, box[2] / 10.0
-        )
-
-    new_pdb = header + new_pdb_text + footer
-    with open(filename_out, "w") as f_new:
-        f_new.write(new_pdb)
-
-    return aposition
-
-
 def change_aname(aname, restype):
     not_correct_names = list(restype.keys())
     for not_corrected in not_correct_names:
@@ -207,58 +114,26 @@ def change_resname(resname):
 
 
 def correct_names(resnumb, resname, aname, titrating_sites, NTR_numb, CTR_numb):
-    # no longer used as it is done by pdb2pqr
-    correct_atoms_table = {
-        "CTR": {"O": "O1", "OXT": "O2"},
-        "NTR": {"H": "H1"},
-        "ILE": {"CD1": "CD"},
-    }
-
-    correct_atoms_sites_table = {
-        "CYS": {"HG": "HG1"},
-        "SER": {"HG": "HG1"},
-        "TYR": {"HH": "HH1"},
-    }
-
-    correct_residues_table = {
-        "HSD": "HI0",
-        "HSE": "HI1",
-        "HSP": "HI2",
-        "ARGN": "AR0",
-        "ASPH": "AS0",
-        "CYS1": "CYS",
-        "CYS2": "CYS",
-        "CYSH": "CY0",
-        "GLUH": "GL0",
-        "HISD": "HI0",
-        "HISE": "HI1",
-        "HISH": "HI2",
-        "HISA": "HI0",
-        "HISB": "HI1",
-        "HISP": "HI2",
-        "LYSH": "LY3",
-        "LYSN": "LY0",
-        "ISU": "CYS",
-    }
+    # TODO: some of these are no longer used as it is done by pdb2pqr
 
     if resnumb == CTR_numb:
         restype = "CTR"
-        aname = change_aname(aname, correct_atoms_table[restype])
+        aname = change_aname(aname, clean_atoms_table[restype])
 
     if resnumb == NTR_numb:
         restype = "NTR"
-        aname = change_aname(aname, correct_atoms_table[restype])
+        aname = change_aname(aname, clean_atoms_table[restype])
 
-    if resname in list(correct_atoms_table.keys()):
-        aname = change_aname(aname, correct_atoms_table[resname])
+    if resname in list(clean_atoms_table.keys()):
+        aname = change_aname(aname, clean_atoms_table[resname])
 
-    if resname in list(correct_residues_table.keys()):
-        resname = correct_residues_table[resname]
+    if resname in list(clean_residues_table.keys()):
+        resname = clean_residues_table[resname]
 
     if resnumb in titrating_sites:
         if resname not in PROTEIN_RESIDUES:
             resname = change_resname(resname)
-        if resname in list(correct_atoms_sites_table.keys()):
-            aname = change_aname(aname, correct_atoms_sites_table[resname])
+        if resname in list(clean_atoms_sites_table.keys()):
+            aname = change_aname(aname, clean_atoms_sites_table[resname])
 
     return aname, resname

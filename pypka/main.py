@@ -1,9 +1,9 @@
 """A python API and CLI to perform pKa calculations on peptides, proteins or lipid bilayers."""
 
 import os
+from delphi4py import DelPhi4py
 
 from pypka.log import Log, checkDelPhiErrors
-from pypka._version import __version__
 from pypka.clean.checksites import (
     check_sites_integrity,
     get_chains_from_file,
@@ -17,19 +17,17 @@ from pypka.clean.pdb_out import write_output_structure
 from pypka.concurrency import (
     runDelPhiSims,
     runInteractionCalcs,
-    runMCCalcs,
     startPoolProcesses,
 )
 from pypka.config import Config
 from pypka.constants import KBOLTZ
-from pypka.delphi4py.delphi4py import DelPhi4py
 from pypka.molecule import Molecule
 from pypka.mc.run_mc import MonteCarlo
 
 
 class Titration:
-
-    """Main PypKa class
+    """
+    Main PypKa class
 
     Attributes:
         params (Config): method parameters
@@ -39,7 +37,8 @@ class Titration:
     def __init__(
         self, parameters, sites="all", fixed_sites=None, debug=False, run="all"
     ):
-        """Runs the pKa prediction
+        """
+        Runs the pKa prediction
 
         Args:
             parameters (dict): input parameters to overwrite the default configuration.
@@ -100,6 +99,53 @@ class Titration:
             gro2pdb(groname, f_in, save_box=True)
             Config.pypka_params.redefine_f_in(f_in)
 
+        if not Config.pypka_params["f_in_extension"] == "pdb":
+            f_format = Config.pypka_params["f_in_extension"]
+            raise Exception(
+                "{0} file format is not currently supported".format(f_format)
+            )
+
+        automatic_sites = self.create_molecule(sites)
+
+        f_in = Config.pypka_params["f_in"]
+        if not automatic_sites:
+            # Reading .st files
+            # If the titrable residues are defined
+            clean_pdb = Config.pypka_params["clean_pdb"]
+            _, chains_res = inputPDBCheck(f_in, sites, clean_pdb)
+            for chain, molecule in self.molecules.items():
+                molecule.loadSites(chains_res[chain])
+
+        elif Config.pypka_params["clean_pdb"]:
+            # If the titrable residues are not defined and
+            # the input pdb file is incomplete
+            chains_res = identify_tit_sites(self.molecules)
+
+        else:
+            # If the titrable residues are not defined and
+            # the input pdb is not missing any atoms
+            chains_res = identify_tit_sites(self.molecules)
+            create_tit_sites(chains_res)
+
+        if Config.pypka_params["clean_pdb"]:
+            # Creates a .pdb input for DelPhi
+            # where residues are in their standard state
+            inputpqr = "clean.pqr"
+            outputpqr = "cleaned_tau.pqr"
+            cleanPDB(self.molecules, chains_res, inputpqr, outputpqr, automatic_sites)
+            create_tit_sites(chains_res, TMPpdb=True)
+            f_in = "TMP.pdb"
+
+        f_out = "delphi_in_stmod.pdb"
+        self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
+
+        if fixed_sites:
+            fix_fixed_sites(self.molecules, fixed_sites, f_out)
+
+        if not Config.debug and os.path.isfile("TMP.pdb"):
+            os.remove("TMP.pdb")
+
+    def create_molecule(self, sites):
         # Creating instance of TitratingMolecule
         automatic_sites = False
         if sites == "all":
@@ -116,71 +162,7 @@ class Titration:
             self.molecules[chain] = Molecule(chain, site_list)
             if site_list == "all":
                 automatic_sites = True
-
-        if Config.pypka_params["f_in_extension"] == "pdb":
-            f_in = Config.pypka_params["f_in"]
-            # Reading .st files
-            # If the titrable residues are defined
-            if not automatic_sites:
-                clean_pdb = Config.pypka_params["clean_pdb"]
-                _, chains_res = inputPDBCheck(f_in, sites, clean_pdb)
-
-                for chain, molecule in self.molecules.items():
-                    molecule.loadSites(chains_res[chain])
-
-            # If the titrable residues are not defined and
-            # the input pdb file is incomplete
-            elif Config.pypka_params["clean_pdb"]:
-                chains_res = identify_tit_sites(self.molecules)
-
-            # If the titrable residues are not defined and
-            # the input pdb is not missing any atoms
-            else:
-                chains_res = identify_tit_sites(self.molecules)
-                create_tit_sites(chains_res)
-
-            # Creates a .pdb input for DelPhi
-            # where residues are in their standard state
-            if Config.pypka_params["clean_pdb"]:
-                inputpqr = "clean.pqr"
-                outputpqr = "cleaned_tau.pqr"
-                # sites = {}
-                # site_numb_n_ref = {}
-                # for chain, molecule in self.molecules.items():
-                #    sites[chain] = molecule.getSites()
-                #    site_numb_n_ref[chain] = {}
-                #    for site in sites[chain]:
-                #        tau_ref_name = sites[chain][site].getRefTautomerName()
-                #        site_numb_n_ref[chain][site] = tau_ref_name
-
-                cleanPDB(
-                    self.molecules, chains_res, inputpqr, outputpqr, automatic_sites
-                )
-                # print(len(self.get_all_sites()["A"]), len(chains_res["A"]))
-                # for i in self.get_all_sites()["A"]:
-                #    # if i.res_number not in (chains_res["A"]):
-                #    print(i.res_name, i.res_number)
-
-                create_tit_sites(chains_res, TMPpdb=True)
-                # for i in self.get_all_sites()["A"]:
-                #    print(i.res_name, i.res_number)
-                # print(len(self.get_all_sites()["A"]))
-                # exit()
-                f_in = "TMP.pdb"
-        else:
-            f_format = Config.pypka_params["f_in_extension"]
-            raise Exception(
-                "{0} file format is not currently supported".format(f_format)
-            )
-
-        f_out = "delphi_in_stmod.pdb"
-        self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
-
-        if fixed_sites:
-            fix_fixed_sites(self.molecules, fixed_sites, f_out)
-
-        if not Config.debug and os.path.isfile("TMP.pdb"):
-            os.remove("TMP.pdb")
+        return automatic_sites
 
     def get_total_atoms(self):
         total_atoms = 0
@@ -223,9 +205,9 @@ class Titration:
             Config.pypka_params["f_crg"],
             Config.pypka_params["f_siz"],
             "delphi_in_stmod.pdb",
-            Config.delphi_params["gsize"],
-            Config.delphi_params["scaleM"],
-            Config.delphi_params["precision"],
+            igrid=Config.delphi_params["gsize"],
+            scale=Config.delphi_params["scaleM"],
+            precision=Config.delphi_params["precision"],
             epsin=Config.delphi_params["epsin"],
             epsout=Config.delphi_params["epssol"],
             conc=Config.delphi_params["ionicstr"],
@@ -274,7 +256,8 @@ class Titration:
             print(delphimol)
 
     def iterAllSitesTautomers(self):
-        """Generator that iterates through all Tautomer instances.
+        """
+        Generator that iterates through all Tautomer instances.
 
         The iteration is sorted by site and within each site the first
         to be yielded is the reference tautomer and then the rest of
@@ -355,7 +338,8 @@ class Titration:
                 f_new2.write(contributions)
 
     def calcSiteInteractionsParallel(self):
-        """Calculates the pairwise interaction energies
+        """
+        Calculates the pairwise interaction energies
 
         Interactions are calculated using a pool of processes
         and written in a formatted .dat file
@@ -528,9 +512,8 @@ class Titration:
                 total_anionic_titres += 1
 
         total_arg_charge = 0
-        for chain, aas in self.sequence.items():
-            for resnumb, resname in aas.items():
-                # print(resnumb, resname)
+        for _, aas in self.sequence.items():
+            for _, resname in aas.items():
                 if resname == "ARG":
                     total_arg_charge += 1
 
@@ -573,7 +556,7 @@ class Titration:
 
         if not self.isoelectric_point:
             result = calc_isoelectric_point()
-            if type(result) == tuple:
+            if isinstance(result, tuple):
                 self.isoelectric_point_limit = result
             else:
                 self.isoelectric_point = result
@@ -626,17 +609,17 @@ class Titration:
     def __getitem__(self, chain):
         return self.molecules[chain]
 
-    def __str__(self, format="print"):
-        if format == "print":
+    def __str__(self, str_format="print"):
+        if str_format == "print":
             output = "Chain  Site   Name      pK"
-        elif format == "file":
+        elif str_format == "file":
             output = ""
         sites = self.get_all_sites()
 
         for chain in sites.keys():
             for site in sites[chain]:
                 pk = site.pK
-                if pk and format == "print":
+                if pk and str_format == "print":
                     pk = "{:.2f}".format(round(pk, 2))
                 elif not pk:
                     pk = "Not In Range"
@@ -653,7 +636,8 @@ class Titration:
 
 
 def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
-    """Gets the all titrable sites from the pdb
+    """
+    Gets the all titrable sites from the pdb
 
     Returns an input structure to the Titration class containing all
     titrable sites found in the pdb file.

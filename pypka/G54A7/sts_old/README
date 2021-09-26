@@ -1,0 +1,58 @@
+
+Change pkmod values according to what is writen in LOGBOOK:
+/user01/machuque/gromacs/Constant_pH_MD/St-54a7_Fit/LOGBOOK ,
+
+Calibration made with DelPhi with a convergence criteria of
+maxc = 0.01. Data fitted to a Henderson-Hasselbalch
+
+
+log10(2) = 0.301029995663981
+log10(3) = 0.477121254719662
+log10(4) = 0.602059991327962
+
+
+
+
+Observed shifts of the sites considering an initial pKmod of 0.000
+
+               Shift                            Shift(.2f)
+ARG          0.103207   0.066430   8.448030      0.10
+ASP          0.154323   0.097320  10.762300      0.15
+GLU          0.052750   0.035290   4.826750      0.05
+HIS         -0.196955   0.043890   4.544980     -0.20
+CYS         -0.116505   0.178300  13.123000     -0.12
+LYS         -0.061291   0.022430   3.508880     -0.06
+TYR          0.251335   0.021250   2.538620      0.25
+NTR          0.007610   0.038220   6.188950      0.01
+CTR          0.772740   0.045690   5.619550      0.77
+
+############################################################
+
+
+Thurlkill_2006_PS_15_1214.pdf
+Asp	  3.94*
+Glu	  4.25
+His	  6.54
+Cys	  8.55
+Lys	 10.40
+Tyr	  9.84
+NTR	  8.00
+CTR	  3.67
+*Grimsley_2009_PS_18_247.pdf
+
+
+
+############################################################
+
+Nozaki and Tanford (1967)
+Arginine     12.0
+Aspartate     4.0
+Glutamate     4.4
+Histidine     6.3
+Lysine       10.4
+Tyrosine      9.6
+N-terminus    7.5
+C-terminus    3.8
+
+
+

@@ -1,0 +1,80 @@
+
+	Using pkmod values from Thurlkill(2006) and Grimsley(2009)
+
+ARG: Tautomeric forms are equivalent - cationic
+
+pKmodTaut = pKmod + log10(4)
+          = XXX
+	  = XX
+
+
+Carboxilic acids: Tautomeric forms unequivalent - anionic
+2+2 tautomers - the backwards protons have an occupancy of 5.5%
+
+ASP value from Grimsley(2009): 3.94 with shift of 0.15*
+ASP: pKmodTaut(front) = (pkmod - shift) - log10(2/(1-0.055))
+     		      = 3.79 - 0.325598187154718
+		      = 3.46440181284528 ~ 3.4644
+ASP: pKmodTaut(back) = (pKmod - shift) - log10(2/(0.055))
+     		     = 3.79 - 1.56066730616974
+		     = 2.22933269383026 ~ 2.2293
+
+GLU value from Thurlkill(2006): 4.25 with shift of 0.05*
+GLU: pKmodTaut(front) = pkmod - log10(2/(1-0.055))
+     		      = 4.20 - 0.325598187154718
+		      = 3.87440181284528 ~ 3.8744
+GLU: pKmodTaut(back) = pKmod - log10(2/(0.055))
+     		     = 4.20 - 1.56066730616974
+		     = 2.63933269383026 ~ 2.6393
+
+CTR value from Thurlkill(2006): 3.67 with shift of 0.77*
+CTR: pKmodTaut(front) = pkmod - log10(2/(1-0.055))
+     		      = 2.90 - 0.325598187154718
+		      = 2.57440181284528 ~ 2.5744
+CTR: pKmodTaut(back) = pKmod - log10(2/(0.055))
+     		     = 2.90 - 1.56066730616974
+		     = 1.33933269383026 ~ 1.3393
+
+
+CYS: Tautomeric forms equivalent - anionic
+
+CYS value from Thurlkill(2006): 8.55 with shift of -0.12*
+pKmodTaut = pKmod - log10(3)
+	  = 8.67 - 0.477121254719662
+	  = 8.19287874528034 ~ 8.1929
+
+
+TYR: Tautomeric forms equivalent - anionic
+
+TYR value from Thurlkill(2006): 9.84 with shift of 0.25*
+pKmodTaut = pKmod - log10(2)
+	  = 9.59 - 0.301029995663981
+	  = 9.28897000433602 ~ 9.2890
+
+
+LYS and NTR: Tautomeric forms equivalent - cationic
+
+LYS value from Thurlkill(2006): 10.40 with shift of -0.06*
+LYS: pKmodTaut = pKmod + log10(3)
+     	       = 10.46 + 0.477121254719662
+	       = 10.9371212547197 ~ 10.9371
+
+NTR value from Thurlkill(2006): 8.00 with shift of 0.01*
+NTR: pKmodTaut = pKmod + log10(3)
+     	       = 7.99 + 0.477121254719662
+	       = 8.46712125471966 ~ 8.4671
+
+
+HIS: Tautomeric forms unequivalent - cationic
+A partition of 30%/70% can be used.
+
+HIS value from Thurlkill(2006): 6.54 with shift of -0.20*
+HIS: pKmodTaut(Ndelta) = pKmod + log10(1/(0.3))
+     		       = 6.74 + 0.522878745280338
+		       = 7.26287874528034 ~ 7.2629
+HIS: pKmodTaut(Nepsilon) = pKmod + log10(1/(1-0.3))
+     			 = 6.74 + 0.154901959985743
+			 = 6.89490195998574 ~ 6.8949
+
+
+* Shift of DelPhi

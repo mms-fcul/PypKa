@@ -3,6 +3,7 @@ from typing import Dict
 """
 Rules for force field conversion
 """
+
 gromos2amber = {
     "ASP": {
         0: {"HD11": "HD2", "OD1": "OD2", "OD2": "OD1"},
@@ -152,4 +153,37 @@ main_chains = {
         "NTR": ("C", "O"),
         "CTR": ("N", "HN", "HA", "CA"),
     },
+}
+
+clean_atoms_table = {
+    "CTR": {"O": "O1", "OXT": "O2"},
+    "NTR": {"H": "H1"},
+    "ILE": {"CD1": "CD"},
+}
+
+clean_atoms_sites_table = {
+    "CYS": {"HG": "HG1"},
+    "SER": {"HG": "HG1"},
+    "TYR": {"HH": "HH1"},
+}
+
+clean_residues_table = {
+    "HSD": "HI0",
+    "HSE": "HI1",
+    "HSP": "HI2",
+    "ARGN": "AR0",
+    "ASPH": "AS0",
+    "CYS1": "CYS",
+    "CYS2": "CYS",
+    "CYSH": "CY0",
+    "GLUH": "GL0",
+    "HISD": "HI0",
+    "HISE": "HI1",
+    "HISH": "HI2",
+    "HISA": "HI0",
+    "HISB": "HI1",
+    "HISP": "HI2",
+    "LYSH": "LY3",
+    "LYSN": "LY0",
+    "ISU": "CYS",
 }

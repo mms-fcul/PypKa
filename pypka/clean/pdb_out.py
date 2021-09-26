@@ -7,6 +7,7 @@ from pypka.clean.ffconverter import (
     mainchain_Hs,
 )
 from pypka.clean.formats import new_pdb_line, read_pdb_line, read_pqr_line
+from pypka.clean.utils import rinse_pdb
 from pypka.config import Config
 from pypka.constants import *
 
@@ -142,21 +143,13 @@ def write_output_structure(sites, molecules, delphi_input_content):
                 del mainchain_Hs[chain][resnumb]
         elif not line.startswith("ENDMDL"):
             new_pdb += line
+
     outputpqr = "leftovers.pqr"
     logfile = "LOG_pdb2pqr_nontitrating"
     if ff_out == "gromos_cph":
         ff_out = "GROMOS"
-    os.system(
-        "python2 {0} {1} {2} --ff {3} --ffout {4} "
-        "--drop-water -v --chain > {5} 2>&1 ".format(
-            Config.pypka_params["pdb2pqr"],
-            Config.pypka_params["pdb2pqr_inputfile"],
-            outputpqr,
-            ff_out,
-            ff_out,
-            logfile,
-        )
-    )
+    rinse_pdb(Config.pypka_params["pdb2pqr_inputfile"], outputpqr, ff_out, ff_out, logfile=logfile)
+
     with open(outputpqr) as f:
         for line in f:
             if line.startswith("ATOM "):

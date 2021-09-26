@@ -228,16 +228,6 @@ class PypKaConfig(ParametersDict):
         self.file_dir = os.path.dirname(os.path.abspath(__file__))
         self.ffs_dir = os.path.dirname(__file__)
 
-        # PDB2PQR
-        self.pdb2pqr = "{0}/clean/pdb2pqr/pdb2pqr.py".format(self.file_dir)
-        self.userff = "{0}/clean/pdb2pqr/dat/GROMOS.DAT".format(self.file_dir)
-        self.usernames = "{0}/clean/pdb2pqr/dat/GROMOS.names".format(self.file_dir)
-        self.userff_rna = "{0}/clean/pdb2pqr/dat/GROMOS_RNA.DAT".format(self.file_dir)
-        self.usernames_rna = "{0}/clean/pdb2pqr/dat/GROMOS_RNA.names".format(
-            self.file_dir
-        )
-        self.pdb2pqr_inputfile = "input_clean.pdb"
-
         # File Naming
         self.f_in = None
         self.f_in_extension = None
@@ -265,6 +255,7 @@ class PypKaConfig(ParametersDict):
         # Preprocessing parameters
         self.ffinput = "GROMOS"
         self.clean_pdb = True
+        self.pdb2pqr_inputfile = "input_clean.pdb"
         self.pdb2pqr_h_opt = True
         self.remove_hs = True
         self.keep_ions = False
