@@ -11,7 +11,7 @@ jobs:
             apt update
             apt upgrade -y
             apt install -y git python3.8 gawk libgfortran4 python2 python3-pip
-            python3.8 -m pip install --user pytest numpy coverage psutil
+            python3.8 -m pip install --user pytest numpy coverage psutil delphi4py pdbmender
       - checkout
       - run:
           name: run tests

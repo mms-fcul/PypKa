@@ -2,9 +2,10 @@ import time
 from copy import copy
 
 from pypka.log import checkDelPhiErrors
-from pypka.clean.formats import new_pdb_line
 from pypka.config import Config
 from pypka.constants import KBOLTZ, LOG10
+
+from pdbmender.formats import new_pdb_line
 
 
 class Tautomer(object):
@@ -397,13 +398,12 @@ class Tautomer(object):
                 p_rad3[site_atom_position] = delphimol.p_rad3[atom_position]
                 p_chrgv4[site_atom_position] = self.getCharge(atom_name)
                 atinf[site_atom_position].value = delphimol.atinf[atom_position].value
-                # quick fix, should be done only once per site
-                # TODO: fix ^
+                # TODO: should be done only once per site
                 if Config.delphi_params["pbc_dim"] == 2:
                     p_atpos[site_atom_position][0] += offset_x
                     p_atpos[site_atom_position][1] += offset_y
                     p_atpos[site_atom_position][2] += offset_z
-
+                    
                     p_atpos[atom_position] = self.putInsideBox(
                         p_atpos[atom_position], box_x, box_y
                     )

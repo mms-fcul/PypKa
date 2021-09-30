@@ -30,6 +30,8 @@ RNA_RESIDUES = {
     "RG": "RGU",
 }
 
+NUCLEIC_ACIDS = list(DNA_RESIDUES.values()) + list(RNA_RESIDUES.values())
+
 # Ions
 IONS = ["CL-", "NA+"]
 

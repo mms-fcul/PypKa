@@ -1020,7 +1020,7 @@ ASP 4 None ('undefined', 'pk Not In Range') (1, (0.5596, 0.33636)) 4 {4.2: 0.559
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.872625, 0.872625)) 4 {4.0: 0.127375}
+CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.886665, 0.886665)) 4 {4.0: 0.113335}
 """
         params = {
             "structure": "penta/CTR/ctr1.gro",
@@ -1037,7 +1037,7 @@ CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.872625, 0.872625)) 4 {4.0:
         checkAPIResult(pKa, results, pH=4.0, extended=True)
 
         results = """
-CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.539945, 0.539945)) 0 {4.0: 0.460055}
+CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.57106, 0.57106)) 4 {4.0: 0.42894}
 """
         params["structure"] = "penta/CTR/ctr2.gro"
         pKa = Titration(params, sites=sites)
@@ -1049,7 +1049,7 @@ CTR 5006 None ('undefined', 'pk Not In Range') (5, (0.539945, 0.539945)) 0 {4.0:
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-CYS 4 None ('undefined', 'pk Not In Range') (3, (0.91772, 0.474435)) 2 {8.2: 0.91772}
+CYS 4 None ('undefined', 'pk Not In Range') (3, (0.925685, 0.479055)) 2 {8.2: 0.925685}
 """
         params = {
             "structure": "penta/CYS/protein_000.gro",
@@ -1066,7 +1066,7 @@ CYS 4 None ('undefined', 'pk Not In Range') (3, (0.91772, 0.474435)) 2 {8.2: 0.9
         checkAPIResult(pKa, results, pH=8.2, extended=True)
 
         results = """
-CYS 4 None ('undefined', 'pk Not In Range') (2, (0.58287, 0.275595)) 0 {8.2: 0.58287}
+CYS 4 None ('undefined', 'pk Not In Range') (2, (0.61114, 0.28937)) 3 {8.2: 0.61114}
 """
         params["structure"] = "penta/CYS/protein_001.gro"
         pKa = Titration(params, sites=sites)
@@ -1078,7 +1078,7 @@ CYS 4 None ('undefined', 'pk Not In Range') (2, (0.58287, 0.275595)) 0 {8.2: 0.5
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-GLU 4 None ('undefined', 'pk Not In Range') (5, (0.70566, 0.70566)) 4 {4.5: 0.29434}
+GLU 4 None ('undefined', 'pk Not In Range') (5, (0.73255, 0.73255)) 4 {4.5: 0.26745}
 """
         params = {
             "structure": "penta/GLU/protein_000.gro",
@@ -1095,7 +1095,7 @@ GLU 4 None ('undefined', 'pk Not In Range') (5, (0.70566, 0.70566)) 4 {4.5: 0.29
         checkAPIResult(pKa, results, pH=4.5, extended=True)
 
         results = """
-GLU 4 None ('undefined', 'pk Not In Range') (5, (0.519055, 0.519055)) 4 {4.5: 0.480945}
+GLU 4 None ('undefined', 'pk Not In Range') (5, (0.55045, 0.55045)) 4 {4.5: 0.44955}
 """
         params["structure"] = "penta/GLU/protein_003.gro"
         pKa = Titration(params, sites=sites)
@@ -1107,7 +1107,7 @@ GLU 4 None ('undefined', 'pk Not In Range') (5, (0.519055, 0.519055)) 4 {4.5: 0.
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-HIS 4 None ('undefined', 'pk Not In Range') (3, (0.870155, 0.870155)) 2 {6.2: 0.870155}
+HIS 4 None ('undefined', 'pk Not In Range') (3, (0.859865, 0.859865)) 0 {6.2: 0.859865}
 """
         params = {
             "structure": "penta/HIS/protein_000.gro",
@@ -1124,7 +1124,7 @@ HIS 4 None ('undefined', 'pk Not In Range') (3, (0.870155, 0.870155)) 2 {6.2: 0.
         checkAPIResult(pKa, results, pH=6.2, extended=True)
 
         results = """
-HIS 4 None ('undefined', 'pk Not In Range') (2, (0.928025, 0.895105)) 1 {6.2: 0.071975}
+HIS 4 None ('undefined', 'pk Not In Range') (2, (0.933485, 0.900285)) 1 {6.2: 0.066515}
 """
         params["structure"] = "penta/HIS/protein_003.gro"
         pKa = Titration(params, sites=sites)
@@ -1136,7 +1136,7 @@ HIS 4 None ('undefined', 'pk Not In Range') (2, (0.928025, 0.895105)) 1 {6.2: 0.
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-LYS 4 None ('undefined', 'pk Not In Range') (2, (0.658245, 0.221495)) 2 {10.7: 0.341755}
+LYS 4 None ('undefined', 'pk Not In Range') (2, (0.651625, 0.219385)) 3 {10.7: 0.348375}
 """
         params = {
             "structure": "penta/LYS/protein_000.gro",
@@ -1153,7 +1153,7 @@ LYS 4 None ('undefined', 'pk Not In Range') (2, (0.658245, 0.221495)) 2 {10.7: 0
         checkAPIResult(pKa, results, pH=10.7, extended=True)
 
         results = """
-LYS 4 None ('undefined', 'pk Not In Range') (2, (0.900505, 0.715615)) 1 {10.7: 0.099495}
+LYS 4 None ('undefined', 'pk Not In Range') (2, (0.898065, 0.71377)) 3 {10.7: 0.101935}
 """
         params["structure"] = "penta/LYS/protein_006.gro"
         pKa = Titration(params, sites=sites)
@@ -1165,7 +1165,7 @@ LYS 4 None ('undefined', 'pk Not In Range') (2, (0.900505, 0.715615)) 1 {10.7: 0
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-NTR 5001 None ('undefined', 'pk Not In Range') (4, (0.68396, 0.68396)) 0 {7.7: 0.68396}
+NTR 5001 None ('undefined', 'pk Not In Range') (4, (0.608115, 0.608115)) 3 {7.7: 0.608115}
 """
         params = {
             "structure": "penta/NTR/protein_000.gro",
@@ -1182,7 +1182,7 @@ NTR 5001 None ('undefined', 'pk Not In Range') (4, (0.68396, 0.68396)) 0 {7.7: 0
         checkAPIResult(pKa, results, pH=7.7, extended=True)
 
         results = """
-NTR 5001 None ('undefined', 'pk Not In Range') (2, (0.665505, 0.40479)) 0 {7.7: 0.334495}
+NTR 5001 None ('undefined', 'pk Not In Range') (2, (0.736045, 0.447095)) 2 {7.7: 0.263955}
 """
         params["structure"] = "penta/NTR/protein_007.gro"
         pKa = Titration(params, sites=sites)
@@ -1194,7 +1194,7 @@ NTR 5001 None ('undefined', 'pk Not In Range') (2, (0.665505, 0.40479)) 0 {7.7: 
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
         )
         results = """
-TYR 4 None ('undefined', 'pk Not In Range') (3, (0.502225, 0.502225)) 2 {9.5: 0.497775}
+TYR 4 None ('undefined', 'pk Not In Range') (3, (0.52272, 0.52272)) 0 {9.5: 0.47728}
 """
         params = {
             "structure": "penta/TYR/protein_001.gro",
@@ -1211,7 +1211,7 @@ TYR 4 None ('undefined', 'pk Not In Range') (3, (0.502225, 0.502225)) 2 {9.5: 0.
         checkAPIResult(pKa, results, pH=9.5, extended=True)
 
         results = """
-TYR 4 None ('undefined', 'pk Not In Range') (2, (0.7796700000000001, 0.398135)) 2 {9.5: 0.77967}
+TYR 4 None ('undefined', 'pk Not In Range') (2, (0.7652749999999999, 0.390635)) 0 {9.5: 0.765275}
 """
         params["structure"] = "penta/TYR/protein_005.gro"
         pKa = Titration(params, sites=sites)

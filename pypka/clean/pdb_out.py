@@ -6,10 +6,10 @@ from pypka.clean.ffconverter import (
     gromos2amber,
     mainchain_Hs,
 )
-from pypka.clean.formats import new_pdb_line, read_pdb_line, read_pqr_line
-from pypka.clean.utils import rinse_pdb
 from pypka.config import Config
 from pypka.constants import *
+from pdbmender.formats import new_pdb_line, read_pdb_line, read_pqr_line
+from pdbmender.utils import mend_pdb
 
 
 def write_output_structure(sites, molecules, delphi_input_content):
@@ -148,7 +148,13 @@ def write_output_structure(sites, molecules, delphi_input_content):
     logfile = "LOG_pdb2pqr_nontitrating"
     if ff_out == "gromos_cph":
         ff_out = "GROMOS"
-    rinse_pdb(Config.pypka_params["pdb2pqr_inputfile"], outputpqr, ff_out, ff_out, logfile=logfile)
+    mend_pdb(
+        Config.pypka_params["pdb2pqr_inputfile"],
+        outputpqr,
+        ff_out,
+        ff_out,
+        logfile=logfile,
+    )
 
     with open(outputpqr) as f:
         for line in f:

@@ -2,6 +2,7 @@
 
 import os
 from delphi4py import DelPhi4py
+from pdbmender.formats import gro2pdb, get_grobox_size
 
 from pypka.log import Log, checkDelPhiErrors
 from pypka.clean.checksites import (
@@ -12,7 +13,6 @@ from pypka.clean.checksites import (
     fix_fixed_sites,
 )
 from pypka.clean.cleaning import cleanPDB, inputPDBCheck
-from pypka.clean.formats import gro2pdb
 from pypka.clean.pdb_out import write_output_structure
 from pypka.concurrency import (
     runDelPhiSims,
@@ -96,7 +96,9 @@ class Titration:
         if Config.pypka_params["f_in_extension"] == "gro":
             groname = Config.pypka_params["f_in"]
             f_in = "TMP.pdb"
-            gro2pdb(groname, f_in, save_box=True)
+            gro2pdb(groname, f_in)
+            box = get_grobox_size(groname)
+            Config.pypka_params.setBox(box)
             Config.pypka_params.redefine_f_in(f_in)
 
         if not Config.pypka_params["f_in_extension"] == "pdb":

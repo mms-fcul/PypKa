@@ -35,6 +35,8 @@ PypKa should be installed in a Linux-based system. In Windows please use the [WS
 * gawk
 * pytest
 * numpy
+* delphi4py
+* pdbmender
 
 ```bash
   python3 -m pip install pypka

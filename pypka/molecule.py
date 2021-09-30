@@ -1,8 +1,8 @@
-from pypka.clean.formats import read_gro_line
 from pypka.concurrency import runInteractionCalcs
 from pypka.constants import TERMINAL_OFFSET, TITRABLETAUTOMERS
 from pypka.tautomer import Tautomer
 from pypka.titsite import Titsite as Site
+from pdbmender.formats import read_gro_line
 
 
 class Molecule:

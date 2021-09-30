@@ -1,9 +1,9 @@
 import sys
 import os
 
-sys.path.insert(1, os.path.dirname(__file__) + "/../../pypka/")
+sys.path.insert(1, "/home/pedror/MMS@FCUL/pdbmender")
 
-from pypka.clean.formats import read_pdb_line
+from pdbmender.formats import read_pdb_line
 
 
 def storeResidues(filename):

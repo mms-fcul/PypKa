@@ -2,11 +2,20 @@ import os
 from copy import copy
 
 from pypka.config import Config
-from pypka.constants import *
+from pypka.constants import (
+    LIPID_RESIDUES,
+    NUCLEIC_ACIDS,
+    RNA_RESIDUES,
+    PDB_RNA_RESIDUES,
+    IONS,
+    TERMINAL_OFFSET,
+    TITRABLETAUTOMERS,
+    PROTEIN_RESIDUES,
+    TITRABLERESIDUES,
+)
 
-from pypka.clean.ffconverter import *
-from pypka.clean.formats import (
-    correct_names,
+from pypka.clean.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
+from pdbmender.formats import (
     new_gro_line,
     new_pdb_line,
     new_pqr_line,
@@ -14,7 +23,7 @@ from pypka.clean.formats import (
     read_pdb_line,
     read_pqr_line,
 )
-from pypka.clean.utils import add_tautomers, rinse_pdb
+from pdbmender.utils import mend_pdb, prepare_for_addHtaut, add_tautomers
 
 
 def inputPDBCheck(filename, sites, clean_pdb):
@@ -162,6 +171,62 @@ def inputPDBCheck(filename, sites, clean_pdb):
     return chains_length, chains_res
 
 
+def get_pdb_Hs(pdbname, chains_res):
+    with open(pdbname) as f:
+        content = f.readlines()
+    for line in content:
+        if line.startswith("ATOM "):
+            (
+                aname,
+                anumb,
+                resname,
+                chain,
+                resnumb,
+                x,
+                y,
+                z,
+                _,
+                _,
+            ) = read_pqr_line(line)
+
+            if chain not in chains_res:
+                continue
+            elif (
+                chain in chains_res
+                and resnumb in chains_res[chain]
+                and resname in AMBER_Hs
+                and aname in AMBER_Hs[resname]
+                and aname not in AMBER_mainchain_Hs
+            ):
+                continue
+            elif aname[0] == "H" and aname not in ("H1", "H2", "H3"):
+                if not chain in mainchain_Hs:
+                    mainchain_Hs[chain] = {}
+                if not resnumb in mainchain_Hs[chain]:
+                    mainchain_Hs[chain][resnumb] = []
+                mainchain_Hs[chain][resnumb].append(
+                    (aname, anumb, resname, chain, x, y, z)
+                )
+    return mainchain_Hs
+
+
+def select_tautomer_sites(chains_res, CYS_bridges):
+    sites_addHtaut = ""
+    for chain in chains_res.keys():
+        for res in chains_res[chain]:
+            if chains_res[chain][res] == "NTR" or (
+                chain in CYS_bridges and res in CYS_bridges[chain]
+            ):
+                continue
+            sites_addHtaut += "{0}--{1}--{2},".format(
+                res, chains_res[chain][res], chain.replace(" ", "_")
+            )
+
+    if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ",":
+        sites_addHtaut = sites_addHtaut[:-1]
+    return sites_addHtaut
+
+
 def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     pdb_filename = Config.pypka_params["f_in"]
@@ -178,7 +243,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
     # CTR O1/O2 will be deleted and a O/OXT will be added
     # CYS will be turned into CY0
     # All HIS will become fully protonated
-    rinse_pdb(
+    mend_pdb(
         Config.pypka_params["pdb2pqr_inputfile"],
         inputpqr,
         Config.pypka_params["ffinput"],
@@ -193,206 +258,46 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         chains_res = identify_cter(inputpqr, molecules, chains_res)
 
     if Config.pypka_params["f_structure_out"]:
+        hs_pdb = "Hs.pqr"
         ff_out = Config.pypka_params["ff_structure_out"]
         if ff_out == "gromos_cph":
             ff_out = "gromos"
-        rinse_pdb(
+        mend_pdb(
             Config.pypka_params["pdb2pqr_inputfile"],
-            "Hs.pqr",
+            hs_pdb,
             ff_out,
             ff_out,
             logfile=logfile,
         )
+        get_pdb_Hs(hs_pdb, chains_res)
 
-    if Config.pypka_params["f_structure_out"]:
-        with open("Hs.pqr") as f:
-            for line in f:
-                if line.startswith("ATOM "):
-                    (
-                        aname,
-                        anumb,
-                        resname,
-                        chain,
-                        resnumb,
-                        x,
-                        y,
-                        z,
-                        charge,
-                        radius,
-                    ) = read_pqr_line(line)
+    sites = {
+        chain: list(molecule.sites.keys()) for chain, molecule in molecules.items()
+    }
+    termini = {
+        chain: (molecule.NTR, molecule.CTR) for chain, molecule in molecules.items()
+    }
 
-                    if chain not in chains_res:
-                        continue
-                    elif (
-                        chain in chains_res
-                        and resnumb in chains_res[chain]
-                        and resname in AMBER_Hs
-                        and aname in AMBER_Hs[resname]
-                        and aname not in AMBER_mainchain_Hs
-                    ):
-                        continue
-                    elif aname[0] == "H" and aname not in ("H1", "H2", "H3"):
-                        if not chain in mainchain_Hs:
-                            mainchain_Hs[chain] = {}
-                        if not resnumb in mainchain_Hs[chain]:
-                            mainchain_Hs[chain][resnumb] = []
-                        mainchain_Hs[chain][resnumb].append(
-                            (aname, anumb, resname, chain, x, y, z)
-                        )
-
-    new_pdb_text = ""
-    removed_pdb_text = ""
-    removed_pdb_lines = []
-    # ntr_trigger = True
-    resnumb_max = 0
-    chains = list(molecules.keys())
-
-    with open(inputpqr) as f:
-        NUCLEIC_ACIDS = list(DNA_RESIDUES.values()) + list(RNA_RESIDUES.values())
-        for line in f:
-            if "ATOM" in line[:4]:
-                (
-                    aname,
-                    anumb,
-                    resname,
-                    chain,
-                    resnumb,
-                    x,
-                    y,
-                    z,
-                    charge,
-                    radius,
-                ) = read_pqr_line(line)
-
-                termini_trigger = False
-
-                if chain in chains:
-                    molecule = molecules[chain]
-                    NTR_numb = molecule.NTR
-                    CTR_numb = molecule.CTR
-
-                    sites_numbs = molecule.sites.keys()
-
-                    aname, resname = correct_names(
-                        resnumb, resname, aname, sites_numbs, NTR_numb, CTR_numb
-                    )
-                    resnumb_max = resnumb
-
-                    # if resname == "CY0":
-                    #    resname = "CYS"
-                    #    if aname == "HG1":
-                    #        continue
-
-                    if resnumb in (NTR_numb, CTR_numb):
-                        termini_trigger = True
-
-                if resname == "CYS":
-                    change_atoms = {"1CB": "CB", "1SG": "SG"}
-                    if aname in change_atoms.keys():
-                        aname = change_atoms[aname]
-                if (
-                    aname in ("O1", "O2", "OT1", "OT2", "H1", "H2", "H3")
-                    and not termini_trigger
-                    and resname in PROTEIN_RESIDUES
-                ):
-                    if aname == "O1":
-                        aname = "O"
-                    elif aname == "H1":
-                        aname = "H"
-                    else:
-                        continue
-
-                if line[26] != " ":
-                    resnumb += TERMINAL_OFFSET
-
-                new_line = new_pqr_line(
-                    anumb,
-                    aname,
-                    resname,
-                    resnumb,
-                    x,
-                    y,
-                    z,
-                    charge,
-                    radius,
-                    chain=chain,
-                )
-                if chain in molecules:
-                    new_pdb_text += new_line
-                elif (
-                    aname not in ("O1", "O2", "OT1", "OT2", "H1", "H2", "H3")
-                    or resname in NUCLEIC_ACIDS
-                ):
-                    if resname in ("SER", "THR") and aname == "HG1":
-                        aname = "HG"
-                    removed_pdb_lines.append(new_line)
-
-    resnumb_old = resnumb_max + 1
-    for line in removed_pdb_lines:
-        (
-            aname,
-            anumb_old,
-            resname,
-            chain,
-            resnumb,
-            x,
-            y,
-            z,
-            charge,
-            radius,
-        ) = read_pqr_line(line)
-        anumb += 1
-        resnumb += resnumb_old
-        while resnumb < resnumb_max:
-            resnumb += resnumb_old
-        removed_pdb_text += new_pqr_line(
-            anumb, aname, resname, resnumb, x, y, z, charge, radius, chain=chain
-        )
-        resnumb_max = resnumb
-    #            if ntr_trigger and :
-    #                config.tit_mole._NTR = resnumb
-
-    # chains = copy(chains_res['A'])
-    # for res in chains:
-    #    if str(res) > config.terminal_offset:
-    #        print((res, chains_res['A'][res]))
-    #        del chains_res['A'][res]
-    # chains_res['A'][config.tit_mole._NTR] = 'NTR'
-    # chains_res['A'][config.tit_mole._CTR] = 'CTR'
-
-    with open("cleaned.pqr", "w") as f_new:
-        f_new.write(new_pdb_text)
-
-    with open("removed.pqr", "w") as f_new:
-        f_new.write(removed_pdb_text)
-
-    sites_addHtaut = ""
-    for chain in molecules:
-        for res in chains_res[chain]:
-            if chains_res[chain][res] == "NTR" or (
-                chain in CYS_bridges and res in CYS_bridges[chain]
-            ):
-                continue
-            sites_addHtaut += "{0}--{1}--{2},".format(
-                res, chains_res[chain][res], chain.replace(" ", "_")
-            )
-
-    if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ",":
-        sites_addHtaut = sites_addHtaut[:-1]
+    prep_pdb = "cleaned.pqr"
+    to_exclude = NUCLEIC_ACIDS
+    nontitrating_lines = prepare_for_addHtaut(
+        inputpqr, prep_pdb, sites, termini, to_exclude, terminal_offset=TERMINAL_OFFSET
+    )
+    sites_addHtaut = select_tautomer_sites(chains_res, CYS_bridges)
 
     if len(sites_addHtaut.strip()) == 0:
         os.system("cp cleaned.pqr {}".format(outputpqr))
     else:
-        add_tautomers(sites_addHtaut, Config.pypka_params["ff_family"], outputpqr)
+        add_tautomers(
+            prep_pdb, sites_addHtaut, Config.pypka_params["ff_family"], outputpqr
+        )
 
     with open(outputpqr) as f:
         content = f.read()
     with open(outputpqr, "w") as f_new:
-        f_new.write(content + removed_pdb_text)
+        f_new.write(content + nontitrating_lines)
 
     rna_pqr = None
-    # if rna_file:
-    #    rna_pqr = rna_inputpqr
     final_pdb = "TMP.pdb"
     write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_pqr)
 
@@ -407,7 +312,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         add_non_protein(
             pdb_filename, final_pdb, keep_membrane=keep_membrane, keep_ions=keep_ions
         )
-
+    
     tmpfiles = (
         "LOG_pdb2pqr",
         "LOG_pdb2pqr_err",
@@ -534,18 +439,7 @@ def remove_membrane_n_rna(pdbfile, outfile):
 def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
     def pqr2pdb(line, counter):
         counter += 1
-        (
-            aname,
-            anumb_old,
-            resname,
-            chain,
-            resnumb,
-            x,
-            y,
-            z,
-            charge,
-            radius,
-        ) = read_pqr_line(line)
+        (aname, anumb_old, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
         # if chain == "_":
         #    chain = " "

@@ -1,12 +1,10 @@
 """Identifying titrable sites and integrity checking functions
 """
 from copy import copy
-
 from pypka.config import Config
 from pypka.constants import *
-
 from pypka.clean.ffconverter import main_chains, CHARMM_protomers
-from pypka.clean.formats import new_pdb_line, read_gro_line, read_pdb_line
+from pdbmender.formats import new_pdb_line, read_gro_line, read_pdb_line
 
 
 def identify_tit_sites(molecules, instanciate_sites=True):

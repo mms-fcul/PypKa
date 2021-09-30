@@ -87,3 +87,6 @@ release: dist ## package and upload a release
 
 dist: clean ## builds source and wheel package
 	poetry build
+
+circleci: 
+	circleci local execute -c .circleci/config.yml
