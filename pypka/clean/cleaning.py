@@ -18,12 +18,17 @@ from pypka.clean.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
 from pdbmender.formats import (
     new_gro_line,
     new_pdb_line,
-    new_pqr_line,
     read_gro_line,
     read_pdb_line,
     read_pqr_line,
 )
-from pdbmender.utils import mend_pdb, prepare_for_addHtaut, add_tautomers
+from pdbmender.utils import (
+    mend_pdb,
+    prepare_for_addHtaut,
+    add_tautomers,
+    rm_cys_bridges,
+    identify_cter,
+)
 
 
 def inputPDBCheck(filename, sites, clean_pdb):
@@ -210,23 +215,6 @@ def get_pdb_Hs(pdbname, chains_res):
     return mainchain_Hs
 
 
-def select_tautomer_sites(chains_res, CYS_bridges):
-    sites_addHtaut = ""
-    for chain in chains_res.keys():
-        for res in chains_res[chain]:
-            if chains_res[chain][res] == "NTR" or (
-                chain in CYS_bridges and res in CYS_bridges[chain]
-            ):
-                continue
-            sites_addHtaut += "{0}--{1}--{2},".format(
-                res, chains_res[chain][res], chain.replace(" ", "_")
-            )
-
-    if len(sites_addHtaut) > 0 and sites_addHtaut[-1] == ",":
-        sites_addHtaut = sites_addHtaut[:-1]
-    return sites_addHtaut
-
-
 def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     pdb_filename = Config.pypka_params["f_in"]
@@ -252,10 +240,26 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         hopt=Config.pypka_params["pdb2pqr_h_opt"],
     )
 
-    CYS_bridges = get_cys_bridges(logfile, molecules)
+    chains_res, cys_bridges = rm_cys_bridges(chains_res, logfile)
+    for chain in cys_bridges.keys():
+        molecule = molecules[chain]
+        molecule.saveCYSBridges(cys_bridges[chain])
 
     if automatic_sites:
-        chains_res = identify_cter(inputpqr, molecules, chains_res)
+        old_ctrs = {}
+        for chain in chains_res:
+            for resnumb, resname in chains_res[chain].items():
+                old_ctrs[chain] = None
+                if isinstance(resnumb, str) and resname == "CTR":
+                    old_ctrs[chain] = int(resnumb)
+
+        new_ctrs = identify_cter(inputpqr, old_ctrs)
+
+        for chain, resnumb in new_ctrs.items():
+            chains_res[chain][str(resnumb)] = "CTR"
+            molecules[chain].CTR = resnumb
+            sID = molecules[chain].addSite(resnumb + TERMINAL_OFFSET)
+            molecules[chain].addTautomers(sID, TITRABLETAUTOMERS["CTR"], "CTR")
 
     if Config.pypka_params["f_structure_out"]:
         hs_pdb = "Hs.pqr"
@@ -278,19 +282,15 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         chain: (molecule.NTR, molecule.CTR) for chain, molecule in molecules.items()
     }
 
-    prep_pdb = "cleaned.pqr"
     to_exclude = NUCLEIC_ACIDS
-    nontitrating_lines = prepare_for_addHtaut(
-        inputpqr, prep_pdb, sites, termini, to_exclude, terminal_offset=TERMINAL_OFFSET
+    nontitrating_lines = add_tautomers(
+        inputpqr,
+        chains_res,
+        Config.pypka_params["ff_family"],
+        outputpqr,
+        to_exclude=to_exclude,
+        terminal_offset=TERMINAL_OFFSET,
     )
-    sites_addHtaut = select_tautomer_sites(chains_res, CYS_bridges)
-
-    if len(sites_addHtaut.strip()) == 0:
-        os.system("cp cleaned.pqr {}".format(outputpqr))
-    else:
-        add_tautomers(
-            prep_pdb, sites_addHtaut, Config.pypka_params["ff_family"], outputpqr
-        )
 
     with open(outputpqr) as f:
         content = f.read()
@@ -312,7 +312,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         add_non_protein(
             pdb_filename, final_pdb, keep_membrane=keep_membrane, keep_ions=keep_ions
         )
-    
+
     tmpfiles = (
         "LOG_pdb2pqr",
         "LOG_pdb2pqr_err",
@@ -331,66 +331,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         and not Config.pypka_params.structure_output
     ):
         os.remove(Config.pypka_params["pdb2pqr_inputfile"])
-
-
-def get_cys_bridges(f_pdb2pqr_log, molecules):
-    CYS_bridges = {}
-    with open(f_pdb2pqr_log) as f:
-        trigger_error = ""
-        for line in f:
-            if "patched with CYX" in line:
-                parts = line.split("patched")[0].replace("PATCH INFO: ", "").split()
-                resname, chain, resnumb = parts
-                # chain = chain.replace("_", " ")
-                if not chain in CYS_bridges:
-                    CYS_bridges[chain] = []
-                cys_res_numb = int(parts[-1])
-                if cys_res_numb not in CYS_bridges[chain]:
-                    CYS_bridges[chain].append(cys_res_numb)
-            if (
-                "error" in line.lower()
-                and "Error parsing line: invalid literal for int() with base 10"
-                not in line
-            ):
-                trigger_error += line
-        if trigger_error:
-            raise Exception(
-                "Found errors while parsing the input structure to PDB2PQR:\n"
-                + trigger_error
-            )
-
-    for chain, molecule in molecules.items():
-        if chain in CYS_bridges:
-            molecule.saveCYSBridges(CYS_bridges[chain])
-    return CYS_bridges
-
-
-def identify_cter(inputpqr, molecules, chains_res):
-    with open(inputpqr) as f:
-        for line in f:
-            if line.startswith("ATOM "):
-                (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
-                if (
-                    "CTR" not in chains_res
-                    and aname
-                    in (
-                        "CT",
-                        "OT",
-                        "OT1",
-                        "OT2",
-                        "O1",
-                        "O2",
-                        "OXT",
-                    )
-                    and chain in chains_res
-                    and str(resnumb) not in chains_res[chain]
-                    and resname in [*TITRABLERESIDUES, *PROTEIN_RESIDUES]
-                ):
-                    chains_res[chain][str(resnumb)] = "CTR"
-                    molecules[chain].CTR = resnumb
-                    sID = molecules[chain].addSite(resnumb + TERMINAL_OFFSET)
-                    molecules[chain].addTautomers(sID, TITRABLETAUTOMERS["CTR"], "CTR")
-    return chains_res
 
 
 def remove_membrane_n_rna(pdbfile, outfile):

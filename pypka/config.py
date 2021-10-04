@@ -343,7 +343,8 @@ class PypKaConfig(ParametersDict):
         ffID = Config.pypka_params["ffID"].lower()
         if "charmm36m" in ffID:
             self["ff_family"] = "CHARMM"
-            self["ffinput"] = "CHARMM"
+            #self["ffinput"] = "CHARMM"
+            self["ser_thr_titration"] = False
         elif "g54a7" in ffID:
             self["ff_family"] = "GROMOS"
         else:

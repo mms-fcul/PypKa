@@ -1,14 +1,11 @@
-"""A python API and CLI to perform pKa calculations on peptides, proteins or lipid bilayers."""
-
 import os
 from delphi4py import DelPhi4py
-from pdbmender.formats import gro2pdb, get_grobox_size
+from pdbmender.formats import gro2pdb, get_grobox_size, get_chains_from_file
+from pdbmender.utils import identify_tit_sites
 
 from pypka.log import Log, checkDelPhiErrors
 from pypka.clean.checksites import (
     check_sites_integrity,
-    get_chains_from_file,
-    identify_tit_sites,
     make_delphi_inputfile,
     fix_fixed_sites,
 )
@@ -20,7 +17,7 @@ from pypka.concurrency import (
     startPoolProcesses,
 )
 from pypka.config import Config
-from pypka.constants import KBOLTZ
+from pypka.constants import KBOLTZ, TITRABLETAUTOMERS, TERMINAL_OFFSET
 from pypka.molecule import Molecule
 from pypka.mc.run_mc import MonteCarlo
 
@@ -106,7 +103,6 @@ class Titration:
             raise Exception(
                 "{0} file format is not currently supported".format(f_format)
             )
-
         automatic_sites = self.create_molecule(sites)
 
         f_in = Config.pypka_params["f_in"]
@@ -118,16 +114,19 @@ class Titration:
             for chain, molecule in self.molecules.items():
                 molecule.loadSites(chains_res[chain])
 
-        elif Config.pypka_params["clean_pdb"]:
-            # If the titrable residues are not defined and
-            # the input pdb file is incomplete
-            chains_res = identify_tit_sites(self.molecules)
-
         else:
-            # If the titrable residues are not defined and
-            # the input pdb is not missing any atoms
-            chains_res = identify_tit_sites(self.molecules)
-            create_tit_sites(chains_res)
+            # If the titrable residues are not defined
+            chains_res = identify_tit_sites(
+                Config.pypka_params["f_in"],
+                self.molecules.keys(),
+                nomenclature=Config.pypka_params["ffinput"],
+                add_ser_thr=Config.pypka_params["ser_thr_titration"],
+            )
+            self.assign_residues_to_molecule(chains_res)
+
+            if not Config.pypka_params["clean_pdb"]:
+                # if the input pdb is not missing any atoms
+                create_tit_sites(chains_res)
 
         if Config.pypka_params["clean_pdb"]:
             # Creates a .pdb input for DelPhi
@@ -165,6 +164,32 @@ class Titration:
             if site_list == "all":
                 automatic_sites = True
         return automatic_sites
+
+    def assign_residues_to_molecule(self, chains_res):
+        if not chains_res:
+            f_in = Config.pypka_params["f_in"]
+            raise Exception("Not one titrable residue was found in {}".format(f_in))
+
+        for chain, residues in chains_res.items():
+            molecule = self.molecules[chain]
+            for resnumb, resname in residues.items():
+                if resname in ("NTR", "CTR"):
+                    resnumb = int(resnumb)
+                    if resname == "NTR":
+                        molecule.NTR = resnumb
+                    elif resname == "CTR":
+                        molecule.CTR = resnumb
+                    resnumb += TERMINAL_OFFSET
+
+                sID = molecule.addSite(resnumb)
+                ntautomers = TITRABLETAUTOMERS[resname]
+                molecule.addTautomers(sID, ntautomers, resname)
+
+        for molecule in self.molecules.values():
+            # Adding the reference tautomer to each site
+            molecule.addReferenceTautomers()
+            # Assigning a charge set to each tautomer
+            molecule.addTautomersChargeSets()
 
     def get_total_atoms(self):
         total_atoms = 0
