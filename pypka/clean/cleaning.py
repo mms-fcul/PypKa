@@ -24,7 +24,6 @@ from pdbmender.formats import (
 )
 from pdbmender.utils import (
     mend_pdb,
-    prepare_for_addHtaut,
     add_tautomers,
     rm_cys_bridges,
     identify_cter,
@@ -219,6 +218,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     pdb_filename = Config.pypka_params["f_in"]
 
+    
+
     remove_membrane_n_rna(pdb_filename, Config.pypka_params["pdb2pqr_inputfile"])
     if " " in molecules.keys():
         molecules["_"] = molecules[" "]
@@ -226,7 +227,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         chains_res["_"] = chains_res[" "]
         del chains_res[" "]
 
-    logfile = "LOG_pdb2pqr"
+    logfile = "LOG_pdb2pqr"    
 
     # CTR O1/O2 will be deleted and a O/OXT will be added
     # CYS will be turned into CY0
@@ -239,6 +240,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         logfile=logfile,
         hopt=Config.pypka_params["pdb2pqr_h_opt"],
     )
+    exit()
+    
 
     chains_res, cys_bridges = rm_cys_bridges(chains_res, logfile)
     for chain in cys_bridges.keys():
@@ -314,8 +317,9 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         )
 
     tmpfiles = (
+        "addhtaut_cleaned.pdb",
+        "input_clean_fixed.pdb",
         "LOG_pdb2pqr",
-        "LOG_pdb2pqr_err",
         "clean.pqr",
         "cleaned.pqr",
         "cleaned_tau.pqr",

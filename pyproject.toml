@@ -46,6 +46,7 @@ numpy = "*"
 pytest = "^6.2.5"
 delphi4py = "^1.0.1"
 pdbmender = "^0.3.0"
+Sphinx = "^4.3.2"
 
 [tool.poetry.dev-dependencies]
 recommonmark = "*"

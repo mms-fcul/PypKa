@@ -1,3 +1,6 @@
+Future Work
+===========
+
 .. |sb| raw:: html
 
    <strike>
@@ -5,9 +8,6 @@
 .. |se| raw:: html
 
    </strike>
-
-Future Work
-=================================
 
 We have built PypKa with a clear focus on three things:
 
@@ -24,9 +24,9 @@ Naturaly our development path also reflects these concerns.
 Greater Usability
 =================================
 
-- Provide a Webserver Interface and platform
+- |sb| Provide a Webserver Interface and platform |se|
 
-- More in-deepth user documentation
+- |sb| More in-deepth user documentation |se|
   
 - Improve code-level documentation
 
@@ -57,7 +57,7 @@ Accuracy Improvement
 
 - |sb| Extensive benchmark and further optimization of parameters |se|
 
-- Support for CHARMM, AMBER and PARSE based charges and radii
+- Support for |sb| CHARMM |se|, AMBER and PARSE based charges and radii
 
 - Support more lipids
 

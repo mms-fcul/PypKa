@@ -76,7 +76,7 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	sphinx-apidoc -o docs/ pypka
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+	$(BROWSER) docs/build/html/index.html
 
 docs-coverage:
 	cd docs/ && sphinx-build -v -b coverage source/ build/	
