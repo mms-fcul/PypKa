@@ -1,5 +1,5 @@
 import os
-
+import logging
 from pypka.clean.ffconverter import (
     AMBER_protomers,
     GROMOS_protomers,
@@ -10,6 +10,8 @@ from pypka.config import Config
 from pypka.constants import *
 from pdbmender.formats import new_pdb_line, read_pdb_line, read_pqr_line
 from pdbmender.utils import mend_pdb
+
+logger = logging.getLogger(__name__)
 
 
 def write_output_structure(sites, molecules, delphi_input_content):
@@ -31,8 +33,8 @@ def write_output_structure(sites, molecules, delphi_input_content):
                             resname, resnumb, state_prob, taut_prob
                         )
                     )
-                    Config.log.report_warning(warn)
-                    print(warn)
+                    logger.warn(warn)
+
                 rounded_sprob = round(state_prob, 2)
                 rounded_tprob = round(taut_prob, 2)
                 rounded_avgprot = round(average_prot, 2)

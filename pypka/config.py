@@ -1,22 +1,23 @@
 import os
 from copy import copy
 from pprint import pformat
-
+import logging
 from numpy import arange
 from psutil import cpu_count
 
 from pypka.constants import *
 
+logger = logging.getLogger(__name__)
+
 
 class Config:
     @classmethod
-    def storeParams(cls, titration_obj, log, debug, parameters, sites):
-        cls.log = log
+    def storeParams(cls, titration_obj, debug, parameters, sites):
         cls.debug = debug
         cls.titration = titration_obj
-        cls.pypka_params = PypKaConfig(sites, log)
-        cls.delphi_params = DelPhiConfig(log)
-        cls.mc_params = MCConfig(log)
+        cls.pypka_params = PypKaConfig(sites)
+        cls.delphi_params = DelPhiConfig()
+        cls.mc_params = MCConfig()
         cls.parallel_params = ParallelConfig()
 
         cls.filter_params(parameters)
@@ -60,13 +61,16 @@ class Config:
                 config_obj[param_name] = param_value
             else:
                 info = "{} is not a valid parameter.".format(param_name)
-                cls.log.report_warning(info, stdout=True)
+                logger.warn(info)
 
         # Check if mandatory parameters were defined
         for param_name in MANDATORY_PARAMS:
             config_obj = cls.getConfigObj(param_name)
             if not (config_obj and config_obj[param_name] is not None):
-                cls.log.raise_required_param_error(param_name)
+                raise IOError(
+                    'Required input parameter "{0}" '
+                    "is not defined.".format(param_name)
+                )
 
         cls.pypka_params.set_structure_extension()
         cls.pypka_params.set_ncpus()
@@ -103,8 +107,7 @@ class ParametersDict:
         "clean": "clean_pdb",
     }
 
-    def __init__(self, log):
-        self.log = log
+    def __init__(self):
         self.input_special_conditions = {}
         self.input_type = {}
 
@@ -139,7 +142,10 @@ class ParametersDict:
             try:
                 param_value = param_type(param_value)
             except ValueError:
-                self.log.raise_input_param_error(param_name, param_type, msg)
+                raise ValueError(
+                    'Input parameter "{0}" is not {1}\n '
+                    "{2}".format(param_name, param_type, msg)
+                )
         return param_value
 
     def check_conditions(self, param_name, param_value):
@@ -147,21 +153,23 @@ class ParametersDict:
             param_type = self.input_type[param_name]
             param_value = self.check_param_type(param_name, param_value, param_type)
         else:
-            info = (
+            logger.warn(
                 "parameter {} is not being checked for type. "
-                "Please warn the developement team.".format(param_name)
+                "Please warn the development team.".format(param_name)
             )
-            self.log.report_warning(info, stdout=True)
+
         if param_name in self.input_special_conditions:
             condition = self.input_special_conditions[param_name]
             if condition == ">0":
                 if param_value <= 0:
-                    self.log.raise_input_param_error(
-                        param_name, "greater than zero.", ""
+                    raise ValueError(
+                        'Input parameter "{0}" is not greater than zero.'.format(
+                            param_name
+                        )
                     )
             elif param_value not in condition:
-                self.log.raise_input_param_error(
-                    param_name, "in {}".format(condition), ""
+                raise ValueError(
+                    'Input parameter "{0}" is not in {1}'.format(param_name, condition)
                 )
 
         return param_value
@@ -201,8 +209,8 @@ class ParametersDict:
 class PypKaConfig(ParametersDict):
     """Configuration parameters"""
 
-    def __init__(self, sites, log):
-        super().__init__(log)
+    def __init__(self, sites):
+        super().__init__()
 
         self.name = "PypKa"
         self.not_to_print = [
@@ -307,18 +315,16 @@ class PypKaConfig(ParametersDict):
         structure = self["structure"]
         f_in_parts = structure.split(".")
         if len(f_in_parts) <= 1:
-            self.log.raise_input_param_error(
-                "structure",
-                "a string containing a file extension.",
-                "Ex: structure.pdb or structure.gro",
+            raise ValueError(
+                'Input parameter "structure" is not a string containing a file extension.\n '
+                "Ex: structure.pdb or structure.gro or structure.pqr"
             )
 
         extension = f_in_parts[-1].lower().replace("pqr", "pdb")
         if extension not in ("gro", "pdb"):
-            self.log.raise_input_param_error(
-                "structure",
-                "a string containing a valid file extension.",
-                "Ex: structure.pdb or structure.gro or structure.pqr",
+            raise ValueError(
+                'Input parameter "structure" is not a string containing a valid file extension.\n '
+                "Ex: structure.pdb or structure.gro or structure.pqr"
             )
 
         self.f_in_extension = extension
@@ -343,7 +349,7 @@ class PypKaConfig(ParametersDict):
         ffID = Config.pypka_params["ffID"].lower()
         if "charmm36m" in ffID:
             self["ff_family"] = "CHARMM"
-            #self["ffinput"] = "CHARMM"
+            # self["ffinput"] = "CHARMM"
             self["ser_thr_titration"] = False
         elif "g54a7" in ffID:
             self["ff_family"] = "GROMOS"
@@ -371,8 +377,10 @@ class PypKaConfig(ParametersDict):
             "API Example: structure_output = structure.pdb, 7, amber"
         )
         if len(structure_output) != 3:
-            error_msg = "a tuple containing a filename, the desired pH value and force field naming scheme."
-            self.log.raise_input_param_error("structure_output", error_msg, msg)
+            raise ValueError(
+                'Input parameter "structure_output" is not a tuple containing a filename, '
+                "the desired pH value and force field naming scheme.\n{0}".format(msg)
+            )
 
         outfilename = structure_output[0].strip("()\"' ")
         pH = structure_output[1].strip("()\"' ")
@@ -417,8 +425,8 @@ class PypKaConfig(ParametersDict):
 class DelPhiConfig(ParametersDict):
     """DelPhi configuration parameters"""
 
-    def __init__(self, log):
-        super().__init__(log)
+    def __init__(self):
+        super().__init__()
 
         self.name = "DelPhi"
         self.not_to_print = [
@@ -535,8 +543,8 @@ class DelPhiConfig(ParametersDict):
 class MCConfig(ParametersDict):
     """Monte Carlo configuration parameters"""
 
-    def __init__(self, log):
-        super().__init__(log)
+    def __init__(self):
+        super().__init__()
 
         self.name = "Monte Carlo"
         self.not_to_print = ["input_type", "input_special_conditions"]
@@ -587,8 +595,9 @@ class MCConfig(ParametersDict):
 
             diff = self.pHmax - self.pHmin
             if diff < 0:
-                self.log.raise_input_param_error(
-                    "pH", "correctly defined.", pH_error_info
+                raise ValueError(
+                    'Input parameter "pH" is not correctly defined.\n '
+                    "{2}".format(pH_error_info)
                 )
             if diff % self.pHstep != 0:
                 self.pHmax += self.pHstep
@@ -603,7 +612,10 @@ class MCConfig(ParametersDict):
             self.pHmin = pH
             self.pHmax = pH
         else:
-            self.log.raise_input_param_error("pH", "correctly defined.", pH_error_info)
+            raise ValueError(
+                'Input parameter "pH" is not correctly defined.\n '
+                "{2}".format(pH_error_info)
+            )
 
 
 class ParallelConfig:

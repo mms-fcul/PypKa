@@ -1,39 +1,5 @@
 import os
-import sys
-
 from pypka.config import Config
-
-
-class Log:
-    def __init__(self):
-        self.f_log = "LOG"
-        self.stdout = None
-        self.stderr = None
-        self.stdout_file = None
-        self.stderr_file = None
-
-    def report2log(self, info, stdout=False):
-        with open(self.f_log, "a") as logfile:
-            logfile.write(info + "\n")
-        if stdout:
-            print(info)
-
-    @staticmethod
-    def raise_required_param_error(parameter):
-        raise IOError(
-            'Required input parameter "{0}" ' "is not defined.".format(parameter)
-        )
-
-    @staticmethod
-    def raise_input_param_error(parameter, complaint, explanation):
-        raise ValueError(
-            'Input parameter "{0}" is not {1}\n '
-            "{2}".format(parameter, complaint, explanation)
-        )
-
-    def report_warning(self, info, stdout=False):
-        warning = "warning: {0}".format(info)
-        self.report2log(warning, stdout=stdout)
 
 
 def checkDelPhiErrors(filename, mode=None):
