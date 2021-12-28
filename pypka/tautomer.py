@@ -403,7 +403,7 @@ class Tautomer(object):
                     p_atpos[site_atom_position][0] += offset_x
                     p_atpos[site_atom_position][1] += offset_y
                     p_atpos[site_atom_position][2] += offset_z
-                    
+
                     p_atpos[atom_position] = self.putInsideBox(
                         p_atpos[atom_position], box_x, box_y
                     )

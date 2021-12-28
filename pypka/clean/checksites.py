@@ -3,7 +3,9 @@ from pypka.config import Config
 from pypka.constants import *
 from pypka.clean.ffconverter import main_chains, CHARMM_protomers
 from pdbmender.formats import new_pdb_line, read_gro_line, read_pdb_line
+import logging
 
+logger = logging.getLogger(__name__)
 
 def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
     """Identifies titrable residues and checks integrity of the residue blocks
@@ -78,7 +80,7 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 warn = "{0} {1} is assumed to be participating " "in a SS-bond".format(
                     resnumb, resname
                 )
-                Config.log.report2log(warn)
+                logger.warn(warn)
                 return
             CY0_atoms = ["N", "CA", "CB", "SG", "C", "O", "H", "HG1"]
             if set(res_atoms).issubset(CY0_atoms) and set(CY0_atoms).issubset(
@@ -95,12 +97,12 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 return
             else:
                 warn = "{0} {1} failed integrity check".format(resnumb, resname)
-                Config.log.report2log(warn)
+                logger.warn(warn)
         elif resname not in TITRABLERESIDUES:
             return
         else:
             warn = "{0} {1} failed integrity check".format(resnumb, resname)
-            Config.log.report2log(warn)
+            logger.warn(warn)
 
     if Config.pypka_params["f_in"] and not useTMPpdb:
         filename = Config.pypka_params["f_in"]

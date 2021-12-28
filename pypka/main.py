@@ -3,7 +3,7 @@ from delphi4py import DelPhi4py
 from pdbmender.formats import gro2pdb, get_grobox_size, get_chains_from_file
 from pdbmender.utils import identify_tit_sites
 
-from pypka.log import Log, checkDelPhiErrors
+from pypka.log import checkDelPhiErrors
 from pypka.clean.checksites import (
     check_sites_integrity,
     make_delphi_inputfile,
@@ -20,6 +20,16 @@ from pypka.config import Config
 from pypka.constants import KBOLTZ, TITRABLETAUTOMERS, TERMINAL_OFFSET
 from pypka.molecule import Molecule
 from pypka.mc.run_mc import MonteCarlo
+
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(levelname)s: %(message)s")
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class Titration:
@@ -44,7 +54,7 @@ class Titration:
             debug (boolean, optional): debug mode switch. Defaults to False.
         """
         self.molecules = {}
-        self.__parameters = Config.storeParams(self, Log(), debug, parameters, sites)
+        self.__parameters = Config.storeParams(self, debug, parameters, sites)
         self.pKas = {}
         self.isoelectric_point = None
         self.isoelectric_point_limit = None
@@ -681,7 +691,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
         "epsin": 15,
         "ser_thr_titration": ser_thr_titration,
     }
-    Config.storeParams("", Log(), debug, parameters, "all")
+    Config.storeParams("", debug, parameters, "all")
 
     chains = get_chains_from_file(pdb)
     sites = {chain: "all" for chain in chains}
@@ -690,7 +700,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
     for chain, site_list in sites.items():
         molecules[chain] = Molecule(chain, site_list)
 
-    chains_res = identify_tit_sites(molecules, instanciate_sites=False)
+    chains_res = identify_tit_sites(pdb, chains)
 
     out_sites = {chain: [] for chain in chains_res.keys()}
 
