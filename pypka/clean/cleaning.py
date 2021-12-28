@@ -10,8 +10,6 @@ from pypka.constants import (
     IONS,
     TERMINAL_OFFSET,
     TITRABLETAUTOMERS,
-    PROTEIN_RESIDUES,
-    TITRABLERESIDUES,
 )
 
 from pypka.clean.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
@@ -24,7 +22,6 @@ from pdbmender.formats import (
 )
 from pdbmender.utils import (
     mend_pdb,
-    prepare_for_addHtaut,
     add_tautomers,
     rm_cys_bridges,
     identify_cter,
@@ -228,10 +225,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
 
     logfile = "LOG_pdb2pqr"
 
-    # CTR O1/O2 will be deleted and a O/OXT will be added
-    # CYS will be turned into CY0
-    # All HIS will become fully protonated
-    mend_pdb(
+    _ = mend_pdb(
         Config.pypka_params["pdb2pqr_inputfile"],
         inputpqr,
         Config.pypka_params["ffinput"],
@@ -239,6 +233,7 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         logfile=logfile,
         hopt=Config.pypka_params["pdb2pqr_h_opt"],
     )
+    exit()
 
     chains_res, cys_bridges = rm_cys_bridges(chains_res, logfile)
     for chain in cys_bridges.keys():
@@ -314,8 +309,9 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         )
 
     tmpfiles = (
+        "addhtaut_cleaned.pdb",
+        "input_clean_fixed.pdb",
         "LOG_pdb2pqr",
-        "LOG_pdb2pqr_err",
         "clean.pqr",
         "cleaned.pqr",
         "cleaned_tau.pqr",
@@ -342,8 +338,6 @@ def remove_membrane_n_rna(pdbfile, outfile):
             if line.startswith("ATOM"):
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
-                if chain == " ":
-                    chain = "_"  # workaround to deal with pdb2pqr
                 insertion_code = line[26].strip()
                 if insertion_code:
                     continue

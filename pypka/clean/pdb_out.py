@@ -155,6 +155,7 @@ def write_output_structure(sites, molecules, delphi_input_content):
         ff_out,
         logfile=logfile,
     )
+    os.system("rm -f input_clean_fixed.pdb")
 
     with open(outputpqr) as f:
         for line in f:

@@ -4,17 +4,10 @@
    :hidden:
 
    self
-   installation
-   example
-   features
-   methods   
-   parameters
-   newresidues
-   contributing
-   future
-   JCIM Article <https://doi.org/10.1021/acs.jcim.0c00718>
-   GitHub Project <https://github.com/mms-fcul/PypKa>
+   getting_started   
+   development
    pypka
+   useful
 
 Pypka
 =================================
@@ -34,8 +27,7 @@ anisotropic (membrane) and isotropic (protein) systems and allows the
 user to find a balance between accuracy and speed.
 
 PypKa is written in Python and Cython and it is integrated with the
-Poisson-Boltzmann solver DelPhi Fortran77 via `DelPhi4Py
-<https://github.com/mms-fcul/DelPhi4Py>`_.
+Poisson-Boltzmann solver DelPhi Fortran77.
 
 If you use PypKa in your research please cite the following `paper <https://doi.org/10.1021/acs.jcim.0c00718>`_:
 
@@ -62,9 +54,8 @@ Journal of Chemical Information and Modeling, 60(10), 4442–4448.
 Availability
 =================
 
-PypKa can be `easily installed <installation.html>`_ using the pip
+PypKa can be `easily installed <gettings_started/installation.html>`_ using the pip
 package manager.
-
 
 Source code is freely available at `GitHub <https://github.com/mms-fcul/PypKa>`_
 under the LGPL-3.0 license. The package can be installed from `PyPi
@@ -76,5 +67,5 @@ Contacts
 
 Please `submit a github issue  <https://github.com/mms-fcul/PypKa/issues/new>`_ to report bugs and to request new features.
 
-Alternatively you may find the developer `here <mailto:pdreis@fc.ul.pt>`_ . Please visit our `website <http://mms.rd.ciencias.ulisboa.pt/>`_ for more information.
+Alternatively you may find the developer `here <mailto:pdreis@ciencias.ulisboa.pt>`_ . Please visit our `website <http://mms.rd.ciencias.ulisboa.pt/>`_ for more information.
 

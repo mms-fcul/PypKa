@@ -1,49 +1,16 @@
-import sys
-
-sys.path.insert(1, "../../")
-
 from pypka import Titration
 
-parameters = {
-    # "ffs_dir": "/home/pedror/MMS@FCUL/pypka/pypka/",
-    "structure": "lyso.pdb",
-    "convergence": 0.1,
-    "pH": "0,14",
-    "scaleM": 2,
-    "epsin": 10,
-    "ionicstr": 0.1,
-    "pbc_dimensions": 0,
-    "ncpus": sys.argv[1],
-    "output": "pKas.out",
-    "titration_output": "titration.out",
-    "ser_thr_titration": False,
-    "structure_output": ("out4.pdb", 4.5, "gromos_cph"),
+params = {
+    "structure": "4lzt.pdb",  # Input structure file name
+    "ncpus": -1,  # Number of processes (-1 for maximum allowed)
+    "epsin": 15,  # Dielectric constant of the protein
+    "ionicstr": 0.1,  # Ionic strength of the medium (M)
+    "pbc_dimensions": 0,  # PB periodic boundary conditions (0 for solvated proteins and 2 for lipidic systems)
 }
-#'gsize'         : 91,
-#'bndcon'        : 4,
-#'nanoshaper'    : 0,
-#'precision'     : 'single'}
 
-sites = {"A": ["1N", 1, 7, 15, 18, 35, 48, 52, 66, 87, 101, 119, "129C"]}
+tit = Titration(params)
 
-pKa = Titration(parameters, sites=sites)  # , debug=True)
-# exit()
-
-# Run each step separately
-# pKa = Titration(parameters, run='preprocess')
-# pKa.DelPhiLaunch()
-# pKa.calcSiteInteractionsParallel()
-# pKa.run_mc()
-# print(pKa)
-
-# from IPython import embed; embed()
-
-# for pH in pKa.getTitrationCurve('total').keys():
-#     print(pH, pKa.getTitrationCurve('total')[pH])
-
-# for site in pKa:
-#     print(site, pKa[site], pKa.getProtState(site, 7))
-#     print(pKa.getMostProbStates(site, 7))
-#     print(pKa.getStatesProb(site, 7))
-#     print(pKa.getFinalState(site, 7))
-#     print(pKa.getTitrationCurve(site))
+pH = 7.0
+for site in tit:
+    state = site.getProtState(pH)[0]
+    print(site.res_name, site.res_number, site.pK, state)

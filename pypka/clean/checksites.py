@@ -424,7 +424,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
     with open(f_out, "w") as f_new:
         f_new.write(new_pdb_content)
 
-    # TODO: check Terminal_offset has to be bigger than the total number of residues
+    # TODO: check terminal_offset has to be bigger than the total number of residues
     # TODO: delete terminal_offset and use another approach to distinguish between N- and C-ter
     # TODO: check size xy > config.cutoff * 2
     # if so, raise Exception, and ask to change cutoff value

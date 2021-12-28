@@ -30,8 +30,6 @@ pypka/delphi4py/rundelphi/*f
 pypka/delphi4py/rundelphi/benchmark
 examples/test/
 
-Dockerfile
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

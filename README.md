@@ -20,37 +20,12 @@ doi = {10.1021/acs.jcim.0c00718}
 }
 ```
 
-## Documentation & Basic Usage
+## Documentation
 
   Documentation can be found [here](https://pypka.readthedocs.io/en/latest/)
 
   Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
 
-## Installation & Dependencies
-
-PypKa should be installed in a Linux-based system. In Windows please use the [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-
-* python2.6>= & python3.5>=
-* libgfortran4
-* gawk
-* pytest
-* numpy
-* delphi4py
-* pdbmender
-
-```bash
-  python3 -m pip install pypka
-  apt install gawk gcc gfortran libgfortran4 python2
-```
-
-A docker image is also [available](https://hub.docker.com/r/pedrishi/pypka). 
-A simple way of using it would be to build the image from the [Dockerfile](./Dockerfile) and running it on a local directory which contains the cli parameters file and input structure.
-```bash
-docker build -t pypka/latest -f Dockerfile .
-docker run -v ${PWD}:/home/ -w /home -t pypka:latest python3.9 -m pypka <PARAMETERS_FILE>
-```
-
-Functioning working examples of the API, CLI, docker and notebook can be found under /examples.
 
 ## Contributing
 

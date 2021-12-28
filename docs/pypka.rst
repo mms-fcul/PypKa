@@ -1,16 +1,6 @@
 pypka package
 =============
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   pypka.clean
-   pypka.delphi4py
-   pypka.mc
-
 Submodules
 ----------
 
