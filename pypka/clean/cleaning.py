@@ -233,7 +233,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         logfile=logfile,
         hopt=Config.pypka_params["pdb2pqr_h_opt"],
     )
-    exit()
 
     chains_res, cys_bridges = rm_cys_bridges(chains_res, logfile)
     for chain in cys_bridges.keys():
