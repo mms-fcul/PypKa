@@ -12,8 +12,8 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../pypka/"))
-from _version import __version__ as pypka_version
+sys.path.insert(0, os.path.abspath("../../"))
+from pypka import __version__ as pypka_version
 
 # -- Project information -----------------------------------------------------
 
