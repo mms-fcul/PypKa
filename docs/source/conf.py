@@ -9,11 +9,11 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-import os
-import sys
 
-sys.path.insert(0, os.path.abspath("../../"))
-from pypka import __version__ as pypka_version
+with open("../../pypka/__init__.py") as f:
+    for line in f:
+        if line.startswith("__version__"):
+            pypka_version = line.strip().split()[-1]
 
 # -- Project information -----------------------------------------------------
 

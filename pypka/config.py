@@ -393,9 +393,11 @@ class PypKaConfig(ParametersDict):
         self["ff_structure_out"] = ff_out
 
         if pH not in pH_values:
-            raise Exception(
-                "pH value specified in structure_output ({pH}) must be compatible with pH values being calculated ({pH_values})."
-            )
+            pH_values.append(pH)
+            pH_values.sort()
+            # raise Exception(
+            #    f"pH value specified in structure_output ({pH}) must be compatible with pH values being calculated ({pH_values})."
+            # )
 
     def readTermini(self):
         self.sts_path = "{0}/{1}/{2}/".format(self.ffs_dir, self.ffID, self.sts)

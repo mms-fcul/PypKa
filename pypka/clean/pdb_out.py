@@ -57,7 +57,7 @@ def write_output_structure(sites, molecules, delphi_input_content):
     ff_out = Config.pypka_params["ff_structure_out"]
     ff_protomer = {"amber": AMBER_protomers, "gromos_cph": GROMOS_protomers}[ff_out]
     pdb_content = (
-        "REMARK     Protonation states assigned according to PypKa\n"
+        f"REMARK     PypKa assigned protonation states @ pH {pH}\n"
         "REMARK     Residue    Avg Prot   State Prob    Taut Prob\n"
     )
     new_states = {}
