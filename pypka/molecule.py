@@ -8,9 +8,8 @@ from pdbmender.formats import read_gro_line
 class Molecule:
     """Molecule with more than one titrable sites"""
 
-    def __init__(self, chain, sites):
+    def __init__(self, chain, sites, icodes):
         """
-        ### DEPRECATED 26/11/2019 ###
         #TODO: update docstring
 
         # DelPhi Parameters
@@ -45,6 +44,7 @@ class Molecule:
         """
         self.input_sites = sites
         self.chain = chain
+        self.icodes = icodes
 
         self.delphi_refparams = ""
         self.sites = {}

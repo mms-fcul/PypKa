@@ -1,4 +1,4 @@
-REMARK     Protonation states assigned according to PypKa
+REMARK     PypKa assigned protonation states @ pH 4.0
 REMARK     Residue    Avg Prot   State Prob    Taut Prob
 REMARK     NTR  1         1.00         1.00         1.00
 REMARK     LYS  4         1.00         1.00         1.00

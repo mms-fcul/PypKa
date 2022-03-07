@@ -44,7 +44,7 @@ def read_settings(filename):
     # Search for all titrable sites in different chains
     sites = {}
     for param_name in parameters:
-        if "site" in param_name:
+        if param_name.startswith("site"):
             if "_" in param_name:
                 chain = param_name.split("_")[1]
             else:

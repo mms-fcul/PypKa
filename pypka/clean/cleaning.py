@@ -212,9 +212,15 @@ def get_pdb_Hs(pdbname, chains_res):
     return mainchain_Hs
 
 
-def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
-
-    pdb_filename = Config.pypka_params["f_in"]
+def cleanPDB(
+    pdb_filename,
+    final_pdb,
+    molecules,
+    chains_res,
+    automatic_sites,
+    inputpqr="clean.pqr",
+    outputpqr="cleaned_tau.pqr",
+):
 
     remove_membrane_n_rna(pdb_filename, Config.pypka_params["pdb2pqr_inputfile"])
     if " " in molecules.keys():
@@ -269,13 +275,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         )
         get_pdb_Hs(hs_pdb, chains_res)
 
-    sites = {
-        chain: list(molecule.sites.keys()) for chain, molecule in molecules.items()
-    }
-    termini = {
-        chain: (molecule.NTR, molecule.CTR) for chain, molecule in molecules.items()
-    }
-
     to_exclude = NUCLEIC_ACIDS
     nontitrating_lines = add_tautomers(
         inputpqr,
@@ -292,7 +291,6 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         f_new.write(content + nontitrating_lines)
 
     rna_pqr = None
-    final_pdb = "TMP.pdb"
     write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_pqr)
 
     keep_membrane = False
@@ -326,6 +324,8 @@ def cleanPDB(molecules, chains_res, inputpqr, outputpqr, automatic_sites):
         and not Config.pypka_params.structure_output
     ):
         os.remove(Config.pypka_params["pdb2pqr_inputfile"])
+
+    return chains_res
 
 
 def remove_membrane_n_rna(pdbfile, outfile):

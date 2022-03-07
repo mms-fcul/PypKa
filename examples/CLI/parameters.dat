@@ -14,3 +14,6 @@ output          = pKas.out      # pKa values output file
 
 # Using a MD structure
 # ffinput         = AMBER         # Input structure nomenclature scheme ("AMBER", "CHARMM", "GROMOS")
+
+ser_thr_titration = False
+save_pdb = pb_input.pdb

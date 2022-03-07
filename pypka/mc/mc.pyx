@@ -19,7 +19,7 @@ cdef extern from "stdlib.h":
     double drand48()
     void srand48(long int seedval)
 
-cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states, 
+cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
                   float[:, ::1] interactions, int[:, ::1] interactions_lookup,
                   float[:, ::1] possible_states_u, int npairs, int[:] pair1, int[:] pair2):
     cdef int site, site2, state, newstate, site1i, site1newi, \
@@ -57,7 +57,7 @@ cdef void mc_step(int nsites, int[:] cur_states, int[:] npossible_states,
 
         newstate1 = int(drand48() * npossible_states[site1])
         newstate2 = int(drand48() * npossible_states[site2])
-        
+
         U1     = possible_states_u[site1][state1]
         U2     = possible_states_u[site2][state2]
         U1_new = possible_states_u[site1][newstate1]
@@ -134,7 +134,7 @@ cdef float invexp(float x):
         x2 = x * x
         x3 = x2 * x
         if x > 6:
-            return (-0.0013245823657199278 + 0.00027464252539452071 * x - 0.000019314947607346905 * x2 + 4.598224667374957e-7 * x3) / (1.0 - 0.5165170691890946 * x + 0.09211442135429947 * x2 - 0.006143102546214945 * x3) 
+            return (-0.0013245823657199278 + 0.00027464252539452071 * x - 0.000019314947607346905 * x2 + 4.598224667374957e-7 * x3) / (1.0 - 0.5165170691890946 * x + 0.09211442135429947 * x2 - 0.006143102546214945 * x3)
         else:
             x4 = x2 * x2
             return (0.9999965470613797 - 0.3960827416191208 * x + 0.06303500815508939 * x2 - 0.00476617578304489 * x3 + 0.00014392025197088043 * x4) / (1.0 + 0.6038220689877429 * x + 0.16732494517488303 * x2 + 0.026354026827091058 * x3 + 0.00289071552898347 * x4)
@@ -168,7 +168,7 @@ cdef select_pairs(int nsites, npossible_states,
                 pair2.append(site2)
                 npairs += 1
                 #print "###   {} {}  {}\n".format(site1, site2, ggmax / LN10)
-            
+
     #print "### Total number of coupled site pairs = {}\n#\n".format(npairs)
 
     return npairs, pair1, pair2
@@ -177,7 +177,7 @@ cdef select_pairs(int nsites, npossible_states,
 cpdef MCrun(int nsites, npossible_states_aux,
             possible_states_g_aux, possible_states_occ_aux,
             interactions_aux, interactions_lookup_aux,
-            int mcsteps_aux, int eqsteps, int seed, 
+            int mcsteps_aux, int eqsteps, int seed,
             float couple_min, float pH):
 
     global mcsteps
@@ -248,4 +248,8 @@ cpdef MCrun(int nsites, npossible_states_aux,
         compute_statistics(t, nsites, cur_states, avgs,
                            possible_states_occ, count)
 
-    return np.asarray(avgs), np.asarray(pmean), np.asarray(count), np.asarray(cur_states)
+    pairs = []
+    for i1, i2 in zip(pair1_aux, pair2_aux):
+        pairs.append([i1, i2])
+
+    return np.asarray(avgs), np.asarray(pmean), np.asarray(count), np.asarray(cur_states), np.asarray(pairs)

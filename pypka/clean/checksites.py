@@ -7,7 +7,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
+
+def check_sites_integrity(filename, molecules, chains_res):
     """Identifies titrable residues and checks integrity of the residue blocks
     (excluding Hydrogens)
     """
@@ -68,6 +69,14 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 warning(molecule, prev_resnumb, prev_resname, cur_atoms)
         elif prev_resname == "CYS":  # dealing with a CYS that is not in sites
             if not integrity_site:
+                if ter == "NTR":
+                    cur_atoms = set(cur_atoms) - set(["H1", "H2", "H3"])
+                    cur_atoms.add("H")
+                elif ter == "CTR":
+                    cur_atoms = set(cur_atoms) - set(
+                        ["HO11", "HO12", "HO21", "HO22", "O1", "O2"]
+                    )
+                    cur_atoms.update(("H", "O"))
                 warning(molecule, prev_resnumb, prev_resname, cur_atoms, mode="CYS")
 
     def warning(molecule, resnumb, resname, res_atoms, mode=None):
@@ -80,7 +89,7 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 warn = "{0} {1} is assumed to be participating " "in a SS-bond".format(
                     resnumb, resname
                 )
-                logger.warn(warn)
+                logger.warning(warn)
                 return
             CY0_atoms = ["N", "CA", "CB", "SG", "C", "O", "H", "HG1"]
             if set(res_atoms).issubset(CY0_atoms) and set(CY0_atoms).issubset(
@@ -97,19 +106,12 @@ def check_sites_integrity(molecules, chains_res, useTMPpdb=False):
                 return
             else:
                 warn = "{0} {1} failed integrity check".format(resnumb, resname)
-                logger.warn(warn)
+                logger.warning(warn)
         elif resname not in TITRABLERESIDUES:
             return
         else:
             warn = "{0} {1} failed integrity check".format(resnumb, resname)
-            logger.warn(warn)
-
-    if Config.pypka_params["f_in"] and not useTMPpdb:
-        filename = Config.pypka_params["f_in"]
-        filetype = "pdb"
-    else:
-        filename = "TMP.pdb"
-        filetype = "pdb"
+            logger.warning(warn)
 
     resnumb = None
     cur_atoms = []

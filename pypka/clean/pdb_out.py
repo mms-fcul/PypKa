@@ -33,7 +33,7 @@ def write_output_structure(sites, molecules, delphi_input_content):
                             resname, resnumb, state_prob, taut_prob
                         )
                     )
-                    logger.warn(warn)
+                    logger.warning(warn)
 
                 rounded_sprob = round(state_prob, 2)
                 rounded_tprob = round(taut_prob, 2)

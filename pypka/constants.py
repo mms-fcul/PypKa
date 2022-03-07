@@ -37,6 +37,7 @@ IONS = ["CL-", "NA+"]
 
 # Tautomers and residues
 TERMINAL_OFFSET = 5000
+INSERTIONCODE_OFFSET = 3000
 
 TITRABLETAUTOMERS = {
     "LYS": 3,

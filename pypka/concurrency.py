@@ -249,7 +249,7 @@ def parallelMCrun(i):
     sites = Config.parallel_params.all_sites
     nsites = len(sites)
 
-    avgs, pmean, count, cur_states = MCrun(
+    avgs, pmean, count, cur_states, coupled = MCrun(
         nsites,
         parallel_params.npossible_states,
         parallel_params.possible_states_g,
@@ -262,7 +262,7 @@ def parallelMCrun(i):
         params["couple_min"],
         pH,
     )
-    return (avgs, count, pmean, cur_states)
+    return (avgs, count, pmean, cur_states, coupled)
 
 
 def runMCCalcs(job_list):

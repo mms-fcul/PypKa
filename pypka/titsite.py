@@ -169,10 +169,14 @@ class Titsite:
     def getCenter(self):
         return self.center
 
-    def getResNumber(self):
+    def getResNumber(self, correct_icode=False):
         if self.res_name in ("NTR", "CTR"):
             return self.res_number - TERMINAL_OFFSET
-        return self.res_number
+        elif correct_icode and self.res_number in self.molecule.icodes:
+            origin_resnumb, icode = self.molecule.icodes[self.res_number]
+            return "{0}{1}".format(origin_resnumb, icode)
+        else:
+            return self.res_number
 
     def getpK(self):
         return self.pK

@@ -26,6 +26,8 @@ def calcpKhalfs(pH, nsites, avgs, pmean, pKs, dpH):
 
 
 class MonteCarlo:
+    """Monte Carlo Simulation"""
+
     def __init__(self, sites):
         self.sites = sites
         self.nsites = len(sites)
@@ -34,8 +36,11 @@ class MonteCarlo:
         self.run()
         self.get_pkas()
         self.get_tit_states()
+        self.get_coupled_sites()
 
     def init_mc_vars(self):
+        """Initialize need variables"""
+
         def resize_list_of_lists(listn, maxsize, filler=None):
             for i in listn:
                 diff = maxsize - len(i)
@@ -80,6 +85,7 @@ class MonteCarlo:
         Config.parallel_params.possible_states_occ = possible_states_occ
 
     def run(self):
+        """Run a MC sim"""
         params = Config.mc_params
         self.dpH = params["pHstep"]
         self.pH_values = params.pH_values
@@ -96,11 +102,14 @@ class MonteCarlo:
         self.counts_all = []
         self.avgs_all = []
         self.final_states = []
+        self.coupled_sites_pairs = []
 
         for i in results:
             self.avgs_all.append(i[0])
             self.counts_all.append(i[1])
             self.final_states.append(i[3])
+            self.coupled_sites_pairs.append(i[4])
+        self.coupled_sites_pairs = self.coupled_sites_pairs[0]
 
     def get_pkas(self):
         mcsteps = Config.mc_params["mcsteps"]
@@ -133,12 +142,12 @@ class MonteCarlo:
             site.setpK(pK)
             chain = site.molecule.chain
             sitename = site.getName()
-            resnumb = site.getResNumber()
+            resnumb = site.getResNumber(correct_icode=True)
             if sitename in ("NTR", "CTR"):
                 text_prots += "     {0:3}".format(sitename)
             else:
-                text_prots += "{0:5d}{1:3s}".format(resnumb, sitename)
-            text_pks += "{0:5} {1:3} {2:20} {3:3}\n".format(
+                text_prots += "{0:>5}{1:3s}".format(resnumb, sitename)
+            text_pks += "{0:>5} {1:3} {2:20} {3:3}\n".format(
                 resnumb, sitename, str(pK), chain
             )
         self.text_pks = text_pks
@@ -179,3 +188,39 @@ class MonteCarlo:
                 site.final_states[pH] = self.final_states[pHstep][c]
                 site.tit_curve[pH] = mean
                 site.states_prob[pH] = res_state_dist
+
+    def get_coupled_sites(self):
+        """Get coupled sites"""
+        self.coupled_sites_dict = {}
+        for sitei1, sitei2 in self.coupled_sites_pairs:
+            site1 = Config.parallel_params.all_sites[sitei1]
+            site2 = Config.parallel_params.all_sites[sitei2]
+
+            if site1 not in self.coupled_sites_dict:
+                self.coupled_sites_dict[site1] = []
+            if site2 not in self.coupled_sites_dict:
+                self.coupled_sites_dict[site2] = []
+            self.coupled_sites_dict[site1].append(site2)
+            self.coupled_sites_dict[site2].append(site1)
+
+            to_print = "{:3} {:3} {:6} | {:3} {:3} {:6}".format(
+                site1.molecule.chain,
+                site1.res_name,
+                site1.res_number,
+                site2.molecule.chain,
+                site2.res_name,
+                site2.res_number,
+            )
+            print(to_print)
+
+        self.text_coupled_sites = ""
+        for site1, sites in self.coupled_sites_dict.items():
+            to_print = "{:3} {:3} {:6} | {:6} -> ".format(
+                site1.molecule.chain, site1.res_name, site1.res_number, len(sites)
+            )
+
+            for site2 in sites:
+                to_print += "{:3} {:3} {:6}, ".format(
+                    site2.molecule.chain, site2.res_name, site2.res_number
+                )
+            self.text_coupled_sites += to_print[:-2] + "\n"

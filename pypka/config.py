@@ -61,7 +61,7 @@ class Config:
                 config_obj[param_name] = param_value
             else:
                 info = "{} is not a valid parameter.".format(param_name)
-                logger.warn(info)
+                logger.warning(info)
 
         # Check if mandatory parameters were defined
         for param_name in MANDATORY_PARAMS:
@@ -153,7 +153,7 @@ class ParametersDict:
             param_type = self.input_type[param_name]
             param_value = self.check_param_type(param_name, param_value, param_type)
         else:
-            logger.warn(
+            logger.warning(
                 "parameter {} is not being checked for type. "
                 "Please warn the development team.".format(param_name)
             )
@@ -245,6 +245,7 @@ class PypKaConfig(ParametersDict):
 
         # Output File
         self.structure_output = None
+        self.coupled_sites_output = None
         self.f_structure_out_pH = None
         self.ff_structure_out = None
         self.save_pdb = None
@@ -291,6 +292,7 @@ class PypKaConfig(ParametersDict):
             "f_structure_out_pH": float,
             "ff_structure_out": str,
             "structure_output": str,
+            "coupled_sites_output": str,
             "isoelectric_point": bool,
             "ffID": str,
             "ff_family": str,

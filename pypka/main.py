@@ -17,9 +17,15 @@ from pypka.concurrency import (
     startPoolProcesses,
 )
 from pypka.config import Config
-from pypka.constants import KBOLTZ, TITRABLETAUTOMERS, TERMINAL_OFFSET
+from pypka.constants import (
+    KBOLTZ,
+    TITRABLETAUTOMERS,
+    TERMINAL_OFFSET,
+    INSERTIONCODE_OFFSET,
+)
 from pypka.molecule import Molecule
 from pypka.mc.run_mc import MonteCarlo
+from pdbmender.utils import correct_insertion_codes
 
 import logging
 
@@ -88,10 +94,10 @@ class Titration:
         print("API exited successfully")
 
     def preprocessing(self, sites, fixed_sites):
-        def create_tit_sites(chains_res, TMPpdb=False):
+        def create_tit_sites(fname, chains_res):
             for _, molecule in self.molecules.items():
                 molecule.deleteAllSites()
-            check_sites_integrity(self.molecules, chains_res, useTMPpdb=TMPpdb)
+            check_sites_integrity(fname, self.molecules, chains_res)
 
         if fixed_sites:
             for chain, fixed_sites_info in fixed_sites.items():
@@ -100,22 +106,29 @@ class Titration:
                 for sitenumb in fixed_sites_info.keys():
                     sites[chain].append(sitenumb)
 
+        f_in = "input.pdb"
         if Config.pypka_params["f_in_extension"] == "gro":
             groname = Config.pypka_params["f_in"]
-            f_in = "TMP.pdb"
             gro2pdb(groname, f_in)
             box = get_grobox_size(groname)
             Config.pypka_params.setBox(box)
             Config.pypka_params.redefine_f_in(f_in)
+
+        renumbered = correct_insertion_codes(
+            Config.pypka_params["f_in"],
+            f_in,
+            insertion_offset=INSERTIONCODE_OFFSET,
+            replace_empty_chain=False,
+        )
 
         if not Config.pypka_params["f_in_extension"] == "pdb":
             f_format = Config.pypka_params["f_in_extension"]
             raise Exception(
                 "{0} file format is not currently supported".format(f_format)
             )
-        automatic_sites = self.create_molecule(sites)
+        automatic_sites = self.create_molecule(sites, renumbered)
 
-        f_in = Config.pypka_params["f_in"]
+        # f_in = Config.pypka_params["f_in"]
         if not automatic_sites:
             # Reading .st files
             # If the titrable residues are defined
@@ -127,7 +140,7 @@ class Titration:
         else:
             # If the titrable residues are not defined
             chains_res = identify_tit_sites(
-                Config.pypka_params["f_in"],
+                f_in,
                 self.molecules.keys(),
                 nomenclature=Config.pypka_params["ffinput"],
                 add_ser_thr=Config.pypka_params["ser_thr_titration"],
@@ -136,16 +149,19 @@ class Titration:
 
             if not Config.pypka_params["clean_pdb"]:
                 # if the input pdb is not missing any atoms
-                create_tit_sites(chains_res)
+                create_tit_sites(f_in, chains_res)
 
         if Config.pypka_params["clean_pdb"]:
             # Creates a .pdb input for DelPhi
             # where residues are in their standard state
-            inputpqr = "clean.pqr"
-            outputpqr = "cleaned_tau.pqr"
-            cleanPDB(self.molecules, chains_res, inputpqr, outputpqr, automatic_sites)
-            create_tit_sites(chains_res, TMPpdb=True)
-            f_in = "TMP.pdb"
+            f_out = "TMP.pdb"
+            chains_res = cleanPDB(
+                f_in, f_out, self.molecules, chains_res, automatic_sites
+            )
+            if not Config.debug and os.path.isfile(f_in):
+                os.remove(f_in)
+            f_in = f_out
+            create_tit_sites(f_in, chains_res)
 
         f_out = "delphi_in_stmod.pdb"
         self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
@@ -153,10 +169,10 @@ class Titration:
         if fixed_sites:
             fix_fixed_sites(self.molecules, fixed_sites, f_out)
 
-        if not Config.debug and os.path.isfile("TMP.pdb"):
-            os.remove("TMP.pdb")
+        if not Config.debug and os.path.isfile(f_in):
+            os.remove(f_in)
 
-    def create_molecule(self, sites):
+    def create_molecule(self, sites, renumbered):
         # Creating instance of TitratingMolecule
         automatic_sites = False
         if sites == "all":
@@ -170,7 +186,8 @@ class Titration:
             else:
                 site_list = [str(site) for site in site_list]
                 sites[chain] = site_list
-            self.molecules[chain] = Molecule(chain, site_list)
+            renumbered_chain = renumbered[chain] if chain in renumbered.keys() else {}
+            self.molecules[chain] = Molecule(chain, site_list, renumbered_chain)
             if site_list == "all":
                 automatic_sites = True
         return automatic_sites
@@ -459,7 +476,6 @@ class Titration:
         temperature = float(Config.pypka_params["temp"])
         for interaction in results:
             site1i = interaction[0]
-
             site2i = interaction[1]
             if interactions[site1i][site2i] != -999999:
                 interactions[site1i][site2i] += interaction[2]
@@ -507,11 +523,8 @@ class Titration:
         sites = self.get_all_sites(get_list=True)
 
         mc = MonteCarlo(sites)
-        text_pks, text_prots, self.tit_curve = (
-            mc.text_pks,
-            mc.text_prots,
-            mc.total_tit_curve,
-        )
+        text_pks, self.tit_curve = (mc.text_pks, mc.total_tit_curve)
+
         print("\rMC Runs Ended{:>80}\n".format(""))
 
         if Config.pypka_params["isoelectric_point"]:
@@ -531,7 +544,10 @@ class Titration:
                 f.write(text_pks)
         if Config.pypka_params["f_prot_out"]:
             with open(Config.pypka_params["f_prot_out"], "w") as f:
-                f.write(text_prots)
+                f.write(mc.text_prots)
+        if Config.pypka_params["coupled_sites_output"]:
+            with open(Config.pypka_params["coupled_sites_output"], "w") as f:
+                f.write(mc.text_coupled_sites)
 
     def getTotalProtonationCurve(self):
         return self.tit_curve
@@ -661,7 +677,7 @@ class Titration:
                 elif not pk:
                     pk = "Not In Range"
                 output += "\n{0:>4} {1:>6}    {2:3}    {3:>5}".format(
-                    chain, site.getResNumber(), site.res_name, pk
+                    chain, site.getResNumber(correct_icode=True), site.res_name, pk
                 )
 
         if self.isoelectric_point:
