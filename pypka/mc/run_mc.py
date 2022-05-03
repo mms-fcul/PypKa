@@ -133,7 +133,7 @@ class MonteCarlo:
         pKas = pKs
 
         text_pks = ""
-        text_prots = "#pH       "
+        text_prots = "#pH      "
         c = -1
         for i in pKas:
             c += 1
@@ -143,10 +143,7 @@ class MonteCarlo:
             chain = site.molecule.chain
             sitename = site.getName()
             resnumb = site.getResNumber(correct_icode=True)
-            if sitename in ("NTR", "CTR"):
-                text_prots += "     {0:3}".format(sitename)
-            else:
-                text_prots += "{0:>5}{1:3s}".format(resnumb, sitename)
+            text_prots += "{0}_{2}_{1} ".format(resnumb, sitename, chain)
             text_pks += "{0:>5} {1:3} {2:20} {3:3}\n".format(
                 resnumb, sitename, str(pK), chain
             )
