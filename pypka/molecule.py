@@ -64,8 +64,8 @@ class Molecule:
 
         self.CYS_bridges = {}
 
-        self.NTR = None
-        self.CTR = None
+        self.NTR = []
+        self.CTR = []
 
     # Set Methods
     def addAtom(self, aname, anumb, position, titrable_res):
@@ -79,6 +79,9 @@ class Molecule:
 
     def saveCYSBridges(self, CYS_bridges):
         self.CYS_bridges = CYS_bridges
+
+    def saveHISStates(self, HIS_states):
+        self.HIS_states = HIS_states
 
     # Get Methods
     def __getitem__(self, numb):
@@ -220,13 +223,13 @@ class Molecule:
         for site_number, site_name in sites.items():
             if site_name == "NTR":
                 resnum = int(site_number)
-                self.NTR = resnum
+                self.NTR += [resnum]
                 resnum += TERMINAL_OFFSET
                 res_ntauts = 3
                 res_name = "NTR"
             elif site_name == "CTR":
                 resnum = int(site_number)
-                self.CTR = resnum
+                self.CTR += [resnum]
                 resnum += TERMINAL_OFFSET
                 res_ntauts = 4
                 res_name = "CTR"

@@ -12,8 +12,8 @@ water_atype = "OW"
 
 f_nonbonded = "ffnonbonded.itp"
 f_rtp = "aa.rtp"
-old_siz_db = "DataBaseT_old.siz"
-old_crg_db = "DataBaseT_old.crg"  # NTR and CTR charges are copied from here
+template_siz_db = "DataBaseT_template.siz"
+template_crg_db = "DataBaseT_template.crg"  # NTR and CTR charges are copied from here
 
 ignore_list = ()
 
@@ -21,16 +21,16 @@ ignore_list = ()
 rules = {
     "NTR": {
         "N": "nh3",
-        "HT1": "hc",
-        "HT2": "hc",
-        "HT3": "hc",
+        "H1": "hc",
+        "H2": "hc",
+        "H3": "hc",
         "CA": "ct1",
         "C": "c",
         "O": "o",
         "HA": "ha",
     },
     "CTR": {
-        "CT": "ca",
+        "C": "ca",
         "OT1": "o",
         "OT2": "o",
         "HT11": "h",
@@ -141,16 +141,16 @@ rules["LYS"] = db_res["LY3"]
 rules["GLU"] = db_res["GL4"]
 rules["TYR"] = db_res["TY2"]
 rules["CYS"] = db_res["CY3"]
+rules["SSB"] = db_res["CYS2"]
 
 rules_crg = {}
-# rules_crg["NTR"] = db_charges["NT3"]
-# rules_crg["CTR"] = db_charges["CT4"]
 rules_crg["HIS"] = db_charges["HI2"]
 rules_crg["ASP"] = db_charges["AS4"]
 rules_crg["LYS"] = db_charges["LY3"]
 rules_crg["GLU"] = db_charges["GL4"]
 rules_crg["TYR"] = db_charges["TY2"]
 rules_crg["CYS"] = db_charges["CY3"]
+rules_crg["SSB"] = db_charges["CYS2"]
 
 sigma, epsilon = db_lj[water_atype.lower()]
 water_radius = radius_from_lennard(sigma, epsilon, rt=rt, water=True)
@@ -160,7 +160,7 @@ new_siz = """!siz file
 ! DelPhi complains if H has charge and no
 ! radii. It does not change final results
 atom__res_radius_\n"""
-with open(old_siz_db) as f:
+with open(template_siz_db) as f:
     for line in f.readlines()[5:]:
         cols = line.strip().split()
         aname, resname = cols[0:2]
@@ -189,8 +189,8 @@ with open(out_siz, "w") as f:
 new_crg = """!crg file
 !aminoacids from charmm36m
 atom__resnumbc_charge_\n"""
-with open(old_crg_db) as f:
-    for line in f.readlines()[5:]:
+with open(template_crg_db) as f:
+    for line in f.readlines()[3:]:
         cols = line.strip().split()
         aname, resname = cols[0:2]
 

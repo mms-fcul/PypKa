@@ -580,51 +580,67 @@ class Tautomer(object):
         if Config.debug:
             print(("started", self.name, self.site.res_number, "wholeprotein"))
         if Config.delphi_params["pbc_dim"] == 2:
-            delphimol.runDelPhi(
-                scale_prefocus=Config.delphi_params["scaleP"],
-                scale=Config.delphi_params["scaleM"],
-                nlit_prefocus=Config.delphi_params["nlit"],
-                nonit=Config.delphi_params["nonit"],
-                nlit=500,
-                acent=acent,
-                nonit_focus=0,
-                relfac_focus=0.0,
-                relpar_focus=0.0,
-                relpar=Config.delphi_params["relpar"],
-                relfac=Config.delphi_params["relfac"],
-                pbx=True,
-                pby=True,
-                pbx_focus=False,
-                pby_focus=False,
-                ibctyp=4,
-                debug=Config.debug,
-                filename=filename,
-                outputfile=logfile,
-            )
+            params = [
+                {
+                    "scale": Config.delphi_params["scaleP"],
+                    "scale_prefocus": Config.delphi_params["scaleP"],
+                    "nlit": Config.delphi_params["nlit"],
+                    "nonit": Config.delphi_params["nonit"],
+                    "relfac": Config.delphi_params["relfac"],
+                    "relpar": Config.delphi_params["relpar"],
+                    "pbx": True,
+                    "pby": True,
+                    "outputfile": logfile,
+                    "debug": Config.debug,
+                    "filename": filename,
+                },
+                {
+                    "scale": Config.delphi_params["scaleM"],
+                    "scale_prefocus": Config.delphi_params["scaleP"],
+                    "nlit": 500,
+                    "nonit": 0,
+                    "relfac": 0,
+                    "relpar": 0,
+                    "pbx": False,
+                    "pby": False,
+                    "outputfile": logfile + "_focusing",
+                    "debug": Config.debug,
+                    "filename": filename,
+                },
+            ]
+            delphimol.runFocusing(4, acent, 1, params=params)
         elif (
             Config.delphi_params["pbc_dim"] == 0 and Config.delphi_params["bndcon"] == 3
         ):
-            delphimol.runDelPhi(
-                scale_prefocus=Config.delphi_params["scaleP"],
-                scale=Config.delphi_params["scaleM"],
-                nlit_prefocus=Config.delphi_params["nlit"],
-                nonit=Config.delphi_params["nonit"],
-                nlit=500,
-                acent=acent,
-                nonit_focus=0,
-                relfac_focus=0.0,
-                relpar_focus=0.0,
-                relpar=Config.delphi_params["relpar"],
-                relfac=Config.delphi_params["relfac"],
-                pbx=False,
-                pby=False,
-                pbx_focus=False,
-                pby_focus=False,
-                ibctyp=4,
-                debug=Config.debug,
-                filename=filename,
-                outputfile=logfile,
-            )
+            params = [
+                {
+                    "scale": Config.delphi_params["scaleP"],
+                    "scale_prefocus": Config.delphi_params["scaleP"],
+                    "nlit": Config.delphi_params["nlit"],
+                    "nonit": Config.delphi_params["nonit"],
+                    "relfac": Config.delphi_params["relfac"],
+                    "relpar": Config.delphi_params["relpar"],
+                    "pbx": False,
+                    "pby": False,
+                    "outputfile": logfile,
+                    "debug": Config.debug,
+                    "filename": filename,
+                },
+                {
+                    "scale": Config.delphi_params["scaleM"],
+                    "scale_prefocus": Config.delphi_params["scaleP"],
+                    "nlit": 500,
+                    "nonit": 0,
+                    "relfac": 0,
+                    "relpar": 0,
+                    "pbx": False,
+                    "pby": False,
+                    "outputfile": logfile + "_focusing",
+                    "debug": Config.debug,
+                    "filename": filename,
+                },
+            ]
+            delphimol.runFocusing(4, acent, 1, params=params)
         else:
             self.regular_delphi_run(delphimol, acent, filename, logfile)
 

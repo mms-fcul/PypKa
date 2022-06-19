@@ -13,6 +13,7 @@ from pypka.constants import (
 )
 
 from pypka.clean.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
+
 from pdbmender.formats import (
     new_gro_line,
     new_pdb_line,
@@ -24,8 +25,12 @@ from pdbmender.utils import (
     mend_pdb,
     add_tautomers,
     rm_cys_bridges,
+    get_his_states,
     identify_cter,
 )
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def inputPDBCheck(filename, sites, clean_pdb):
@@ -234,7 +239,7 @@ def cleanPDB(
     _ = mend_pdb(
         Config.pypka_params["pdb2pqr_inputfile"],
         inputpqr,
-        Config.pypka_params["ffinput"],
+        Config.pypka_params["ff_family"],
         Config.pypka_params["ff_family"],
         logfile=logfile,
         hopt=Config.pypka_params["pdb2pqr_h_opt"],
@@ -245,21 +250,25 @@ def cleanPDB(
         molecule = molecules[chain]
         molecule.saveCYSBridges(cys_bridges[chain])
 
+    # his_states = get_his_states(logfile)
+    # molecule.saveHISStates(his_states)
+
     if automatic_sites:
         old_ctrs = {}
         for chain in chains_res:
             for resnumb, resname in chains_res[chain].items():
-                old_ctrs[chain] = None
+                old_ctrs[chain] = []
                 if isinstance(resnumb, str) and resname == "CTR":
-                    old_ctrs[chain] = int(resnumb)
+                    old_ctrs[chain] += [int(resnumb)]
 
         new_ctrs = identify_cter(inputpqr, old_ctrs)
 
-        for chain, resnumb in new_ctrs.items():
-            chains_res[chain][str(resnumb)] = "CTR"
-            molecules[chain].CTR = resnumb
-            sID = molecules[chain].addSite(resnumb + TERMINAL_OFFSET)
-            molecules[chain].addTautomers(sID, TITRABLETAUTOMERS["CTR"], "CTR")
+        for chain, resnumbs in new_ctrs.items():
+            for resnumb in resnumbs:
+                chains_res[chain][str(resnumb)] = "CTR"
+                molecules[chain].CTR += [resnumb]
+                sID = molecules[chain].addSite(resnumb + TERMINAL_OFFSET)
+                molecules[chain].addTautomers(sID, TITRABLETAUTOMERS["CTR"], "CTR")
 
     if Config.pypka_params["f_structure_out"]:
         hs_pdb = "Hs.pqr"
@@ -292,18 +301,6 @@ def cleanPDB(
 
     rna_pqr = None
     write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_pqr)
-
-    keep_membrane = False
-    keep_ions = False
-    if Config.delphi_params["pbc_dim"] == 2:
-        keep_membrane = True
-
-    if Config.pypka_params["keep_ions"]:
-        keep_ions = True
-    if keep_ions or keep_membrane:
-        add_non_protein(
-            pdb_filename, final_pdb, keep_membrane=keep_membrane, keep_ions=keep_ions
-        )
 
     tmpfiles = (
         "addhtaut_cleaned.pdb",
@@ -369,26 +366,21 @@ def remove_membrane_n_rna(pdbfile, outfile):
     return  # rna_fname
 
 
+def pqr2pdb(line, counter):
+    counter += 1
+    (aname, anumb_old, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
+    if resname in RNA_RESIDUES:
+        resname = RNA_RESIDUES[resname]
+        incorrect_rna_ops = {"OP1": "O1P", "OP2": "O2P"}
+        if aname in incorrect_rna_ops:
+            aname = incorrect_rna_ops[aname]
+    return (
+        new_pdb_line(counter, aname, resname, resnumb, x, y, z, chain=chain),
+        counter,
+    )
+
+
 def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
-    def pqr2pdb(line, counter):
-        counter += 1
-        (aname, anumb_old, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
-
-        # if chain == "_":
-        #    chain = " "
-
-        if resname in RNA_RESIDUES:
-            resname = RNA_RESIDUES[resname]
-
-            incorrect_rna_ops = {"OP1": "O1P", "OP2": "O2P"}
-
-            if aname in incorrect_rna_ops:
-                aname = incorrect_rna_ops[aname]
-
-        return (
-            new_pdb_line(counter, aname, resname, resnumb, x, y, z, chain=chain),
-            counter,
-        )
 
     with open(pdb_filename) as f:
         box = None
@@ -416,6 +408,60 @@ def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
                         next_pdb_line, counter = pqr2pdb(line, counter)
                         new_pdb_text += next_pdb_line
         fnew.write(new_pdb_text)
+
+    keep_membrane = False
+    keep_ions = False
+    if Config.delphi_params["pbc_dim"] == 2:
+        keep_membrane = True
+
+    if Config.pypka_params["keep_ions"]:
+        keep_ions = True
+    if keep_ions or keep_membrane:
+        add_non_protein(
+            pdb_filename, final_pdb, keep_membrane=keep_membrane, keep_ions=keep_ions
+        )
+
+    add_all_deleted(pdb_filename, final_pdb)
+
+
+def add_all_deleted(pdb_filename, final_pdb):
+    def get_all_resnames(pdb_f):
+        all_res_types = set()
+        with open(pdb_f) as f:
+            for line in f:
+                if line.startswith("ATOM"):
+                    resname = line[17:21].strip()
+                    all_res_types.add(resname)
+        return all_res_types
+
+    initial_res = get_all_resnames(pdb_filename)
+    final_res = get_all_resnames(final_pdb)
+
+    delphi_res = set()
+    with open(Config.pypka_params["f_siz"]) as f:
+        for line in f:
+            if len(line.split()) == 3:
+                resname = line[6:10].strip()
+                delphi_res.add(resname)
+
+    deleted_res = initial_res - final_res
+    re_insert_res = deleted_res.intersection(delphi_res) - set(["CYS"])
+    deleted_res = deleted_res - re_insert_res - set(["HISD", "HISH", "HISE", "CYS"])
+
+    for res_type in deleted_res:
+        logger.warning("All {} residues have been deleted".format(res_type))
+
+    to_add = []
+    with open(pdb_filename) as f:
+        for line in f:
+            if line.startswith("ATOM"):
+                resname = line[17:21].strip()
+
+                if resname in re_insert_res:
+                    to_add.append(line)
+
+    with open(final_pdb, "a") as f:
+        f.write("".join(to_add))
 
 
 def add_non_protein(pdbfile_origin, add_to_pdb, keep_membrane=False, keep_ions=False):

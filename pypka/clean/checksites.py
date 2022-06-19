@@ -1,123 +1,121 @@
 from copy import copy
 from pypka.config import Config
-from pypka.constants import *
-from pypka.clean.ffconverter import main_chains, CHARMM_protomers
-from pdbmender.formats import new_pdb_line, read_gro_line, read_pdb_line
+from pypka.constants import (
+    TERMINAL_OFFSET,
+    PROTEIN_RESIDUES,
+    TITRABLERESIDUES,
+    TITRABLETAUTOMERS,
+    REGULARTITRATINGRES,
+)
+from pypka.clean.ffconverter import main_chains
+from pdbmender.formats import new_pdb_line, read_pdb_line
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def warn_integrity_check_failed(resnumb, resname):
+    warn = "{0} {1} failed integrity check".format(resnumb, resname)
+    logger.warning(warn)
+
+
+def addSiteAndTautomers(molecule, resnumb, resname, termini_resname=None):
+    if resname in TITRABLETAUTOMERS:
+        ntautomers = TITRABLETAUTOMERS[resname]
+    else:
+        for res in REGULARTITRATINGRES:
+            if res[0:2] == resname[0:2]:
+                ntautomers = TITRABLETAUTOMERS[res]
+    sID = molecule.addSite(resnumb)
+    molecule.addTautomers(sID, ntautomers, resname, termini_resname=termini_resname)
+
+
+def check_CYS_bridge(res_atoms, resnumb):
+    if Config.pypka_params["ff_family"] == "GROMOS":
+        CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "H"]
+    elif Config.pypka_params["ff_family"] == "CHARMM":
+        CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "HN", "HA", "HB1", "HB2"]
+
+    if set(res_atoms).issubset(CYS_atoms) and set(CYS_atoms).issubset(res_atoms):
+        warn = "CYS-{0} is assumed to be participating in a SS-bond".format(resnumb)
+        logger.warning(warn)
+        return True
+    else:
+        return False
+
+
+def check_site(molecule, resnumb, sites, resname, cur_atoms, ter=None):
+    # Corrects weird tautomer residue names like GL4
+    if resname not in PROTEIN_RESIDUES:
+        for res in REGULARTITRATINGRES:
+            if res[0:2] == resname[0:2]:
+                resname = res
+
+    is_titrating = True
+    if ter:
+        if not Config.pypka_params["ser_thr_titration"] and resname in (
+            "SER",
+            "THR",
+        ):
+            is_titrating = False
+        else:
+            is_titrating = bool(resname in TITRABLERESIDUES)
+
+    elif not Config.pypka_params["ser_thr_titration"] and resname in (
+        "SER",
+        "THR",
+    ):
+        return
+
+    res_atoms = copy(cur_atoms)
+    (integrity_terminal, integrity_site) = check_integrity(
+        resname, res_atoms, is_titrating, ter=ter
+    )
+
+    if integrity_terminal:
+        ter_resnumb = resnumb + TERMINAL_OFFSET
+        addSiteAndTautomers(molecule, ter_resnumb, ter, termini_resname=resname)
+        if ter == "NTR":
+            molecule.NTR += [resnumb]
+        elif ter == "CTR":
+            molecule.CTR += [resnumb]
+    elif ter:
+        warn_integrity_check_failed(resnumb, ter)
+
+    # print(resname, resnumb, integrity_site, resnumb in molecule.CYS_bridges)
+
+    if resnumb in sites:
+        if integrity_site:
+            addSiteAndTautomers(molecule, resnumb, resname)
+            if resname == "CYS":
+                molecule.correct_names[resnumb] = "CY0"
+        else:
+            warn_integrity_check_failed(resnumb, resname)
+    elif resnumb in molecule.CYS_bridges or resname == "CYS":
+        if ter == "NTR":
+            cur_atoms = set(cur_atoms) - set(["H1", "H2", "H3"])
+            cur_atoms.add("H")
+        elif ter == "CTR":
+            cur_atoms = set(cur_atoms) - set(
+                ["HO11", "HO12", "HO21", "HO22", "O1", "O2"]
+            )
+            cur_atoms.update(("H", "O"))
+
+        is_cys_bridge = check_CYS_bridge(cur_atoms, resnumb)
+        if not is_cys_bridge and resnumb in molecule.CYS_bridges:
+            warn_integrity_check_failed(resnumb, resname)
+        elif is_cys_bridge and Config.pypka_params["ff_family"] == "CHARMM":
+            molecule.correct_names[resnumb] = "SSB"
 
 
 def check_sites_integrity(filename, molecules, chains_res):
     """Identifies titrable residues and checks integrity of the residue blocks
     (excluding Hydrogens)
     """
-
-    def check_site(prev_resname, cur_atoms, ter=None):
-        def correctResName(resname):
-            if resname in PROTEIN_RESIDUES:
-                return resname
-            for res in REGULARTITRATINGRES:
-                if res[0:2] == resname[0:2]:
-                    return res
-            return resname
-
-        def makeSite(molecule, resnumb, resname, termini_resname=None):
-            if resname in TITRABLETAUTOMERS:
-                ntautomers = TITRABLETAUTOMERS[resname]
-            else:
-                for res in REGULARTITRATINGRES:
-                    if res[0:2] == resname[0:2]:
-                        ntautomers = TITRABLETAUTOMERS[res]
-            sID = molecule.addSite(resnumb)
-            molecule.addTautomers(
-                sID, ntautomers, resname, termini_resname=termini_resname
-            )
-            # print('added', molecule.chain, resnumb, resname)
-
-        prev_resname = correctResName(prev_resname)
-
-        res_tits = True
-        if ter:
-            if not Config.pypka_params["ser_thr_titration"] and prev_resname in (
-                "SER",
-                "THR",
-            ):
-                res_tits = False
-            else:
-                res_tits = bool(prev_resname in TITRABLERESIDUES)
-
-        res_atoms = copy(cur_atoms)
-        (integrity_terminal, integrity_site) = check_integrity(
-            prev_resname, res_atoms, ter=ter, site=res_tits
-        )
-
-        if integrity_terminal:
-            ter_resnumb = prev_resnumb + TERMINAL_OFFSET
-            makeSite(molecule, ter_resnumb, ter, termini_resname=prev_resname)
-            if ter == "NTR":
-                molecule.NTR = prev_resnumb
-            elif ter == "CTR":
-                molecule.CTR = prev_resnumb
-        else:
-            warning(molecule, prev_resnumb, ter, "")
-
-        if prev_resnumb in sites:
-            if integrity_site:
-                makeSite(molecule, prev_resnumb, prev_resname)
-            else:
-                warning(molecule, prev_resnumb, prev_resname, cur_atoms)
-        elif prev_resname == "CYS":  # dealing with a CYS that is not in sites
-            if not integrity_site:
-                if ter == "NTR":
-                    cur_atoms = set(cur_atoms) - set(["H1", "H2", "H3"])
-                    cur_atoms.add("H")
-                elif ter == "CTR":
-                    cur_atoms = set(cur_atoms) - set(
-                        ["HO11", "HO12", "HO21", "HO22", "O1", "O2"]
-                    )
-                    cur_atoms.update(("H", "O"))
-                warning(molecule, prev_resnumb, prev_resname, cur_atoms, mode="CYS")
-
-    def warning(molecule, resnumb, resname, res_atoms, mode=None):
-        if mode == "CYS" or resname == "CYS":
-            CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "H"]
-            if set(res_atoms).issubset(CYS_atoms) and set(CYS_atoms).issubset(
-                res_atoms
-            ):
-                # no need to correct residue name
-                warn = "{0} {1} is assumed to be participating " "in a SS-bond".format(
-                    resnumb, resname
-                )
-                logger.warning(warn)
-                return
-            CY0_atoms = ["N", "CA", "CB", "SG", "C", "O", "H", "HG1"]
-            if set(res_atoms).issubset(CY0_atoms) and set(CY0_atoms).issubset(
-                res_atoms
-            ):
-                molecule.correct_names[resnumb] = "CY0"
-                return
-            CY0_atoms = ["N", "CA", "CB", "SG", "C", "O", "H", "HG"]
-            if set(res_atoms).issubset(CY0_atoms) and set(CY0_atoms).issubset(
-                res_atoms
-            ):
-                molecule.correct_names[resnumb] = "CY0"
-                molecule.correct_atoms[resnumb] = {"HG": "HG1"}
-                return
-            else:
-                warn = "{0} {1} failed integrity check".format(resnumb, resname)
-                logger.warning(warn)
-        elif resname not in TITRABLERESIDUES:
-            return
-        else:
-            warn = "{0} {1} failed integrity check".format(resnumb, resname)
-            logger.warning(warn)
-
     resnumb = None
     cur_atoms = []
     prev_resnumb = None
     prev_resname = None
-    prev_chain = None
     last_chain = None
     chain = None
     with open(filename) as f:
@@ -131,7 +129,7 @@ def check_sites_integrity(filename, molecules, chains_res):
             if "ATOM " == line[0:5]:
                 (aname, anumb, resname, chain, resnumb, x, y, z) = read_pdb_line(line)
 
-                if chain in molecules:
+                if last_chain in molecules or (chain in molecules and not last_chain):
                     if not last_chain:
                         last_chain = chain
                     molecule = molecules[last_chain]
@@ -155,17 +153,31 @@ def check_sites_integrity(filename, molecules, chains_res):
                 if last_chain in molecules:
                     if (
                         prev_resname in TITRABLERESIDUES
-                        or (prev_resnumb == molecule.NTR or resnumb == molecule.NTR)
-                        or (prev_resnumb == molecule.CTR or resnumb == molecule.CTR)
+                        or (prev_resnumb in molecule.NTR or resnumb in molecule.NTR)
+                        or (prev_resnumb in molecule.CTR or resnumb in molecule.CTR)
                     ):
-                        if prev_resnumb == molecule.NTR and resnumb != molecule.NTR:
-                            check_site(prev_resname, cur_atoms, ter="NTR")
+                        if prev_resnumb in molecule.NTR and resnumb not in molecule.NTR:
+                            check_site(
+                                molecule,
+                                prev_resnumb,
+                                sites,
+                                prev_resname,
+                                cur_atoms,
+                                ter="NTR",
+                            )
                             prev_resnumb = None
                         # Dealing with the last residue and CTR
                         elif (
-                            prev_resnumb == molecule.CTR and resnumb != molecule.CTR
-                        ) or (prev_resnumb == molecule.CTR and chain != last_chain):
-                            check_site(prev_resname, cur_atoms, ter="CTR")
+                            prev_resnumb in molecule.CTR and resnumb not in molecule.CTR
+                        ) or (prev_resnumb in molecule.CTR and chain != last_chain):
+                            check_site(
+                                molecule,
+                                prev_resnumb,
+                                sites,
+                                prev_resname,
+                                cur_atoms,
+                                ter="CTR",
+                            )
                             prev_resnumb = None
                             last_chain = None
                         # Dealing with the previous residue
@@ -173,23 +185,32 @@ def check_sites_integrity(filename, molecules, chains_res):
                             prev_resnumb is not None
                             and prev_resname in TITRABLERESIDUES
                         ):
-                            if not (
-                                not Config.pypka_params["ser_thr_titration"]
-                                and prev_resname in ("SER", "THR")
-                            ):
-                                check_site(prev_resname, cur_atoms)
+                            check_site(
+                                molecule,
+                                prev_resnumb,
+                                sites,
+                                prev_resname,
+                                cur_atoms,
+                            )
 
                     elif prev_resname == "ALA":
                         # TODO: check residue block integrity for other non titrating residues
                         pass
                 elif (
                     last_molecule
-                    and prev_resnumb == last_molecule.CTR
-                    and resnumb != last_molecule.CTR
+                    and prev_resnumb in last_molecule.CTR
+                    and resnumb not in last_molecule.CTR
                 ):
-                    check_site(prev_resname, cur_atoms, ter="CTR")
+                    check_site(
+                        molecule,
+                        prev_resnumb,
+                        sites,
+                        prev_resname,
+                        cur_atoms,
+                        ter="CTR",
+                    )
                 elif prev_resname in TITRABLERESIDUES and prev_resnumb is not None:
-                    check_site(prev_resname, cur_atoms)
+                    check_site(molecule, prev_resnumb, sites, prev_resname, cur_atoms)
 
             # Dealing with the new residue
             if prev_resnumb != resnumb:
@@ -215,7 +236,7 @@ def check_sites_integrity(filename, molecules, chains_res):
         print("exiting check_sites_integrity")
 
 
-def check_integrity(resname, res_atoms, ter=False, site=True):
+def check_integrity(resname, res_atoms, is_titrating, ter=None):
     def read_anames(filename):
         res_atoms_st = []
         with open(filename) as f:
@@ -241,18 +262,17 @@ def check_integrity(resname, res_atoms, ter=False, site=True):
 
     if Config.debug:
         print("###### INTEGRITY CHECK ######")
+        print(resname)
         print(res_atoms)
     integrity = None
     integrity_ter = None
 
     if ter:
-        st = "{0}/{1}/sts/{2}tau1.st".format(
-            Config.pypka_params["ffs_dir"], Config.pypka_params["ffID"], ter
-        )
+        st = "{}/{}tau1.st".format(Config.pypka_params["sts_path"], ter)
         res_atoms_st = read_anames(st)
         res_atoms, integrity_ter = pop_atoms(res_atoms_st, res_atoms)
 
-    if site:
+    if is_titrating:
         main_chain_atoms = main_chains[Config.pypka_params["ff_family"]]
         if ter == "NTR":
             main_chain = main_chain_atoms["NTR"]
@@ -269,6 +289,7 @@ def check_integrity(resname, res_atoms, ter=False, site=True):
 
         if Config.debug:
             print(("i", integrity))
+
         if integrity is not False:
             filename = "{0}/{1}/sts/{2}tau1.st".format(
                 Config.pypka_params["ffs_dir"], Config.pypka_params["ffID"], resname
@@ -285,7 +306,7 @@ def check_integrity(resname, res_atoms, ter=False, site=True):
     return integrity_ter, integrity
 
 
-def make_delphi_inputfile(f_in, f_out, molecules):
+def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
     def getMaxCoords(coords, max_coords):
         x, y, z = coords
         max_x, max_y, max_z = max_coords
@@ -298,17 +319,17 @@ def make_delphi_inputfile(f_in, f_out, molecules):
         return max_x, max_y, max_z
 
     def correct_termini(resnumb, resname, aname, ntr_res, ctr_res):
-        if resnumb == ntr_res and aname in Config.pypka_params["NTR_atoms"]:
+        if resnumb in ntr_res and aname in Config.pypka_params["NTR_atoms"]:
             resname = "NTR"
             resnumb += TERMINAL_OFFSET
-        elif resnumb == ctr_res and aname in Config.pypka_params["CTR_atoms"]:
+        elif resnumb in ctr_res and aname in Config.pypka_params["CTR_atoms"]:
             resname = "CTR"
             resnumb += TERMINAL_OFFSET
             # if aname == "C":
             #    aname = "CT"
         return resnumb, resname, aname
 
-    def correct_res_names(molecule, resnumb, resname, aname):
+    def correct_res_names(molecule, chain, resnumb, resname, aname):
         if resnumb in list(molecule.correct_names.keys()):
             resname = molecule.correct_names[resnumb]
         if (
@@ -317,10 +338,18 @@ def make_delphi_inputfile(f_in, f_out, molecules):
         ):
             aname = molecule.correct_atoms[resnumb][aname]
 
+        if (
+            Config.pypka_params["ff_family"] == "CHARMM"
+            and resname == "HIS"
+            # and ((fixed_sites and chain in fixed_sites and resnumb not in fixed_sites[chain]) or (fixed_sites and chain not in fixed_sites))
+        ):
+            resname = "HSP"
+
         return resnumb, resname, aname
 
     def assign_atoms(sites, resnumb, aname, site_Hs, site_positions):
         ref_tau_name = resname
+        # print(aname in list(sites[resnumb].getRefTautomer().charge_set.keys())
         if resnumb in list(sites.keys()) and aname in list(
             sites[resnumb].getRefTautomer().charge_set.keys()
         ):
@@ -384,7 +413,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                     )
 
                     resnumb, resname, aname = correct_res_names(
-                        molecule, resnumb, resname, aname
+                        molecule, chain, resnumb, resname, aname
                     )
 
                     titrable_res = False
@@ -402,7 +431,7 @@ def make_delphi_inputfile(f_in, f_out, molecules):
                         aposition -= 1
                         continue
                     resnumb, resname, aname = correct_res_names(
-                        molecule, resnumb, resname, aname
+                        molecule, chain, resnumb, resname, aname
                     )
 
                 new_pdb_content += new_pdb_line(

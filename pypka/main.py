@@ -1,4 +1,5 @@
 import os
+
 from delphi4py import DelPhi4py
 from pdbmender.formats import gro2pdb, get_grobox_size, get_chains_from_file
 from pdbmender.utils import identify_tit_sites
@@ -147,10 +148,6 @@ class Titration:
             )
             self.assign_residues_to_molecule(chains_res)
 
-            if not Config.pypka_params["clean_pdb"]:
-                # if the input pdb is not missing any atoms
-                create_tit_sites(f_in, chains_res)
-
         if Config.pypka_params["clean_pdb"]:
             # Creates a .pdb input for DelPhi
             # where residues are in their standard state
@@ -161,10 +158,11 @@ class Titration:
             if not Config.debug and os.path.isfile(f_in):
                 os.remove(f_in)
             f_in = f_out
-            create_tit_sites(f_in, chains_res)
+
+        create_tit_sites(f_in, chains_res)
 
         f_out = "delphi_in_stmod.pdb"
-        self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules)
+        self.sequence = make_delphi_inputfile(f_in, f_out, self.molecules, fixed_sites)
 
         if fixed_sites:
             fix_fixed_sites(self.molecules, fixed_sites, f_out)
@@ -203,9 +201,9 @@ class Titration:
                 if resname in ("NTR", "CTR"):
                     resnumb = int(resnumb)
                     if resname == "NTR":
-                        molecule.NTR = resnumb
+                        molecule.NTR += [resnumb]
                     elif resname == "CTR":
-                        molecule.CTR = resnumb
+                        molecule.CTR += [resnumb]
                     resnumb += TERMINAL_OFFSET
 
                 sID = molecule.addSite(resnumb)
@@ -714,7 +712,7 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
 
     molecules = {}
     for chain, site_list in sites.items():
-        molecules[chain] = Molecule(chain, site_list)
+        molecules[chain] = Molecule(chain, site_list, [])
 
     chains_res = identify_tit_sites(pdb, chains)
 

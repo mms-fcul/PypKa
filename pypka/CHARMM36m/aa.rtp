@@ -124219,10 +124219,10 @@ C5      C4      C6      C5M
           HB2   HA2    0.090  6
            SG    SS   -0.800  7
           HG1  HSLJ    0.000  8
-          HG2  HSLJ    0.000  8
-          HG3  HSLJ    0.000  8
-            C     C    0.510  9
-            O     O   -0.510 10
+          HG2  HSLJ    0.000  9
+          HG3  HSLJ    0.000 10
+            C     C    0.510 11
+            O     O   -0.510 12
   [ bonds ]
            CB    CA
            SG    CB
@@ -124234,6 +124234,8 @@ C5      C4      C6      C5M
            CB   HB1
            CB   HB2
            SG   HG1
+           SG   HG2
+           SG   HG3
             O     C
   [ impropers ]
             N    -C    CA    HN
@@ -124242,6 +124244,19 @@ C5      C4      C6      C5M
            -C     N    CA     C    +N
 
 # EXTRA RESIDUES
+
+[ NH2 ] ; adapted from ASN/GLN (side chain) block
+  [ atoms ]
+            N   NH2   -0.620  1
+           H1     H    0.320  2
+           H2     H    0.300  3
+  [ bonds ]
+            N    H1
+	    N    H2
+	   -C     N
+  [ impropers ]
+            N    -C  H1  H2
+            N    -C  H2  H1
 
 [ FMO ] ; - Alexander van Teijlingen 07-12-2020
  [ atoms ]
@@ -124273,3 +124288,265 @@ C5      C4      C6      C5M
 	OF1	OF1_FMO	-0.92	25
 	CT	CT_FMO	0.95	26
 	OF2	OF2_FMO	-0.85	27
+
+[ F4O ] ; [Fe4S4] oxidized iron-sulfur cluster by MHT . Charges and covalent CYS parameters taken Chang & Kim, JCTC 2008
+ [ atoms ]
+       FE1    FE4O       1.10417  0  ; Chang & Kim, JCTC 2008  FES oxidized to [Fe4S4]^{+2}Cys4
+       FE2    FE4O       1.10417  1  ; MHT atp FE4O == Chang & Kim FEJO
+       FE3    FE4O       1.10417  2
+       FE4    FE4O       1.10417  3
+       S1     S4O       -0.96905  4  ; MHT atp S4O == Chang & Kim SJO
+       S2     S4O       -0.96905  5  ;
+       S3     S4O       -0.96905  6
+       S4     S4O       -0.96905  7
+
+[ F4R ] ; [Fe4S4] reduced iron-sulfur cluster by MHT . Charges and covalent CYS parameters taken Chang & Kim, JCTC 2008
+ [ atoms ]
+       FE1    FE4R       1.16332  0  ; Chang & Kim, JCTC 2008  FES reduced to [Fe4S4]^{+1}Cys4
+       FE2    FE4R       1.16332  1  ; MHT atp FE4R == Chang & Kim FEJR
+       FE3    FE4R       1.16332  2
+       FE4    FE4R       1.16332  3
+       S1     S4R       -1.13348  4  ; MHT atp S4R == Chang & Kim SJR
+       S2     S4R       -1.13348  5
+       S3     S4R       -1.13348  6
+       S4     S4R       -1.13348  7 
+
+[ CFO ] ; CYS- bound to iron in oxidized [Fe4S4] (ISP) by MHT
+ [ atoms ]
+        N       NH1     -0.47      0
+        HN      H       0.31       1
+        CA      CT1     0.07       2
+        HA      HB1     0.09       3
+        CB      CT2   -0.82229     4  ; Chang & Kim JCTC 2008  FES oxidized to [Fe4S4]^{+2}Cys4
+        HB1     HA2    0.342857    5  ;
+        HB2     HA2    0.342857    6  ;
+        SG      S     -0.49855     7  ;
+        C       C       0.51       8
+        O       O      -0.51       9
+
+[ CFR ] ; CYS- bound to iron in reduced [Fe4S4] (ISP) by MHT
+ [ atoms ]
+        N       NH1     -0.47      0
+        HN      H       0.31       1
+        CA      CT1     0.07       2
+        HA      HB1     0.09       3
+        CB     CT2    -0.82048     4  ; Chang & Kim JCTC 2008  FES reduced to [Fe4S4]^{+1}Cys4
+        HB1    HA2     0.32061     5
+        HB2    HA2     0.32061     6
+        SG     S      -0.60058     7
+        C       C       0.51       8
+        O       O      -0.51       9
+
+[ U10 ]
+  [ atoms ]
+    C5      CA     0.090000      1  ;
+    C6      CA     0.097449      2  ;
+    C4      CA     0.569980      3  ;
+    O4      O     -0.569980      4  ;
+    C3      CA     0.203200      5  ;
+    O3      OQ1   -0.470000      6  ;
+    C2      CA     0.203200      7  ;
+    O2      OQ1   -0.470000      8  ;
+    C1      CA     0.569980      9  ;
+    O1      O     -0.569980     10  ;
+    CM5     CQ31  -0.457450     11  ;
+    HM51    HA3    0.090000     12  ;
+    HM52    HA3    0.090000     13  ;
+    HM53    HA3    0.090000     14  ;
+    CM3     CQ32  -0.003200     15  ;
+    HM31    HA3    0.090000     16  ;
+    HM32    HA3    0.090000     17  ;
+    HM33    HA3    0.090000     18  ;
+    CM2     CQ32  -0.003200     19  ;
+    HM21    HA3    0.090000     20  ;
+    HM22    HA3    0.090000     21  ;
+    HM23    HA3    0.090000     22  ;
+    C7      CTL2  -0.180000     23  ;
+    H71     HAL2   0.090000     24  ;
+    H72     HAL2   0.090000     25  ;
+    C8      CEQ1  -0.150000     26  ;              O4       HM53
+    H81     HEL1   0.150000     27  ;   HM32       ||       HM52
+    C9      CEL1  -0.077840     28  ;   HM31-CM3   C4   CM5-HM51
+    C10     CTL3  -0.2310805    29  ;   HM33  \   /  \ /
+    H101    HAL3   0.090000     30  ;         O3-C3   C5  H72        H103
+    H102    HAL3   0.090000     31  ;            |    |   |          H102
+    H103    HAL3   0.090000     32  ;         O2-C2   C6--C7-H71  C10-H101
+    C11     CTL2  -0.1605395    33  ;  HM22   /   \  /     |     /
+    H111    HAL2   0.090000     34  ;  HM21-CM2    C1      C8==C9    H121 H122       H151
+    H112    HAL2   0.090000     35  ;  HM23        ||      |     \     \  /          H152
+    C12     CTL2  -0.1605395    36  ;              O1      H81    C11--C12       C15-H153
+    H121    HAL2   0.090000     37  ;                            /  \     \      /
+    H122    HAL2   0.090000     38  ;                          H111  H112  C13==C14 H171 H172        H203
+    C13     CEQ2  -0.150000     39  ;                                      |     \    \ /            H202
+    H131    HEL1   0.150000     40  ;                                    H131   C16--C17         C20-H201
+    C14     CEL1  -0.077840     41  ;                                            / \    \       /
+    C15     CTL3  -0.2310805    42  ;                                          H161 H162 C18==C19  H221 H222         H253
+    H151    HAL3   0.090000     43  ;                                                      |    \     \ /            H252
+    H152    HAL3   0.090000     44  ;                                                     H181   C21--C22        C25-H251
+    H153    HAL3   0.090000     45  ;                                                            / \     \       /
+    C16     CTL2  -0.1605395    46  ;                                                         H211 H212   C23==C24  H271 H272        H303
+    H161    HAL2   0.090000     47  ;                                                                      |     \     \ /           H302
+    H162    HAL2   0.090000     48  ;                                                                     H231    C26--C27       C30-H301
+    C17     CTL2  -0.1605395    49  ;                                                                             / \     \      /
+    H171    HAL2   0.090000     50  ;                                                                          H261 H262   C28==C29 H321 H322         H353
+    H172    HAL2   0.090000     51  ;                                                                                       |    \     \ /            H352
+    C18     CEQ2  -0.150000     52  ;                                                                                      H281   C31--C32        C35-H351
+    H181    HEL1   0.150000     53  ;                                                                                             / \    \       /
+    C19     CEL1  -0.077840     54  ;                                                                                          H311 H312  C33==C34
+    C20     CTL3  -0.2310805    55  ;                                                                                                      |     \
+    H201    HAL3   0.090000     56  ;                                                                                                     H331    C36-H361
+    H202    HAL3   0.090000     57  ;                                                                                                                 H362
+    H203    HAL3   0.090000     58  ;                                                                                                                 C37-C56
+    C21     CTL2  -0.1605395    59  ;
+    H211    HAL2   0.090000     60  ;
+    H212    HAL2   0.090000     61  ;
+    C22     CTL2  -0.1605395    62  ;
+    H221    HAL2   0.090000     63  ;
+    H222    HAL2   0.090000     64  ;
+    C23     CEQ2  -0.150000     65  ;
+    H231    HEL1   0.150000     66  ;
+    C24     CEL1  -0.077840     67  ;
+    C25     CTL3  -0.2310805    68  ;
+    H251    HAL3   0.090000     69  ;
+    H252    HAL3   0.090000     70  ;
+    H253    HAL3   0.090000     71  ;
+    C26     CTL2  -0.1605395    72  ;
+    H261    HAL2   0.090000     73  ;
+    H262    HAL2   0.090000     74  ;
+    C27     CTL2  -0.1605395    75  ;
+    H271    HAL2   0.090000     76  ;
+    H272    HAL2   0.090000     77  ;
+    C28     CEQ2  -0.150000     78  ;
+    H281    HEL1   0.150000     79  ;
+    C29     CEL1  -0.077840     80  ;
+    C30     CTL3  -0.2310805    81  ;
+    H301    HAL3   0.090000     82  ;
+    H302    HAL3   0.090000     83  ;
+    H303    HAL3   0.090000     84  ;
+    C31     CTL2  -0.1605395    85  ;
+    H311    HAL2   0.090000     86  ;
+    H312    HAL2   0.090000     87  ;
+    C32     CTL2  -0.1605395    88  ;
+    H321    HAL2   0.090000     89  ;
+    H322    HAL2   0.090000     90  ;
+    C33     CEQ2  -0.150000     91  ;
+    H331    HEL1   0.150000     92  ;
+    C34     CEL1  -0.077840     93  ;
+    C35     CTL3  -0.2310805    94  ;
+    H351    HAL3   0.090000     95 ;
+    H352    HAL3   0.090000     96 ;
+    H353    HAL3   0.090000     97 ;
+    C36     CTL2  -0.1605395    98 ;
+    H361    HAL2   0.090000     99 ;
+    H362    HAL2   0.090000     100 ;
+    C37     CTL2  -0.1605395    101 ;
+    H371    HAL2   0.090000     102 ;
+    H372    HAL2   0.090000     103 ;
+    C38     CEQ2  -0.150000     104 ;
+    H381    HEL1   0.150000     105 ;
+    C39     CEL1  -0.077840     106 ;
+    C40     CTL3  -0.2310805    107 ;
+    H401    HAL3   0.090000     108 ;
+    H402    HAL3   0.090000     109 ;
+    H403    HAL3   0.090000     110 ;
+    C41     CTL2  -0.1605395    111 ;
+    H411    HAL2   0.090000     112 ;
+    H412    HAL2   0.090000     113 ;
+    C42     CTL2  -0.1605395    114 ;
+    H421    HAL2   0.090000     115 ;
+    H422    HAL2   0.090000     116 ;
+    C43     CEQ2  -0.150000     117 ;
+    H431    HEL1   0.150000     118 ;
+    C44     CEL1  -0.077840     119 ;
+    C45     CTL3  -0.2310805    120 ;
+    H451    HAL3   0.090000     121 ;
+    H452    HAL3   0.090000     122 ;
+    H453    HAL3   0.090000     123 ;
+    C46     CTL2  -0.1605395    124 ;
+    H461    HAL2   0.090000     125 ;
+    H462    HAL2   0.090000     126 ;
+    C47     CTL2  -0.1605395    127 ;
+    H471    HAL2   0.090000     128 ;
+    H472    HAL2   0.090000     129 ;
+    C48     CEQ2  -0.150000     130 ;
+    H481    HEL1   0.150000     131 ;
+    C49     CEL1  -0.077840     132 ;
+    C50     CTL3  -0.2310805    133 ;
+    H501    HAL3   0.090000     134 ;
+    H502    HAL3   0.090000     135 ;
+    H503    HAL3   0.090000     136 ;
+    C51     CTL2  -0.1605395    137 ;
+    H511    HAL2   0.090000     138 ;
+    H512    HAL2   0.090000     139 ;
+    C52     CTL2  -0.1605395    140 ;
+    H521    HAL2   0.090000     141 ;
+    H522    HAL2   0.090000     142 ;
+    C53     CEQ2  -0.150000     143 ;
+    H531    HEL1   0.150000     144 ;
+    C54     CEL1  -0.077840     145 ;
+    C55     CTL3  -0.2310805    146 ;
+    H551    HAL3   0.090000     147 ;
+    H552    HAL3   0.090000     148 ;
+    H553    HAL3   0.090000     149 ;
+    C56     CTL3  -0.2310805    150 ;
+    H561    HAL3   0.090000     151 ;
+    H562    HAL3   0.090000     152 ;
+    H563    HAL3   0.090000     153 ;
+
+[ 2MR ] ; N3, N4-DIMETHYLARGININE - GMA
+  [ atoms ]
+            N   NH1   -0.470  0
+           HN     H    0.310  1
+           CA   CT1    0.070  2
+           HA   HB1    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG   CT2   -0.180  7
+          HG1   HA2    0.090  8
+          HG2   HA2    0.090  9
+           CD   CT2    0.200 10
+          HD1   HA2    0.090 11
+          HD2   HA2    0.090 12
+           NE   NC2   -0.700 13
+           HE    HC    0.440 14
+           CZ     C    0.600 15
+          NH1   NC2   -0.650 16
+         HH12    HC    0.410 18
+          CQ1   CT3    0.110 18
+         HQ11   HA3    0.090 18
+         HQ12   HA3    0.090 18
+         HQ13   HA3    0.090 18
+          NH2   NC2   -0.650 19
+         HH22    HC    0.410 21
+          CQ2   CT3    0.110 21
+         HQ21   HA3    0.090 21
+         HQ22   HA3    0.090 21
+         HQ23   HA3    0.090 21
+            C     C    0.510 22
+            O     O   -0.510 23
+
+[ FME ] ; N-FORMYLMETHIONINE - GMA
+  [ atoms ]
+           CN   CG2O1  0.310 17
+           O1   OG2D1 -0.310 18
+          HCN   HGR52  0.0   19
+            N   NH1   -0.470  0
+           HN     H    0.310  1
+           CA   CT1    0.070  2
+           HA   HB1    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG   CT2   -0.140  7
+          HG1   HA2    0.090  8
+          HG2   HA2    0.090  9
+           SD     S   -0.090 10
+           CE   CT3   -0.220 11
+          HE1   HA3    0.090 12
+          HE2   HA3    0.090 13
+          HE3   HA3    0.090 14
+            C     C    0.510 15
+            O     O   -0.510 16
+
+

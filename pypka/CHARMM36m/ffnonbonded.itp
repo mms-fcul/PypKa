@@ -519,3 +519,16 @@ CF1_FMO   6     12.0110  0.000  A  0.358141284692  0.23430
 CT_FMO    6     12.0110  0.000  A  0.356359487256  0.46024
 OF1_FMO   8     15.9994  0.000  A  0.293996576986  0.41840
 OF2_FMO   8     15.9994  0.000  A  0.302905564168  0.50208
+
+; SF4O, SF4R, CY40, CY4R, U10 - Carolina Pereira 27-06-2022
+  FE4O    26   55.84700      0.000  A  0.256935127400   0.048234   ; MHT Chang & Kim JCTC 2008 Oxidized SF4
+  FE4R    26   55.84700      0.000  A  0.256935127400   0.092110   ; MHT Chang & Kim JCTC 2008 Reduced SF4
+  S4O     16   32.06000      0.000  A  0.351940543000   1.624828   ; MHT Chang & Kim JCTC 2008 Oxidized SF4
+  S4R     16   32.06000      0.000  A  0.351940543000   1.624828   ; MHT Chang & Kim JCTC 2008 Reduced SF4
+  OQ1     8    15.999000     0.000  A  0.30516          0.63639    ; VVG - based on OH1
+  CEQ2    6    12.011000     0.000  A  0.372395664183   0.28451    ; VVG from CEL1
+  CEQ1    6    12.011000     0.000  A  0.32016          0.28451    ; VVG - based on CEL1
+  CQ31    6    12.011000     0.000  A  0.37221          0.32635    ; VVG - based on CT3
+  CQ32    6    12.011000     0.000  A  0.32000          0.32635    ; VVG - based on CT3
+  OHQ     8    15.999000     0.000  A  0.312905564168   0.50208    ; VVG - based on hydroxyl oxygen for quinol (LJ from O and bonding param from OH1)
+  OQ1     8    15.999000     0.000  A  0.30516          0.63639    ; VVG - based on OH1

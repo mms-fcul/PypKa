@@ -133,19 +133,6 @@ GROMOS_protomers = {
     },
 }
 
-CHARMM_protomers = {
-    "ASP": {"ASPP": {}, "ASP": {}},
-    "CYS": {"CYS": {}, "CYSM": {}},
-    "GLU": {"GLUP": {}, "GLU": {}},
-    "HIS": {"HSD": {}, "HSE": {}, "HSP": {}},
-    "TYR": {"TYR": {}},
-    "LYS": {"LYS": {}},
-    "SER": {"SER": {}},
-    "THR": {"THR": {}},
-    "NTR": {},
-    "CTR": {},
-}
-
 main_chains = {
     "GROMOS": {"main": ("N", "H", "CA", "C", "O"), "NTR": (), "CTR": ("N", "H", "CA")},
     "CHARMM": {
