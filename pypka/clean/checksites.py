@@ -338,12 +338,17 @@ def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
         ):
             aname = molecule.correct_atoms[resnumb][aname]
 
-        if (
-            Config.pypka_params["ff_family"] == "CHARMM"
-            and resname == "HIS"
-            # and ((fixed_sites and chain in fixed_sites and resnumb not in fixed_sites[chain]) or (fixed_sites and chain not in fixed_sites))
-        ):
-            resname = "HSP"
+        if Config.pypka_params["ff_family"] == "CHARMM" and resname == "HIS":
+            if (
+                not fixed_sites
+                or (
+                    fixed_sites
+                    and chain in fixed_sites
+                    and resnumb not in fixed_sites[chain]
+                )
+                or (fixed_sites and chain not in fixed_sites)
+            ):
+                resname = "HSP"
 
         return resnumb, resname, aname
 

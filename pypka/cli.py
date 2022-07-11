@@ -43,15 +43,19 @@ def read_settings(filename):
                     parameters[param_name] = param_value
     # Search for all titrable sites in different chains
     sites = {}
+    fixed_sites = {}
     for param_name in parameters:
+        if "_" in param_name:
+            chain = param_name.split("_")[-1]
+        else:
+            chain = " "
         if param_name.startswith("site"):
-            if "_" in param_name:
-                chain = param_name.split("_")[1]
-            else:
-                chain = " "
             sites_str = parameters[param_name]
             chain_sites = [i.strip() for i in sites_str.split(",")]
             sites[chain] = chain_sites
+        elif param_name.startswith("fixed_site"):
+            fixed_sites_str = parameters[param_name]
+            fixed_sites[chain] = eval(fixed_sites_str)
 
     if " " in sites and sites[" "] == ["all"]:
         if len(sites) != 1:
@@ -69,7 +73,7 @@ def read_settings(filename):
             'Missing mandatory "sites" parameter\nTitratate all sites: sites = all\nTitrate all sites only from chain A: sites_A = all'
         )
 
-    return sites, parameters
+    return sites, fixed_sites, parameters
 
 
 def check_cli_args():
@@ -110,14 +114,15 @@ python3 pypka.py params.dat --debug""",
         raise IOError("File {0} does not exist.".format(args.settings))
 
     # Read Settings File
-    sites, parameters = read_settings(args.settings)
+    sites, fixed_sites, parameters = read_settings(args.settings)
 
-    return sites, parameters, args.debug
+    return sites, fixed_sites, parameters, args.debug
 
 
 def CLI():
     # Read command line arguments
-    sites, parameters, debug = check_cli_args()
+    sites, fixed_sites, parameters, debug = check_cli_args()
 
-    Titration(parameters, sites=sites, debug=debug)
+
+    Titration(parameters, sites=sites, fixed_sites=fixed_sites, debug=debug)
     print("CLI exited successfully")

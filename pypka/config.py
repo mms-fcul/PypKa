@@ -54,7 +54,11 @@ class Config:
         """
         # Define all parameters
         for param_name, param_value in parameters.items():
-            if param_name.startswith("sites") or param_name in IGNORED_PARAMS:
+            if (
+                param_name.startswith("sites")
+                or param_name.startswith("fixed_sites")
+                or param_name in IGNORED_PARAMS
+            ):
                 continue
             config_obj = cls.getConfigObj(param_name)
             if config_obj:
