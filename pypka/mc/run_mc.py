@@ -1,3 +1,4 @@
+import json
 import numpy as np
 from pypka.config import Config
 from pypka.concurrency import runMCCalcs, startPoolProcesses
@@ -89,6 +90,26 @@ class MonteCarlo:
         params = Config.mc_params
         self.dpH = params["pHstep"]
         self.pH_values = params.pH_values
+
+        if Config.pypka_params.save_mc_energies:            
+            all_sites = []
+            for site in Config.parallel_params.all_sites:            
+                site_id = f"{site.molecule.chain}_{site.res_name}_{site.res_number}"
+                all_sites.append(site_id)
+            
+            to_json_dict = {                
+                "all_sites": all_sites,
+                "npossible_states": Config.parallel_params.npossible_states,
+                "possible_states_g": Config.parallel_params.possible_states_g,
+                "possible_states_occ": Config.parallel_params.possible_states_occ,
+                "interactions": Config.parallel_params.interactions,
+                "interactions_look": Config.parallel_params.interactions_look
+            }
+
+            json_object = json.dumps(to_json_dict, indent=4)
+
+            with open(Config.pypka_params.save_mc_energies, "w") as f_out:
+                f_out.write(json_object)
 
         ncpus = min(Config.pypka_params["ncpus"], self.nsites)
         results = startPoolProcesses(

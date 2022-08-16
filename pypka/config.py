@@ -253,6 +253,7 @@ class PypKaConfig(ParametersDict):
         self.f_structure_out_pH = None
         self.ff_structure_out = None
         self.save_pdb = None
+        self.save_mc_energies = None
         self.isoelectric_point = None
 
         # Force Field
@@ -313,6 +314,7 @@ class PypKaConfig(ParametersDict):
             "box": list,
             "CpHMD_mode": bool,
             "save_pdb": str,
+            "save_mc_energies": str,
             "ffs_dir": str,
             "sts": str,
         }
