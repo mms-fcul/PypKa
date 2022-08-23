@@ -48,6 +48,7 @@ class MonteCarlo:
                 for _ in range(diff):
                     i.append(filler)
 
+        states_ddG = [[] for _ in self.sites]
         possible_states_g = [[] for _ in self.sites]
         possible_states_occ = [[] for _ in self.sites]
 
@@ -59,6 +60,9 @@ class MonteCarlo:
             for tautomer in site.iterOrderedTautomersWithoutRef():
                 dg = tautomer.dg / (KBOLTZ * temperature)
                 possible_states_g[isite].append(dg)
+
+                ddg = tautomer.dG_solvationM - tautomer.dG_solvationS + tautomer.dG_back
+                states_ddG[isite].append(ddg)
 
                 if site.type == "c":
                     prot_state = 0
@@ -84,6 +88,7 @@ class MonteCarlo:
 
         Config.parallel_params.possible_states_g = possible_states_g
         Config.parallel_params.possible_states_occ = possible_states_occ
+        Config.parallel_params.states_ddG = states_ddG
 
     def run(self):
         """Run a MC sim"""
@@ -91,19 +96,20 @@ class MonteCarlo:
         self.dpH = params["pHstep"]
         self.pH_values = params.pH_values
 
-        if Config.pypka_params.save_mc_energies:            
+        if Config.pypka_params.save_mc_energies:
             all_sites = []
-            for site in Config.parallel_params.all_sites:            
+            for site in Config.parallel_params.all_sites:
                 site_id = f"{site.molecule.chain}_{site.res_name}_{site.res_number}"
                 all_sites.append(site_id)
-            
-            to_json_dict = {                
+
+            to_json_dict = {
                 "all_sites": all_sites,
                 "npossible_states": Config.parallel_params.npossible_states,
                 "possible_states_g": Config.parallel_params.possible_states_g,
+                "states_ddG": Config.parallel_params.states_ddG,
                 "possible_states_occ": Config.parallel_params.possible_states_occ,
                 "interactions": Config.parallel_params.interactions,
-                "interactions_look": Config.parallel_params.interactions_look
+                "interactions_look": Config.parallel_params.interactions_look,
             }
 
             json_object = json.dumps(to_json_dict, indent=4)
@@ -220,16 +226,6 @@ class MonteCarlo:
                 self.coupled_sites_dict[site2] = []
             self.coupled_sites_dict[site1].append(site2)
             self.coupled_sites_dict[site2].append(site1)
-
-            to_print = "{:3} {:3} {:6} | {:3} {:3} {:6}".format(
-                site1.molecule.chain,
-                site1.res_name,
-                site1.res_number,
-                site2.molecule.chain,
-                site2.res_name,
-                site2.res_number,
-            )
-            print(to_print)
 
         self.text_coupled_sites = ""
         for site1, sites in self.coupled_sites_dict.items():
