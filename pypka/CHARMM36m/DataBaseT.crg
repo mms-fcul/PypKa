@@ -32,10 +32,10 @@ atom__resnumbc_charge_
   CA  NTR       0.210
   HA  NTR       0.100
    C  CT0       0.720
- OT1  CT0      -0.550
+ OT1  CT0      -0.610
 HT11  CT0       0.440
 HT12  CT0       0.000
- OT2  CT0      -0.610
+ OT2  CT0      -0.550
 HT21  CT0       0.000
 HT22  CT0       0.000
    C  CT1       0.720
@@ -46,10 +46,10 @@ HT12  CT1       0.000
 HT21  CT1       0.440
 HT22  CT1       0.000
    C  CT2       0.720
- OT1  CT2      -0.550
+ OT1  CT2      -0.610
 HT11  CT2       0.000
 HT12  CT2       0.440
- OT2  CT2      -0.610
+ OT2  CT2      -0.550
 HT21  CT2       0.000
 HT22  CT2       0.000
    C  CT3       0.720

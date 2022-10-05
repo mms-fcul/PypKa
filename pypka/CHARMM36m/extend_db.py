@@ -6,7 +6,6 @@ out_siz = "tmp.siz"
 out_crg = "tmp.crg"
 
 ###
-
 atomistic = False
 water_atype = "OW"
 
@@ -18,6 +17,17 @@ template_crg_db = "DataBaseT_template.crg"  # NTR and CTR charges are copied fro
 ignore_list = ()
 
 ### MAIN ###
+
+# when adding new titratable residues please include them here
+sizes = {
+    "HI2": ("HI0", "HI1"),
+    "AS4": ("AS0", "AS1", "AS2", "AS3"),
+    "LY3": ("LY0", "LY1", "LY2"),
+    "GL4": ("GL0", "GL1", "GL2", "GL3"),
+    "TY2": ("TY0", "TY1"),
+    "CY3": ("CY0", "CY1", "CY2"),
+}
+
 rules = {
     "NTR": {
         "N": "nh3",
@@ -142,6 +152,10 @@ rules["GLU"] = db_res["GL4"]
 rules["TYR"] = db_res["TY2"]
 rules["CYS"] = db_res["CY3"]
 rules["SSB"] = db_res["CYS2"]
+
+for ref, taus in sizes.items():
+    for tau in taus:
+        db_res[tau] = db_res[ref]
 
 rules_crg = {}
 rules_crg["HIS"] = db_charges["HI2"]
