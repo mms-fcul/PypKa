@@ -252,9 +252,11 @@ class PypKaConfig(ParametersDict):
         self.coupled_sites_output = None
         self.f_structure_out_pH = None
         self.ff_structure_out = None
+        self.isoelectric_point = None
         self.save_pdb = None
         self.save_mc_energies = None
-        self.isoelectric_point = None
+        self.load_mc_energies = None
+        self.load_mc_energies_dict = None
 
         # Force Field
         self.f_crg = None
@@ -284,7 +286,7 @@ class PypKaConfig(ParametersDict):
             "temp": ">0",
             "ffID": ("G54A7", "CHARMM36m"),
             "ffinput": ("GROMOS", "AMBER", "CHARMM"),
-            "ff_structure_out": ("gromos_cph", "amber"),
+            "ff_structure_out": ("gromos_cph", "amber", "charmm"),
         }
         self.input_type = {
             "debug": bool,
@@ -315,6 +317,8 @@ class PypKaConfig(ParametersDict):
             "CpHMD_mode": bool,
             "save_pdb": str,
             "save_mc_energies": str,
+            "load_mc_energies": str,
+            "load_mc_energies_dict": dict,
             "ffs_dir": str,
             "sts": str,
         }
@@ -469,6 +473,7 @@ class DelPhiConfig(ParametersDict):
         self.pbc_dim = 0
         self.epsin = 20.0
 
+        self.truncated_grid = False
         self.lookup_atoms = None
 
         # -1 NanoShaper off
@@ -505,6 +510,7 @@ class DelPhiConfig(ParametersDict):
             "pbc_dim": int,
             "epsin": float,
             "nanoshaper": int,
+            "truncated_grid": bool,
         }
 
         self.input_special_conditions = {

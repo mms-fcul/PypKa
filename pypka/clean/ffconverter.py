@@ -33,8 +33,36 @@ gromos2amber = {
     },
 }
 
+gromos2charmm = {
+    "ASP": {
+        0: {"HD11": "HD2", "OD1": "OD2", "OD2": "OD1"},
+        1: {"HD21": "HD2"},
+        2: {"HD12": "HD2", "OD1": "OD2", "OD2": "OD1"},
+        3: {"HD22": "HD2"},
+    },
+    "CYS": {0: {"HG1": "HG1"}, 1: {"HG2": "HG1"}, 2: {"HG3": "HG1"}},
+    "GLU": {
+        0: {"HE11": "HE2", "OE1": "OE2", "OE2": "OE1"},
+        1: {"HE21": "HE2"},
+        2: {"HE12": "HE2", "OE1": "OE2", "OE2": "OE1"},
+        3: {"HE22": "HE2"},
+    },
+    "HIS": {},
+    "TYR": {0: {"HH1": "HH"}, 1: {"HH2": "HH"}},
+    "LYS": {0: {"HZ3": "HZ1"}, 1: {"HZ3": "HZ2"}},
+    "SER": {0: {"HG1": "HG1"}, 1: {"HG2": "HG1"}, 2: {"HG3": "HG1"}},
+    "THR": {0: {"HG1": "HG1"}, 1: {"HG2": "HG1"}, 2: {"HG3": "HG1"}},
+    "NTR": {0: {"H3": "H1"}, 1: {"H3": "H2"}},
+    "CTR": {
+        0: {"HO11": "HO", "O1": "O", "O2": "OXT", "C": "C"},
+        1: {"HO21": "HO", "O2": "O", "O1": "OXT", "C": "C"},
+        2: {"HO12": "HO", "O1": "O", "O2": "OXT", "C": "C"},
+        3: {"HO22": "HO", "O2": "O", "O1": "OXT", "C": "C"},
+        4: {"O1": "O", "O2": "OXT", "C": "C"},
+    },
+}
 
-ffconversions = {"GROMOS": {"AMBER": gromos2amber}}
+ffconversions = {"GROMOS": {"AMBER": gromos2amber, "CHARMM": gromos2charmm}}
 
 AMBER_Hs = {
     "NTR": ["H1", "H2", "H3"],
@@ -52,7 +80,24 @@ AMBER_Hs = {
     "TYR": ["HH"],
 }
 
+CHARMM_Hs = {
+    "NTR": ["H1", "H2", "H3"],
+    "CTR": ["HO"],
+    "ASP": ["HD2"],
+    "CYS": ["HG1"],
+    "GLU": ["HE2"],
+    "HSP": ["HD1", "HE2"],
+    "HSD": ["HD1"],
+    "HSE": ["HE2"],
+    "LYS": ["HZ1", "HZ2", "HZ3"],
+    "LSN": ["HZ1", "HZ2"],
+    "SER": ["HG1"],
+    "THR": ["HG1"],
+    "TYR": ["HH"],
+}
+
 AMBER_mainchain_Hs = ["H", "HA"]
+CHARMM_mainchain_Hs = ["HN", "HA"]
 
 mainchain_Hs: Dict[str, Dict[int, tuple]] = {}
 
@@ -93,6 +138,52 @@ AMBER_protomers = {
     "NTR": {"NTR": {0: ["H1"], 1: ["H2"], 2: ["H3"]}, "NTN": {3: ("")}},
     "CTR": {
         "CTH": {
+            0: ("HO21", "HO12", "HO22"),
+            1: ("HO11", "HO12", "HO22"),
+            2: ("HO11", "HO21", "HO22"),
+            3: ("HO11", "HO12", "HO21"),
+        },
+        "CTR": {4: ("HO11", "HO12", "HO21", "HO22")},
+    },
+}
+
+CHARMM_protomers = {
+    "ASP": {
+        "ASPP": {
+            0: ("HD21", "HD12", "HD22"),
+            1: ("HD11", "HD12", "HD22"),
+            2: ("HD11", "HD21", "HD22"),
+            3: ("HD11", "HD21", "HD21"),
+        },
+        "ASP": {4: ("HD11", "HD12", "HD21", "HD22")},
+    },
+    "CYS": {
+        "CYSN": {0: ("HG2", "HG3"), 1: ("HG1", "HG3"), 2: ("HG1", "HG2")},
+        "CYS": {3: ("HG1", "HG2", "HG3")},
+    },
+    "GLU": {
+        "GLUP": {
+            0: ("HE21", "HE12", "HE22"),
+            1: ("HE11", "HE12", "HE22"),
+            2: ("HE11", "HE21", "HE22"),
+            3: ("HE11", "HE12", "HE21"),
+        },
+        "GLU": {4: ("HE11", "HE12", "HE21", "HE22")},
+    },
+    "HIS": {"HSD": {0: ["HE2"]}, "HSE": {1: ["HD1"]}, "HIP": {2: ("")}},
+    "TYR": {"TYRP": {0: ["HH2"], 1: ["HH1"]}, "TYR": {2: ("HH1", "HH2")}},
+    "LYS": {"LSN": {0: ["HZ1"], 1: ["HZ2"], 2: ["HZ3"]}, "LYS": {3: ("")}},
+    "SER": {
+        "SER": {0: ("HG2", "HG3"), 1: ("HG1", "HG3"), 2: ("HG1", "HG2")},
+        "SERN": {3: ("HG1", "HG2", "HG3")},
+    },
+    "THR": {
+        "THRP": {0: ("HG2", "HG3"), 1: ("HG1", "HG3"), 2: ("HG1", "HG2")},
+        "THR": {3: ("HG1", "HG2", "HG3")},
+    },
+    "NTR": {"NTR": {0: ["H1"], 1: ["H2"], 2: ["H3"]}, "NTRN": {3: ("")}},
+    "CTR": {
+        "CTRH": {
             0: ("HO21", "HO12", "HO22"),
             1: ("HO11", "HO12", "HO22"),
             2: ("HO11", "HO21", "HO22"),

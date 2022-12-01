@@ -1,5 +1,5 @@
 import os
-
+import json
 from delphi4py import DelPhi4py
 from pdbmender.formats import gro2pdb, get_grobox_size, get_chains_from_file
 from pdbmender.utils import identify_tit_sites
@@ -66,6 +66,18 @@ class Titration:
         self.isoelectric_point = None
         self.isoelectric_point_limit = None
 
+        if (
+            Config.pypka_params["load_mc_energies"]
+            or Config.pypka_params["load_mc_energies_dict"]
+        ):
+            self.mc_only_run()
+        else:
+            self.normal_run(sites, fixed_sites, run)
+
+        print("Results")
+        print(self)
+
+    def normal_run(self, sites, fixed_sites, run):
         print("Start Preprocessing")
         self.preprocessing(sites, fixed_sites)
         self.processDelPhiParams()
@@ -89,10 +101,48 @@ class Titration:
             sites = self.get_all_sites(get_list=True)
             write_output_structure(sites, self.molecules, self.delphi_input_content)
 
-        print("Results")
-        print(self)
+    def mc_only_run(self):
+        if Config.pypka_params["load_mc_energies"]:
+            with open(Config.pypka_params["load_mc_energies"]) as f:
+                energies_dict = json.load(f)
+        else:
+            energies_dict = Config.pypka_params["load_mc_energies_dict"]
 
-        print("API exited successfully")
+        Config.parallel_params.npossible_states = energies_dict["npossible_states"]
+        Config.parallel_params.possible_states_g = energies_dict["possible_states_g"]
+        Config.parallel_params.states_ddG = energies_dict["states_ddG"]
+        Config.parallel_params.possible_states_occ = energies_dict[
+            "possible_states_occ"
+        ]
+        Config.parallel_params.interactions = energies_dict["interactions"]
+        Config.parallel_params.interactions_look = energies_dict["interactions_look"]
+
+        sites = {}
+        chains_res = {}
+        for site in energies_dict["all_sites"]:
+            chain = site[0]
+            resname = site[2:5]
+            resnumb = int(site[6:])
+
+            if resnumb > TERMINAL_OFFSET:
+                resnumb -= TERMINAL_OFFSET
+                resnumb = str(resnumb)
+
+            if chain not in sites:
+                sites[chain] = []
+            sites[chain].append(resnumb)
+
+            if chain not in chains_res:
+                chains_res[chain] = {}
+            chains_res[chain][resnumb] = resname
+
+        self.create_molecule(sites, {})
+        for chain, molecule in self.molecules.items():
+            molecule.loadSites(chains_res[chain])
+
+        Config.parallel_params.all_sites = self.get_all_sites(get_list=True)
+
+        self.run_mc()
 
     def preprocessing(self, sites, fixed_sites):
         def create_tit_sites(fname, chains_res):
@@ -122,7 +172,7 @@ class Titration:
             replace_empty_chain=False,
         )
 
-        if not Config.pypka_params["f_in_extension"] == "pdb":
+        if Config.pypka_params["f_in_extension"] != "pdb":
             f_format = Config.pypka_params["f_in_extension"]
             raise Exception(
                 "{0} file format is not currently supported".format(f_format)
@@ -217,15 +267,10 @@ class Titration:
             molecule.addTautomersChargeSets()
 
     def get_total_atoms(self):
-        total_atoms = 0
-        for molecule in self.molecules.values():
-            total_atoms += molecule.getNAtoms()
-        return total_atoms
+        return sum(molecule.getNAtoms() for molecule in self.molecules.values())
 
     def get_all_sites(self, get_list=False):
-        sites = {}
-        if get_list:
-            sites = []
+        sites = [] if get_list else {}
         for chain, molecule in self.molecules.items():
             chain_sites = molecule.getSitesOrdered()
             if get_list:
@@ -244,10 +289,7 @@ class Titration:
         return sites
 
     def get_total_sites(self):
-        total = 0
-        for sites in self.get_all_sites().values():
-            total += len(sites)
-        return total
+        return sum(len(sites) for sites in self.get_all_sites().values())
 
     def processDelPhiParams(self):
         # Storing DelPhi parameters and Creates DelPhi data structures
@@ -373,8 +415,12 @@ class Titration:
                 tautomer.calcpKint()
                 if Config.debug:
                     print(("pkint", tautomer.name, tautomer.dg, id(tautomer)))
-                    pkints += "{} {} {}\n".format(
-                        tautomer.name, tautomer.dg, tautomer.pKint
+                    pkints += "{} {} {} {} {}\n".format(
+                        tautomer.site.molecule.chain,
+                        tautomer.name,
+                        tautomer.site.res_number,
+                        tautomer.dg,
+                        tautomer.pKint,
                     )
                     contributions += "{}{} {} {} {} {}\n".format(
                         tautomer.site.res_number,
@@ -557,11 +603,7 @@ class Titration:
 
         sites = self.get_all_sites(get_list=True)
         nsites = len(sites)
-        total_anionic_titres = 0
-        for site in sites:
-            if site.type == "a":
-                total_anionic_titres += 1
-
+        total_anionic_titres = sum(site.type == "a" for site in sites)
         total_arg_charge = 0
         for _, aas in self.sequence.items():
             for _, resname in aas.items():
@@ -580,16 +622,14 @@ class Titration:
             # anionic_aas = ("ASP", "GLU", "CYS", "TYR", "CTR")
             # cationic_aas = ("LYS", "ARG", "HIS", "NTR")
 
-            titration_curve = [
-                (pH, prot) for pH, prot in self.getTitrationCurve().items()
-            ]
+            titration_curve = list(self.getTitrationCurve().items())
             i = 0
             pH, prot = titration_curve[i]
             while prot > 0.0 and i < len(titration_curve) - 1:
                 i += 1
                 pH, prot = titration_curve[i]
 
-            if i == 0 or i == len(titration_curve) - 1:
+            if i in [0, len(titration_curve) - 1]:
                 charge = round(prot, 2)
                 warn_message = (
                     "Not enough points to interpolate the Isoelectric Point\n"
@@ -625,8 +665,7 @@ class Titration:
     def __next__(self):
         self.iternumb += 1
         if self.iternumb < self.itermax:
-            site = self.itersites[self.iternumb]
-            return site
+            return self.itersites[self.iternumb]
         else:
             raise StopIteration
 
@@ -709,10 +748,6 @@ def getTitrableSites(pdb, ser_thr_titration=True, debug=False):
 
     chains = get_chains_from_file(pdb)
     sites = {chain: "all" for chain in chains}
-
-    molecules = {}
-    for chain, site_list in sites.items():
-        molecules[chain] = Molecule(chain, site_list, [])
 
     chains_res = identify_tit_sites(pdb, chains)
 

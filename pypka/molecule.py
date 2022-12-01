@@ -218,7 +218,7 @@ class Molecule:
                         if res[:-1] == resname[:-1]:
                             ntauts = TITRABLETAUTOMERS[res]
                             return ntauts, res
-            raise Exception("{0}_{1} is not a titrable residue".format(resname, resnum))
+            raise Exception("{0} is not a titrable residue".format(resnum))
 
         for site_number, site_name in sites.items():
             if site_name == "NTR":

@@ -12,7 +12,7 @@ from pypka.constants import (
     TITRABLETAUTOMERS,
 )
 
-from pypka.clean.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
+from pdbmender.ffconverter import mainchain_Hs, AMBER_Hs, AMBER_mainchain_Hs
 
 from pdbmender.formats import (
     new_gro_line,

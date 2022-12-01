@@ -299,6 +299,37 @@ class Tautomer(object):
                 # pbc_atoms = []
                 new_atoms += pbc_atoms
 
+        if Config.delphi_params["truncated_grid"]:
+            if Config.delphi_params["pbc_dim"] == 2:
+                site_center = self.site.getCenterOriginal()
+            else:
+                site_center = self.site.getCenter()
+
+            new_box_edge = int(
+                Config.delphi_params["gsize"]
+                / Config.delphi_params["scaleP"]
+                / 2
+                * 1.05
+            )
+            box_lower_limit = [i - new_box_edge for i in site_center]
+            box_upper_limit = [i + new_box_edge for i in site_center]
+
+            site_atom_position = -1
+            for atom_position in range(delphimol.natoms):
+                x, y, z = self.read_atom_positions(p_atpos, atom_position)
+
+                if not (
+                    x > box_lower_limit[0]
+                    and x < box_upper_limit[0]
+                    and y > box_lower_limit[1]
+                    and y < box_upper_limit[1]
+                    and z > box_lower_limit[2]
+                    and z < box_upper_limit[2]
+                ):
+                    site_atom_position += 1
+                    p_rad3[atom_position] = 0.0
+                    p_chrgv4[atom_position] = 0.0
+
         natoms = delphimol.changeStructureSize(
             p_atpos,
             p_rad3,
@@ -321,14 +352,29 @@ class Tautomer(object):
                 aname = aname[1:]
                 resname = "PBC"
                 resnumb = -666
-            pdb_text += new_pdb_line(aID, aname, resname, resnumb, x, y, z, chain=chain)
+
+            if delphimol.p_rad3[i]:
+                pdb_text += new_pdb_line(
+                    aID, aname, resname, resnumb, x, y, z, chain=chain
+                )
 
         box = Config.pypka_params.box
         if Config.debug:
-            filename = "P_{1}-{0}.pdb".format(self.name, self.site.res_number)
+            filename = "P_{2}-{1}-{0}.pdb".format(
+                self.name, self.site.res_number, self.site.molecule.chain
+            )
             with open(filename, "w") as f_new:
                 x, y, z = acent
                 pdb_text += new_pdb_line(-1, "P", "CNT", -1, x, y, z)
+
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, 0, 0, 0)
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, box[0], 0, 0)
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, 0, box[1], 0)
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, box[0], box[1], 0)
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, 0, 0, box[2])
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, box[0], 0, box[2])
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, 0, box[1], box[2])
+                pdb_text += new_pdb_line(-2, "P", "BOX", -2, box[0], box[1], box[2])
 
                 pdb_text += new_pdb_line(-2, "P", "PDB", -2, 0, 0, z)
                 pdb_text += new_pdb_line(-2, "P", "PDB", -2, box[0], 0, z)
@@ -689,6 +735,7 @@ class Tautomer(object):
         cutoff_sq = (cutoff) ** 2
         point_energy = -1
 
+        atom_name = None
         lookup_atoms_keys = Config.delphi_params.lookup_atoms.keys()
         # for atom_name, atom_id, atom_position in molecule.iterAtoms():
         for atom_position in range(delphimol.natoms):

@@ -33,7 +33,8 @@ class MonteCarlo:
         self.sites = sites
         self.nsites = len(sites)
 
-        self.init_mc_vars()
+        if not Config.pypka_params["load_mc_energies"] and not Config.pypka_params["load_mc_energies_dict"]:
+            self.init_mc_vars()
         self.run()
         self.get_pkas()
         self.get_tit_states()

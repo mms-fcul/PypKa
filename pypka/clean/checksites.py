@@ -7,7 +7,7 @@ from pypka.constants import (
     TITRABLETAUTOMERS,
     REGULARTITRATINGRES,
 )
-from pypka.clean.ffconverter import main_chains
+from pdbmender.ffconverter import main_chains
 from pdbmender.formats import new_pdb_line, read_pdb_line
 import logging
 
@@ -383,6 +383,7 @@ def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
     new_pdb_content = ""
     site_positions = {}
     site_Hs = {}
+    box = None
     max_box = [0.0, 0.0, 0.0]
     aposition = -1
     sequence = {}
@@ -447,7 +448,7 @@ def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
                 parts = line.split()
                 box = [float(i) for i in parts[1:4]]
 
-    if box == [1.0, 1.0, 1.0]:
+    if not box:
         box = max_box
 
     if Config.pypka_params["box"]:

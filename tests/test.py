@@ -303,11 +303,11 @@ class TestCLI(object):
         path = "lyso/lyso_multichain_sites"
         results = """
     1 NTR 7.242283991665559    A  
-    1 ASP 3.115283494887797    B  
+    1 ASP 3.1153294367693944   B  
    35 GLU 4.622119696447051    C  
-   35 ASP 2.314935152966695    D  
-   66 ASP 1.8855224015144685   D  
-    1 CTR 2.3957716701902747   D
+   35 ASP 2.3149249683601516   D  
+   66 ASP 1.8855327203893997   D  
+    1 CTR 2.395745255014842    D
         """
         runTest(path, ncpus, results)
 
