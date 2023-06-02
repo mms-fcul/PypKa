@@ -18,7 +18,7 @@ In order to output this structure we need to add the argument :code:`structure_o
    output          = pKas.out      # pKa values output file
    structure_output = out.pdb, 7, amber  # Output structure with the most likely protonation state at a given pH value
    # filename, pH value, force field ("gromos_cph", "amber")
-   ph = 7                          # pH range
+   pH = 7                          # pH range
 
 To run the simulation execute the following command:
 
