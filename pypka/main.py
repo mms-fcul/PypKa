@@ -589,6 +589,11 @@ class Titration:
         if Config.pypka_params["f_prot_out"]:
             with open(Config.pypka_params["f_prot_out"], "w") as f:
                 f.write(mc.text_prots)
+        if Config.pypka_params["f_all_prot_out"]:
+            titration_curve = self.getTitrationCurve()
+            text_tit_curve = "\n".join(f"{pH}\t{value}" for pH, value in titration_curve.items())
+            with open(Config.pypka_params["f_all_prot_out"], "w") as f:
+                f.write(text_tit_curve)
         if Config.pypka_params["coupled_sites_output"]:
             with open(Config.pypka_params["coupled_sites_output"], "w") as f:
                 f.write(mc.text_coupled_sites)
