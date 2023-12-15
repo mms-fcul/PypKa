@@ -178,7 +178,6 @@ class MonteCarlo:
         self.text_pks = text_pks
         self.text_prots = text_prots
 
-
     def get_tit_states(self):
         mcsteps = Config.mc_params["mcsteps"]
 
