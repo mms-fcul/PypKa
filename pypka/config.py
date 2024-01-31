@@ -108,6 +108,7 @@ class ParametersDict:
         "output": "f_out",
         "logfile": "f_log",
         "titration_output": "f_prot_out",
+        "titration_curve": "f_all_prot_out",
         "clean": "clean_pdb",
     }
 
@@ -245,6 +246,7 @@ class PypKaConfig(ParametersDict):
         self.f_in_extension = None
         self.f_out = None
         self.f_prot_out = None
+        self.f_all_prot_out = None
         self.f_structure_out = None
 
         # Output File
@@ -295,6 +297,7 @@ class PypKaConfig(ParametersDict):
             "f_in": str,
             "f_out": str,
             "f_prot_out": str,
+            "f_all_prot_out": str,
             "f_structure_out": str,
             "f_structure_out_pH": float,
             "ff_structure_out": str,

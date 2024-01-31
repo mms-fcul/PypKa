@@ -51,4 +51,4 @@ For more info check [CONTRIBUTING](./CONTRIBUTING.rst)
 ## Contacts
 
   Please submit a github issue to report bugs and to request new features.
-  Alternatively you may find the developer [here](mailto:pdreis@fc.ul.pt). Please visit ou [website](http://mms.rd.ciencias.ulisboa.pt/) for more information.
+  Alternatively you may find the developer [here](mailto:pdreis@fc.ul.pt). Please visit ou [website](https://mms.rd.ciencias.ulisboa.pt/) for more information.

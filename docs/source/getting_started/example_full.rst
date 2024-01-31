@@ -13,11 +13,12 @@ Complete Parameters File Template
    sites = all             # Titrate all available sites
    
    # Output
-   output = pKas.txt                     # pKa values output file
-   titration_output = titration.txt      # Titration curves output file
-   isoelectric_point = yes               # Calculate isoelectric point
-   save_pdb = pb_input.pdb               # save PB input file
-   structure_output = out.pdb, 7, amber  # Output structure with the most likely protonation state at a given pH value
+   output = pKas.txt                       # pKa values output file
+   titration_output = titration.txt        # Titration curves output file
+   titration_curve = titration_curve.txt   # Full titration curve (whole system charge) output file
+   isoelectric_point = yes                 # Calculate isoelectric point
+   save_pdb = pb_input.pdb                 # save PB input file
+   structure_output = out.pdb, 7, amber    # Output structure with the most likely protonation state at a given pH value
    # filename, pH value, force field ("gromos_cph", "amber")
    
    
