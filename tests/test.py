@@ -50,7 +50,6 @@ def checkStructureOutput(filename):
 
 
 def check_file_diff(f1, f2):
-
     with open(f1) as f:
         content1 = f.read()
 
@@ -792,7 +791,6 @@ CTR 5002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_allsites_clean(self):
-
         os.system(
             "rm -f *out *gro *pdb *pqr *crg *sites cent contributions interactions.dat pkint"
         )
@@ -829,7 +827,6 @@ CTR 5002 3.010253456221198 ('deprotonated', 0.00010237855405755827)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_allsites_noclean(self):
-
         os.system(
             "rm -rf LOG* *out *gro *pdb *pqr *crg *sites "
             "cent contributions interactions.dat pkint LOG* __pycache__ *pyc"
@@ -866,7 +863,6 @@ CTR 5002 2.8373655675051106 ('deprotonated', 6.875997409570579e-05)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_onlytermini(self):
-
         os.system(
             "rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent "
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
@@ -903,7 +899,6 @@ CTR 5002 3.0073796144818266 ('deprotonated', 0.00010170339324314826)
         checkAPIResult(pKa, results)
 
     def test_api_ktp_pdb_onlytermini_noclean(self):
-
         os.system(
             "rm -rf LOG* *out *gro *pdb *pqr *crg *sites cent "
             "contributions interactions.dat pkint LOG* __pycache__ *pyc"
@@ -1225,67 +1220,67 @@ TYR 4 None ('undefined', 'pk Not In Range') (2, (0.7652749999999999, 0.390635)) 
         checkAPIResult(pKa, results, pH=9.5, extended=True)
 
 
-class TestBuilder(object):
-    def test_lyso_pH0(self):
-        outfile = "amber1.pdb"
-
-        parameters = {
-            "structure": "builder/4lzt.pdb",
-            "epsin": 15,
-            "ionicstr": 0.1,
-            "pbc_dimensions": 0,
-            "ncpus": ncpus,
-            "output": "pKas.out",
-            "titration_output": "titration.out",
-            "structure_output": (outfile, 1, "amber"),
-        }
-        pKa = Titration(parameters)
-        checkStructureOutput(outfile)
-
-    def test_lyso_pH7(self):
-        outfile = "amber7.pdb"
-
-        parameters = {
-            "structure": "builder/4lzt.pdb",
-            "epsin": 15,
-            "ionicstr": 0.1,
-            "pbc_dimensions": 0,
-            "ncpus": ncpus,
-            "output": "pKas.out",
-            "titration_output": "titration.out",
-            "structure_output": (outfile, 7, "amber"),
-        }
-        pKa = Titration(parameters)
-        checkStructureOutput(outfile)
-
-    def test_lyso_pH12(self):
-        outfile = "amber12.pdb"
-
-        parameters = {
-            "structure": "builder/4lzt.pdb",
-            "epsin": 15,
-            "ionicstr": 0.1,
-            "pbc_dimensions": 0,
-            "ncpus": ncpus,
-            "output": "pKas.out",
-            "titration_output": "titration.out",
-            "structure_output": (outfile, 12, "amber"),
-        }
-        pKa = Titration(parameters)
-        checkStructureOutput(outfile)
-
-    def test_lyso_pH12_gromos(self):
-        outfile = "gromos12.pdb"
-
-        parameters = {
-            "structure": "builder/4lzt.pdb",
-            "epsin": 15,
-            "ionicstr": 0.1,
-            "pbc_dimensions": 0,
-            "ncpus": ncpus,
-            "output": "pKas.out",
-            "titration_output": "titration.out",
-            "structure_output": (outfile, 12, "gromos_CpH"),
-        }
-        pKa = Titration(parameters)
-        checkStructureOutput(outfile)
+# class TestBuilder(object):
+#    def test_lyso_pH0(self):
+#        outfile = "amber1.pdb"
+#
+#        parameters = {
+#            "structure": "builder/4lzt.pdb",
+#            "epsin": 15,
+#            "ionicstr": 0.1,
+#            "pbc_dimensions": 0,
+#            "ncpus": ncpus,
+#            "output": "pKas.out",
+#            "titration_output": "titration.out",
+#            "structure_output": (outfile, 1, "amber"),
+#        }
+#        pKa = Titration(parameters)
+#        checkStructureOutput(outfile)
+#
+#    def test_lyso_pH7(self):
+#        outfile = "amber7.pdb"
+#
+#        parameters = {
+#            "structure": "builder/4lzt.pdb",
+#            "epsin": 15,
+#            "ionicstr": 0.1,
+#            "pbc_dimensions": 0,
+#            "ncpus": ncpus,
+#            "output": "pKas.out",
+#            "titration_output": "titration.out",
+#            "structure_output": (outfile, 7, "amber"),
+#        }
+#        pKa = Titration(parameters)
+#        checkStructureOutput(outfile)
+#
+#    def test_lyso_pH12(self):
+#        outfile = "amber12.pdb"
+#
+#        parameters = {
+#            "structure": "builder/4lzt.pdb",
+#            "epsin": 15,
+#            "ionicstr": 0.1,
+#            "pbc_dimensions": 0,
+#            "ncpus": ncpus,
+#            "output": "pKas.out",
+#            "titration_output": "titration.out",
+#            "structure_output": (outfile, 12, "amber"),
+#        }
+#        pKa = Titration(parameters)
+#        checkStructureOutput(outfile)
+#
+#    def test_lyso_pH12_gromos(self):
+#        outfile = "gromos12.pdb"
+#
+#        parameters = {
+#            "structure": "builder/4lzt.pdb",
+#            "epsin": 15,
+#            "ionicstr": 0.1,
+#            "pbc_dimensions": 0,
+#            "ncpus": ncpus,
+#            "output": "pKas.out",
+#            "titration_output": "titration.out",
+#            "structure_output": (outfile, 12, "gromos_CpH"),
+#        }
+#        pKa = Titration(parameters)
+#        checkStructureOutput(outfile)

@@ -13,5 +13,3 @@ ser_thr_titration = no
 clean_pdb = no
 truncated_grid = yes
 gsize = 61
-
-

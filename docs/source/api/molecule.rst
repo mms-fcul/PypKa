@@ -1,5 +1,5 @@
 Molecule
 ========
 
-.. autoclass:: molecule.Molecule
+.. autoclass:: pypka.Molecule
    :members:

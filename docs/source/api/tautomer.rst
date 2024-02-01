@@ -1,5 +1,5 @@
 Tautomer
 ========
 
-.. autoclass:: tautomer.Tautomer
+.. autoclass:: pypka.Tautomer
    :members:

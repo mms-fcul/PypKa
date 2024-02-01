@@ -286,7 +286,7 @@ class PypKaConfig(ParametersDict):
         # Parameters Validity
         self.input_special_conditions = {
             "temp": ">0",
-            "ffID": ("G54A7", "CHARMM36m"),
+            "ffID": ("G54A7", "CHARMM36m", "AMBER14SB"),
             "ffinput": ("GROMOS", "AMBER", "CHARMM"),
             "ff_structure_out": ("gromos_cph", "amber", "charmm"),
         }
@@ -362,12 +362,14 @@ class PypKaConfig(ParametersDict):
             self["f_siz"] = "{}/DataBaseT.siz".format(file_path)
 
         ffID = Config.pypka_params["ffID"].lower()
-        if "charmm36m" in ffID:
-            self["ff_family"] = "CHARMM"
-            # self["ffinput"] = "CHARMM"
-            self["ser_thr_titration"] = False
-        elif "g54a7" in ffID:
+        if "g54a7" in ffID:
             self["ff_family"] = "GROMOS"
+        elif "charmm36m" in ffID:
+            self["ff_family"] = "CHARMM"
+            self["ser_thr_titration"] = False        
+        elif "amber14sb" in ffID:
+            self["ff_family"] = "AMBER"
+            self["ser_thr_titration"] = False
         else:
             raise Exception("Forcefield {0} not supported".format(ffID))
 

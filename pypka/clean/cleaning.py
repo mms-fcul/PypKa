@@ -111,9 +111,14 @@ def inputPDBCheck(filename, sites, clean_pdb):
                     and resnumb not in chains_res[chain]
                     and str(resnumb) in sites[chain]
                 ):
-                    if Config.pypka_params["ffinput"] == "CHARMM":
-                        if resname in ("HSD", "HSE", "HSP"):
-                            resname = "HIS"
+                    if (
+                        Config.pypka_params["ffinput"] == "CHARMM"
+                        and resname in ("HSD", "HSE", "HSP")
+                    ) or (
+                        Config.pypka_params["ffinput"] == "AMBER"
+                        and resname in ("HID", "HIE", "HIP")
+                    ):
+                        resname = "HIS"
                     chains_res[chain][resnumb] = resname
 
     # if filetype == 'pdb' and not clean_pdb:
@@ -226,7 +231,6 @@ def cleanPDB(
     inputpqr="clean.pqr",
     outputpqr="cleaned_tau.pqr",
 ):
-
     remove_membrane_n_rna(pdb_filename, Config.pypka_params["pdb2pqr_inputfile"])
     if " " in molecules.keys():
         molecules["_"] = molecules[" "]
@@ -249,9 +253,6 @@ def cleanPDB(
     for chain in cys_bridges.keys():
         molecule = molecules[chain]
         molecule.saveCYSBridges(cys_bridges[chain])
-
-    # his_states = get_his_states(logfile)
-    # molecule.saveHISStates(his_states)
 
     if automatic_sites:
         old_ctrs = {}
@@ -285,6 +286,7 @@ def cleanPDB(
         get_pdb_Hs(hs_pdb, chains_res)
 
     to_exclude = NUCLEIC_ACIDS
+
     nontitrating_lines = add_tautomers(
         inputpqr,
         chains_res,
@@ -344,6 +346,10 @@ def remove_membrane_n_rna(pdbfile, outfile):
                     if resname in ("HSD", "HSE"):
                         resname = "HSP"
 
+                if Config.pypka_params["ffinput"] == "AMBER":
+                    if resname in ("HID", "HIE"):
+                        resname = "HIP"
+
                 if resname not in to_remove:
                     if resname in PDB_RNA_RESIDUES:
                         resname = PDB_RNA_RESIDUES[resname]
@@ -381,7 +387,6 @@ def pqr2pdb(line, counter):
 
 
 def write_final_pdb(pdb_filename, outputpqr, final_pdb, rna_inputpqr):
-
     with open(pdb_filename) as f:
         box = None
         for line in f:

@@ -98,6 +98,8 @@ class Tautomer(object):
             self.charge_set = charge_set2
             ref_tautomer.charge_set = charge_set1
             self.site.setType("c")
+        else:
+            raise Exception(f"In .st file {fname} there is a non-integer charge set.")
         self.natoms = len(self.charge_set)
         ref_tautomer.natoms = len(self.charge_set)
         if Config.debug:
@@ -850,4 +852,4 @@ class Tautomer(object):
         if dy > box[1] / 2:
             dy = abs(dy - box[1])
 
-        return dx ** 2 + dy ** 2 + dz ** 2
+        return dx**2 + dy**2 + dz**2

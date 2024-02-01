@@ -1,5 +1,5 @@
 Site
 ====
 
-.. autoclass:: titsite.Titsite
+.. autoclass:: pypka.Titsite
    :members:

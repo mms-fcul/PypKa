@@ -35,6 +35,8 @@ def check_CYS_bridge(res_atoms, resnumb):
         CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "H"]
     elif Config.pypka_params["ff_family"] == "CHARMM":
         CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "HN", "HA", "HB1", "HB2"]
+    elif Config.pypka_params["ff_family"] == "AMBER":
+        CYS_atoms = ["N", "CA", "CB", "SG", "C", "O", "H", "HA", "HB1", "HB2"]
 
     if set(res_atoms).issubset(CYS_atoms) and set(CYS_atoms).issubset(res_atoms):
         warn = "CYS-{0} is assumed to be participating in a SS-bond".format(resnumb)
@@ -145,7 +147,6 @@ def check_sites_integrity(filename, molecules, chains_res):
             if (
                 prev_resnumb != resnumb or nline == maxnlines or chain != last_chain
             ) and prev_resnumb is not None:
-
                 if nline == maxnlines:
                     prev_resnumb = copy(resnumb)
                     resnumb = "None"
@@ -338,7 +339,7 @@ def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
         ):
             aname = molecule.correct_atoms[resnumb][aname]
 
-        if Config.pypka_params["ff_family"] == "CHARMM" and resname == "HIS":
+        if Config.pypka_params["ff_family"] in ["CHARMM", "AMBER"] and resname == "HIS":
             if (
                 not fixed_sites
                 or (
@@ -348,13 +349,14 @@ def make_delphi_inputfile(f_in, f_out, molecules, fixed_sites):
                 )
                 or (fixed_sites and chain not in fixed_sites)
             ):
-                resname = "HSP"
+                resname = (
+                    "HSP" if Config.pypka_params["ff_family"] == "CHARMM" else "HI2"
+                )
 
         return resnumb, resname, aname
 
     def assign_atoms(sites, resnumb, aname, site_Hs, site_positions):
         ref_tau_name = resname
-        # print(aname in list(sites[resnumb].getRefTautomer().charge_set.keys())
         if resnumb in list(sites.keys()) and aname in list(
             sites[resnumb].getRefTautomer().charge_set.keys()
         ):
