@@ -2,7 +2,7 @@ sshversion: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:jammy
+      - image: ubuntu:focal
 
     steps:
       - run:
@@ -10,7 +10,8 @@ jobs:
           command: |
             apt update
             apt upgrade -y
-            apt install -y git python3.10 gawk libgfortran5 python2 python3-pip
+            add-apt-repository ppa:deadsnakes/ppa
+            apt install -y git python3.10 gawk libgfortran4 python2 python3-pip
             python3.10 -m pip install --user pytest numpy coverage psutil delphi4py pdbmender
       - checkout
       - run:
