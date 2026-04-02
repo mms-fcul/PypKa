@@ -19,6 +19,8 @@ def read_settings(filename):
     """
     parameters = {}
     parameters["lipid_definition"] = {}
+    if not os.path.isfile(filename):
+        raise FileNotFoundError(f"Settings file '{filename}' not found.")
     with open(filename) as f:
         nline = 0
         for line in f:
