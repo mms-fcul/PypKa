@@ -1,0 +1,5 @@
+recursive-include pypka *
+global-exclude *.py[cod]
+prune pypka/__pycache__
+prune pypka/clean/__pycache__
+prune pypka/mc/__pycache__

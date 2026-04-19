@@ -62,10 +62,10 @@ Ready to contribute? Here's how to set up `pypka` for local development.
 
     $ git clone git@github.com:your_name_here/pypka.git
 
-3. Install your local copy into a virtualenv. Assuming you have pipenv installed, this is how you set up your fork for local development::
-    
+3. Install the project with Pixi::
+
     $ cd pypka/
-    $ pipenv install pypka
+    $ pixi install
 
 4. Create a branch for local development::
 
@@ -75,7 +75,7 @@ Ready to contribute? Here's how to set up `pypka` for local development.
 
 5. When you're done making changes, check that your changes pass the tests::
 
-    $ make tests
+    $ pixi run test
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -94,7 +94,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy.
+3. The pull request should work in the Pixi environment defined by the repository.
 
 
 Deploying
@@ -107,4 +107,6 @@ Then run::
 $ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
+$ pixi run build
+$ pixi run publish
 

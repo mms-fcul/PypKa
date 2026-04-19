@@ -26,6 +26,17 @@ doi = {10.1021/acs.jcim.0c00718}
 
   Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
 
+## Development
+
+This repository is managed with [Pixi](https://pixi.sh).
+
+```bash
+pixi install
+pixi run test
+```
+
+The local package is installed in editable mode through Pixi, so CLI and imports are available inside the Pixi environment without an extra `pip install -e .` step.
+
 
 ## Contributing
 

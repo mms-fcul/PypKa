@@ -1,22 +1,19 @@
-sshversion: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:focal
+      - image: cimg/base:stable
 
     steps:
-      - run:
-          name: install dependencies
-          command: |
-            apt update
-            apt upgrade -y
-            add-apt-repository ppa:deadsnakes/ppa
-            apt install -y git python3.10 gawk libgfortran4 python2 python3-pip
-            python3.10 -m pip install --user pytest numpy coverage psutil delphi4py pdbmender
       - checkout
+      - run:
+          name: install pixi
+          command: |
+            curl -fsSL https://pixi.sh/install.sh | bash
+            echo 'export PATH="$HOME/.pixi/bin:$PATH"' >> "$BASH_ENV"
       - run:
           name: run tests
           command: |
             set -e
-            cd ./tests/
-            python3.10 -m pytest test.py
+            source "$BASH_ENV"
+            pixi run test

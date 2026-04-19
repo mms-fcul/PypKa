@@ -1,70 +1,91 @@
-[tool.black]
-line-length = 88
-target-version = ['py37']
-include = '\.pyi?$'
-exclude = '''(
-  _version.py
-| clean/pdb2pqr/
-)'''
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist=py35,py36,py37,py38,py39
-changedir=./tests/
-
-[testenv]
-deps=
-    pytest
-commands=
-    py{35,36,37,38,39}: pytest test.py
-"""
-[tool.poetry]
+[project]
 name = "pypka"
 version = "2.10.0"
 description = "A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism"
-authors = ["Pedro Reis <pdreis@fc.ul.pt>"]
-license = "LGPLv3"
-readme = "README.md"
-homepage = "https://pypka.org"
-repository = "https://github.com/mms-fcul/PypKa"
-documentation = "https://pypka.readthedocs.io/en/latest/"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.9.*,<4.0"
+license = { text = "LGPL-3.0-only" }
+authors = [
+  { name = "Pedro Reis", email = "pdreis@fc.ul.pt" }
+]
 classifiers = [
-	"Development Status :: 5 - Production/Stable",
-	"Intended Audience :: Science/Research",
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering"
 ]
-
-[tool.poetry.dependencies]
-python = ">=3.6.2,<4.0"
-psutil = "*"
-pytest = ">=6.2.5"
-delphi4py = "==1.3.0"
-pdbmender = "==0.6.1"
-numpy = [
-    {version = ">=1.23.0", python = ">=3.8"},
-    {version = ">=1.21.0", python = ">=3.7,<3.8"},
-    {version = ">=1.19.0", python = ">=3.6,<3.7"}
+dependencies = [
+  "psutil",
+  "delphi4py==1.3.0",
+  "pdbmender==0.6.1",
+  'numpy>=1.23.0; python_version >= "3.8"',
+  'numpy>=1.21.0; python_version >= "3.7" and python_version < "3.8"',
+  'numpy>=1.19.0; python_version >= "3.6" and python_version < "3.7"'
 ]
 
-[tool.poetry.dev-dependencies]
+[project.urls]
+Homepage = "https://pypka.org"
+Repository = "https://github.com/mms-fcul/PypKa"
+Documentation = "https://pypka.readthedocs.io/en/latest/"
+
+[project.scripts]
+pypka = "pypka.cli:CLI"
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["pypka*"]
+
+[tool.setuptools.package-data]
+pypka = ["**/*"]
+
+[tool.setuptools.exclude-package-data]
+pypka = ["**/__pycache__/*", "**/*.py[cod]"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.dependencies]
+python = "3.9.*"
+libgfortran-ng = "7.*"
+numpy = "<2"
+
+[tool.pixi.pypi-dependencies]
+pypka = { path = ".", editable = true }
+
+[tool.pixi.feature.dev.pypi-dependencies]
+black = "*"
+bump2version = "*"
+build = "*"
+coverage = "*"
+flake8 = "*"
+isort = "*"
+mypy = "*"
+pytest = ">=6.2.5"
+pytest-cov = "*"
+tox = "*"
+twine = "*"
+
+[tool.pixi.feature.docs.pypi-dependencies]
 recommonmark = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
-flake8 = "*"
-mypy = "*"
-bump2version = "*"
-pytest = "*"
-coverage = "*"
-pytest-cov = "*"
-isort = "*"
-tox = "*"
-black = "*"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pixi.environments]
+default = { features = ["dev", "docs"] }
+
+[tool.pixi.tasks]
+build = "python -m build"
+compile-mc = "cd pypka/mc && python mc_setup.py build_ext --inplace"
+coverage = "cd tests && coverage run -m pytest test.py && coverage report -m --include='/*/pypka/pypka/*' && coverage html --include='*/pypka/pypka/*' -d html_coverage"
+docs = "rm -f docs/pypka.rst docs/modules.rst && sphinx-apidoc -o docs/ pypka && make -C docs clean html"
+format = "isort *.py pypka/clean/*.py && black pypka"
+lint = "mypy && flake8"
+publish = "python -m twine upload dist/*"
+test = "cd tests && pytest test.py"
+test_fast = "cd tests && pytest test.py -k 'ktp'"
