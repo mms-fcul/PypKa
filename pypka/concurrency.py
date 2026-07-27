@@ -1,10 +1,27 @@
 from datetime import datetime, timedelta
-from multiprocessing import Manager, Pool, Value
+from multiprocessing import get_context
 from sys import stdout
 from time import time
 
 from pypka.config import Config
 from pypka.mc.mc import MCrun
+
+
+def _get_mp_context():
+    """Return the multiprocessing context used to spawn the worker processes.
+
+    The workers rely on inheriting the module level state held in Config,
+    which is only possible with the "fork" start method. Python 3.14 changed
+    the default start method on Linux to "forkserver", hence the explicit
+    request. Platforms without "fork" fall back to the default context.
+    """
+    try:
+        return get_context("fork")
+    except ValueError:
+        return get_context()
+
+
+MP_CONTEXT = _get_mp_context()
 
 
 def configRefresh(configs, pb_time, njobs):
@@ -101,8 +118,8 @@ def startPoolProcesses(
             )
 
     Config.parallel_params.total_jobs = Config.parallel_params.njobs
-    pb_time = Manager().list()
-    njobs = Value("i", Config.parallel_params.njobs, lock=False)
+    pb_time = MP_CONTEXT.Manager().list()
+    njobs = MP_CONTEXT.Value("i", Config.parallel_params.njobs, lock=False)
     Config.parallel_params.njobs = njobs
 
     if Config.debug:
@@ -110,7 +127,7 @@ def startPoolProcesses(
         for i, job in enumerate(jobs):
             print("ncore {}: njobs = {}".format(i, len(job)))
 
-    with Pool(
+    with MP_CONTEXT.Pool(
         processes=ncpus,
         initializer=configRefresh,
         initargs=(Config.parallel_params, pb_time, njobs),

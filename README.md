@@ -22,9 +22,9 @@ doi = {10.1021/acs.jcim.0c00718}
 
 ## Documentation
 
-  Documentation can be found [here](https://pypka.readthedocs.io/en/latest/)
+Documentation can be found [here](https://pypka.readthedocs.io/en/latest/)
 
-  Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
+Starting templates for the the API and CLI usage can be found [here](https://pypka.readthedocs.io/en/latest/example.html) while a online notebook is hosted at [Google Colab](https://colab.research.google.com/github/mms-fcul/PypKa/blob/master/pypka/example/notebook/pypka.ipynb)
 
 ## Development
 
@@ -35,8 +35,12 @@ pixi install
 pixi run test
 ```
 
-The local package is installed in editable mode through Pixi, so CLI and imports are available inside the Pixi environment without an extra `pip install -e .` step.
+PypKa supports CPython 3.9 through 3.14. One Pixi environment is provided per
+supported version, so the test suite can be run against any of them:
 
+```bash
+pixi run -e py314 test
+```
 
 ## Contributing
 

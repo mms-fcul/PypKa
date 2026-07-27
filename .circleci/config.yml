@@ -1,6 +1,10 @@
 version: 2.1
+
 jobs:
   build:
+    parameters:
+      python_env:
+        type: string
     docker:
       - image: cimg/base:stable
 
@@ -12,8 +16,16 @@ jobs:
             curl -fsSL https://pixi.sh/install.sh | bash
             echo 'export PATH="$HOME/.pixi/bin:$PATH"' >> "$BASH_ENV"
       - run:
-          name: run tests
+          name: run tests on << parameters.python_env >>
           command: |
             set -e
             source "$BASH_ENV"
-            pixi run test
+            pixi run -e << parameters.python_env >> test
+
+workflows:
+  test-all-supported-pythons:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              python_env: ["py39", "py310", "py311", "py312", "py313", "py314"]

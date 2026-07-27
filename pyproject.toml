@@ -3,7 +3,7 @@ name = "pypka"
 version = "2.10.0"
 description = "A python module for flexible Poisson-Boltzmann based pKa calculations with proton tautomerism"
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.9.*,<4.0"
+requires-python = ">=3.9,<3.15"
 license = { text = "LGPL-3.0-only" }
 authors = [
   { name = "Pedro Reis", email = "pdreis@fc.ul.pt" }
@@ -11,15 +11,20 @@ authors = [
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
-  "Topic :: Scientific/Engineering"
+  "Topic :: Scientific/Engineering",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14"
 ]
 dependencies = [
   "psutil",
-  "delphi4py==1.3.0",
+  "delphi4py==1.6.1",
   "pdbmender==0.6.1",
-  'numpy>=1.23.0; python_version >= "3.8"',
-  'numpy>=1.21.0; python_version >= "3.7" and python_version < "3.8"',
-  'numpy>=1.19.0; python_version >= "3.6" and python_version < "3.7"'
+  "numpy>=2,<3"
 ]
 
 [project.urls]
@@ -60,13 +65,29 @@ pypka = [
 channels = ["conda-forge"]
 platforms = ["linux-64"]
 
-[tool.pixi.dependencies]
-python = "3.9.*"
-libgfortran-ng = "7.*"
-numpy = "<2"
+[tool.pixi.feature.runtime.dependencies]
+numpy = ">=2,<3"
 
-[tool.pixi.pypi-dependencies]
+[tool.pixi.feature.runtime.pypi-dependencies]
 pypka = { path = ".", editable = true }
+
+[tool.pixi.feature.py39.dependencies]
+python = "3.9.*"
+
+[tool.pixi.feature.py310.dependencies]
+python = "3.10.*"
+
+[tool.pixi.feature.py311.dependencies]
+python = "3.11.*"
+
+[tool.pixi.feature.py312.dependencies]
+python = "3.12.*"
+
+[tool.pixi.feature.py313.dependencies]
+python = "3.13.*"
+
+[tool.pixi.feature.py314.dependencies]
+python = "3.14.*"
 
 [tool.pixi.feature.dev.dependencies]
 c-compiler = "*"
@@ -92,7 +113,13 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.pixi.environments]
-default = { features = ["dev", "docs"] }
+default = { features = ["runtime", "py312", "dev", "docs"] }
+py39 = { features = ["runtime", "py39", "dev"] }
+py310 = { features = ["runtime", "py310", "dev"] }
+py311 = { features = ["runtime", "py311", "dev"] }
+py312 = { features = ["runtime", "py312", "dev"] }
+py313 = { features = ["runtime", "py313", "dev"] }
+py314 = { features = ["runtime", "py314", "dev"] }
 
 [tool.pixi.tasks]
 build = "python -m build"

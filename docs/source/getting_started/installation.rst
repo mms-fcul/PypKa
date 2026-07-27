@@ -25,17 +25,18 @@ Required Software
 
 Pypka depends on the following software:
 
-* python2.6>= & python3.5>=
+* python3.9 up to python3.14
 * libgfortran4
 * gawk
+* a C compiler (only required when building from source)
 
 These can all be installed via apt in Debian based systems::
 
-  apt install gawk gcc gfortran libgfortran4 python2
+  apt install gawk gcc gfortran libgfortran4
 
 Via Docker
 ----------
 
 Run the following command on a local directory which contains the cli parameters file (<PARAMETERS_FILE>) and input structure::
 
-   docker run -v ${PWD}:/home/ -w /home -t pedrishi/pypka:latest python3.9 -m pypka <PARAMETERS_FILE>
+   docker run -v ${PWD}:/home/ -w /home -t pedrishi/pypka:latest python3 -m pypka <PARAMETERS_FILE>
