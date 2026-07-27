@@ -1,11 +1,11 @@
     2 NTR None                 A  
-    3 HIS 6.9526728209531985   A  
+    3 HIS 6.952563883062963    A  
     4 HIS None                 A  
     7 TYR None                 A  
     9 LYS None                 A  
-   10 HIS 6.36920164389817     A  
+   10 HIS 6.369662005986889    A  
    14 GLU None                 A  
-   15 HIS 6.070748761775274    A  
+   15 HIS 6.07093316519546     A  
    17 HIS None                 A  
    18 LYS None                 A  
    19 ASP None                 A  
@@ -68,4 +68,4 @@
   260 CTR None                 A  
   260 LYS None                 A  
 
-Predicted Isoelectric Point: 6.528696803645706
+Predicted Isoelectric Point: 6.52870035383453
