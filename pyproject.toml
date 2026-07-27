@@ -131,3 +131,33 @@ lint = "mypy && flake8"
 publish = "python -m twine upload dist/*"
 test = "cd tests && pytest test.py"
 test_fast = "cd tests && pytest test.py -k 'ktp'"
+
+[tool.pixi.tasks.bump]
+cmd = "bump2version {{ part }}"
+args = [{ arg = "part", default = "patch" }]
+description = "Bump the PypKa version (part: major | minor | patch), committing and tagging the change"
+
+[tool.pixi.tasks.bump-patch]
+depends-on = [{ task = "bump", args = ["patch"] }]
+description = "Bump the PypKa patch version"
+
+[tool.pixi.tasks.bump-minor]
+depends-on = [{ task = "bump", args = ["minor"] }]
+description = "Bump the PypKa minor version"
+
+[tool.pixi.tasks.bump-major]
+depends-on = [{ task = "bump", args = ["major"] }]
+description = "Bump the PypKa major version"
+
+[tool.pixi.tasks.bump-to]
+cmd = "bump2version --new-version {{ version }} patch"
+args = ["version"]
+description = "Set an explicit version, e.g. `pixi run bump-to 3.0.0a1` to start a pre-release series"
+
+[tool.pixi.tasks.bump-build]
+cmd = "bump2version build"
+description = "Increment the pre-release build number (3.0.0a1 -> 3.0.0a2)"
+
+[tool.pixi.tasks.bump-release]
+cmd = "bump2version release"
+description = "Advance the pre-release stage (a -> b -> rc -> final, e.g. 3.0.0rc0 -> 3.0.0)"
