@@ -31,7 +31,7 @@ Documentation = "https://pypka.readthedocs.io/en/latest/"
 pypka = "pypka.cli:CLI"
 
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=69", "wheel", "Cython>=3.0.11"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
@@ -44,7 +44,17 @@ include = ["pypka*"]
 pypka = ["**/*"]
 
 [tool.setuptools.exclude-package-data]
-pypka = ["**/__pycache__/*", "**/*.py[cod]"]
+pypka = [
+  "**/__pycache__/*",
+  "*.py[cod]",
+  "**/*.py[cod]",
+  "*.so",
+  "**/*.so",
+  "*.o",
+  "**/*.o",
+  "build/*",
+  "**/build/*",
+]
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
@@ -58,7 +68,11 @@ numpy = "<2"
 [tool.pixi.pypi-dependencies]
 pypka = { path = ".", editable = true }
 
+[tool.pixi.feature.dev.dependencies]
+c-compiler = "*"
+
 [tool.pixi.feature.dev.pypi-dependencies]
+cython = ">=3.0.11"
 black = "*"
 bump2version = "*"
 build = "*"
@@ -68,6 +82,7 @@ isort = "*"
 mypy = "*"
 pytest = ">=6.2.5"
 pytest-cov = "*"
+setuptools = "*"
 tox = "*"
 twine = "*"
 
@@ -81,7 +96,7 @@ default = { features = ["dev", "docs"] }
 
 [tool.pixi.tasks]
 build = "python -m build"
-compile-mc = "cd pypka/mc && python mc_setup.py build_ext --inplace"
+compile-mc = "python setup.py build_ext --inplace"
 coverage = "cd tests && coverage run -m pytest test.py && coverage report -m --include='/*/pypka/pypka/*' && coverage html --include='*/pypka/pypka/*' -d html_coverage"
 docs = "rm -f docs/pypka.rst docs/modules.rst && sphinx-apidoc -o docs/ pypka && make -C docs clean html"
 format = "isort *.py pypka/clean/*.py && black pypka"

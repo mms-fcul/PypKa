@@ -136,6 +136,5 @@ ENV/
 # IDE settings
 .vscode/
 
-!pypka/mc/*so
 !pypka/delphi4py/*/*.so
 
