@@ -1,5 +1,6 @@
 import pytest
 import os
+import re
 import subprocess as sb
 import sys
 from .builder.check_diffs import compareFiles
@@ -8,6 +9,59 @@ sys.path.insert(1, "../")
 from pypka import Titration
 
 ncpus = -1
+
+# Reference values are stored with full precision, but the underlying
+# Poisson-Boltzmann/Monte Carlo pipeline is only reproducible up to a few
+# decimal places across dependency and platform updates, so numbers are
+# compared with a tolerance instead of as exact strings.
+NUMERIC_TOLERANCE = 1e-3
+
+NUMBER_PATTERN = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][-+]?\d+)?")
+NUMPY_SCALAR_PATTERN = re.compile(r"np\.\w+\(([^()]*)\)")
+
+
+def normalizeNumpyReprs(text):
+    """Unwrap NumPy>=2 scalar reprs, e.g. 'np.float64(0.5)' becomes '0.5'."""
+    previous = None
+    while previous != text:
+        previous = text
+        text = NUMPY_SCALAR_PATTERN.sub(r"\1", text)
+    return text
+
+
+def normalizeLine(text):
+    """Unwrap NumPy scalar reprs and collapse the column padding.
+
+    The output columns are padded according to the length of the float
+    representation, hence the amount of whitespace changes whenever a value
+    changes in the last decimal places.
+    """
+    return " ".join(normalizeNumpyReprs(str(text)).split())
+
+
+def assertLinesAlmostEqual(obtained, expected, tolerance=NUMERIC_TOLERANCE):
+    """Compare two result lines, allowing small numerical deviations.
+
+    The non-numeric parts of the line have to match exactly, while every
+    number is compared within ``tolerance``.
+    """
+    obtained = normalizeLine(obtained)
+    expected = normalizeLine(expected)
+
+    if obtained == expected:
+        return
+
+    obtained_skeleton = NUMBER_PATTERN.sub("#", obtained)
+    expected_skeleton = NUMBER_PATTERN.sub("#", expected)
+    assert obtained_skeleton == expected_skeleton, "{0} != {1}".format(
+        obtained, expected
+    )
+
+    obtained_numbers = [float(i) for i in NUMBER_PATTERN.findall(obtained)]
+    expected_numbers = [float(i) for i in NUMBER_PATTERN.findall(expected)]
+    assert obtained_numbers == pytest.approx(
+        expected_numbers, abs=tolerance, rel=0
+    ), "{0} != {1}".format(obtained, expected)
 
 
 def runTest(path, ncpus, results, delete_extra=""):
@@ -37,7 +91,7 @@ def checkOutput(filename, results_lines):
             c += 1
             line = line.strip()
             print(line)
-            assert line == results_lines[c].strip()
+            assertLinesAlmostEqual(line, results_lines[c])
     assert c + 1 == len(results_lines)
 
 
@@ -74,7 +128,7 @@ def checkAPIResult(pKa, results, pH=7, extended=False):
             )
         i += 1
         print(result)
-        assert result == results[i]
+        assertLinesAlmostEqual(result, results[i])
 
     # raise Exception
     assert i + 1 == len(results)

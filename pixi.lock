@@ -2671,8 +2671,8 @@ packages:
   requires_python: '>=3.9'
 - pypi: ./
   name: pypka
-  version: 2.10.0
-  sha256: 1f918cbb230f4d88978620d484565f5872489c4b1227a48c09fbcbf21647eb6b
+  version: 3.0.0a1
+  sha256: 56da101632852a171b20fc6546c0ae53d202f3a75fc44bcb3fcef7db207f458d
   requires_dist:
   - psutil
   - delphi4py==1.6.1
